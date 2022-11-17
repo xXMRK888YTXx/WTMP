@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+        <application>
+            <receiver android:name=".AdminReceiver"
+                android:permission="android.permission.BIND_DEVICE_ADMIN"
+                android:exported="false">
+                <meta-data android:name="android.app.device_admin"
+                    android:resource="@xml/admin_device_policy" />
+                <intent-filter>
+                    <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                </intent-filter>
+            </receiver>
+        </application>
+
+</manifest>

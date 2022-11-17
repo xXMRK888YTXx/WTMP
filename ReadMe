@@ -11,6 +11,9 @@ Ru
 [core:core-Compose] - Этот модуль включает в себя @[core:core-Android], используется для хранения
     core зависимостей + core Compose
 
+[AdminReceiver] - Этот модуль в котором находится ресивер который обрабатывает события не правильного
+    пароля и разблокировки экрана
+
 En
 
 Description of modules
@@ -22,3 +25,6 @@ Description of modules
 
 [core:core-Compose] - This module includes @[core:core-Android], used to store
      core dependencies + core Compose
+
+[AdminReceiver] - This module contains a receiver that handles events that are not correct
+   password and screen unlock
