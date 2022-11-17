@@ -3,26 +3,22 @@ Ru
 
 Описание модулей
 
-[libs] - Этот модуль используется для хранения других модулей с зависимостями которые часто
-    используются. В этом модуле, как и в его под модулях не должен находится какой либо код.
-    Только необходимые зависимости.
+[core] - Этот модуль используется для хранения других модулей с зависимостями и общим кодом которые часто
+    используются. В этом модуле,не должен находится какой либо код.Только необходимые зависимости.
 
-[libs:core-Android] - В этом модуле хранятся core завивисимости для Android, тестирования, viewModels
+[core:core-Android] - В этом модуле хранятся core завивисимости и общий код для Android, тестирования, viewModels
 
-[libs:core-Compose] - Этот модуль включает в себя @[libs:core], используется для хранения
+[core:core-Compose] - Этот модуль включает в себя @[core:core-Android], используется для хранения
     core зависимостей + core Compose
 
 En
 
-This is the "Observer" application project
-
 Description of modules
 
-[libs] - This module is used to store other modules with dependencies that are often
-    are used. This module, as well as its sub-modules, should not contain any code.
-    Only the required dependencies.
+[core] - This module is used to store other modules with dependencies and common code that are often
+     are used. This module should not contain any code. Only necessary dependencies.
 
-[libs:core-Android] - This module stores core dependencies for Android, testing, viewModels
+[core:core-Android] - This module stores core dependencies and common code for Android, testing, viewModels
 
-[libs:core-Compose] - This module includes @[libs:core] used to store
-    core dependencies + core Compose
+[core:core-Compose] - This module includes @[core:core-Android], used to store
+     core dependencies + core Compose

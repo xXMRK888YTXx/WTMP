@@ -14,6 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Observer"
 include (":app")
-include(":libs")
-include(":libs:core-Android")
-include(":libs:core-Compose")
+include(":core")
+include(":core:core-Android")
+include(":core:core-Compose")

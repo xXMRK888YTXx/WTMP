@@ -47,7 +47,7 @@ android {
     }
 }
 dependencies {
-    implementation(project(Project.libs.core_Compose.route))
+    implementation(project(Project.core.core_Compose.route))
     kapt (Deps.Dagger.DaggerKaptCompiler)
 }
 

@@ -1,8 +1,8 @@
 
 object Project {
     const val App = ":app"
-    sealed class libs(val route:String) {
-        object core : libs(":libs:core-Android")
-        object core_Compose : libs(":libs:core-Compose")
+    sealed class core(val route:String) {
+        object core_Android : core(":core:core-Android")
+        object core_Compose : core(":core:core-Compose")
     }
 }

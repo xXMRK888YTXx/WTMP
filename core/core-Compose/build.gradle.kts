@@ -39,5 +39,5 @@ dependencies {
     api (Deps.Compose.Tooling)
     api (Deps.Compose.Material)
     api (Deps.Compose.Navigation)
-    api (project(Project.libs.core.route))
+    api (project(Project.core.core_Android.route))
 }
