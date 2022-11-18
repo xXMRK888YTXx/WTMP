@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.observer.DI
+package com.xxmrk888ytxx.observer.DI.module
 
 import android.content.Context
 import com.xxmrk888ytxx.androidextension.ToastManager.ToastManager
