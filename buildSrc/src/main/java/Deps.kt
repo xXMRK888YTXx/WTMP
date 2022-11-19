@@ -34,4 +34,17 @@ object Deps {
         const val DaggerKaptCompiler = "com.google.dagger:dagger-compiler:2.44"
         const val DaggerKaptPlugin = "kotlin-kapt"
     }
+    object Coroutines {
+        const val CoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+    }
+    object CameraX {
+        private const val camerax_version = "1.3.0-alpha01"
+        // The following line is optional, as the core library is included indirectly by camera-camera2
+        const val CameraCore =  "androidx.camera:camera-core:${camerax_version}"
+        const val Camera2 = "androidx.camera:camera-camera2:${camerax_version}"
+        const val CameraExtensions = "androidx.camera:camera-extensions:${camerax_version}"
+        const val CameraLifecycle = "androidx.camera:camera-lifecycle:${camerax_version}"
+
+
+    }
 }

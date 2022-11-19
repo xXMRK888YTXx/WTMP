@@ -42,5 +42,6 @@ dependencies {
     api (Deps.ViewModel.ViewModel)
     api (Deps.ViewModel.ViewModelKotlin)
     api (Deps.Dagger.DaggerCore)
+    api(Deps.Coroutines.CoroutinesAndroid)
     api(files("libs/AndroidExtension.aar"))
 }

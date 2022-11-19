@@ -25,6 +25,8 @@ class AdminReceiver : DeviceAdminReceiver() {
         context.adminCallBack.onAdminDisabled()
     }
 
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onPasswordFailed(context: Context, intent: Intent) {
         super.onPasswordFailed(context, intent)
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -37,6 +39,8 @@ class AdminReceiver : DeviceAdminReceiver() {
         context.adminCallBack.onPasswordFailed(getManager(context).currentFailedPasswordAttempts)
     }
 
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onPasswordSucceeded(context: Context, intent: Intent) {
         super.onPasswordSucceeded(context, intent)
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
