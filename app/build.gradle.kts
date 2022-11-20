@@ -50,6 +50,7 @@ dependencies {
     implementation(project(Project.core.core_Compose.route))
     implementation(project(Project.AdminReceiver))
     implementation(project(Project.Camera))
+    implementation(project(Project.UserActivityStats))
     kapt (Deps.Dagger.DaggerKaptCompiler)
 }
 

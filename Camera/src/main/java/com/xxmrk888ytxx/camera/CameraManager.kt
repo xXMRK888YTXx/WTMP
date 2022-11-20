@@ -1,8 +1,9 @@
 package com.xxmrk888ytxx.camera
 
-import android.annotation.SuppressLint
 import android.content.Context
-import androidx.camera.core.*
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -10,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import java.io.File
 
-class CameraManager(val context: Context) : LifecycleOwner {
+class CameraManager(private val context: Context) : LifecycleOwner {
 
     private fun onCreate() {
         lifecycleRegistry.currentState = Lifecycle.State.RESUMED
@@ -22,7 +23,7 @@ class CameraManager(val context: Context) : LifecycleOwner {
     }
 
     private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-    @SuppressLint("RestrictedApi")
+
     fun createPhoto(
         outputFile: File,
         onSuccess:(outputFileResults: ImageCapture.OutputFileResults) -> Unit = {},
@@ -35,7 +36,6 @@ class CameraManager(val context: Context) : LifecycleOwner {
         cameraProvider.unbindAll()
         cameraProvider.bindToLifecycle(
                 this, CameraSelector.DEFAULT_FRONT_CAMERA,imageCapture)
-
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(context),
