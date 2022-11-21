@@ -51,6 +51,7 @@ dependencies {
     implementation(project(Project.AdminReceiver))
     implementation(project(Project.Camera))
     implementation(project(Project.UserActivityStats))
+    implementation(project(Project.ApiTelegram))
     kapt (Deps.Dagger.DaggerKaptCompiler)
 }
 

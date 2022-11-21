@@ -1,10 +1,9 @@
-package com.xxmrk888ytxx.observer.AdminDeviceController
+package com.xxmrk888ytxx.observer.domain.AdminDeviceController
 
 import android.content.Context
 import android.content.Intent
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
-import com.xxmrk888ytxx.observer.DI.AppScope
 import javax.inject.Inject
 
 

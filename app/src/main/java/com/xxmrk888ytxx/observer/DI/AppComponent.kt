@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.observer.DI
 import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.observer.DI.module.AdminReceiverModule
+import com.xxmrk888ytxx.observer.DI.module.ApiModule
 import com.xxmrk888ytxx.observer.DI.module.ToastManagerModule
 import com.xxmrk888ytxx.observer.MainActivity
 import dagger.BindsInstance
@@ -13,7 +14,8 @@ import javax.inject.Scope
 @Component(
     modules = [
         ToastManagerModule::class,
-        AdminReceiverModule::class
+        AdminReceiverModule::class,
+        ApiModule::class
     ]
 )
 interface AppComponent {
