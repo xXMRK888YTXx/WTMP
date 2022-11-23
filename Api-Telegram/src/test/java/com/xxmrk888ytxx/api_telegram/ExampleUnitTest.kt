@@ -3,7 +3,7 @@ package com.xxmrk888ytxx.api_telegram
 import android.graphics.Bitmap
 import com.xxmrk888ytxx.api_telegram.models.TelegramRequestResult
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
-import com.xxmrk888ytxx.coredeps.Repository.TelegramRepository
+import com.xxmrk888ytxx.coredeps.Interfaces.Repository.TelegramRepository
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import okhttp3.MultipartBody
@@ -27,8 +27,8 @@ import java.net.UnknownHostException
 class TelegramApiTest {
     private val mockWebServer = MockWebServer()
 
-    private lateinit var telegramMockServerRepository:TelegramRepository
-    private lateinit var telegramThrowableRepository:TelegramRepository
+    private lateinit var telegramMockServerRepository: TelegramRepository
+    private lateinit var telegramThrowableRepository: TelegramRepository
 
     val testBotKey = "test-key"
     val testUserId = 21321234L

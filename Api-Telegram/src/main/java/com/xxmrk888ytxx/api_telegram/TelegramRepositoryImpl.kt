@@ -2,7 +2,7 @@ package com.xxmrk888ytxx.api_telegram
 
 import android.graphics.Bitmap
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
-import com.xxmrk888ytxx.coredeps.Repository.TelegramRepository
+import com.xxmrk888ytxx.coredeps.Interfaces.Repository.TelegramRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -11,6 +11,13 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
+/**
+ * [Ru]
+ * Реализация для интерфейса [TelegramRepository]
+ *
+ * [En]
+ * Implementation for interface [TelegramRepository]
+ */
 class TelegramRepositoryImpl @AssistedInject constructor(
     private val telegramApi: TelegramApi,
     @Assisted private val botKey:String,

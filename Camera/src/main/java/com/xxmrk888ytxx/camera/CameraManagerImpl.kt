@@ -13,6 +13,13 @@ import com.xxmrk888ytxx.coredeps.Interfaces.Repository.CameraManager
 import java.io.File
 import javax.inject.Inject
 
+/**
+ * [Ru]
+ * Реализация для интерфейса [CameraManager]
+ *
+ * [En]
+ *  Implementation for the [CameraManager] interface
+ */
 class CameraManagerImpl @Inject constructor(private val context: Context) : LifecycleOwner,
     CameraManager {
 
