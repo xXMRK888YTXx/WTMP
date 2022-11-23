@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id (Deps.Dagger.DaggerKaptPlugin)
 }
 
 android {
@@ -36,4 +37,11 @@ dependencies {
     api (Deps.Retrofit2.retrofit)
     implementation (Deps.Retrofit2.jsonConverter)
     implementation (Deps.Retrofit2.loggingInterceptor)
+    testImplementation(Deps.Retrofit2.Test.MockServer)
+    kapt (Deps.Dagger.DaggerKaptCompiler)
+
+    //test
+    testImplementation(Deps.TestAndroid.MockkAndroid)
+    testImplementation(Deps.TestAndroid.MockkAgent)
+    testImplementation(Deps.Test.Testing)
 }

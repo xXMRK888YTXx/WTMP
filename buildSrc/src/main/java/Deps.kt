@@ -1,6 +1,7 @@
 
 
 object Deps {
+    private const val MockkVersion = "1.13.2"
     object Compose {
         private const val ComposeVersion = "1.3.0-rc01"
         private const val MaterialVersion = "1.3.1"
@@ -15,8 +16,15 @@ object Deps {
     }
     object Test {
         const val JUnit = "junit:junit:4.13.2"
+        const val Mockk = "io.mockk:mockk:$MockkVersion"
+        const val Testing = "org.testng:testng:6.9.6"
+    }
+    object TestAndroid {
         const val AndroidJUnit = "androidx.test.ext:junit:1.1.4"
         const val Espresso = "androidx.test.espresso:espresso-core:3.5.0"
+        const val MockkAndroid = "io.mockk:mockk-android:$MockkVersion"
+        const val MockkAgent = "io.mockk:mockk-agent:$MockkVersion"
+
     }
     object AndroidX {
         const val AndroidCore = "androidx.core:core-ktx:1.9.0"
@@ -51,5 +59,8 @@ object Deps {
         const val retrofit = "com.squareup.retrofit2:retrofit:$version"
         const val jsonConverter = "com.squareup.retrofit2:converter-gson:$version"
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+        object Test {
+            const val MockServer = "com.squareup.okhttp3:mockwebserver:$okHttpVersion"
+        }
     }
 }

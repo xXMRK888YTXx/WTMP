@@ -6,10 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Button
 import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
+import com.xxmrk888ytxx.api_telegram.TelegramRepositoryImpl
 import com.xxmrk888ytxx.camera.CameraManager
+import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.Repository.TelegramRepository
-import com.xxmrk888ytxx.observer.domain.Repositoryes.TelegramRepositoryImpl
 import com.xxmrk888ytxx.observer.utils.appComponent
+import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
@@ -26,15 +28,15 @@ class MainActivity : ComponentActivity() {
         val cameraManager = CameraManager(this)
         setContent {
             Button(onClick = {
-                        telegramRepository.sendMessage(
-                            text = BitmapFactory.decodeFile(File(cacheDir,"photo").path).toString(),
-                            onSuccessful = {
-                                logcatMessageD("Successful load")
-                            },
-                            onError = {
-                                logcatMessageD("exception:${it.javaClass.simpleName} message:${it.message}")
-                            }
-                        )
+                    ApplicationScope.launch {
+                        try {
+                            telegramRepository.sendPhoto(
+                                image = BitmapFactory.decodeFile(File(cacheDir,"photo").path),
+                            )
+                        }catch (e:Exception) {
+                            logcatMessageD("e:${e.javaClass.simpleName} message:${e.message}")
+                        }
+                    }
             }) {
 
             }
