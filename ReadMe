@@ -14,6 +14,13 @@ Ru
 [AdminReceiver] - Этот модуль в котором находится ресивер который обрабатывает события не правильного
     пароля и разблокировки экрана
 
+[UserActivityStats] - в модуле находится реализация интерфейса для получение
+    статистики использования приложений.
+
+[Camera] - в модуле находится реализация интерфейса для получение фотографий с камеры устройства
+
+[Api-Telegram] - в этом модуле находится api для отправки сообщений через бота в Telegram
+
 En
 
 Description of modules
@@ -28,3 +35,10 @@ Description of modules
 
 [AdminReceiver] - This module contains a receiver that handles events that are not correct
    password and screen unlock
+
+[UserActivityStats] - the module contains the implementation of the interface for receiving
+   application usage statistics.
+
+[Camera] - the module contains the implementation of the interface for receiving photos from the device's camera
+
+[Api-Telegram] - this module contains api for sending messages through a bot to Telegram
