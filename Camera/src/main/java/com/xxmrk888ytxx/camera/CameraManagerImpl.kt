@@ -9,9 +9,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.xxmrk888ytxx.coredeps.Interfaces.Repository.CameraManager
 import java.io.File
+import javax.inject.Inject
 
-class CameraManager(private val context: Context) : LifecycleOwner {
+class CameraManagerImpl @Inject constructor(private val context: Context) : LifecycleOwner,
+    CameraManager {
 
     private fun onCreate() {
         lifecycleRegistry.currentState = Lifecycle.State.RESUMED
@@ -24,10 +27,10 @@ class CameraManager(private val context: Context) : LifecycleOwner {
 
     private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
-    fun createPhoto(
+    override fun createPhoto(
         outputFile: File,
-        onSuccess:(outputFileResults: ImageCapture.OutputFileResults) -> Unit = {},
-        onErrorCreate:(e:Exception) -> Unit = {}
+        onSuccess:() -> Unit,
+        onErrorCreate:(e:Exception) -> Unit
     ) {
         onCreate()
         val imageCapture = ImageCapture.Builder().build()
@@ -41,7 +44,7 @@ class CameraManager(private val context: Context) : LifecycleOwner {
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    onSuccess(outputFileResults)
+                    onSuccess()
                     onDestroy(cameraProvider)
                 }
 
