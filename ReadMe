@@ -21,6 +21,8 @@ Ru
 
 [Api-Telegram] - в этом модуле находится api для отправки сообщений через бота в Telegram
 
+[Workers] - в этом модуле хранятся worker`ы для выполнение работы в фоне
+
 En
 
 Description of modules
@@ -42,3 +44,5 @@ Description of modules
 [Camera] - the module contains the implementation of the interface for receiving photos from the device's camera
 
 [Api-Telegram] - this module contains api for sending messages through a bot to Telegram
+
+[Workers] - workers are stored in this module to perform work in the background
