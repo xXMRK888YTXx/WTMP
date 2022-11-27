@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.coredeps.Interfaces.Repository
+package com.xxmrk888ytxx.coredeps.SharedInterfaces
 
 import android.app.usage.UsageStats
 

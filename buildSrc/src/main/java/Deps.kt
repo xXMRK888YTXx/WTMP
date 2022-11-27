@@ -63,4 +63,9 @@ object Deps {
             const val MockServer = "com.squareup.okhttp3:mockwebserver:$okHttpVersion"
         }
     }
+    object WorkManager {
+        private const val version = "2.7.1"
+        const val workManager = "androidx.work:work-runtime-ktx:$version"
+        const val workManagerTest = "androidx.work:work-testing:$version"
+    }
 }

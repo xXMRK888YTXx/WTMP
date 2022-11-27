@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/Api-Telegram" />
             <option value="$PROJECT_DIR$/Camera" />
             <option value="$PROJECT_DIR$/UserActivityStats" />
+            <option value="$PROJECT_DIR$/Workers" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />

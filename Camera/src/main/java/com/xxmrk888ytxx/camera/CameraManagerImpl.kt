@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.xxmrk888ytxx.coredeps.Interfaces.Repository.CameraManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
 import java.io.File
 import javax.inject.Inject
 

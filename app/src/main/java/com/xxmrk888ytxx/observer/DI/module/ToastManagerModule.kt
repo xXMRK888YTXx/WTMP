@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-object ToastManagerModule {
+internal object ToastManagerModule {
     @Provides
     fun provideToastManager(context:Context) : ToastManager {
         return ToastManagerDefImpl(context)

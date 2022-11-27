@@ -4,15 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Button
-import com.xxmrk888ytxx.api_telegram.TelegramRepositoryImpl
-import com.xxmrk888ytxx.coredeps.Interfaces.Repository.CameraManager
-import com.xxmrk888ytxx.coredeps.Interfaces.Repository.UserActivityStats
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UserActivityStats
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
 import com.xxmrk888ytxx.observer.utils.appComponent
 import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
-    @Inject lateinit var telegramRepositoryFactory: TelegramRepositoryImpl.Factory
+    @Inject lateinit var workerManager: WorkerManager
     @Inject lateinit var cameraManager: CameraManager
     @Inject lateinit var userActivityStats: UserActivityStats
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +21,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             Button(onClick = {
             }) {
-
             }
         }
     }

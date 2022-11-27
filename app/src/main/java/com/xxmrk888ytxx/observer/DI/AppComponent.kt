@@ -4,9 +4,9 @@ import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.MainActivity
+import com.xxmrk888ytxx.workers.DI.WorkerComponentDeps
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Scope
 
 @AppScope
 @Component(
@@ -15,10 +15,11 @@ import javax.inject.Scope
         AdminReceiverModule::class,
         CameraModule::class,
         UserActivityStatsModule::class,
-        TelegramRepositoryFactoryModule::class
+        TelegramRepositoryFactoryModule::class,
+        WorkerManagerModule::class
     ]
 )
-interface AppComponent {
+interface AppComponent : WorkerComponentDeps {
     fun inject(mainActivity: MainActivity)
 
     @Component.Factory
@@ -27,6 +28,3 @@ interface AppComponent {
     }
     val adminEventsCallback:AdminEventsCallback
 }
-
-@Scope
-annotation class AppScope

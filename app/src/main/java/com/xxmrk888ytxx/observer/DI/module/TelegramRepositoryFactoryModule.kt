@@ -6,7 +6,7 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-interface TelegramRepositoryFactoryModule {
+internal interface TelegramRepositoryFactoryModule {
     @Binds
     fun bindTelegramRepositoryFactory(
         telegramRepositoryFactoryModule: TelegramRepositoryFactoryImpl

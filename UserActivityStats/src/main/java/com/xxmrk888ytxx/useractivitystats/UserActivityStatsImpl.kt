@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import com.xxmrk888ytxx.androidextension.IntentExtension.sendIntent
-import com.xxmrk888ytxx.coredeps.Interfaces.Repository.UserActivityStats
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UserActivityStats
 import javax.inject.Inject
 
 /**
