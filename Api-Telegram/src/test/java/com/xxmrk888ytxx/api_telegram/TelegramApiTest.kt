@@ -3,7 +3,7 @@ package com.xxmrk888ytxx.api_telegram
 import android.graphics.Bitmap
 import com.xxmrk888ytxx.api_telegram.models.TelegramRequestResult
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
-import com.xxmrk888ytxx.coredeps.Interfaces.Repository.TelegramRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepository
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import okhttp3.MultipartBody

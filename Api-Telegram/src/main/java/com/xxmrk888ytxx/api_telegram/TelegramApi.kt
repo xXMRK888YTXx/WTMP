@@ -5,7 +5,7 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
-interface TelegramApi {
+internal interface TelegramApi {
     /**
      * [Ru]
      * Данная функция используется для отправки сообщение в телеграмм

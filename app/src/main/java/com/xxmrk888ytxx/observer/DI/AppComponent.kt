@@ -13,9 +13,9 @@ import javax.inject.Scope
     modules = [
         ToastManagerModule::class,
         AdminReceiverModule::class,
-        ApiModule::class,
         CameraModule::class,
-        UserActivityStatsModule::class
+        UserActivityStatsModule::class,
+        TelegramRepositoryFactoryModule::class
     ]
 )
 interface AppComponent {

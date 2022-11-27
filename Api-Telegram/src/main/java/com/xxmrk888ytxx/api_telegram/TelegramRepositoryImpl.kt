@@ -2,10 +2,7 @@ package com.xxmrk888ytxx.api_telegram
 
 import android.graphics.Bitmap
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
-import com.xxmrk888ytxx.coredeps.Interfaces.Repository.TelegramRepository
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepository
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -18,10 +15,10 @@ import java.io.ByteArrayOutputStream
  * [En]
  * Implementation for interface [TelegramRepository]
  */
-class TelegramRepositoryImpl @AssistedInject constructor(
+internal class TelegramRepositoryImpl constructor(
     private val telegramApi: TelegramApi,
-    @Assisted private val botKey:String,
-    @Assisted private val userId:Long
+    private val botKey:String,
+    private val userId:Long
 ) : TelegramRepository {
 
     override suspend fun sendMessage(
@@ -52,10 +49,5 @@ class TelegramRepositoryImpl @AssistedInject constructor(
         if(!isSuccessful) {
             throw TelegramCancelMessage(response.errorBody()?.string())
         }
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(botKey: String,userId: Long) : TelegramRepositoryImpl
     }
 }
