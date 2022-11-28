@@ -23,6 +23,8 @@ Ru
 
 [Workers] - в этом модуле хранятся worker`ы для выполнение работы в фоне
 
+[MainScreen] - в этом модуле находится главный экран приложения
+
 En
 
 Description of modules
@@ -46,3 +48,5 @@ Description of modules
 [Api-Telegram] - this module contains api for sending messages through a bot to Telegram
 
 [Workers] - workers are stored in this module to perform work in the background
+
+[MainScreen] - this module contains the main screen of the application

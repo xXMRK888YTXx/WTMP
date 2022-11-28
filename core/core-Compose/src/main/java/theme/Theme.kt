@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.observer.ui.theme
+package theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
