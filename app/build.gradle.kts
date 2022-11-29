@@ -54,6 +54,7 @@ dependencies {
     implementation(project(Project.ApiTelegram))
     implementation(project(Project.Workers))
     implementation(project(Project.MainScreen))
+    implementation(project(Project.SettingsScreen))
     kapt (Deps.Dagger.DaggerKaptCompiler)
 }
 

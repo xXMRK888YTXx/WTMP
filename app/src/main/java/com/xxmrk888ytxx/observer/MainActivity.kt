@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
 import com.xxmrk888ytxx.mainscreen.MainScreen
 import com.xxmrk888ytxx.mainscreen.MainViewModel
 import com.xxmrk888ytxx.observer.utils.appComponent
+import com.xxmrk888ytxx.settingsscreen.SettingsScreen
+import com.xxmrk888ytxx.settingsscreen.SettingsViewModel
 import composeViewModel
 import theme.BackGroundColor
 import javax.inject.Inject
@@ -27,8 +30,10 @@ class MainActivity : ComponentActivity() {
     @Inject lateinit var workerManager: WorkerManager
     @Inject lateinit var cameraManager: CameraManager
     @Inject lateinit var userActivityStats: UserActivityStats
-    //ViewModels
+    private val activityViewModel:ActivityViewModel by viewModels()
+    //Screens ViewModels
     @Inject lateinit var mainViewModel: Provider<MainViewModel>
+    @Inject lateinit var settingsViewModel: Provider<SettingsViewModel>
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +41,7 @@ class MainActivity : ComponentActivity() {
         appComponent.inject(this)
         setContent {
             val navController = rememberNavController()
+            activityViewModel.navController = navController
             Column(Modifier
                 .fillMaxSize()
                 .background(BackGroundColor))
@@ -45,9 +51,19 @@ class MainActivity : ComponentActivity() {
                         MainScreen(
                             composeViewModel {
                                 mainViewModel.get()
-                            }
+                            },
+                            navigator = activityViewModel
                         )
                     }
+                    composable(Screen.SettingsScreen.route) {
+                        SettingsScreen(
+                            composeViewModel {
+                                settingsViewModel.get()
+                            },
+                            navigator = activityViewModel
+                        )
+                    }
+
                 }
             }
         }
