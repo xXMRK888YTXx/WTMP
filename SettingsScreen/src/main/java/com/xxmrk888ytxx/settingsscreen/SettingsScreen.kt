@@ -19,6 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 
+/**
+ * [Ru]
+ * Данный экран предназначен для настройки работы приложения
+ * [En]
+ * This screen is designed to configure the application
+ */
+
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
     LazyColumn(Modifier.fillMaxSize()) {

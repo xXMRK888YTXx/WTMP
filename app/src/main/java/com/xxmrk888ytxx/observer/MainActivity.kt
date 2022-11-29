@@ -32,6 +32,12 @@ class MainActivity : ComponentActivity() {
     @Inject lateinit var userActivityStats: UserActivityStats
     private val activityViewModel:ActivityViewModel by viewModels()
     //Screens ViewModels
+    /**
+     * [Ru]
+     * Всё ViewModels экранов должны создаваться в функции [composeViewModel]
+     * [En]
+     * All screen ViewModels must be created in the [composeViewModel] function
+     */
     @Inject lateinit var mainViewModel: Provider<MainViewModel>
     @Inject lateinit var settingsViewModel: Provider<SettingsViewModel>
 
