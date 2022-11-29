@@ -37,4 +37,12 @@ dependencies {
     kapt (Deps.Dagger.DaggerKaptCompiler)
     implementation(Deps.WorkManager.workManager)
     androidTestImplementation (Deps.WorkManager.workManagerTest)
+    //test
+    testImplementation(Deps.TestAndroid.MockkAndroid)
+    testImplementation(Deps.TestAndroid.MockkAgent)
+    testImplementation(Deps.Test.Testing)
+
+    androidTestImplementation(Deps.TestAndroid.MockkAndroid)
+    androidTestImplementation(Deps.TestAndroid.MockkAgent)
+    androidTestImplementation(Deps.Test.Testing)
 }
