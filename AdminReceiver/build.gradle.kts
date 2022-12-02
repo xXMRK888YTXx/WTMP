@@ -29,8 +29,25 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
     implementation(project(Project.core.core_Android.route))
+    //Test
+    testImplementation(Deps.TestAndroid.MockkAndroid)
+    testImplementation(Deps.TestAndroid.MockkAgent)
+    testImplementation(Deps.Test.Testing)
+    testImplementation(Deps.TestAndroid.MockkAndroid)
+    testImplementation(Deps.TestAndroid.MockkAgent)
+    //Instrumental Test
+    androidTestImplementation (Deps.InstrumentalTest.espresso)
+    androidTestImplementation (Deps.InstrumentalTest.testRunner)
+    androidTestImplementation (Deps.InstrumentalTest.testCore)
+    androidTestImplementation (Deps.InstrumentalTest.jUnit)
+    androidTestImplementation (Deps.InstrumentalTest.testRules)
+    androidTestImplementation(Deps.TestAndroid.MockkAndroid)
+    androidTestImplementation(Deps.TestAndroid.MockkAgent)
 }

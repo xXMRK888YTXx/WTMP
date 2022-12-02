@@ -68,4 +68,12 @@ object Deps {
         const val workManager = "androidx.work:work-runtime-ktx:$version"
         const val workManagerTest = "androidx.work:work-testing:$version"
     }
+    object InstrumentalTest {
+        private const val testVersion = "1.5.0"
+        const val espresso = "androidx.test.espresso:espresso-core:3.5.0"
+        const val testRunner = "androidx.test:runner:1.5.1"
+        const val testCore = "androidx.test:core:$testVersion"
+        const val jUnit = "androidx.test.ext:junit-ktx:1.1.4"
+        const val testRules = "androidx.test:rules:$testVersion"
+    }
 }
