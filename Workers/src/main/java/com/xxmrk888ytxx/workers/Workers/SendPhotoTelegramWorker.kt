@@ -67,8 +67,10 @@ internal class SendPhotoTelegramWorker(
         workerParams.inputData.getString(photoPathDataKey) ?: throw exception
     }
 
+    internal fun getBitmapFromPath() = BitmapFactory.decodeFile(photoPath)
+
     override suspend fun doWork(): Result {
-        telegramRepository.sendPhoto(BitmapFactory.decodeFile(photoPath),
+        telegramRepository.sendPhoto(getBitmapFromPath(),
             workerParams.inputData.getString(captionDataKey) ?: "")
         return Result.success()
     }
