@@ -21,7 +21,6 @@ import dagger.Component
 )
 interface AppComponent : WorkerComponentDeps {
     fun inject(mainActivity: MainActivity)
-
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context:Context) : AppComponent

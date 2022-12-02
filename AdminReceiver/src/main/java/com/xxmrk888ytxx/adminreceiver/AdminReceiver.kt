@@ -5,9 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.UserHandle
-import com.xxmrk888ytxx.adminreceiver.utils.adminCallBack
+import com.xxmrk888ytxx.coredeps.DepsProvider.getDepsByApplication
 
 class AdminReceiver : DeviceAdminReceiver() {
+
+    private val Context.adminCallBack : AdminEventsCallback
+        get() {
+            return this.getDepsByApplication()
+        }
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
@@ -17,7 +22,6 @@ class AdminReceiver : DeviceAdminReceiver() {
     override fun onEnabled(context: Context, intent: Intent) {
         super.onEnabled(context, intent)
         context.adminCallBack.onAdminEnabled()
-
     }
 
     override fun onDisabled(context: Context, intent: Intent) {
@@ -37,6 +41,7 @@ class AdminReceiver : DeviceAdminReceiver() {
     override fun onPasswordFailed(context: Context, intent: Intent, user: UserHandle) {
         super.onPasswordFailed(context, intent, user)
         context.adminCallBack.onPasswordFailed(getManager(context).currentFailedPasswordAttempts)
+
     }
 
     @Deprecated("Deprecated in Java")
