@@ -45,5 +45,6 @@ dependencies {
     api (Deps.Compose.Tooling)
     api (Deps.Compose.Material)
     api (Deps.Compose.Navigation)
+    api (Deps.Compose.GoogleFonts)
     api (project(Project.core.core_Android.route))
 }

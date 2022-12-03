@@ -13,6 +13,7 @@ object Deps {
         const val TestTooling = "androidx.compose.ui:ui-tooling:$ComposeVersion"
         const val TestManifest = "androidx.compose.ui:ui-test-manifest:$ComposeVersion"
         const val Navigation = "androidx.navigation:navigation-compose:2.5.2"
+        const val GoogleFonts =  "androidx.compose.ui:ui-text-google-fonts:$ComposeVersion"
     }
     object Test {
         const val JUnit = "junit:junit:4.13.2"

@@ -1,20 +1,22 @@
 package com.xxmrk888ytxx.mainscreen
 
+import MutliUse.GradientButton
 import MutliUse.LazySpacer
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import remember
+import theme.*
 
 /**
  * [Ru]
@@ -30,75 +32,92 @@ import remember
  */
 @Composable
 fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
-    val buttonState = mainViewModel.isEnable.remember()
-    Column(Modifier.fillMaxWidth()) {
-        Column(Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.4f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            StateButton(enabled = buttonState.value) {
+    val isEnable = mainViewModel.isEnable.remember()
+    LazyColumn(modifier = Modifier.padding(5.dp)) {
+        item { TopBar() }
+        item {
+            EnableAppButton(isEnable = isEnable.value, onClick = {
                 mainViewModel.isEnable.value = !mainViewModel.isEnable.value
-            }
-            Button(
-                onClick = { navigator.toSettingsScreen() },
-                colors = ButtonDefaults.buttonColors()
-            ) {
-                Text("Настройки")
-            }
-        }
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.6f),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            DailyEventList()
+            })
         }
     }
 }
 
 @Composable
-internal fun DailyEventList() {
-    LazyColumn(Modifier.fillMaxSize()) {
-        item {
-            Text(
-                "За сегодня событий нет",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-            LazySpacer(5)
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.fillMaxWidth(0.6f)) {
-                Text(
-                    text = "Посмотреть события за всё время",
+@MustBeLocalization
+internal fun EnableAppButton(isEnable:Boolean,onClick:() -> Unit) {
+    val fontColor = if(isEnable) disableAppButtonFontColor else enableAppButtonFontColor
 
+    GradientButton(
+        backgroundGradient = if(isEnable) disableAppButtonColor else enableAppButtonColor,
+        shape = RoundedCornerShape(20.dp),
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+
+            Icon(
+                painter = painterResource(R.drawable.ic_power_off),
+                contentDescription = "",
+                tint = fontColor,
+                modifier = Modifier.size(25.dp)
+            )
+
+            LazySpacer(width = 10)
+
+            Text(
+                text = if(isEnable) "Выключить" else "Включить",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.W600,
+                fontFamily = openSansFont,
+                color = fontColor
+            )
+
+        }
+    }
+}
+
+@Composable
+@MustBeLocalization
+internal fun TopBar() {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(start = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Отчёты",
+            fontFamily = openSansFont,
+            fontWeight = FontWeight.W600,
+            fontSize = 35.sp,
+            color = primaryFontColor
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_settings),
+                    contentDescription = "",
+                    tint = primaryFontColor,
+                    modifier = Modifier.size(25.dp)
                 )
             }
         }
     }
 }
 
-@Composable
-internal fun StateButton(enabled:Boolean,onClick:() -> Unit) {
-    OutlinedButton(
-        onClick = { onClick() },
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = if(enabled) enabledButtonColor else Color.Red.copy(0.9f)
-        ),
-        shape = CircleShape,
-        modifier = Modifier.size(65.dp)
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Icon(
-                painter = painterResource(R.drawable.ic_power_off), 
-                contentDescription = "",
-                tint = Color.White,
-                modifier = Modifier.size(35.dp)
-            )   
-        }
-    }
-} 
 
 

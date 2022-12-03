@@ -8,6 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LazySpacer(height:Int,width:Int = 1) {
+fun LazySpacer(height:Int = 1,width:Int = 1) {
     Spacer(Modifier.height(height.dp).width(width.dp))
 }
