@@ -77,4 +77,7 @@ object Deps {
         const val jUnit = "androidx.test.ext:junit-ktx:1.1.4"
         const val testRules = "androidx.test:rules:$testVersion"
     }
+    object Coil {
+        const val coil = "io.coil-kt:coil-compose:2.2.2"
+    }
 }

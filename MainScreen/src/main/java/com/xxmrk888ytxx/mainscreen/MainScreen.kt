@@ -3,18 +3,26 @@ package com.xxmrk888ytxx.mainscreen
 import MutliUse.GradientButton
 import MutliUse.LazySpacer
 import SharedInterfaces.Navigator
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.models.DeviceEvent
+import com.xxmrk888ytxx.coredeps.toTimeString
 import remember
 import theme.*
 
@@ -33,12 +41,34 @@ import theme.*
 @Composable
 fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
     val isEnable = mainViewModel.isEnable.remember()
-    LazyColumn(modifier = Modifier.padding(5.dp)) {
-        item { TopBar() }
+    Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
+        TopBar(navigator)
+        EnableAppButton(isEnable = isEnable.value, onClick = {
+            mainViewModel.isEnable.value = !mainViewModel.isEnable.value
+        })
+        DeviceEventList(mainViewModel.eventList)
+    }
+}
+
+@Composable
+@MustBeLocalization
+internal fun DeviceEventList(eventList:List<DeviceEvent>) {
+    LazyColumn() {
         item {
-            EnableAppButton(isEnable = isEnable.value, onClick = {
-                mainViewModel.isEnable.value = !mainViewModel.isEnable.value
-            })
+            Text(
+                text = "События за сегодня",
+                fontFamily = openSansFont,
+                fontWeight = FontWeight.W600,
+                fontSize = 20.sp,
+                color = primaryFontColor,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+        }
+        items(eventList) { event ->
+            when(event) {
+                is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
+                is DeviceEvent.AppOpen -> AppOpenItem(event)
+            }
         }
     }
 }
@@ -88,7 +118,7 @@ internal fun EnableAppButton(isEnable:Boolean,onClick:() -> Unit) {
 
 @Composable
 @MustBeLocalization
-internal fun TopBar() {
+internal fun TopBar(navigator: Navigator) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -107,7 +137,7 @@ internal fun TopBar() {
                 .fillMaxWidth(),
             contentAlignment = Alignment.CenterEnd
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = navigator::toSettingsScreen) {
                 Icon(
                     painter = painterResource(R.drawable.ic_settings),
                     contentDescription = "",
@@ -119,5 +149,111 @@ internal fun TopBar() {
     }
 }
 
+@Composable
+@MustBeLocalization
+internal fun AttemptUnlockDeviceItem(item:DeviceEvent.AttemptUnlockDevice) {
+    val itemText = if(item is DeviceEvent.AttemptUnlockDevice.Failed) "Введён не верный пароль"
+        else "Устройство разблокировано"
+
+    BaseEventCard(Color.Green) {
+        Text(
+            text = itemText,
+            fontFamily = openSansFont,
+            fontSize = 16.sp,
+            color = primaryFontColor,
+            maxLines = 1,
+            fontWeight = FontWeight.W500
+        )
+        LazySpacer(10)
+        TimeText(item.time)
+    }
+}
+
+@Composable
+@MustBeLocalization
+internal fun AppOpenItem(item:DeviceEvent.AppOpen) {
+
+    BaseEventCard(colorLine = Color.Cyan) {
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            LazySpacer(width = 5)
+
+            AsyncImage(
+                model = item.icon ?: R.drawable.default_icon,
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(30.dp)
+            )
+
+            LazySpacer(width = 10)
+
+            Column() {
+
+                Text(
+                    text = "Запуск приложения",
+                    fontFamily = openSansFont,
+                    fontSize = 16.sp,
+                    color = primaryFontColor,
+                    maxLines = 1,
+                    fontWeight = FontWeight.W500
+                )
+
+                Text(
+                    text = item.appName,
+                    fontFamily = openSansFont,
+                    fontSize = 16.sp,
+                    color = timeTextColor,
+                    maxLines = 1,
+                    fontWeight = FontWeight.W800
+                )
+
+            }
+        }
+
+        LazySpacer(10)
+
+        TimeText(item.time)
+    }
+}
+
+@Composable
+internal fun BaseEventCard(colorLine:Color,content:@Composable ColumnScope.() -> Unit) {
+    Card(
+        backgroundColor = cardColor,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+            .heightIn(min = 100.dp),
+        shape = RoundedCornerShape(20.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            //LazySpacer(width = 10)
+            Spacer(Modifier
+                .height(60.dp)
+                .width(3.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(colorLine)
+            )
+            LazySpacer(width = 10)
+            Column() {
+                content(this)
+            }
+
+        }
+
+    }
+}
+
+@Composable
+internal fun TimeText(time:Long) {
+    Text(
+        text = time.toTimeString(),
+        fontFamily = openSansFont,
+        fontSize = 13.sp,
+        color = timeTextColor,
+        maxLines = 1,
+        fontWeight = FontWeight.W300
+    )
+}
 
 
