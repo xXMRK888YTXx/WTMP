@@ -16,7 +16,8 @@ import dagger.Component
         CameraModule::class,
         UserActivityStatsModule::class,
         TelegramRepositoryFactoryModule::class,
-        WorkerManagerModule::class
+        WorkerManagerModule::class,
+        PackageInfoProviderModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

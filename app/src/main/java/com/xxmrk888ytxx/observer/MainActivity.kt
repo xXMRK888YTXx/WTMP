@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.UserActivityStats
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
 import com.xxmrk888ytxx.mainscreen.MainScreen
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     @Inject lateinit var workerManager: WorkerManager
     @Inject lateinit var cameraManager: CameraManager
     @Inject lateinit var userActivityStats: UserActivityStats
+    @Inject lateinit var packageInfoProvider: PackageInfoProvider
     private val activityViewModel:ActivityViewModel by viewModels()
     //Screens ViewModels
     /**

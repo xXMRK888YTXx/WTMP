@@ -55,6 +55,7 @@ dependencies {
     implementation(project(Project.Workers))
     implementation(project(Project.MainScreen))
     implementation(project(Project.SettingsScreen))
+    implementation(project(Project.PackageInfoProvider))
     kapt (Deps.Dagger.DaggerKaptCompiler)
 }
 
