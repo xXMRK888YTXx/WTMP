@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -72,11 +73,19 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
                 modifier = Modifier.padding(start = 10.dp)
             )
         }
-
-        items(eventList, key = { it.eventId }) { event ->
-            when(event) {
-                is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
-                is DeviceEvent.AppOpen -> AppOpenItem(event)
+        if(eventList.isNotEmpty()) {
+            items(eventList, key = { it.eventId }) { event ->
+                when(event) {
+                    is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
+                    is DeviceEvent.AppOpen -> AppOpenItem(event)
+                }
+            }
+        }
+        else {
+            item {
+                LazySpacer(5)
+                EventListStub()
+                LazySpacer(5)
             }
         }
 
@@ -87,6 +96,21 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
         }
 
     }
+}
+
+@Composable
+@MustBeLocalization
+internal fun EventListStub() {
+    Text(
+        text = "За сегодня событий нет",
+        fontFamily = openSansFont,
+        fontWeight = FontWeight.W900,
+        fontSize = 28.sp,
+        color = primaryFontColor,
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+        fontStyle = FontStyle.Italic
+    )
 }
 
 @Composable
@@ -170,16 +194,31 @@ internal fun TopBar(navigator: Navigator) {
 internal fun AttemptUnlockDeviceItem(item:DeviceEvent.AttemptUnlockDevice) {
     val itemText = if(item is DeviceEvent.AttemptUnlockDevice.Failed) "Введён не верный пароль"
         else "Устройство разблокировано"
+    val icon = if(item is DeviceEvent.AttemptUnlockDevice.Failed) R.drawable.ic_phone_lock
+        else R.drawable.ic_lock_open
 
     BaseEventCard(Color.Green) {
-        Text(
-            text = itemText,
-            fontFamily = openSansFont,
-            fontSize = 16.sp,
-            color = primaryFontColor,
-            maxLines = 1,
-            fontWeight = FontWeight.W500
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+
+            Icon(
+                painter = painterResource(icon),
+                modifier = Modifier.size(30.dp),
+                contentDescription = null,
+                tint = primaryFontColor
+            )
+
+            LazySpacer(width = 5)
+
+            Text(
+                text = itemText,
+                fontFamily = openSansFont,
+                fontSize = 16.sp,
+                color = primaryFontColor,
+                maxLines = 1,
+                fontWeight = FontWeight.W500
+            )
+        }
+
         LazySpacer(10)
         TimeText(item.time)
     }
