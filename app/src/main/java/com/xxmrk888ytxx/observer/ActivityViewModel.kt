@@ -16,4 +16,8 @@ internal class ActivityViewModel : ViewModel(),Navigator {
             launchSingleTop = true
         }
     }
+
+    override fun toEventListScreen() {
+
+    }
 }

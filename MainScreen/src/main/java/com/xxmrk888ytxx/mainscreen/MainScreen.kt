@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.mainscreen
 import MutliUse.GradientButton
 import MutliUse.LazySpacer
 import SharedInterfaces.Navigator
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -39,21 +41,27 @@ import theme.*
  * need to open the full list.
  */
 @Composable
+@MustBeLocalization
 fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
     val isEnable = mainViewModel.isEnable.remember()
-    Column(modifier = Modifier.fillMaxSize().padding(5.dp)) {
-        TopBar(navigator)
-        EnableAppButton(isEnable = isEnable.value, onClick = {
-            mainViewModel.isEnable.value = !mainViewModel.isEnable.value
-        })
-        DeviceEventList(mainViewModel.eventList)
-    }
-}
+    val eventList = mainViewModel.eventList
+    LazyColumn(modifier = Modifier
+        .fillMaxSize()
+        .padding(5.dp)) {
+        item { TopBar(navigator) }
 
-@Composable
-@MustBeLocalization
-internal fun DeviceEventList(eventList:List<DeviceEvent>) {
-    LazyColumn() {
+        item {
+            EnableAppButton(isEnable = isEnable.value, onClick = {
+                mainViewModel.isEnable.value = !mainViewModel.isEnable.value
+            })
+        }
+
+        item {
+            LazySpacer(5)
+            StatsCard()
+            LazySpacer(5)
+        }
+
         item {
             Text(
                 text = "События за сегодня",
@@ -64,12 +72,20 @@ internal fun DeviceEventList(eventList:List<DeviceEvent>) {
                 modifier = Modifier.padding(start = 10.dp)
             )
         }
-        items(eventList) { event ->
+
+        items(eventList, key = { it.eventId }) { event ->
             when(event) {
                 is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
                 is DeviceEvent.AppOpen -> AppOpenItem(event)
             }
         }
+
+        item {
+            LazySpacer(10)
+            ShowAllEventButton(navigator)
+            LazySpacer(10)
+        }
+
     }
 }
 
@@ -222,7 +238,12 @@ internal fun BaseEventCard(colorLine:Color,content:@Composable ColumnScope.() ->
         backgroundColor = cardColor,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .padding(
+                start = 15.dp,
+                end = 15.dp,
+                top = 10.dp,
+                bottom = 10.dp
+            )
             .heightIn(min = 100.dp),
         shape = RoundedCornerShape(20.dp),
     ) {
@@ -255,5 +276,113 @@ internal fun TimeText(time:Long) {
         fontWeight = FontWeight.W300
     )
 }
+
+@Composable
+@MustBeLocalization
+internal fun ShowAllEventButton(navigator: Navigator) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        OutlinedButton(
+            onClick = navigator::toEventListScreen,
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = cardColor
+            )
+        ) {
+            Text(
+                text = "Посмотреть за всё время",
+                fontFamily = openSansFont,
+                maxLines = 1,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W400,
+                color = primaryFontColor
+            )
+        }
+    }
+}
+
+@Composable
+@MustBeLocalization
+internal fun StatsCard() {
+    Card(
+        backgroundColor = cardColor,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 15.dp,
+                end = 15.dp,
+            )
+            .heightIn(min = 100.dp),
+        shape = RoundedCornerShape(20.dp),
+    ) {
+        Column(Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+        ) {
+            Text(
+                text = "Статистика",
+                fontFamily = openSansFont,
+                maxLines = 1,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.W600,
+                color = primaryFontColor,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+            LazySpacer(5)
+            StatsEvent(Color.Green, statsName = "Разблокировок устройства", statsCount = 100)
+            LazySpacer(5)
+            StatsEvent(Color.Red, statsName = "Ошибок ввода пароля", statsCount = 100)
+            LazySpacer(5)
+            StatsEvent(Color.White, statsName = "Разблокировок устройства", statsCount = 1000)
+            LazySpacer(5)
+            StatsEvent(Color.Cyan, statsName = "Открыто приложений", statsCount = 0)
+        }
+    }
+}
+
+@Composable
+internal fun StatsEvent(colorCircle:Color,statsName:String,statsCount:Int) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Canvas(modifier = Modifier, onDraw = {
+            drawCircle(colorCircle,10f)
+        })
+        LazySpacer(width = 10)
+        Text(
+            text = "$statsName: $statsCount",
+            fontFamily = openSansFont,
+            maxLines = 1,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.W300,
+            color = primaryFontColor.copy(0.9f),
+        )
+    }
+}
+
+//@Composable
+//@MustBeLocalization
+//internal fun DeviceEventList(eventList:List<DeviceEvent>) {
+//    LazyColumn() {
+//        item {
+//            Text(
+//                text = "События за сегодня",
+//                fontFamily = openSansFont,
+//                fontWeight = FontWeight.W600,
+//                fontSize = 20.sp,
+//                color = primaryFontColor,
+//                modifier = Modifier.padding(start = 10.dp)
+//            )
+//        }
+//        items(eventList) { event ->
+//            when(event) {
+//                is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
+//                is DeviceEvent.AppOpen -> AppOpenItem(event)
+//            }
+//        }
+//    }
+//}
 
 

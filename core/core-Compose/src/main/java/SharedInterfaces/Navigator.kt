@@ -7,6 +7,10 @@ package SharedInterfaces
  * This interface is intended for navigation, it is passed to the compose function
  */
 interface Navigator {
+
     fun navigateUp()
+
     fun toSettingsScreen()
+
+    fun toEventListScreen()
 }
