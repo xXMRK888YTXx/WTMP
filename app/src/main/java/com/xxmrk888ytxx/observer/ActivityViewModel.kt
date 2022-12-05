@@ -18,6 +18,8 @@ internal class ActivityViewModel : ViewModel(),Navigator {
     }
 
     override fun toEventListScreen() {
-
+        navController?.navigate(Screen.EventListScreen.route) {
+            launchSingleTop = true
+        }
     }
 }

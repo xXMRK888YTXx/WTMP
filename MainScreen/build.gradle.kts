@@ -41,5 +41,4 @@ android {
 dependencies {
     implementation(project(Project.core.core_Compose.route))
     kapt(Deps.Dagger.DaggerKaptCompiler)
-    implementation(Deps.Coil.coil)
 }

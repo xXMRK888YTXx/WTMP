@@ -1,10 +1,8 @@
 package com.xxmrk888ytxx.mainscreen
 
-import MutliUse.GradientButton
-import MutliUse.LazySpacer
+import MutliUse.*
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,16 +11,13 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.coredeps.toTimeString
@@ -187,133 +182,6 @@ internal fun TopBar(navigator: Navigator) {
             }
         }
     }
-}
-
-@Composable
-@MustBeLocalization
-internal fun AttemptUnlockDeviceItem(item:DeviceEvent.AttemptUnlockDevice) {
-    val itemText = if(item is DeviceEvent.AttemptUnlockDevice.Failed) "Введён не верный пароль"
-        else "Устройство разблокировано"
-    val icon = if(item is DeviceEvent.AttemptUnlockDevice.Failed) R.drawable.ic_phone_lock
-        else R.drawable.ic_lock_open
-
-    BaseEventCard(Color.Green) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-
-            Icon(
-                painter = painterResource(icon),
-                modifier = Modifier.size(30.dp),
-                contentDescription = null,
-                tint = primaryFontColor
-            )
-
-            LazySpacer(width = 5)
-
-            Text(
-                text = itemText,
-                fontFamily = openSansFont,
-                fontSize = 16.sp,
-                color = primaryFontColor,
-                maxLines = 1,
-                fontWeight = FontWeight.W500
-            )
-        }
-
-        LazySpacer(10)
-        TimeText(item.time)
-    }
-}
-
-@Composable
-@MustBeLocalization
-internal fun AppOpenItem(item:DeviceEvent.AppOpen) {
-
-    BaseEventCard(colorLine = Color.Cyan) {
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            LazySpacer(width = 5)
-
-            AsyncImage(
-                model = item.icon ?: R.drawable.default_icon,
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(30.dp)
-            )
-
-            LazySpacer(width = 10)
-
-            Column() {
-
-                Text(
-                    text = "Запуск приложения",
-                    fontFamily = openSansFont,
-                    fontSize = 16.sp,
-                    color = primaryFontColor,
-                    maxLines = 1,
-                    fontWeight = FontWeight.W500
-                )
-
-                Text(
-                    text = item.appName,
-                    fontFamily = openSansFont,
-                    fontSize = 16.sp,
-                    color = timeTextColor,
-                    maxLines = 1,
-                    fontWeight = FontWeight.W800
-                )
-
-            }
-        }
-
-        LazySpacer(10)
-
-        TimeText(item.time)
-    }
-}
-
-@Composable
-internal fun BaseEventCard(colorLine:Color,content:@Composable ColumnScope.() -> Unit) {
-    Card(
-        backgroundColor = cardColor,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                start = 15.dp,
-                end = 15.dp,
-                top = 10.dp,
-                bottom = 10.dp
-            )
-            .heightIn(min = 100.dp),
-        shape = RoundedCornerShape(20.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            //LazySpacer(width = 10)
-            Spacer(Modifier
-                .height(60.dp)
-                .width(3.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .background(colorLine)
-            )
-            LazySpacer(width = 10)
-            Column() {
-                content(this)
-            }
-
-        }
-
-    }
-}
-
-@Composable
-internal fun TimeText(time:Long) {
-    Text(
-        text = time.toTimeString(),
-        fontFamily = openSansFont,
-        fontSize = 13.sp,
-        color = timeTextColor,
-        maxLines = 1,
-        fontWeight = FontWeight.W300
-    )
 }
 
 @Composable

@@ -1,10 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id(Deps.Dagger.DaggerKaptPlugin)
 }
 
 android {
-    namespace = "com.xxmrk888ytxx.core_compose"
+    namespace = "com.xxmrk888ytxx.eventlistscreen"
     compileSdk = Config.compileSdk
 
     defaultConfig {
@@ -26,26 +27,18 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Deps.Compose.KotlinCompiler
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
-    androidTestApi (Deps.Compose.TestJUnit)
-    debugApi (Deps.Compose.TestTooling)
-    debugApi (Deps.Compose.TestManifest)
-    api (Deps.Compose.UI)
-    api (Deps.Compose.Tooling)
-    api (Deps.Compose.Material)
-    api (Deps.Compose.Navigation)
-    api (Deps.Compose.GoogleFonts)
-    api (project(Project.core.core_Android.route))
-    implementation(Deps.Coil.coil)
+    implementation(project(Project.core.core_Compose.route))
+    kapt (Deps.Dagger.DaggerKaptCompiler)
 }

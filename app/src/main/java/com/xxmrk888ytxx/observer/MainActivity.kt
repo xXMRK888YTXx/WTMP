@@ -16,6 +16,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.UserActivityStats
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
+import com.xxmrk888ytxx.eventlistscreen.EventListScreen
+import com.xxmrk888ytxx.eventlistscreen.EventViewModel
 import com.xxmrk888ytxx.mainscreen.MainScreen
 import com.xxmrk888ytxx.mainscreen.MainViewModel
 import com.xxmrk888ytxx.observer.utils.appComponent
@@ -42,6 +44,7 @@ class MainActivity : ComponentActivity() {
      */
     @Inject lateinit var mainViewModel: Provider<MainViewModel>
     @Inject lateinit var settingsViewModel: Provider<SettingsViewModel>
+    @Inject lateinit var eventViewModel:Provider<EventViewModel>
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,19 +58,24 @@ class MainActivity : ComponentActivity() {
                 .background(BackGroundColor))
             {
                 NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
+
                     composable(Screen.MainScreen.route) {
                         MainScreen(
-                            composeViewModel {
-                                mainViewModel.get()
-                            },
+                            composeViewModel { mainViewModel.get() },
                             navigator = activityViewModel
                         )
                     }
+
                     composable(Screen.SettingsScreen.route) {
                         SettingsScreen(
-                            composeViewModel {
-                                settingsViewModel.get()
-                            },
+                            composeViewModel { settingsViewModel.get() },
+                            navigator = activityViewModel
+                        )
+                    }
+
+                    composable(Screen.EventListScreen.route) {
+                        EventListScreen(
+                            eventViewModel = composeViewModel { eventViewModel.get() },
                             navigator = activityViewModel
                         )
                     }

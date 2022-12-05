@@ -11,7 +11,7 @@ import com.xxmrk888ytxx.workers.Workers.SendTelegramMessageWorker
 import javax.inject.Inject
 
 class WorkerManagerImpl @Inject constructor(
-    val context:Context
+    private val context:Context
 ) : WorkerManager {
     override fun sendMessageTelegram(botKey: String, userId: Long, message: String) {
         val data = Data.Builder()
