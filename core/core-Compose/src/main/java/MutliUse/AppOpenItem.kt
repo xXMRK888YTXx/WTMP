@@ -45,7 +45,6 @@ fun AppOpenItem(item: DeviceEvent.AppOpen) {
                     fontFamily = openSansFont,
                     fontSize = 16.sp,
                     color = primaryFontColor,
-                    maxLines = 1,
                     fontWeight = FontWeight.W500
                 )
 
@@ -54,7 +53,6 @@ fun AppOpenItem(item: DeviceEvent.AppOpen) {
                     fontFamily = openSansFont,
                     fontSize = 16.sp,
                     color = timeTextColor,
-                    maxLines = 1,
                     fontWeight = FontWeight.W800
                 )
 

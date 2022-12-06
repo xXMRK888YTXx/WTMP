@@ -21,8 +21,10 @@ import theme.primaryFontColor
 @Composable
 @MustBeLocalization
 fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice) {
+
     val itemText = if(item is DeviceEvent.AttemptUnlockDevice.Failed) "Введён не верный пароль"
     else "Устройство разблокировано"
+
     val icon = if(item is DeviceEvent.AttemptUnlockDevice.Failed) R.drawable.ic_phone_lock
     else R.drawable.ic_lock_open
 
@@ -43,7 +45,6 @@ fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice) {
                 fontFamily = openSansFont,
                 fontSize = 16.sp,
                 color = primaryFontColor,
-                maxLines = 1,
                 fontWeight = FontWeight.W500
             )
         }
