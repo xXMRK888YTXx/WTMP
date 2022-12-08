@@ -4,6 +4,7 @@ import MutliUse.LazySpacer
 import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,9 +21,7 @@ import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamShape
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 import remember
-import theme.cardColor
-import theme.openSansFont
-import theme.primaryFontColor
+import theme.*
 
 /**
  * [Ru]
@@ -40,6 +39,13 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
         }
         item {
             SettingsCategory("Ввод в устройство", getParamSettingsList(settingsViewModel))
+        }
+        item {
+            LazySpacer(height = 10)
+            SettingsCategory(categoryName = "Бла-бла-бла", getParamSettingsList(settingsViewModel))
+        }
+        item {
+            LazySpacer(height = 10)
         }
 
     }
@@ -88,7 +94,7 @@ internal fun SettingsCategory(categoryName: String, settingsParams: List<Setting
             fontWeight = FontWeight.W300,
             fontFamily = openSansFont
         )
-        LazySpacer(height = 5)
+        LazySpacer(height = 10)
         settingsParams.forEachIndexed() { index,param ->
             val shape = when(index) {
                 0 -> SettingsParamShape.TopShape
@@ -112,12 +118,24 @@ internal fun SettingsParam(
         is SettingsParamShape.BottomShape -> RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
         is SettingsParamShape.None -> RoundedCornerShape(0.dp)
     }
+
+    val onClick:() -> Unit = when(params) {
+
+        is SettingsParamType.Button -> params.onClick
+
+        is SettingsParamType.CheckBox -> {
+            {params.onStateChanged(!params.isChecked)}
+        }
+    }
+
     Card(
-        modifier =
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(start = 10.dp, end = 10.dp)
-            .heightIn(min = 60.dp),
+            .heightIn(min = 60.dp)
+            .clickable(
+                onClick = onClick,
+            ),
         shape = cardShape,
         backgroundColor = cardColor
     ) {
@@ -151,11 +169,20 @@ internal fun SettingsParam(
                     fontWeight = FontWeight.W400,
                     color = primaryFontColor,
                 )
+
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
                     when(params) {
 
                         is SettingsParamType.CheckBox -> {
-                            Switch(checked = params.isChecked, onCheckedChange = params.onStateChanged)
+                            Switch(
+                                checked = params.isChecked,
+                                onCheckedChange = params.onStateChanged,
+                                colors = SwitchDefaults.colors(
+                                    checkedThumbColor = checkedSettingsSwitch,
+                                    uncheckedThumbColor = uncheckedSettingsSwitch,
+                                    uncheckedTrackColor = uncheckedSettingsSwitch.copy(0.5f)
+                                )
+                            )
                         }
 
                         is SettingsParamType.Button -> {
@@ -166,12 +193,14 @@ internal fun SettingsParam(
                                     .fillMaxHeight()
                                     .padding(end = 10.dp)
                             ) {
+
                                 Icon(
                                     painter = painterResource(R.drawable.ic_arrow),
                                     contentDescription = "",
-                                    tint = primaryFontColor,
+                                    tint = uncheckedSettingsSwitch.copy(0.9f),
                                     modifier = Modifier.size(25.dp)
                                 )
+
                             }
                         }
                     }
@@ -179,12 +208,13 @@ internal fun SettingsParam(
             }
 
         }
+
         if(shape !is SettingsParamShape.BottomShape) {
             Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxHeight()) {
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(primaryFontColor.copy(0.6f))
+                        .background(settingsSeparatorLineColor)
                         .height(1.dp)
                 )
             }

@@ -2,7 +2,7 @@ package com.xxmrk888ytxx.settingsscreen.models
 
 import androidx.annotation.IdRes
 
-sealed class SettingsParamType(open val text:String,@IdRes open val icon:Int) {
+internal sealed class SettingsParamType(open val text:String,@IdRes open val icon:Int) {
 
     data class CheckBox(
         override val text:String,

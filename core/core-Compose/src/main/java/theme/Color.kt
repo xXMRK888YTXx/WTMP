@@ -15,3 +15,6 @@ val disableAppButtonColor = Brush.linearGradient(listOf(cardColor,cardColor))
 val enableAppButtonFontColor = primaryFontColor
 val disableAppButtonFontColor = Color(0xFFC64851)
 val timeTextColor = Color(0xFFEAEAEA)
+val settingsSeparatorLineColor = Color(0xFF303F4F).copy(0.7f)
+val checkedSettingsSwitch = Color(0xFF5849C2)
+val uncheckedSettingsSwitch = Color(0xFFE6E6E6)
