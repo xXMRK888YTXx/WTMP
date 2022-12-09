@@ -25,4 +25,12 @@ internal sealed class SettingsParamType(
         override val isVisible: Boolean = true,
         val onClick:() -> Unit
     ) : SettingsParamType(text,icon,isEnable,isVisible)
+
+    data class Label(
+        override val text: String,
+        override val icon: Int,
+        val secondoryText:String,
+        override val isEnable: Boolean = true,
+        override val isVisible: Boolean = true,
+    ) : SettingsParamType(text,icon,isEnable,isVisible)
 }

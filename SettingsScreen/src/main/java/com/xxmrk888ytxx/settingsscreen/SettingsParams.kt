@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 import remember
@@ -138,5 +139,36 @@ internal fun getAppOpenObserverParams(settingsViewModel: SettingsViewModel) : Li
             R.drawable.ic_settings,
             isVisible = test.value
         ) {}
+    )
+}
+
+@SuppressLint("ResourceType")
+@Composable
+@MustBeLocalization
+internal fun getTelegramOptionsParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+    return listOf(
+        SettingsParamType.Button(
+            "Настройки Telegram",
+            R.drawable.ic_telegram,
+        ) {}
+    )
+}
+
+@SuppressLint("ResourceType")
+@Composable
+@MustBeLocalization
+internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+    val context = LocalContext.current
+    return listOf(
+        SettingsParamType.Label(
+            "Версия приложения",
+            R.drawable.ic_info,
+            secondoryText = settingsViewModel.appVersion
+        ),
+        SettingsParamType.Button(
+            "Написать разработчику",
+            R.drawable.ic_developer,
+            onClick = { settingsViewModel.sendIntentToWriteDeveloper(context) }
+        )
     )
 }

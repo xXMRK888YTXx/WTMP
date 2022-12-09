@@ -3,13 +3,14 @@ package com.xxmrk888ytxx.observer
 import android.app.Application
 import com.xxmrk888ytxx.coredeps.DepsProvider.DepsProvider
 import com.xxmrk888ytxx.coredeps.Exceptions.DepsProviderNotFoundDeps
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.observer.DI.AppComponent
 import com.xxmrk888ytxx.observer.DI.DaggerAppComponent
 import kotlin.reflect.KClass
 
-class App : Application(),DepsProvider {
+class App : Application(),DepsProvider,ApplicationInfoProvider {
     val appComponent:AppComponent by lazy {
-        DaggerAppComponent.factory().create(this)
+        DaggerAppComponent.factory().create(this,this)
     }
     private val depsProviders:List<Any> by lazy {
         listOf(appComponent,appComponent.adminEventsCallback)
@@ -22,6 +23,8 @@ class App : Application(),DepsProvider {
         }
         throw DepsProviderNotFoundDeps("DepsProvider cant provide ${classType.simpleName}")
     }
+
+    override val applicationVersion: String = BuildConfig.VERSION_NAME
 
 
 }

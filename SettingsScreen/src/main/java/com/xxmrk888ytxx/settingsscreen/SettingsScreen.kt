@@ -68,6 +68,24 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
             LazySpacer(height = 15)
         }
 
+        item {
+            SettingsCategory(
+                "Настройки Telegram",
+                getTelegramOptionsParams(settingsViewModel)
+            )
+
+            LazySpacer(height = 15)
+        }
+
+        item {
+            SettingsCategory(
+                "Об приложении",
+                getAppInfoParams(settingsViewModel)
+            )
+
+            LazySpacer(height = 15)
+        }
+
     }
 }
 
@@ -152,6 +170,8 @@ internal fun SettingsParam(
         is SettingsParamType.CheckBox -> {
             { params.onStateChanged(!params.isChecked) }
         }
+
+        is SettingsParamType.Label -> { {} }
     }
     AnimatedVisibility(params.isVisible) {
         Card(
@@ -231,6 +251,17 @@ internal fun SettingsParam(
                                     )
 
                                 }
+                            }
+
+                            is SettingsParamType.Label -> {
+                                Text(
+                                    params.secondoryText,
+                                    fontWeight = FontWeight.W500,
+                                    color = primaryFontColor.copy(0.6f),
+                                    fontFamily = openSansFont,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.padding(end = 10.dp)
+                                )
                             }
                         }
                     }
