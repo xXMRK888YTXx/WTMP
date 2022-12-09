@@ -25,6 +25,14 @@ Ru
 
 [MainScreen] - в этом модуле находится главный экран приложения
 
+[EventListScreen] - в этом модуле находится экран в котором, отображается всё события собранные
+    приложением
+
+[PackageInfoProvider] - в этом модуле находится кодовая база для получения информации о других
+    приложениях
+
+[SettingsScreen] - в этом модуле находится экран в котором, находятся настройки приложения
+
 En
 
 Description of modules
@@ -50,3 +58,11 @@ Description of modules
 [Workers] - workers are stored in this module to perform work in the background
 
 [MainScreen] - this module contains the main screen of the application
+
+[EventListScreen] - this module contains a screen in which all events collected are displayed
+     application
+
+[PackageInfoProvider] - this module contains the codebase for getting information about others
+     applications
+
+[SettingsScreen] - this module contains the screen where the application settings are located

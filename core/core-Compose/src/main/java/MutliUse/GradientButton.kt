@@ -13,6 +13,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 
+/**
+ * [Ru]
+ * Данная функция создаёт кнобку с градиентом на фоне
+ */
+
+/**
+ * [En]
+ * This function creates a button with a gradient background
+ */
+
 @Composable
 fun GradientButton(
     backgroundGradient : Brush,

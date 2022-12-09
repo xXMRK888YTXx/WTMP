@@ -117,6 +117,20 @@ internal fun TopBar(navigator: Navigator) {
     }
 }
 
+/**
+ * [Ru]
+ * Данная функция создаёт макет с категорией настроек
+ * @param categoryName - Подпись с названием категории
+ * @param settingsParams - Список параметров с настройками для данной категории,
+ * список настроек можно получить в файле [SettingsParams.kt]
+ */
+/**
+ * [Ru]
+ * This function creates a layout with a category of settings
+ * @param categoryName - Label with category name
+ * @param settingsParams - List of parameters with settings for this category,
+ * the list of settings can be obtained in the file [SettingsParams.kt]
+ */
 @Composable
 internal fun SettingsCategory(categoryName: String, settingsParams: List<SettingsParamType>) {
     Column(modifier = Modifier
@@ -148,6 +162,18 @@ internal fun SettingsCategory(categoryName: String, settingsParams: List<Setting
     }
 }
 
+/**
+ * [Ru]
+ * Данная функция создаёт элемент с настройками.
+ * @param params - определяёт тип элемента и информацию элемента
+ * @param shape - скругления элемента, зависит от положения в списке настроек
+ */
+/**
+ * [En]
+ * This function creates an element with settings.
+ * @param params - specifies the element type and element information
+ * @param shape - element roundness, depends on the position in the settings list
+ */
 @SuppressLint("ResourceType")
 @Composable
 internal fun SettingsParam(
@@ -167,8 +193,8 @@ internal fun SettingsParam(
 
         is SettingsParamType.Button -> params.onClick
 
-        is SettingsParamType.CheckBox -> {
-            { params.onStateChanged(!params.isChecked) }
+        is SettingsParamType.Switch -> {
+            { params.onStateChanged(!params.isSwitched) }
         }
 
         is SettingsParamType.Label -> { {} }
@@ -222,9 +248,9 @@ internal fun SettingsParam(
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
                         when (params) {
 
-                            is SettingsParamType.CheckBox -> {
+                            is SettingsParamType.Switch -> {
                                 Switch(
-                                    checked = params.isChecked,
+                                    checked = params.isSwitched,
                                     onCheckedChange = params.onStateChanged,
                                     colors = SwitchDefaults.colors(
                                         checkedThumbColor = checkedSettingsSwitch,

@@ -26,6 +26,17 @@ import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import theme.openSansFont
 import theme.primaryFontColor
 
+/**
+ * [Ru]
+ * На данном экране можно посмотреть события устройства за всё
+ * время
+ */
+
+/**
+ * [En]
+ * On this screen, you can view device events for all time
+ */
+
 @Composable
 fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
     val eventList:Map<String,List<DeviceEvent>> = eventViewModel.eventList

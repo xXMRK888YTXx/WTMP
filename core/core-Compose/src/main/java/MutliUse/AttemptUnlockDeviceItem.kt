@@ -18,6 +18,30 @@ import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import theme.openSansFont
 import theme.primaryFontColor
 
+/**
+ * [Ru]
+ * Данная функция создаёт из модели [DeviceEvent.AttemptUnlockDevice] карточку с информацией
+ * о собитии получаемого из модели.
+ *
+ * Если переданная моделя является [DeviceEvent.AttemptUnlockDevice.Succeeded]
+ * то будет создана карточка успешной попытки разблокировки устройтсва
+ *
+ * Если переданная моделя является [DeviceEvent.AttemptUnlockDevice.Failed]
+ * то будет создана карточка не удачной попытки разблокировки устройтсва.
+ */
+
+/**
+ * [Ru]
+ * This function creates a card with information from the [DeviceEvent.AttemptUnlockDevice] model
+ * about the event received from the model.
+ *
+ * If the passed model is [DeviceEvent.AttemptUnlockDevice.Succeeded]
+ * then a card of a successful attempt to unlock the device will be created
+ *
+ * If the passed model is [DeviceEvent.AttemptUnlockDevice.Failed]
+ * then a card of an unsuccessful attempt to unlock the device will be created.
+ */
+
 @Composable
 @MustBeLocalization
 fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice) {

@@ -9,6 +9,18 @@ import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 import remember
 
+/**
+ * [Ru]
+ * В данном файле находятся функции которые предоставляют список элементов для
+ * функции [SettingsCategory]
+ */
+
+/**
+ * [En]
+ * This file contains functions that provide a list of elements for
+ * features [SettingsCategory]
+ */
+
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
@@ -17,7 +29,7 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel) :
         mutableStateOf(false)
     }
     return listOf(
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Отслеживать неудачные попытки",
             R.drawable.ic_phone_lock,
             test.value,
@@ -25,21 +37,21 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel) :
             test.value = it
         },
 
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Делать фотографию при неудачной попытке входа",
             R.drawable.ic_camera,
             true,
             isVisible = test.value
         ) {},
 
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Уведомлять в Telegram",
             R.drawable.ic_telegram,
             false,
             isVisible = test.value
         ) {},
 
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Прикрепить фото к сообщению в Telegram",
             R.drawable.ic_telegram,
             false,
@@ -57,7 +69,7 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel:SettingsViewModel)
         mutableStateOf(false)
     }
     return listOf(
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Отслеживать разблокировки устройства",
             R.drawable.ic_lock_open,
             test.value,
@@ -65,21 +77,21 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel:SettingsViewModel)
             test.value = it
         },
 
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Делать фотографию при разблокировке устройства",
             R.drawable.ic_camera,
             true,
             isVisible = test.value
         ) {},
 
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Уведомлять в Telegram",
             R.drawable.ic_telegram,
             false,
             isVisible = test.value
         ) {},
 
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Прикрепить фото к сообщению в Telegram",
             R.drawable.ic_telegram,
             false,
@@ -96,14 +108,14 @@ internal fun test(settingsViewModel: SettingsViewModel) : List<SettingsParamType
         SettingsParamType.Button(
             "Test 1",R.drawable.ic_back_arrow
         ) {},
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Test 1",R.drawable.ic_back_arrow,
             true
         ) {},
         SettingsParamType.Button(
             "Test 2",R.drawable.ic_back_arrow
         ) {},
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Test 2",R.drawable.ic_back_arrow,
             testParam.value
         ) {
@@ -112,7 +124,7 @@ internal fun test(settingsViewModel: SettingsViewModel) : List<SettingsParamType
         SettingsParamType.Button(
             "Test 3",R.drawable.ic_back_arrow
         ) {},
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Test 3",R.drawable.ic_back_arrow,
             false
         ) {},
@@ -127,7 +139,7 @@ internal fun getAppOpenObserverParams(settingsViewModel: SettingsViewModel) : Li
         mutableStateOf(false)
     }
     return listOf(
-        SettingsParamType.CheckBox(
+        SettingsParamType.Switch(
             "Включение отслежевания приложений",
             R.drawable.ic_apps,
             test.value

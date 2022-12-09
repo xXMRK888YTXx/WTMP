@@ -8,6 +8,17 @@ import com.xxmrk888ytxx.coredeps.toTimeString
 import theme.openSansFont
 import theme.timeTextColor
 
+/**
+ * [Ru]
+ * Из переданного ему числа [Long], создаёт текст из передоного
+ * времени. Использует функцию расшерения [Long.toTimeString]
+ */
+
+/**
+ * [En]
+ * From the number [Long] passed to it, creates text from the front
+ * time. Uses the [Long.toTimeString] extension function
+ */
 @Composable
 fun TimeText(time:Long) {
     Text(

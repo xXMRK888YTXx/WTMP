@@ -1,19 +1,19 @@
 package com.xxmrk888ytxx.coredeps
 
 import android.content.Context
-import android.content.pm.PackageManager
 import java.util.*
 
-@Suppress("DEPRECATION")
-fun Context.getApplicationNameByPackageName(packageName:String) : String? {
-    try {
-        val applicationInfo = this.packageManager.getApplicationInfo(packageName, 0)
-        return this.packageManager.getApplicationLabel(applicationInfo).toString()
-    }catch (e: PackageManager.NameNotFoundException) {
-        return null
-    }
-}
+/**
+ * [Ru]
+ * Данная функция расширения предназначена для конвертации числа с типом [Long]
+ * в строку времени типа [XX:XX:XX]
+ */
 
+/**
+ * [En]
+ * This extension function is designed to convert a number with type [Long]
+ * into a time string like [XX:XX:XX]
+ */
 fun Long.toTimeString() : String {
     val calendar = Calendar.getInstance()
     calendar.time = Date(this)
@@ -29,7 +29,17 @@ fun Long.toTimeString() : String {
 
     return "$hoursString:$minuteString:$secondString"
 }
+/**
+ * [Ru]
+ * Данная функция расширения предназначена для конвертации числа с типом [Long]
+ * в строку с датой типа [Day Month Year]
+ */
 
+/**
+ * [En]
+ * This extension function is designed to convert a number with type [Long]
+ * to a date string like [Day Month Year]
+ */
 fun Long.toDateString(context: Context) : String {
     val calendar = Calendar.getInstance()
     calendar.time = Date(this)
@@ -46,6 +56,15 @@ fun Long.toDateString(context: Context) : String {
     return "$dayString $monthString $yearString"
 }
 
+/**
+ * [Ru]
+ * Данная функция преобразует цифру месяца, в строку с названием месяца
+ */
+
+/**
+ * [En]
+ * This function converts the digit of the month into a string with the name of the month
+ */
 internal fun monthToString(month:Int,context: Context) : String {
     context.resources.apply {
         return when(month) {

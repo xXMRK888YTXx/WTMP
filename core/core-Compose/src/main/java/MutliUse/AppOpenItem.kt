@@ -20,6 +20,18 @@ import theme.openSansFont
 import theme.primaryFontColor
 import theme.timeTextColor
 
+/**
+ * [Ru]
+ * Данная функция создаёт из модели [DeviceEvent.AppOpen] карточку с информацией
+ * о собитии получаемого из модели
+ */
+
+/**
+ * [En]
+ * This function creates a card with information from the [DeviceEvent.AppOpen] model
+ * about the event received from the model
+ */
+
 @Composable
 @MustBeLocalization
 fun AppOpenItem(item: DeviceEvent.AppOpen) {

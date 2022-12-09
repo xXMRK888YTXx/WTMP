@@ -12,6 +12,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import theme.cardColor
 
+/**
+ * [Ru]
+ * Данная функция создаёт базовую макет карты для функций отображающих события устройсва
+ * @param colorLine Переданный цвет будет использоваться для окраски линии которая
+ * находится в начале данного макета
+ *
+ * @param content - внутреннее содержимое данного макета
+ */
+
+/**
+ * [Ru]
+ * This function creates a basic map layout for device event display functions
+ * @param colorLine The passed color will be used to color the line that
+ * is at the beginning of this layout
+ *
+ * @param content - internal content of this layout
+ */
 @Composable
 fun BaseEventCard(colorLine: Color, content:@Composable ColumnScope.() -> Unit) {
     Card(
