@@ -57,6 +57,7 @@ dependencies {
     implementation(project(Project.SettingsScreen))
     implementation(project(Project.PackageInfoProvider))
     implementation(project(Project.EventListScreen))
+    implementation(project(Project.TelegramSetupScreen))
     kapt (Deps.Dagger.DaggerKaptCompiler)
 }
 

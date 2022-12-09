@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.settingsscreen
 
+import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -157,12 +158,16 @@ internal fun getAppOpenObserverParams(settingsViewModel: SettingsViewModel) : Li
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
-internal fun getTelegramOptionsParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+internal fun getTelegramOptionsParams(
+    settingsViewModel: SettingsViewModel,
+    navigator: Navigator
+) : List<SettingsParamType> {
     return listOf(
         SettingsParamType.Button(
             "Настройки Telegram",
             R.drawable.ic_telegram,
-        ) {}
+            onClick = navigator::toTelegramSetupScreen
+        )
     )
 }
 

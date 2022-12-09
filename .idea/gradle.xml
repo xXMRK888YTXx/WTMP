@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/MainScreen" />
             <option value="$PROJECT_DIR$/PackageInfoProvider" />
             <option value="$PROJECT_DIR$/SettingsScreen" />
+            <option value="$PROJECT_DIR$/TelegramSetupScreen" />
             <option value="$PROJECT_DIR$/UserActivityStats" />
             <option value="$PROJECT_DIR$/Workers" />
             <option value="$PROJECT_DIR$/app" />

@@ -13,4 +13,6 @@ interface Navigator {
     fun toSettingsScreen()
 
     fun toEventListScreen()
+
+    fun toTelegramSetupScreen()
 }

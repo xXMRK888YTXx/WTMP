@@ -23,6 +23,8 @@ import com.xxmrk888ytxx.mainscreen.MainViewModel
 import com.xxmrk888ytxx.observer.utils.appComponent
 import com.xxmrk888ytxx.settingsscreen.SettingsScreen
 import com.xxmrk888ytxx.settingsscreen.SettingsViewModel
+import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
+import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
 import theme.BackGroundColor
 import javax.inject.Inject
@@ -45,6 +47,7 @@ class MainActivity : ComponentActivity() {
     @Inject lateinit var mainViewModel: Provider<MainViewModel>
     @Inject lateinit var settingsViewModel: Provider<SettingsViewModel>
     @Inject lateinit var eventViewModel:Provider<EventViewModel>
+    @Inject lateinit var telegramViewModel: Provider<TelegramViewModel>
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +79,15 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.EventListScreen.route) {
                         EventListScreen(
                             eventViewModel = composeViewModel { eventViewModel.get() },
+                            navigator = activityViewModel
+                        )
+                    }
+
+                    composable(Screen.TelegramSetupScreen.route) {
+                        TelegramSetupScreen(
+                            telegramViewModel = composeViewModel {
+                                telegramViewModel.get()
+                            },
                             navigator = activityViewModel
                         )
                     }

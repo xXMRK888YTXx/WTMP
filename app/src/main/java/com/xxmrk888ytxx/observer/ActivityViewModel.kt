@@ -22,4 +22,10 @@ internal class ActivityViewModel : ViewModel(),Navigator {
             launchSingleTop = true
         }
     }
+
+    override fun toTelegramSetupScreen() {
+        navController?.navigate(Screen.TelegramSetupScreen.route) {
+            launchSingleTop = true
+        }
+    }
 }

@@ -80,7 +80,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
         item {
             SettingsCategory(
                 "Настройки Telegram",
-                getTelegramOptionsParams(settingsViewModel)
+                getTelegramOptionsParams(settingsViewModel,navigator)
             )
 
             LazySpacer(height = 15)
