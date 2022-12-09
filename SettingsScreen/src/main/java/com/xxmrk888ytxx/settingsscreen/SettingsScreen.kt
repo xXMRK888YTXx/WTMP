@@ -69,6 +69,15 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
         }
 
         item {
+            SettingsCategory (
+                "Безопасность",
+                getSecureParams(settingsViewModel)
+            )
+
+            LazySpacer(15)
+        }
+
+        item {
             SettingsCategory(
                 "Настройки Telegram",
                 getTelegramOptionsParams(settingsViewModel)
@@ -79,7 +88,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
 
         item {
             SettingsCategory(
-                "Об приложении",
+                "Прочее",
                 getAppInfoParams(settingsViewModel)
             )
 

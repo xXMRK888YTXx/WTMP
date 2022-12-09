@@ -181,6 +181,22 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
             "Написать разработчику",
             R.drawable.ic_developer,
             onClick = { settingsViewModel.sendIntentToWriteDeveloper(context) }
-        )
+        ),
+        SettingsParamType.Button(
+            "Журнал приложения",
+            R.drawable.ic_list,
+        ) {}
+    )
+}
+@SuppressLint("ResourceType")
+@Composable
+@MustBeLocalization
+internal fun getSecureParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+
+    return listOf(
+        SettingsParamType.Button(
+            "Установить пароль при входе в приложение",
+            R.drawable.ic_password
+        ) {}
     )
 }
