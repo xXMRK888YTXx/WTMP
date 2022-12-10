@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
-import com.xxmrk888ytxx.coredeps.toTimeString
 import remember
 import theme.*
 
@@ -192,22 +191,10 @@ internal fun ShowAllEventButton(navigator: Navigator) {
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxWidth()
     ) {
-        OutlinedButton(
-            onClick = navigator::toEventListScreen,
-            shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = cardColor
-            )
-        ) {
-            Text(
-                text = "Посмотреть за всё время",
-                fontFamily = openSansFont,
-                maxLines = 1,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.W400,
-                color = primaryFontColor
-            )
-        }
+        StyleButton(
+            text = "Посмотреть за всё время",
+            onClick = navigator::toEventListScreen
+        )
     }
 }
 
