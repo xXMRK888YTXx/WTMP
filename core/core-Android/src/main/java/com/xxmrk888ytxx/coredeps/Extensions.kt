@@ -1,7 +1,13 @@
 package com.xxmrk888ytxx.coredeps
 
 import android.content.Context
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * [Ru]
@@ -83,4 +89,14 @@ internal fun monthToString(month:Int,context: Context) : String {
             else -> return ""
         }
     }
+}
+
+fun CoroutineScope.launchAndCancelChildren(
+    context: CoroutineContext = EmptyCoroutineContext,
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    block: suspend CoroutineScope.() -> Unit
+) {
+    this.coroutineContext.cancelChildren()
+
+    this.launch(context, start, block)
 }

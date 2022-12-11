@@ -13,13 +13,19 @@ import theme.openSansFont
 import theme.primaryFontColor
 
 @Composable
-fun StyleButton(text:String,onClick:() -> Unit) {
+fun StyleButton(
+    text:String,
+    isEnable:Boolean = true,
+    onClick:() -> Unit
+) {
     OutlinedButton(
         onClick = onClick,
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = cardColor
-        )
+            backgroundColor = cardColor,
+            disabledBackgroundColor = cardColor.copy(0.5f)
+        ),
+        enabled = isEnable
     ) {
         Text(
             text = text,
@@ -27,7 +33,7 @@ fun StyleButton(text:String,onClick:() -> Unit) {
             maxLines = 1,
             fontSize = 18.sp,
             fontWeight = FontWeight.W400,
-            color = primaryFontColor
+            color = if(isEnable) primaryFontColor else primaryFontColor.copy(0.5f)
         )
     }
 }
