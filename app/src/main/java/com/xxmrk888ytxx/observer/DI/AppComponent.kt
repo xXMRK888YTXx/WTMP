@@ -20,7 +20,8 @@ import dagger.Component
         WorkerManagerModule::class,
         PackageInfoProviderModule::class,
         ResourcesProviderModule::class,
-        CryptoManagerModule::class
+        CryptoManagerModule::class,
+        TelegramConfigModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

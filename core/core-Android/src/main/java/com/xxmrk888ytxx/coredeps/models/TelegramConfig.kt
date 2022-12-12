@@ -1,6 +1,10 @@
 package com.xxmrk888ytxx.coredeps.models
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class TelegramConfig(
-    val userId:Long,
-    val botKey:String
+    @Json(name = "userId") val userId:Long,
+    @Json(name = "botKey") val botKey:String
 )

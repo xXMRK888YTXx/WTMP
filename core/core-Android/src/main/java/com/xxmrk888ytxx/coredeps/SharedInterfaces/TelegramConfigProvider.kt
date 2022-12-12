@@ -1,7 +1,8 @@
 package com.xxmrk888ytxx.coredeps.SharedInterfaces
 
-interface TelegramConfigProvider {
-    fun getTelegramConfig()
+import com.xxmrk888ytxx.coredeps.models.TelegramConfig
+import kotlinx.coroutines.flow.Flow
 
-    fun isConfigExist() : Boolean
+interface TelegramConfigProvider {
+    fun getTelegramConfig() : Flow<TelegramConfig?>
 }

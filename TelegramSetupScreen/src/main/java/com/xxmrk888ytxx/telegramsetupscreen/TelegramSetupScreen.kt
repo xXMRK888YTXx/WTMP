@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.telegramsetupscreen.models.ScreenState
 import remember
@@ -82,7 +83,8 @@ fun TelegramSetupScreen(telegramViewModel: TelegramViewModel, navigator: Navigat
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .height(LocalConfiguration.current.screenHeightDp.dp)
         ) {
             item {
@@ -111,6 +113,12 @@ fun TelegramSetupScreen(telegramViewModel: TelegramViewModel, navigator: Navigat
 
                             is ScreenState.ConfigSavedState -> {
                                 TelegramDataSaveLabel(telegramViewModel)
+                            }
+
+                            is ScreenState.LoadConfigState -> {
+                                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                                    CircularProgressIndicator()
+                                }
                             }
                         }
                     }
@@ -193,7 +201,7 @@ internal fun TopBar(navigator: Navigator) {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun InputTelegramConfigForm(
     telegramViewModel: TelegramViewModel,
@@ -211,6 +219,7 @@ internal fun InputTelegramConfigForm(
     InputInfoTextField(
         value = userIdText.value,
         onValueChanged = {
+            if(!it.isDigitsOnly()) return@InputInfoTextField
             telegramViewModel.userIdText.value = it
         },
         label = "Id пользователя",

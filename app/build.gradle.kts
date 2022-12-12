@@ -44,6 +44,7 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+        resources.excludes.add("META-INF/*")
     }
 }
 dependencies {
@@ -60,5 +61,16 @@ dependencies {
     implementation(project(Project.TelegramSetupScreen))
     implementation(project(Project.CryptoManager))
     kapt (Deps.Dagger.DaggerKaptCompiler)
+
+    implementation(Deps.DataStore.dataStore)
+
+    //Instrumental Test
+    androidTestImplementation (Deps.InstrumentalTest.espresso)
+    androidTestImplementation (Deps.InstrumentalTest.testRunner)
+    androidTestImplementation (Deps.InstrumentalTest.testCore)
+    androidTestImplementation (Deps.InstrumentalTest.jUnit)
+    androidTestImplementation (Deps.InstrumentalTest.testRules)
+    androidTestImplementation(Deps.TestAndroid.MockkAndroid)
+    androidTestImplementation(Deps.TestAndroid.MockkAgent)
 }
 

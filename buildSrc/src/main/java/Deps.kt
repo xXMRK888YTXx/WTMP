@@ -80,4 +80,15 @@ object Deps {
     object Coil {
         const val coil = "io.coil-kt:coil-compose:2.2.2"
     }
+    object Moshi {
+        private const val version = "1.13.0"
+        const val moshi = "com.squareup.moshi:moshi:$version"
+        const val moshiKaptPlugin = "com.squareup.moshi:moshi-kotlin-codegen:$version"
+    }
+    object KaptPlugin {
+        const val kapt = "kotlin-kapt"
+    }
+    object DataStore {
+        const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
+    }
 }

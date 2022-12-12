@@ -2,6 +2,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id(Deps.KaptPlugin.kapt)
 }
 
 android {
@@ -50,4 +51,7 @@ dependencies {
     api (Deps.Dagger.DaggerCore)
     api(Deps.Coroutines.CoroutinesAndroid)
     api(files("libs/AndroidExtension.aar"))
+
+    implementation(Deps.Moshi.moshi)
+    kapt(Deps.Moshi.moshiKaptPlugin)
 }

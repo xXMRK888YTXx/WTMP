@@ -1,6 +1,8 @@
 package com.xxmrk888ytxx.coredeps
 
 import android.content.Context
+import com.squareup.moshi.JsonDataException
+import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.cancelChildren
@@ -99,4 +101,21 @@ fun CoroutineScope.launchAndCancelChildren(
     this.coroutineContext.cancelChildren()
 
     this.launch(context, start, block)
+}
+
+inline fun <reified JSONCLASS> toJson(model:JSONCLASS) : String {
+    val moshi = Moshi.Builder().build()
+    return moshi.adapter(JSONCLASS::class.java).toJson(model)
+}
+
+inline fun <reified JSONCLASS> fromJson(jsonString: String,jsonClass:Class<JSONCLASS>) : JSONCLASS {
+    val moshi = Moshi.Builder().build()
+    return moshi.adapter(jsonClass).fromJson(jsonString) ?: throw JsonDataException()
+}
+
+@JvmName("fromJson1")
+inline fun <reified JSONCLASS> fromJson(jsonString: String?, jsonClass:Class<JSONCLASS>) : JSONCLASS? {
+    val moshi = Moshi.Builder().build()
+    if(jsonString == null) return null
+    return moshi.adapter(jsonClass).fromJson(jsonString)
 }
