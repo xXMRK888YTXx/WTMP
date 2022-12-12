@@ -16,10 +16,7 @@ class CryptoManagerImpl @Inject constructor() : CryptoManager {
     private val cipher by lazy {
         Cipher.getInstance("AES/GCM/NoPadding")
     }
-    private val charset by lazy {
-        charset("UTF-8")
 
-    }
     private val keyStore by lazy {
         KeyStore.getInstance(provider).apply {
             load(null)
@@ -31,12 +28,16 @@ class CryptoManagerImpl @Inject constructor() : CryptoManager {
 
     override fun encryptData(bytes: ByteArray): ByteArray {
         cipher.init(Cipher.ENCRYPT_MODE, provideSecretKey(keyAlias))
-        return cipher.doFinal(bytes)
+        val encryptedBytes = cipher.doFinal(bytes)
+        val iv = cipher.iv
+        return iv + encryptedBytes
     }
 
     override fun decryptData(encryptedData: ByteArray): ByteArray {
-        cipher.init(Cipher.DECRYPT_MODE, provideSecretKey(keyAlias), GCMParameterSpec(128, cipher.iv))
-        return cipher.doFinal(encryptedData)
+        val iv = encryptedData.copyOf(12)
+        val encryptedBytes = encryptedData.drop(12).toByteArray()
+        cipher.init(Cipher.DECRYPT_MODE, provideSecretKey(keyAlias), GCMParameterSpec(128, iv))
+        return cipher.doFinal(encryptedBytes)
     }
 
     private fun provideSecretKey(keyAlias: String) : SecretKey {

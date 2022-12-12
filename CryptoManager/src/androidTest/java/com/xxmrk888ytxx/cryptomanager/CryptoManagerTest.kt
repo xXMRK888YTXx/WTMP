@@ -1,12 +1,12 @@
 package com.xxmrk888ytxx.cryptomanager
 
+import android.util.Base64
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CryptoManager
 import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
 import kotlin.random.Random
 import kotlin.text.Charsets.UTF_8
 
@@ -22,17 +22,15 @@ class CryptoManagerTest {
 
     @Test
     fun checkMultiCryptExpectMultiDecryptString() {
-        val str1 = "wtrethkdthjoohdfho"
-        val str2 = "fsekhhdhjhhy3"
+        val list = mutableListOf<String>()
+        repeat(10) {
+            list.add(Random(System.currentTimeMillis()).nextLong().toString())
+        }
 
-        val eStr1 = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str1.toByteArray()))
-        val dStr1 = cryptoManager.decryptData(Base64.getDecoder().decode(eStr1)).toString(UTF_8)
+        val cryptList = list.map { Base64.encodeToString(cryptoManager.encryptData(it.toByteArray()),0) }
+        val decryptList = cryptList.map { cryptoManager.decryptData(Base64.decode(it,0)).toString(UTF_8) }
 
-        val eStr2 = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str2.toByteArray()))
-        val dStr2 = cryptoManager.decryptData(Base64.getDecoder().decode(eStr2)).toString(UTF_8)
-
-        Assert.assertEquals(str1,dStr1)
-        Assert.assertEquals(str2,dStr2)
+        Assert.assertEquals(list,decryptList)
     }
 
     @Test
@@ -40,8 +38,8 @@ class CryptoManagerTest {
         val str1 = "test".toByteArray()
         val str2 = "test2".toByteArray()
 
-        val eStr1 = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str1))
-        val eStr2 = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str2))
+        val eStr1 = Base64.encodeToString(cryptoManager.encryptData(str1),0)
+        val eStr2 = Base64.encodeToString(cryptoManager.encryptData(str2),0)
 
         Assert.assertNotEquals(str1,eStr1)
         Assert.assertNotEquals(str2,eStr2)
@@ -53,8 +51,8 @@ class CryptoManagerTest {
         val str1 = "test".toByteArray()
         val str2 = "test".toByteArray()
 
-        val eStr1 = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str1))
-        val eStr2 = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str2))
+        val eStr1 = Base64.encodeToString(cryptoManager.encryptData(str1),9)
+        val eStr2 = Base64.encodeToString(cryptoManager.encryptData(str2),9)
 
         Assert.assertNotEquals(eStr1,eStr2)
     }
@@ -63,8 +61,8 @@ class CryptoManagerTest {
     fun testDecrepitImputeStringExpectPrimaryString() {
         val str = "Mozart X".toByteArray()
 
-        val eStr = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str))
-        val dStr = cryptoManager.decryptData(Base64.getDecoder().decode(eStr))
+        val eStr = Base64.encodeToString(cryptoManager.encryptData(str),0)
+        val dStr = cryptoManager.decryptData(Base64.decode(eStr,0))
 
         Assert.assertEquals(str.toString(UTF_8),dStr.toString(UTF_8))
     }
@@ -74,8 +72,8 @@ class CryptoManagerTest {
     fun testDecrepitIfTextVeryLongExpectDecryptString() {
         val str = Random(System.currentTimeMillis()).nextBytes(1000).toString()
 
-        val eStr = Base64.getEncoder().encodeToString(cryptoManager.encryptData(str.toByteArray()))
-        val dStr = cryptoManager.decryptData(Base64.getDecoder().decode(eStr))
+        val eStr = Base64.encodeToString(cryptoManager.encryptData(str.toByteArray()),0)
+        val dStr = cryptoManager.decryptData(Base64.decode(eStr,0))
 
         Assert.assertEquals(str,dStr.toString(UTF_8))
     }
@@ -85,13 +83,12 @@ class CryptoManagerTest {
         val testStr = "rwertewtr"
         val testStrByteArray = testStr.toByteArray()
         val cByteArray = cryptoManager.encryptData(testStrByteArray)
-        val cBase64 = Base64.getEncoder().encodeToString(cByteArray)
+        val cBase64 = Base64.encodeToString(cByteArray,0)
 
-        val cByteArrayBeforeDecrypt = Base64.getDecoder().decode(cBase64)
+        val cByteArrayBeforeDecrypt = Base64.decode(cBase64,0)
         val dByteArray = cryptoManager.decryptData(cByteArrayBeforeDecrypt)
         val dStr = dByteArray.toString(UTF_8)
 
         Assert.assertEquals(testStr,dStr)
     }
-
 }
