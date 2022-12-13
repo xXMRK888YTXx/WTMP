@@ -29,14 +29,15 @@ class EventViewModel @Inject constructor(
         DeviceEvent.AttemptUnlockDevice.Succeeded(34,System.currentTimeMillis()+10000),
         DeviceEvent.AttemptUnlockDevice.Succeeded(678,System.currentTimeMillis()+10000),
         DeviceEvent.AppOpen(
-            5,"Brawl Stars",null,System.currentTimeMillis()
+            5,"Brawl Stars", packageName = "e",null,System.currentTimeMillis(),
         ),
         DeviceEvent.AppOpen(
-            6,"MineCraft",null,System.currentTimeMillis()
+            6,"MineCraft", packageName = "e",null,System.currentTimeMillis()
         ),
         DeviceEvent.AppOpen(
             121131456,
             packageInfoProvider.getAppName("com.xxmrk888ytxx.privatenote"),
+            packageName = "e",
             packageInfoProvider.getAppIcon("com.xxmrk888ytxx.privatenote")?.toBitmap(),
             1508442940000
         ),

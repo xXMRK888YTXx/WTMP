@@ -53,6 +53,7 @@ sealed class DeviceEvent(open val eventId: Int,open val time:Long) {
     data class AppOpen(
         override val eventId:Int,
         val appName:String?,
+        val packageName:String,
         val icon: Bitmap?,
         override val time:Long
     ) : DeviceEvent(eventId,time)

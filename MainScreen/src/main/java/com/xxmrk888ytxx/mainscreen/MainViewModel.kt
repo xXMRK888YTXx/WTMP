@@ -16,6 +16,7 @@ class MainViewModel @Inject constructor(
         DeviceEvent.AppOpen(
             7,
             packageInfoProvider.getAppName("com.xxmrk888ytxx.privatenote") ?: "Ошибка",
+            packageName = "e",
             packageInfoProvider.getAppIcon("com.xxmrk888ytxx.privatenote")?.toBitmap(),
             System.currentTimeMillis()
         )
@@ -27,10 +28,10 @@ class MainViewModel @Inject constructor(
         DeviceEvent.AttemptUnlockDevice.Succeeded(3,System.currentTimeMillis()),
         DeviceEvent.AttemptUnlockDevice.Succeeded(4,System.currentTimeMillis()+10000),
         DeviceEvent.AppOpen(
-            5,"Brawl Stars",null,System.currentTimeMillis()
+            5,"Brawl Stars", packageName = "e",null,System.currentTimeMillis()
         ),
         DeviceEvent.AppOpen(
-            6,"MineCraft",null,System.currentTimeMillis()
+            6,"MineCraft", packageName = "e",null,System.currentTimeMillis()
         ),
         testRealAppInfo
     )

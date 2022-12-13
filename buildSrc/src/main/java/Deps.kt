@@ -91,4 +91,13 @@ object Deps {
     object DataStore {
         const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
     }
+    object Room {
+        private const val version = "2.4.3"
+        const val RoomRuntime =  "androidx.room:room-runtime:$version"
+        const val KaptCompiler = "androidx.room:room-compiler:$version"
+        const val RoomKTX = "androidx.room:room-ktx:$version"
+        object Test {
+            const val RoomTest = "androidx.room:room-testing:$version"
+        }
+    }
 }

@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/Api-Telegram" />
             <option value="$PROJECT_DIR$/Camera" />
             <option value="$PROJECT_DIR$/CryptoManager" />
+            <option value="$PROJECT_DIR$/Database" />
             <option value="$PROJECT_DIR$/EventListScreen" />
             <option value="$PROJECT_DIR$/MainScreen" />
             <option value="$PROJECT_DIR$/PackageInfoProvider" />
