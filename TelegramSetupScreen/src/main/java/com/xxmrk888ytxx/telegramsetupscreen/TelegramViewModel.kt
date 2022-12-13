@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
-import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepositoryFactory
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
@@ -33,8 +32,16 @@ class TelegramViewModel @Inject constructor(
     private val _screenState: MutableState<ScreenState> =
         mutableStateOf(ScreenState.LoadConfigState)
 
+    /**
+     * [Ru]
+     * Проверка на сохранённые данные от бота
+     */
+    /**
+     * [En]
+     * Checking for saved data from the bot
+     */
     init {
-        ApplicationScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val config = telegramConfigProvider.getTelegramConfig().first()
             withContext(Dispatchers.Main) {
                 _screenState.value = if(config == null)
@@ -53,10 +60,30 @@ class TelegramViewModel @Inject constructor(
 
     internal val screenState = _screenState.toState()
 
+    /**
+     * [Ru]
+     * Если данная переменная == true, то значит в данный момент выполнятеся
+     * запрос к серверам Telegram, этот пораметр заменяет некоторые кнобки на
+     * индикатор загрузки
+     */
+    /**
+     * [En]
+     * If this variable == true, then it means that the
+     * request to Telegram servers, this parameter replaces some buttons with
+     * loading indicator
+     */
     private val _isTelegramRequestProcessNow = mutableStateOf(false)
 
     internal val isTelegramRequestProcessNow = _isTelegramRequestProcessNow.toState()
 
+    /**
+     * [Ru]
+     * Функция проверки и сохранение данных от Telegram бота
+     */
+    /**
+     * [En]
+     * The function of checking and saving data from the Telegram bot
+     */
     fun saveTelegramConfig() {
         if (!isInputtedConfigValid()) {
             snackBarScope.launchAndCancelChildren {
@@ -83,6 +110,14 @@ class TelegramViewModel @Inject constructor(
         return userIdText.value.isNotEmpty() && botKeyText.value.isNotEmpty()
     }
 
+    /**
+     * [Ru]
+     * Функция проверят валидность ранее сохран данных
+     */
+    /**
+     * [En]
+     * The function will check the validity of previously saved data
+     */
     fun checkTelegramConfig() {
         viewModelScope.launch(Dispatchers.IO) {
             val telegramConfig = telegramConfigProvider.getTelegramConfig().first() ?: return@launch
@@ -103,6 +138,16 @@ class TelegramViewModel @Inject constructor(
         _isTelegramRequestProcessNow.value = false
     }
 
+    /**
+     * [Ru]
+     * Проверяет валидность введённых данных посредством проверки через сервера Telegram
+     * По окончанию проверки покажет Snackbar о результате
+     */
+    /**
+     * [En]
+     * Checks the validity of the entered data by checking through the Telegram server
+     * At the end of the test, the Snackbar will show the result
+     */
     @SuppressLint("ResourceType")
     private suspend fun isTelegramConfigValid(
         userId: Long,
@@ -165,6 +210,14 @@ class TelegramViewModel @Inject constructor(
         snackBarScope.cancel()
     }
 
+    /**
+     * [Ru]
+     * Специальный [CoroutineScope] для показа Snackbar
+     */
+    /**
+     *[En]
+     * Special [CoroutineScope] to show Snackbar
+     */
     private class SnackBarScope : CoroutineScope {
         override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Default
     }

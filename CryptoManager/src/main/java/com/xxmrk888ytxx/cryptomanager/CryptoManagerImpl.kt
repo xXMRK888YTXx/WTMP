@@ -10,6 +10,18 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import javax.inject.Inject
 
+/**
+ * [Ru]
+ * Реализация интерфейса [CryptoManager]
+ * Представлят собой симитричное шифрование AES/GCM/NoPadding
+ * ключ получает из хранилища ключей Android
+ */
+/**
+ * [En]
+ * Implementation of the [CryptoManager] interface
+ * Represents AES/GCM/NoPadding symmetric encryption
+ * key gets from android key store
+ */
 class CryptoManagerImpl @Inject constructor() : CryptoManager {
     private val provider = "AndroidKeyStore"
     private val keyAlias = "keyAliasStore"

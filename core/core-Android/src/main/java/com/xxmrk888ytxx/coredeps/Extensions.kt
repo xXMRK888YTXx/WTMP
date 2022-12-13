@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.coredeps
 
 import android.content.Context
+import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineScope
@@ -93,6 +94,16 @@ internal fun monthToString(month:Int,context: Context) : String {
     }
 }
 
+/**
+ * [Ru]
+ * Данная функция расширения, завершает всё запущенные ранее корутины
+ * на текущем [CoroutineScope] и запускает новую корутину
+ */
+/**
+ * [En]
+ * This extension function terminates all previously launched coroutines
+ * on the current [CoroutineScope] and starts a new coroutine
+ */
 fun CoroutineScope.launchAndCancelChildren(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
@@ -103,16 +114,61 @@ fun CoroutineScope.launchAndCancelChildren(
     this.launch(context, start, block)
 }
 
+/**
+ * [Ru]
+ * Преобразует передавыемый класс в Json
+ * У передаваемого класс должен быть сгенерирован Json Adapter
+ * Для этого над классом необходимо поставить аннатацию [JsonClass]
+ * и установить параметр [JsonClass.generateAdapter] = true
+ */
+/**
+ * [En]
+ * Converts the passed class to Json
+ * The passed class must have a Json Adapter generated
+ * To do this, the class must be annotated with [JsonClass]
+ * and set parameter [JsonClass.generateAdapter] = true
+ */
 inline fun <reified JSONCLASS> toJson(model:JSONCLASS) : String {
     val moshi = Moshi.Builder().build()
     return moshi.adapter(JSONCLASS::class.java).toJson(model)
 }
 
+/**
+ * [Ru]
+ * Преобразует Json строку в класс
+ * Для успешного преобразования у класса который вы желаете получить
+ * должен быть сгенерирован Json Adapter
+ * Для этого над классом необходимо поставить аннатацию [JsonClass]
+ * и установить параметр [JsonClass.generateAdapter] = true
+ */
+/**
+ * [En]
+ * Convert Json string to class
+ * To successfully convert the class you wish to receive
+ *must be generated Json Adapter
+ * To do this, the class must be annotated with [JsonClass]
+ * and set parameter [JsonClass.generateAdapter] = true
+ */
 inline fun <reified JSONCLASS> fromJson(jsonString: String,jsonClass:Class<JSONCLASS>) : JSONCLASS {
     val moshi = Moshi.Builder().build()
     return moshi.adapter(jsonClass).fromJson(jsonString) ?: throw JsonDataException()
 }
-
+/**
+ * [Ru]
+ * Преобразует Json строку в класс
+ * Для успешного преобразования у класса который вы желаете получить
+ * должен быть сгенерирован Json Adapter
+ * Для этого над классом необходимо поставить аннатацию [JsonClass]
+ * и установить параметр [JsonClass.generateAdapter] = true
+ */
+/**
+ * [En]
+ * Convert Json string to class
+ * To successfully convert the class you wish to receive
+ *must be generated Json Adapter
+ * To do this, the class must be annotated with [JsonClass]
+ * and set parameter [JsonClass.generateAdapter] = true
+ */
 @JvmName("fromJson1")
 inline fun <reified JSONCLASS> fromJson(jsonString: String?, jsonClass:Class<JSONCLASS>) : JSONCLASS? {
     val moshi = Moshi.Builder().build()
