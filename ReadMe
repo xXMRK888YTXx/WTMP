@@ -33,6 +33,12 @@ Ru
 
 [SettingsScreen] - в этом модуле находится экран в котором, находятся настройки приложения
 
+[CryptoManager] - В модуле находится класс для шифрования данных
+
+[TelegramSetupScreen] - Экран для ввода данных бота Telegram
+
+[Database] - Модуль с базой данных приложения
+
 En
 
 Description of modules
@@ -66,3 +72,11 @@ Description of modules
      applications
 
 [SettingsScreen] - this module contains the screen where the application settings are located
+
+[CryptoManager] - Encryption class
+
+[TelegramSetupScreen] - Telegram bot data entry screen
+
+[CryptoManager] - The module contains a class for data encryption
+
+[Database] - Module with application database
