@@ -50,4 +50,5 @@ dependencies {
     androidTestImplementation (Deps.InstrumentalTest.testRules)
     androidTestImplementation(Deps.TestAndroid.MockkAndroid)
     androidTestImplementation(Deps.TestAndroid.MockkAgent)
+    androidTestImplementation(Deps.Room.Test.RoomTest)
 }

@@ -9,5 +9,5 @@ interface DeviceEventRepository {
 
     suspend fun addEvent(deviceEvent: DeviceEvent)
 
-    suspend fun removeEvent(deviceEvent: DeviceEvent)
+    suspend fun removeEvent(eventId:Int)
 }

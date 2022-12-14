@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "AppOpenEvents",
+    tableName = "UnlockDeviceEvents",
     indices = [
         Index("eventId", unique = true)
     ],
@@ -20,8 +20,7 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-internal data class AppOpenEventEntity(
+internal data class UnlockDeviceEventEntity(
     @PrimaryKey val eventId:Int,
-    val packageName:String,
-    val appName:String?
+    val lockEventType:Short
 )

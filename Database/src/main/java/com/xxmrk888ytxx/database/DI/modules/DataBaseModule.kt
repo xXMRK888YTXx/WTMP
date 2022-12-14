@@ -5,8 +5,8 @@ import androidx.room.Room
 import com.xxmrk888ytxx.database.AppDataBase
 import com.xxmrk888ytxx.database.DI.DataBaseScope
 import com.xxmrk888ytxx.database.Dao.AppOpenEventDao
-import com.xxmrk888ytxx.database.Dao.RegisteredEventsDao
-import com.xxmrk888ytxx.database.Dao.UnlockEventDao
+import com.xxmrk888ytxx.database.Dao.DeviceEventDao
+import com.xxmrk888ytxx.database.Dao.UnlockDeviceEvent
 import dagger.Module
 import dagger.Provides
 
@@ -19,8 +19,8 @@ internal class DataBaseModule {
     }
 
     @Provides
-    fun provideUnlockEventDao(dataBase: AppDataBase) : UnlockEventDao {
-        return dataBase.getUnlockEventDao()
+    fun provideDeviceEventDao(dataBase: AppDataBase) : DeviceEventDao {
+        return dataBase.getDeviceEventDao()
     }
 
     @Provides
@@ -29,8 +29,7 @@ internal class DataBaseModule {
     }
 
     @Provides
-    fun provideRegisteredEventsDao(dataBase: AppDataBase) : RegisteredEventsDao {
-        return dataBase.getRegisteredEventsDao()
+    fun provideUnlockDeviceEvent(dataBase: AppDataBase) : UnlockDeviceEvent {
+        return dataBase.getUnlockDeviceEventDao()
     }
-
 }

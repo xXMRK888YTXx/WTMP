@@ -44,7 +44,11 @@ object Deps {
         const val DaggerKaptPlugin = "kotlin-kapt"
     }
     object Coroutines {
-        const val CoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+        private const val version = "1.6.1"
+        const val CoroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        object Test {
+            const val CoroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
+        }
     }
     object CameraX {
         private const val camerax_version = "1.3.0-alpha01"

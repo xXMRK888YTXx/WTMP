@@ -35,6 +35,9 @@ android {
             arg("room.schemaLocation","$projectDir/schemas")
         }
     }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
@@ -44,5 +47,14 @@ dependencies {
 
     kapt (Deps.Room.KaptCompiler)
     kapt (Deps.Dagger.DaggerKaptCompiler)
+    //Instrumental Test
+    androidTestImplementation (Deps.InstrumentalTest.espresso)
+    androidTestImplementation (Deps.InstrumentalTest.testRunner)
+    androidTestImplementation (Deps.InstrumentalTest.testCore)
+    androidTestImplementation (Deps.InstrumentalTest.jUnit)
+    androidTestImplementation (Deps.InstrumentalTest.testRules)
+    androidTestImplementation (Deps.TestAndroid.MockkAndroid)
+    androidTestImplementation (Deps.TestAndroid.MockkAgent)
+    androidTestImplementation (Deps.Coroutines.Test.CoroutinesTest)
 
 }
