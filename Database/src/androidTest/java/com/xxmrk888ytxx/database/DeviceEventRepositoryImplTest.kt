@@ -91,18 +91,20 @@ internal class DeviceEventRepositoryImplTest {
         var isSecondPartLoad = false
         testList.forEachIndexed {index,it ->
             firstScope.launch {
-                repo.addEvent(it)
                 if(index == testList.lastIndex) {
                     delay(500)
+                    repo.addEvent(it)
                     isFirstPartLoad = true
                 }
+                else repo.addEvent(it)
             }
             secondScope.launch {
-                repo.addEvent(it)
                 if(index == testList.lastIndex) {
                     delay(500)
+                    repo.addEvent(it)
                     isSecondPartLoad = true
                 }
+                else repo.addEvent(it)
             }
         }
         while (!isFirstPartLoad&&!isSecondPartLoad) { delay(100) }
@@ -111,21 +113,29 @@ internal class DeviceEventRepositoryImplTest {
         Assert.assertEquals(testList.size*2,listFromDB.size)
     }
     @Test
-    fun test() = runBlocking {
+    fun addListToDBOOnDifferencesCoroutinesExpectReturnPrimaryList() = runBlocking {
         val testList = getTestEventList()
         val testScope = CoroutineScope(Job() + Dispatchers.IO)
         var isFinished = false
         testList.forEachIndexed { index, deviceEvent ->
             testScope.launch {
-                repo.addEvent(deviceEvent)
-                if(testList.lastIndex == index) isFinished = true
+                if(testList.lastIndex == index) {
+                    delay(500)
+                    repo.addEvent(deviceEvent)
+                    isFinished = true
+                } else repo.addEvent(deviceEvent)
             }
         }
         while (!isFinished) { delay(100) }
 
         val listFromDb = repo.getAllEvents().first()
 
-        Assert.assertEquals(testList,listFromDb)
+        Assert.assertEquals(testList.filter { it is DeviceEvent.AttemptUnlockDevice.Failed }.size,
+            listFromDb.filter { it is DeviceEvent.AttemptUnlockDevice.Failed }.size)
+        Assert.assertEquals(testList.filter { it is DeviceEvent.AttemptUnlockDevice.Succeeded }.size,
+            listFromDb.filter { it is DeviceEvent.AttemptUnlockDevice.Succeeded }.size)
+        Assert.assertEquals(testList.filter { it is DeviceEvent.AppOpen }.size,
+            listFromDb.filter { it is DeviceEvent.AppOpen }.size)
     }
 
     private fun getTestEventList() : List<DeviceEvent> {
