@@ -8,7 +8,7 @@ import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val packageInfoProvider: PackageInfoProvider
+    private val packageInfoProvider: PackageInfoProvider,
 ) : ViewModel() {
     val isEnable = mutableStateOf(true)
 

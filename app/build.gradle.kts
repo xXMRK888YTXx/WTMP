@@ -60,6 +60,8 @@ dependencies {
     implementation(project(Project.EventListScreen))
     implementation(project(Project.TelegramSetupScreen))
     implementation(project(Project.CryptoManager))
+    implementation(project(Project.Database))
+
     kapt (Deps.Dagger.DaggerKaptCompiler)
 
     implementation(Deps.DataStore.dataStore)

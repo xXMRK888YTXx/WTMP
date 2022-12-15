@@ -21,7 +21,8 @@ import dagger.Component
         PackageInfoProviderModule::class,
         ResourcesProviderModule::class,
         CryptoManagerModule::class,
-        TelegramConfigModule::class
+        TelegramConfigModule::class,
+        DatabaseModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

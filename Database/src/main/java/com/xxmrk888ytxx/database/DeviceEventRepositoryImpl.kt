@@ -15,8 +15,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DeviceEventRepositoryImpl(private val context: Context) : DeviceEventRepository {
+class DeviceEventRepositoryImpl @Inject constructor(
+    private val context: Context
+) : DeviceEventRepository {
 
     private val dataBaseComponent: DataBaseComponent by lazy {
         DaggerDataBaseComponent.factory().create(context)
@@ -32,7 +35,9 @@ class DeviceEventRepositoryImpl(private val context: Context) : DeviceEventRepos
 
     override  fun getAllEvents(): Flow<List<DeviceEvent>> {
         return deviceEventDao.getAllEvents().map { eventList ->
-            eventList.map { it.mapToDeviceEvent() }
+            mutex.withLock {
+                eventList.map { it.mapToDeviceEvent() }.filterNotNull()
+            }
         }
     }
 
@@ -67,14 +72,14 @@ class DeviceEventRepositoryImpl(private val context: Context) : DeviceEventRepos
     }
 
 
-    private suspend fun DeviceEventModel.mapToDeviceEvent(): DeviceEvent {
+    private suspend fun DeviceEventModel.mapToDeviceEvent(): DeviceEvent? {
         return when (eventInfo.eventType) {
             (0).toShort() -> {
-                val unlockEvent = checkNotNull(this.unlockEvents)
+                val unlockEvent = this.unlockEvents ?: return null
                 unlockEvent.mapToDeviceEvent(eventInfo)
             }
             (1).toShort() -> {
-                val appOpenEvent = checkNotNull(this.appOpenEvents)
+                val appOpenEvent = this.appOpenEvents ?: return null
                 appOpenEvent.mapToDeviceEvent(eventInfo)
             }
             else -> error("Cannot be converted to DeviceEvent." +
