@@ -36,7 +36,7 @@ class DeviceEventRepositoryImpl @Inject constructor(
     override  fun getAllEvents(): Flow<List<DeviceEvent>> {
         return deviceEventDao.getAllEvents().map { eventList ->
             mutex.withLock {
-                eventList.map { it.mapToDeviceEvent() }.filterNotNull()
+                eventList.mapNotNull { it.mapToDeviceEvent() }
             }
         }
     }
