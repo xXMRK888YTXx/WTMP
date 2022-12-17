@@ -1,11 +1,13 @@
 package com.xxmrk888ytxx.observer
 
 import android.app.Application
+import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.coredeps.DepsProvider.DepsProvider
 import com.xxmrk888ytxx.coredeps.Exceptions.DepsProviderNotFoundDeps
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.observer.DI.AppComponent
 import com.xxmrk888ytxx.observer.DI.DaggerAppComponent
+import com.xxmrk888ytxx.openapptracker.AppOpenTrackerCallback
 import kotlin.reflect.KClass
 
 class App : Application(),DepsProvider,ApplicationInfoProvider {
@@ -13,7 +15,7 @@ class App : Application(),DepsProvider,ApplicationInfoProvider {
         DaggerAppComponent.factory().create(this,this)
     }
     private val depsProviders:List<Any> by lazy {
-        listOf(appComponent,appComponent.adminEventsCallback)
+        listOf(appComponent,adminEventsCallback,appOpenTrackerCallback)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -25,6 +27,13 @@ class App : Application(),DepsProvider,ApplicationInfoProvider {
     }
 
     override val applicationVersion: String = BuildConfig.VERSION_NAME
+
+    private val adminEventsCallback: AdminEventsCallback
+        get() = appComponent.adminEventsCallback.get()
+
+    private val appOpenTrackerCallback: AppOpenTrackerCallback
+        get() = appComponent.appOpenTrackerCallback.get()
+
 
 
 }

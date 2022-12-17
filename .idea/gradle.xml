@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/Database" />
             <option value="$PROJECT_DIR$/EventListScreen" />
             <option value="$PROJECT_DIR$/MainScreen" />
+            <option value="$PROJECT_DIR$/OpenAppTracker" />
             <option value="$PROJECT_DIR$/PackageInfoProvider" />
             <option value="$PROJECT_DIR$/SettingsScreen" />
             <option value="$PROJECT_DIR$/TelegramSetupScreen" />

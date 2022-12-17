@@ -5,9 +5,11 @@ import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.MainActivity
+import com.xxmrk888ytxx.openapptracker.AppOpenTrackerCallback
 import com.xxmrk888ytxx.workers.DI.WorkerComponentDeps
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Provider
 
 @AppScope
 @Component(
@@ -22,11 +24,13 @@ import dagger.Component
         ResourcesProviderModule::class,
         CryptoManagerModule::class,
         TelegramConfigModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        AppOpenChangedCallbackModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
     fun inject(mainActivity: MainActivity)
+
     @Component.Factory
     interface Factory {
         fun create(
@@ -34,5 +38,8 @@ interface AppComponent : WorkerComponentDeps {
             @BindsInstance applicationInfoProvider: ApplicationInfoProvider
         ) : AppComponent
     }
-    val adminEventsCallback:AdminEventsCallback
+
+    val adminEventsCallback:Provider<AdminEventsCallback>
+
+    val appOpenTrackerCallback: Provider<AppOpenTrackerCallback>
 }

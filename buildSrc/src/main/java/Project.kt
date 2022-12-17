@@ -13,6 +13,7 @@ object Project {
     const val TelegramSetupScreen = ":TelegramSetupScreen"
     const val CryptoManager = ":CryptoManager"
     const val Database = ":Database"
+    const val OpenAppTracker = ":OpenAppTracker"
     sealed class core(val route:String) {
         object core_Android : core(":core:core-Android")
         object core_Compose : core(":core:core-Compose")
