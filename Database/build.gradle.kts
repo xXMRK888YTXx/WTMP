@@ -56,5 +56,6 @@ dependencies {
     androidTestImplementation (Deps.TestAndroid.MockkAndroid)
     androidTestImplementation (Deps.TestAndroid.MockkAgent)
     androidTestImplementation (Deps.Coroutines.Test.CoroutinesTest)
+    androidTestImplementation (Deps.Room.Test.RoomTest)
 
 }

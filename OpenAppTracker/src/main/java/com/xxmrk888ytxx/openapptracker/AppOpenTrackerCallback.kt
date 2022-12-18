@@ -1,7 +1,8 @@
 package com.xxmrk888ytxx.openapptracker
 
 interface AppOpenTrackerCallback {
-    val ignoreList:List<String>
+    val params: OpenAppTrackerParams
+        get() = OpenAppTrackerParams.Builder().build()
 
     fun onOpenAppChanged(packageName:String)
 }
