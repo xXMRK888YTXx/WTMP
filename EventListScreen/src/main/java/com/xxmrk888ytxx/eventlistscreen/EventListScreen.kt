@@ -11,6 +11,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,15 +40,15 @@ import theme.primaryFontColor
 
 @Composable
 fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
-    val eventList:Map<String,List<DeviceEvent>> = eventViewModel.eventList
+    val eventList = eventViewModel.eventList.collectAsState(mapOf())
 
     LazyColumn(Modifier.fillMaxSize()) {
 
         item {
             TopBar(navigator)
         }
-        if(eventList.isNotEmpty()) {
-            eventList.forEach { dayEvents ->
+        if(eventList.value.isNotEmpty()) {
+            eventList.value.forEach { dayEvents ->
                 item {
                     key(dayEvents.key) {
                         Text(
