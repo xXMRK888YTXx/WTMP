@@ -66,7 +66,7 @@ internal class DeviceEventRepositoryImplTest {
 
         val listFromDB = repo.getAllEvents().first()
 
-        Assert.assertEquals(testList, listFromDB)
+        Assert.assertEquals(testList.sortedByDescending { it.time }, listFromDB.sortedByDescending { it.time })
     }
 
     @Test
@@ -80,7 +80,7 @@ internal class DeviceEventRepositoryImplTest {
         repo.removeEvent(testList[0].eventId)
         val listFromDB = repo.getAllEvents().first()
 
-        Assert.assertEquals(expectedList, listFromDB)
+        Assert.assertEquals(expectedList.sortedByDescending { it.time }, listFromDB)
     }
 
     @Test
@@ -178,7 +178,7 @@ internal class DeviceEventRepositoryImplTest {
             val expectedEventsId = testList.map { it.eventId + testList.size }
             val dbEventIds = repo.getAllEvents().first().map { it.eventId }
 
-            Assert.assertEquals(expectedEventsId, dbEventIds)
+            Assert.assertEquals(expectedEventsId.sortedByDescending { it}, dbEventIds.sortedByDescending { it})
 
         }
 
@@ -213,31 +213,45 @@ internal class DeviceEventRepositoryImplTest {
 
         Assert.assertEquals(0,repo.getAllEvents().first().size)
     }
+
+    @Test
+    fun expectGetEventBetweenStartTimeAndEndTime() = runTest {
+        val start = 4L
+        val end = 8L
+        val expectedList = getTestEventList().filter {
+            it.time in start..end
+        }.sortedByDescending { it.time }
+
+        getTestEventList().forEach { repo.addEvent(it) }
+
+        val listInDb = repo.getEventInTimeSpan(start,end).first()
+        Assert.assertEquals(expectedList,listInDb)
+    }
 }
 
 
 private fun getTestEventList(): List<DeviceEvent> {
     return listOf(
-        DeviceEvent.AttemptUnlockDevice.Failed(1, System.currentTimeMillis()),
-        DeviceEvent.AttemptUnlockDevice.Succeeded(2, System.currentTimeMillis()),
-        DeviceEvent.AppOpen(3, null, packageName = "fgehfg", null, System.currentTimeMillis()),
-        DeviceEvent.AppOpen(4, null, packageName = "fgehfg", null, System.currentTimeMillis()),
-        DeviceEvent.AttemptUnlockDevice.Failed(5, System.currentTimeMillis()),
-        DeviceEvent.AttemptUnlockDevice.Failed(6, System.currentTimeMillis()),
-        DeviceEvent.AttemptUnlockDevice.Succeeded(7, System.currentTimeMillis()),
-        DeviceEvent.AttemptUnlockDevice.Succeeded(8, System.currentTimeMillis()),
-        DeviceEvent.AppOpen(9, "sfdsfsf", packageName = "fgehfg", null, System.currentTimeMillis()),
+        DeviceEvent.AttemptUnlockDevice.Failed(1, 1),
+        DeviceEvent.AttemptUnlockDevice.Succeeded(2,2 ),
+        DeviceEvent.AppOpen(3, null, packageName = "fgehfg", null, 3),
+        DeviceEvent.AppOpen(4, null, packageName = "fgehfg", null, 4),
+        DeviceEvent.AttemptUnlockDevice.Failed(5, 5),
+        DeviceEvent.AttemptUnlockDevice.Failed(6, 6),
+        DeviceEvent.AttemptUnlockDevice.Succeeded(7, 7),
+        DeviceEvent.AttemptUnlockDevice.Succeeded(8, 8),
+        DeviceEvent.AppOpen(9, "sfdsfsf", packageName = "fgehfg", null, 9),
         DeviceEvent.AppOpen(10,
             "sfdsfsf",
             packageName = "34fgehfg",
             null,
-            System.currentTimeMillis()),
+            10),
         DeviceEvent.AppOpen(11,
             "sfdsfsf",
             packageName = "fgehfg",
             null,
-            System.currentTimeMillis()),
-        DeviceEvent.AttemptUnlockDevice.Succeeded(12, System.currentTimeMillis()),
+            11),
+        DeviceEvent.AttemptUnlockDevice.Succeeded(12, 12),
     )
 }
 
