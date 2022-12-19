@@ -7,9 +7,14 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal interface DeviceEventDao {
+
     @Query("SELECT * FROM DeviceEvent")
     @Transaction
     fun getAllEvents() : Flow<List<DeviceEventModel>>
+
+    @Query("SELECT * FROM DeviceEvent WHERE time BETWEEN :start AND :end")
+    @Transaction
+    fun getEventInTimeSpan(start:Long,end:Long) : Flow<List<DeviceEventModel>>
 
     @Insert
     suspend fun addEvent(deviceEventEntity: DeviceEventEntity)
@@ -19,4 +24,5 @@ internal interface DeviceEventDao {
 
     @Query("SELECT MAX(eventId) FROM DeviceEvent")
     suspend fun getLastEventId() : Int
+
 }

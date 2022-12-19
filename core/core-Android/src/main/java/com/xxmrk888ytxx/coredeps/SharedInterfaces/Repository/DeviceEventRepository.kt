@@ -7,6 +7,8 @@ interface DeviceEventRepository {
 
     fun getAllEvents() : Flow<List<DeviceEvent>>
 
+    fun getEventInTimeSpan(start:Long,end:Long) : Flow<List<DeviceEvent>>
+
     suspend fun addEvent(deviceEvent: DeviceEvent)
 
     suspend fun removeEvent(eventId:Int)
