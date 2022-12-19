@@ -4,10 +4,16 @@ import android.content.Context
 import android.content.Intent
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
+import com.xxmrk888ytxx.coredeps.ApplicationScope
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
+import com.xxmrk888ytxx.coredeps.models.DeviceEvent
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-internal class AdminDeviceController @Inject constructor() : AdminEventsCallback {
+internal class AdminDeviceController @Inject constructor(
+    private val deviceEventRepository: DeviceEventRepository
+) : AdminEventsCallback {
     override fun onAdminEnabled() {
         logcatMessageD("onAdminEnabled")
     }
@@ -17,14 +23,20 @@ internal class AdminDeviceController @Inject constructor() : AdminEventsCallback
     }
 
     override fun onPasswordFailed(currentFailedPasswordAttempts: Int) {
-        logcatMessageD("onPasswordFailed: $currentFailedPasswordAttempts")
+        ApplicationScope.launch {
+            deviceEventRepository.addEvent(DeviceEvent.AttemptUnlockDevice.Failed(
+                0,System.currentTimeMillis()
+            ))
+        }
     }
 
     override fun onPasswordSucceeded() {
-        logcatMessageD("onPasswordSucceeded")
+        ApplicationScope.launch {
+            deviceEventRepository.addEvent(DeviceEvent.AttemptUnlockDevice.Succeeded(
+                0,System.currentTimeMillis()
+            ))
+        }
     }
 
-    override fun onReceive(context: Context, intent: Intent) {
-
-    }
+    override fun onReceive(context: Context, intent: Intent) {}
 }

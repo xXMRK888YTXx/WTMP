@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,7 +40,7 @@ import theme.*
 @MustBeLocalization
 fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
     val isEnable = mainViewModel.isEnable.remember()
-    val eventList = mainViewModel.eventList
+    val eventList = mainViewModel.dayEventList.collectAsState(listOf())
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .padding(5.dp)) {
@@ -51,11 +52,11 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
             })
         }
 
-        item {
-            LazySpacer(5)
-            StatsCard()
-            LazySpacer(5)
-        }
+//        item {
+//            LazySpacer(5)
+//            StatsCard()
+//            LazySpacer(5)
+//        }
 
         item {
             Text(
@@ -67,8 +68,8 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
                 modifier = Modifier.padding(start = 10.dp)
             )
         }
-        if(eventList.isNotEmpty()) {
-            items(eventList, key = { it.eventId }) { event ->
+        if(eventList.value.isNotEmpty()) {
+            items(eventList.value, key = { it.eventId }) { event ->
                 when(event) {
                     is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
                     is DeviceEvent.AppOpen -> AppOpenItem(event)

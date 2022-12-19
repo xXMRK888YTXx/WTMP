@@ -33,10 +33,10 @@ class DeviceEventRepositoryImpl @Inject constructor(
 
     private val mutex = Mutex()
 
-    override  fun getAllEvents(): Flow<List<DeviceEvent>> {
+    override fun getAllEvents(): Flow<List<DeviceEvent>> {
         return deviceEventDao.getAllEvents().map { eventList ->
             mutex.withLock {
-                eventList.mapNotNull { it.mapToDeviceEvent() }
+                eventList.mapNotNull { it.mapToDeviceEvent() }.sortedByDescending { it.time }
             }
         }
     }
