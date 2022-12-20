@@ -1,7 +1,7 @@
 package com.xxmrk888ytxx.eventdevicetracker
 
 import android.accessibilityservice.AccessibilityService
-import android.content.ComponentName
+import android.content.*
 import android.view.accessibility.AccessibilityEvent
 import com.xxmrk888ytxx.coredeps.DepsProvider.getDepsByApplication
 
@@ -11,6 +11,18 @@ internal class EventDeviceTrackerService : AccessibilityService() {
 
     private val eventDeviceTrackerCallback by lazy {
         applicationContext.getDepsByApplication<EventDeviceTrackerCallback>()
+    }
+
+    override fun onCreate() {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(p0: Context?, intent: Intent) {
+                if(intent.action == Intent.ACTION_USER_PRESENT)
+                    eventDeviceTrackerCallback.onScreenOn()
+            }
+
+        }
+        registerReceiver(receiver, IntentFilter(Intent.ACTION_USER_PRESENT))
+        super.onCreate()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
@@ -32,12 +44,12 @@ internal class EventDeviceTrackerService : AccessibilityService() {
     }
 
     private fun isActivity(event: AccessibilityEvent): Boolean {
-        try {
-        val component = ComponentName(event.packageName.toString(),event.className.toString())
+        return try {
+            val component = ComponentName(event.packageName.toString(),event.className.toString())
 
-        return packageManager.getActivityInfo(component,0).isEnabled
+            packageManager.getActivityInfo(component,0).isEnabled
         } catch (e:Exception) {
-            return false
+            false
         }
     }
 }
