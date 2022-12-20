@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.openapptracker
+package com.xxmrk888ytxx.eventdevicetracker
 
 import android.app.Application
 import android.content.pm.ActivityInfo
@@ -10,11 +10,11 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.reflect.KClass
 
-internal class OpenAppTrackerServiceTest {
+internal class EventDeviceTrackerServiceTest {
 
-    private lateinit var service:OpenAppTrackerService
+    private lateinit var service:EventDeviceTrackerService
 
-    private var currentCallback:AppOpenTrackerCallback = mockk(relaxed = true)
+    private var currentCallback:EventDeviceTrackerCallback = mockk(relaxed = true)
 
     @Before
     fun init() {
@@ -109,7 +109,7 @@ internal class OpenAppTrackerServiceTest {
         val testPK = "com.notIngore.com"
         val testPK2 = "by.notIngore.com"
         val ignoreList = listOf("com.ingnore.com","com.ignore2.com")
-        every { currentCallback.params } returns OpenAppTrackerParams.Builder()
+        every { currentCallback.params } returns EventDeviceTrackerParams.Builder()
             .setIgnoreList(ignoreList)
             .isActivityOnly(false)
             .build()
@@ -144,7 +144,7 @@ internal class OpenAppTrackerServiceTest {
         val testPK = "com.notIngore.com"
         val testPK2 = "by.notIngore.com"
         val ignoreList = listOf("com.ingnore.com","com.ignore2.com")
-        every { currentCallback.params } returns OpenAppTrackerParams.Builder()
+        every { currentCallback.params } returns EventDeviceTrackerParams.Builder()
             .setIgnoreList(ignoreList[1],ignoreList[0])
             .isActivityOnly(false)
             .build()
@@ -180,7 +180,7 @@ internal class OpenAppTrackerServiceTest {
         val activityInfo = mockk<ActivityInfo>(relaxed = true)
         every { activityInfo.isEnabled } returns true
         every { service.packageManager.getActivityInfo(any(),0) } returns activityInfo
-        every { currentCallback.params } returns OpenAppTrackerParams.Builder()
+        every { currentCallback.params } returns EventDeviceTrackerParams.Builder()
             .isActivityOnly(true)
             .build()
 
@@ -203,7 +203,7 @@ internal class OpenAppTrackerServiceTest {
         val activityInfo = mockk<ActivityInfo>(relaxed = true)
         every { activityInfo.isEnabled } returns true
         every { service.packageManager.getActivityInfo(any(),0) } returns activityInfo
-        every { currentCallback.params } returns OpenAppTrackerParams.Builder()
+        every { currentCallback.params } returns EventDeviceTrackerParams.Builder()
             .isActivityOnly(false)
             .build()
 
@@ -228,7 +228,7 @@ internal class OpenAppTrackerServiceTest {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private class TestApp(val onGetCallback: () -> AppOpenTrackerCallback) : Application(),DepsProvider {
+    private class TestApp(val onGetCallback: () -> EventDeviceTrackerCallback) : Application(),DepsProvider {
         override fun <DEPS : Any> provide(classType: KClass<DEPS>): DEPS {
             return onGetCallback() as DEPS
         }

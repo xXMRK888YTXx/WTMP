@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.xxmrk888ytxx.openapptracker"
+    namespace = "com.xxmrk888ytxx.eventdevicetracker"
     compileSdk = Config.compileSdk
 
     defaultConfig {

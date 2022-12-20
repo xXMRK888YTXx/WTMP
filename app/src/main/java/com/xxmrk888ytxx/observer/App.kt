@@ -7,7 +7,7 @@ import com.xxmrk888ytxx.coredeps.Exceptions.DepsProviderNotFoundDeps
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.observer.DI.AppComponent
 import com.xxmrk888ytxx.observer.DI.DaggerAppComponent
-import com.xxmrk888ytxx.openapptracker.AppOpenTrackerCallback
+import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import kotlin.reflect.KClass
 
 class App : Application(),DepsProvider,ApplicationInfoProvider {
@@ -15,7 +15,7 @@ class App : Application(),DepsProvider,ApplicationInfoProvider {
         DaggerAppComponent.factory().create(this,this)
     }
     private val depsProviders:List<Any> by lazy {
-        listOf(appComponent,adminEventsCallback,appOpenTrackerCallback)
+        listOf(appComponent,adminEventsCallback,eventDeviceTrackerCallback)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -31,8 +31,8 @@ class App : Application(),DepsProvider,ApplicationInfoProvider {
     private val adminEventsCallback: AdminEventsCallback
         get() = appComponent.adminEventsCallback.get()
 
-    private val appOpenTrackerCallback: AppOpenTrackerCallback
-        get() = appComponent.appOpenTrackerCallback.get()
+    private val eventDeviceTrackerCallback: EventDeviceTrackerCallback
+        get() = appComponent.eventDeviceTrackerCallback.get()
 
 
 

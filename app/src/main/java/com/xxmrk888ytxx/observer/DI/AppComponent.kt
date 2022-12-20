@@ -5,7 +5,7 @@ import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.MainActivity
-import com.xxmrk888ytxx.openapptracker.AppOpenTrackerCallback
+import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.workers.DI.WorkerComponentDeps
 import dagger.BindsInstance
 import dagger.Component
@@ -41,5 +41,5 @@ interface AppComponent : WorkerComponentDeps {
 
     val adminEventsCallback:Provider<AdminEventsCallback>
 
-    val appOpenTrackerCallback: Provider<AppOpenTrackerCallback>
+    val eventDeviceTrackerCallback: Provider<EventDeviceTrackerCallback>
 }

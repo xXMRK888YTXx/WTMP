@@ -1,7 +1,7 @@
-package com.xxmrk888ytxx.openapptracker
+package com.xxmrk888ytxx.eventdevicetracker
 
 @Suppress("DataClassPrivateConstructor")
-data class OpenAppTrackerParams private constructor(
+data class EventDeviceTrackerParams private constructor(
     internal val isActivityOnly:Boolean,
     internal val ignoreList: List<String>
 ) {
@@ -10,7 +10,7 @@ data class OpenAppTrackerParams private constructor(
 
         private var ignoreList:List<String> = emptyList()
 
-        fun build() : OpenAppTrackerParams = OpenAppTrackerParams(isActivityOnly,ignoreList)
+        fun build() : EventDeviceTrackerParams = EventDeviceTrackerParams(isActivityOnly,ignoreList)
 
         /**
          * [Ru]
