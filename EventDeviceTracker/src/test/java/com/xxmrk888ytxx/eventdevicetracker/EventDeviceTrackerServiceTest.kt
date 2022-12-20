@@ -1,6 +1,8 @@
 package com.xxmrk888ytxx.eventdevicetracker
 
 import android.app.Application
+import android.content.BroadcastReceiver
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.view.accessibility.AccessibilityEvent
 import com.xxmrk888ytxx.coredeps.DepsProvider.DepsProvider
@@ -225,6 +227,30 @@ internal class EventDeviceTrackerServiceTest {
         every { event.packageName } returns packageName
         every { event.eventType } returns AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
         return event
+    }
+
+    @Test
+    fun callOnCreateServiceMethodExpectWheyRegisterBroadcastReceiverTheyNeedCallCallbackIfDeviceUnlock() {
+        var receiver:BroadcastReceiver? = null
+
+        every { service.registerReceiver(any(),any()) } answers {
+            receiver = args[0] as BroadcastReceiver
+            mockk(relaxed = true)
+        }
+        try {
+            service.onCreate()
+        }catch (e:Exception) {}
+        val intent = mockk<Intent>(relaxed = true)
+        every { intent.action } returns Intent.ACTION_USER_PRESENT
+        receiver!!.onReceive(mockk(), mockk(relaxed = true))
+        receiver!!.onReceive(mockk(), intent)
+        receiver!!.onReceive(mockk(), mockk(relaxed = true))
+        receiver!!.onReceive(mockk(), intent)
+
+        verify(exactly = 2) {
+            currentCallback.onScreenOn()
+        }
+
     }
 
     @Suppress("UNCHECKED_CAST")
