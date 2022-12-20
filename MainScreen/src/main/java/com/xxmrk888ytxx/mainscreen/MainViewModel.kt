@@ -6,6 +6,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -14,5 +15,20 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     val isEnable = mutableStateOf(true)
 
-    internal val dayEventList:Flow<List<DeviceEvent>> = deviceEventRepository.getAllEvents()
+    private val startDayTime : Long
+        get() {
+            val calendar = Calendar.getInstance()
+            calendar.time = Date(System.currentTimeMillis())
+            calendar.set(Calendar.HOUR_OF_DAY,0)
+            calendar.set(Calendar.MINUTE,0)
+            calendar.set(Calendar.SECOND,0)
+            calendar.set(Calendar.MILLISECOND,0)
+            return calendar.timeInMillis
+        }
+
+    private val endDayTime:Long
+        get() = startDayTime + 86_400_000L
+
+    internal val dayEventList:Flow<List<DeviceEvent>> =
+        deviceEventRepository.getEventInTimeSpan(startDayTime,endDayTime)
 }

@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.mainscreen
 import MutliUse.*
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,6 +37,7 @@ import theme.*
  * as well as see a list of events for today, and when
  * need to open the full list.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @MustBeLocalization
 fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
@@ -70,9 +72,11 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
         }
         if(eventList.value.isNotEmpty()) {
             items(eventList.value, key = { it.eventId }) { event ->
-                when(event) {
-                    is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
-                    is DeviceEvent.AppOpen -> AppOpenItem(event)
+                Box(Modifier.animateItemPlacement()) {
+                    when(event) {
+                        is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
+                        is DeviceEvent.AppOpen -> AppOpenItem(event)
+                    }
                 }
             }
         }

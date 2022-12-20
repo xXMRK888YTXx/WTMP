@@ -27,7 +27,7 @@ fun Long.toTimeString() : String {
     val calendar = Calendar.getInstance()
     calendar.time = Date(this)
 
-    val hours = calendar.get(Calendar.HOUR)
+    val hours = calendar.get(Calendar.HOUR_OF_DAY)
     val hoursString = if(hours < 10) "0$hours" else hours.toString()
 
     val minute = calendar.get(Calendar.MINUTE)
