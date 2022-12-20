@@ -30,13 +30,7 @@ internal class AdminDeviceController @Inject constructor(
         }
     }
 
-    override fun onPasswordSucceeded() {
-        ApplicationScope.launch {
-            deviceEventRepository.addEvent(DeviceEvent.AttemptUnlockDevice.Succeeded(
-                0,System.currentTimeMillis()
-            ))
-        }
-    }
+    override fun onPasswordSucceeded() {}
 
     override fun onReceive(context: Context, intent: Intent) {}
 }
