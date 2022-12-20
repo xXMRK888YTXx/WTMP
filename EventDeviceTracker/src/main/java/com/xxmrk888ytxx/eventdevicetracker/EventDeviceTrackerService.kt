@@ -13,14 +13,16 @@ internal class EventDeviceTrackerService : AccessibilityService() {
         applicationContext.getDepsByApplication<EventDeviceTrackerCallback>()
     }
 
-    override fun onCreate() {
-        val receiver = object : BroadcastReceiver() {
+    private val receiver by lazy {
+        object : BroadcastReceiver() {
             override fun onReceive(p0: Context?, intent: Intent) {
                 if(intent.action == Intent.ACTION_USER_PRESENT)
                     eventDeviceTrackerCallback.onScreenOn()
             }
-
         }
+    }
+
+    override fun onCreate() {
         registerReceiver(receiver, IntentFilter(Intent.ACTION_USER_PRESENT))
         super.onCreate()
     }
@@ -51,5 +53,10 @@ internal class EventDeviceTrackerService : AccessibilityService() {
         } catch (e:Exception) {
             false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(receiver)
     }
 }
