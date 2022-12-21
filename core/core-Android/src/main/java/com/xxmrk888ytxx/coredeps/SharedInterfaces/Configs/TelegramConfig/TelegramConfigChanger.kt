@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.coredeps.SharedInterfaces
+package com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig
 
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
 

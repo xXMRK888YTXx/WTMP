@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.coredeps.SharedInterfaces
+package com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig
 
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
 import kotlinx.coroutines.flow.Flow
@@ -14,5 +14,5 @@ import kotlinx.coroutines.flow.Flow
  * is set, it should return null
  */
 interface TelegramConfigProvider {
-    fun getTelegramConfig() : Flow<TelegramConfig?>
+    val telegramConfig: Flow<TelegramConfig?>
 }
