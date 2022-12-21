@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.observer
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
+import com.xxmrk888ytxx.observer.domain.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigManager
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -12,11 +13,11 @@ import org.junit.Test
 class FailedUnlockTrackedConfigTest : BaseSettingsAppManagerTest() {
 
     private val failedUnlockTrackedConfigChanger:FailedUnlockTrackedConfigChanger by lazy {
-        TestClass.settingsAppManager
+        FailedUnlockTrackedConfigManager(TestClass.settingsAppManager)
     }
 
     private val failedUnlockTrackedConfigProvider:FailedUnlockTrackedConfigProvider by lazy {
-        TestClass.settingsAppManager
+        FailedUnlockTrackedConfigManager(TestClass.settingsAppManager)
     }
 
     @Before

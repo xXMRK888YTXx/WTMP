@@ -1,8 +1,10 @@
 package com.xxmrk888ytxx.observer
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
+import com.xxmrk888ytxx.observer.domain.TelegramConfig.TelegramConfigManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -18,12 +20,12 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class TelegramConfigTest : BaseSettingsAppManagerTest() {
 
-    private val telegramConfigChanger by lazy {
-        TestClass.settingsAppManager
+    private val telegramConfigChanger:TelegramConfigChanger by lazy {
+        TelegramConfigManager(TestClass.settingsAppManager)
     }
 
     private val telegramConfigProvider:TelegramConfigProvider by lazy {
-        TestClass.settingsAppManager
+        TelegramConfigManager(TestClass.settingsAppManager)
     }
 
     @org.junit.Test
