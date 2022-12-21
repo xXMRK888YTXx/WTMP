@@ -3,10 +3,13 @@ package com.xxmrk888ytxx.settingsscreen
 import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
+import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 import remember
 
@@ -26,38 +29,43 @@ import remember
 @Composable
 @MustBeLocalization
 internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
-    val test = remember {
-        mutableStateOf(false)
-    }
+   val config = settingsViewModel.failedUnlockTrackedConfig.collectAsState(
+       FailedUnlockTrackedConfig(isTracked = false,
+           makePhoto = false,
+           notifyInTelegram = false,
+           joinPhotoToTelegramNotify = false)
+   )
     return listOf(
         SettingsParamType.Switch(
             "Отслеживать неудачные попытки",
             R.drawable.ic_phone_lock,
-            test.value,
-        ) {
-            test.value = it
-        },
+            config.value.isTracked,
+            onStateChanged = settingsViewModel::updateIsTrackedFailedUnlockTrackedConfig
+        ),
 
         SettingsParamType.Switch(
             "Делать фотографию при неудачной попытке входа",
             R.drawable.ic_camera,
-            true,
-            isVisible = test.value
-        ) {},
+            config.value.makePhoto,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateMakePhotoFailedUnlockTrackedConfig
+        ),
 
         SettingsParamType.Switch(
             "Уведомлять в Telegram",
             R.drawable.ic_telegram,
-            false,
-            isVisible = test.value
-        ) {},
+            config.value.notifyInTelegram,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateNotifyInTelegramFailedUnlockTrackedConfig
+        ),
 
         SettingsParamType.Switch(
             "Прикрепить фото к сообщению в Telegram",
             R.drawable.ic_telegram,
-            false,
-            isVisible = test.value
-        ) {},
+            config.value.joinPhotoToTelegramNotify,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateJoinPhotoToTelegramNotifyFailedUnlockTrackedConfig
+        ),
 
         )
 }
@@ -66,38 +74,43 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel) :
 @Composable
 @MustBeLocalization
 internal fun getSucceededUnlockDeviceParams(settingsViewModel:SettingsViewModel) : List<SettingsParamType> {
-    val test = remember {
-        mutableStateOf(false)
-    }
+    val config = settingsViewModel.succeededUnlockTrackedConfig.collectAsState(
+        SucceededUnlockTrackedConfig(isTracked = false,
+            makePhoto = false,
+            notifyInTelegram = false,
+            joinPhotoToTelegramNotify = false)
+    )
     return listOf(
         SettingsParamType.Switch(
             "Отслеживать разблокировки устройства",
             R.drawable.ic_lock_open,
-            test.value,
-        ) {
-            test.value = it
-        },
+            config.value.isTracked,
+            onStateChanged = settingsViewModel::updateIsTrackedSucceededUnlockTrackedConfig
+        ),
 
         SettingsParamType.Switch(
             "Делать фотографию при разблокировке устройства",
             R.drawable.ic_camera,
-            true,
-            isVisible = test.value
-        ) {},
+            config.value.makePhoto,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateMakePhotoSucceededUnlockTrackedConfig,
+        ),
 
         SettingsParamType.Switch(
             "Уведомлять в Telegram",
             R.drawable.ic_telegram,
-            false,
-            isVisible = test.value
-        ) {},
+            config.value.notifyInTelegram,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateNotifyInTelegramSucceededUnlockTrackedConfig
+        ),
 
         SettingsParamType.Switch(
             "Прикрепить фото к сообщению в Telegram",
             R.drawable.ic_telegram,
-            false,
-            isVisible = test.value
-        ) {},
+            config.value.joinPhotoToTelegramNotify,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateJoinPhotoToTelegramNotifySucceededUnlockTrackedConfig
+        ),
     )
 }
 
