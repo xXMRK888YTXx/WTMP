@@ -10,7 +10,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class FailedUnlockTrackedConfigTest : BaseSettingsAppManagerTest() {
+class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
 
     private val failedUnlockTrackedConfigChanger:FailedUnlockTrackedConfigChanger by lazy {
         FailedUnlockTrackedConfigManager(TestClass.settingsAppManager)

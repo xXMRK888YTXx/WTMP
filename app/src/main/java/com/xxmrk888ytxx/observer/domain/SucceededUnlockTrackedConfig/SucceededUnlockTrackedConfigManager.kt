@@ -1,22 +1,22 @@
-package com.xxmrk888ytxx.observer.domain.FailedUnlockTrackedConfig
+package com.xxmrk888ytxx.observer.domain.SucceededUnlockTrackedConfig
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
-import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
+import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
 import com.xxmrk888ytxx.observer.domain.SettingsAppManager.SettingsAppManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import javax.inject.Inject
 
-class FailedUnlockTrackedConfigManager(
+class SucceededUnlockTrackedConfigManager @Inject constructor(
     private val settingsAppManager: SettingsAppManager
-) : FailedUnlockTrackedConfigChanger,
-    FailedUnlockTrackedConfigProvider {
-    private val isTrackedKey = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/isTrackedKey")
-    private val makePhotoKey = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/mackPhotoKey")
-    private val notifyInTelegram = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/notifyInTelegramKey")
-    private val joinPhotoToTelegramNotify = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/joinPhotoToTelegramNotify")
-    //FailedUnlockTrackedConfigChanger
+) : SucceededUnlockTrackedConfigChanger,SucceededUnlockTrackedConfigProvider {
+    private val isTrackedKey = booleanPreferencesKey("SucceededUnlockTrackedConfigKeys/isTrackedKey")
+    private val makePhotoKey = booleanPreferencesKey("SucceededUnlockTrackedConfigKeys/mackPhotoKey")
+    private val notifyInTelegram = booleanPreferencesKey("SucceededUnlockTrackedConfigKeys/notifyInTelegramKey")
+    private val joinPhotoToTelegramNotify = booleanPreferencesKey("SucceededUnlockTrackedConfigKeys/joinPhotoToTelegramNotify")
+
     override suspend fun updateIsTracked(state: Boolean) {
         settingsAppManager.writeProperty(
             isTrackedKey,
@@ -45,8 +45,7 @@ class FailedUnlockTrackedConfigManager(
         )
     }
 
-    //FailedUnlockTrackedConfigProvider
-    override val config: Flow<FailedUnlockTrackedConfig>
+    override val config: Flow<SucceededUnlockTrackedConfig>
         get() {
             val isTrackedFlow = settingsAppManager.getProperty(isTrackedKey,false)
             val makePhotoFlow = settingsAppManager.getProperty(makePhotoKey,false)
@@ -61,9 +60,10 @@ class FailedUnlockTrackedConfigManager(
             ) {
                     isTracked:Boolean ,makePhoto:Boolean,
                     notifyInTelegram:Boolean,joinPhotoToTelegramNotify:Boolean ->
-                FailedUnlockTrackedConfig(
+                SucceededUnlockTrackedConfig(
                     isTracked, makePhoto, notifyInTelegram, joinPhotoToTelegramNotify
                 )
             }
         }
+
 }
