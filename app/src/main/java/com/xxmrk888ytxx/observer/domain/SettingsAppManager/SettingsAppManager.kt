@@ -4,19 +4,21 @@ import android.content.Context
 import android.util.Base64
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CryptoManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.TelegramConfigChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.fromJson
+import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
 import com.xxmrk888ytxx.coredeps.toJson
 import com.xxmrk888ytxx.observer.DI.AppScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import kotlin.text.Charsets.UTF_8
 
@@ -24,10 +26,23 @@ import kotlin.text.Charsets.UTF_8
 class SettingsAppManager @Inject constructor(
     private val context: Context,
     private val cryptoManager: CryptoManager
-) : TelegramConfigChanger,TelegramConfigProvider {
+) : TelegramConfigChanger,
+    TelegramConfigProvider,
+    FailedUnlockTrackedConfigChanger,
+    FailedUnlockTrackedConfigProvider
+{
 
     private object ProtectedPropertyKeys {
-        val telegramConfigKey = stringPreferencesKey("telegramConfigKey")
+        object TelegramConfigKeys {
+            val telegramConfigKey = stringPreferencesKey("telegramConfigKey")
+        }
+    }
+
+    private object FailedUnlockTrackedConfigKeys {
+        val isTrackedKey = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/isTrackedKey")
+        val makePhotoKey = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/mackPhotoKey")
+        val notifyInTelegram = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/notifyInTelegramKey")
+        val joinPhotoToTelegramNotify = booleanPreferencesKey("FailedUnlockTrackedConfigKeys/joinPhotoToTelegramNotify")
     }
 
     private val Context.dataStore: DataStore<Preferences> by
@@ -77,15 +92,67 @@ class SettingsAppManager @Inject constructor(
 
     override suspend fun updateTelegramConfig(telegramConfig: TelegramConfig) {
         writeProtectedProperty(
-            key = ProtectedPropertyKeys.telegramConfigKey,
+            key = ProtectedPropertyKeys.TelegramConfigKeys.telegramConfigKey,
             value = toJson(telegramConfig)
         )
     }
 
-    override fun getTelegramConfig() : Flow<TelegramConfig?> {
-        val jsonString = getProtectedProperty(ProtectedPropertyKeys.telegramConfigKey)
+    override val telegramConfig: Flow<TelegramConfig?>
+        get() {
+            val jsonString = getProtectedProperty(ProtectedPropertyKeys.TelegramConfigKeys.telegramConfigKey)
 
-        return jsonString.map { fromJson(jsonString.first(),TelegramConfig::class.java) }
+            return jsonString.map { fromJson(jsonString.first(), TelegramConfig::class.java) }
 
+        }
+
+    //FailedUnlockTrackedConfigChanger
+    override suspend fun updateIsTracked(state: Boolean) {
+        writeProperty(
+            FailedUnlockTrackedConfigKeys.isTrackedKey,
+            state
+        )
     }
+
+    override suspend fun updateMakePhoto(state: Boolean) {
+        writeProperty(
+            FailedUnlockTrackedConfigKeys.makePhotoKey,
+            state
+        )
+    }
+
+    override suspend fun updateNotifyInTelegram(state: Boolean) {
+        writeProperty(
+            FailedUnlockTrackedConfigKeys.notifyInTelegram,
+            state
+        )
+    }
+
+    override suspend fun updateJoinPhotoToTelegramNotify(state: Boolean) {
+        writeProperty(
+            FailedUnlockTrackedConfigKeys.joinPhotoToTelegramNotify,
+            state
+        )
+    }
+
+    //FailedUnlockTrackedConfigProvider
+    override val config: Flow<FailedUnlockTrackedConfig>
+        get() {
+            val isTrackedFlow = getProperty(FailedUnlockTrackedConfigKeys.isTrackedKey,false)
+            val makePhotoFlow = getProperty(FailedUnlockTrackedConfigKeys.makePhotoKey,false)
+            val notifyInTelegramFlow = getProperty(FailedUnlockTrackedConfigKeys.notifyInTelegram,false)
+            val joinPhotoToTelegramNotifyFlow = getProperty(
+                FailedUnlockTrackedConfigKeys.joinPhotoToTelegramNotify,
+                false
+            )
+
+            return combine(isTrackedFlow,makePhotoFlow,
+                notifyInTelegramFlow,joinPhotoToTelegramNotifyFlow
+            ) {
+                    isTracked:Boolean ,makePhoto:Boolean,
+                    notifyInTelegram:Boolean,joinPhotoToTelegramNotify:Boolean ->
+               FailedUnlockTrackedConfig(
+                   isTracked, makePhoto, notifyInTelegram, joinPhotoToTelegramNotify
+               )
+            }
+        }
 }

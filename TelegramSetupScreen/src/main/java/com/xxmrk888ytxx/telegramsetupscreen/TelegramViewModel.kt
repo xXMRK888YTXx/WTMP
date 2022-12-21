@@ -10,8 +10,8 @@ import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepositoryFactory
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.TelegramConfigChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.TelegramConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.launchAndCancelChildren
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
 import com.xxmrk888ytxx.telegramsetupscreen.models.ScreenState
@@ -42,7 +42,7 @@ class TelegramViewModel @Inject constructor(
      */
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val config = telegramConfigProvider.getTelegramConfig().first()
+            val config = telegramConfigProvider.telegramConfig.first()
             withContext(Dispatchers.Main) {
                 _screenState.value = if(config == null)
                     ScreenState.ChangeTelegramConfigState else ScreenState.ConfigSavedState
@@ -120,7 +120,7 @@ class TelegramViewModel @Inject constructor(
      */
     fun checkTelegramConfig() {
         viewModelScope.launch(Dispatchers.IO) {
-            val telegramConfig = telegramConfigProvider.getTelegramConfig().first() ?: return@launch
+            val telegramConfig = telegramConfigProvider.telegramConfig.first() ?: return@launch
             _isTelegramRequestProcessNow.value = true
             isTelegramConfigValid(telegramConfig.userId, telegramConfig.botKey, true)
 
