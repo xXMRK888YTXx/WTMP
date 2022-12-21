@@ -4,6 +4,7 @@ import MutliUse.AppOpenItem
 import MutliUse.AttemptUnlockDeviceItem
 import MutliUse.LazySpacer
 import SharedInterfaces.Navigator
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,6 +39,7 @@ import theme.primaryFontColor
  * On this screen, you can view device events for all time
  */
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
     val eventList = eventViewModel.eventList.collectAsState(mapOf())
@@ -46,6 +48,7 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
 
         item {
             TopBar(navigator)
+            LazySpacer(10)
         }
         if(eventList.value.isNotEmpty()) {
             eventList.value.forEach { dayEvents ->
@@ -57,16 +60,18 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
                             fontSize = 18.sp,
                             fontStyle = FontStyle.Normal,
                             color = primaryFontColor.copy(0.8f),
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().animateItemPlacement(),
                             textAlign = TextAlign.Center
                         )
                         LazySpacer(height = 5)
                     }
                 }
                 items(dayEvents.value,key = {it.eventId}) { event ->
-                    when(event) {
-                        is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
-                        is DeviceEvent.AppOpen -> AppOpenItem(event)
+                    Box(Modifier.animateItemPlacement()) {
+                        when(event) {
+                            is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
+                            is DeviceEvent.AppOpen -> AppOpenItem(event)
+                        }
                     }
                 }
             }
@@ -94,15 +99,28 @@ internal fun ListStub() {
 
 @Composable
 internal fun TopBar(navigator: Navigator) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+
         IconButton(onClick = navigator::navigateUp) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back_arrow),
+            Icon(painter = painterResource(R.drawable.ic_back_arrow),
                 contentDescription = "",
                 tint = Color.White,
                 modifier = Modifier.size(25.dp)
             )
         }
+
+        LazySpacer(width = 15)
+
+        Text (
+            "Всё события",
+            fontSize = 27.sp,
+            fontWeight = FontWeight.W600,
+            color = Color.White,
+            fontFamily = openSansFont,
+        )
     }
 }
 
