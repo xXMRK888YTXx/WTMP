@@ -7,8 +7,9 @@ import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.observer.domain.SettingsAppManager.SettingsAppManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import javax.inject.Inject
 
-class FailedUnlockTrackedConfigManager(
+internal class FailedUnlockTrackedConfigManager @Inject constructor(
     private val settingsAppManager: SettingsAppManager
 ) : FailedUnlockTrackedConfigChanger,
     FailedUnlockTrackedConfigProvider {

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
-class SucceededUnlockTrackedConfigManager @Inject constructor(
+internal class SucceededUnlockTrackedConfigManager @Inject constructor(
     private val settingsAppManager: SettingsAppManager
 ) : SucceededUnlockTrackedConfigChanger,SucceededUnlockTrackedConfigProvider {
     private val isTrackedKey = booleanPreferencesKey("SucceededUnlockTrackedConfigKeys/isTrackedKey")

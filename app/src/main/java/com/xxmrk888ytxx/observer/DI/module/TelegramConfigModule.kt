@@ -7,7 +7,7 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-interface TelegramConfigModule {
+internal interface TelegramConfigModule {
     @Binds
     fun bindTelegramConfigProvider(telegramConfigManager: TelegramConfigManager) : TelegramConfigProvider
 

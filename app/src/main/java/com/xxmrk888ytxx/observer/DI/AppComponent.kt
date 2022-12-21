@@ -3,9 +3,9 @@ package com.xxmrk888ytxx.observer.DI
 import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
+import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.MainActivity
-import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.workers.DI.WorkerComponentDeps
 import dagger.BindsInstance
 import dagger.Component
@@ -25,7 +25,9 @@ import javax.inject.Provider
         CryptoManagerModule::class,
         TelegramConfigModule::class,
         DatabaseModule::class,
-        AppOpenChangedCallbackModule::class
+        AppOpenChangedCallbackModule::class,
+        FailedUnlockTrackedConfigModule::class,
+        SucceededUnlockTrackedConfigModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

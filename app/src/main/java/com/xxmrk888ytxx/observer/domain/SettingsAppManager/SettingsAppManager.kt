@@ -13,7 +13,7 @@ import javax.inject.Inject
 import kotlin.text.Charsets.UTF_8
 
 @AppScope
-class SettingsAppManager @Inject constructor(
+internal class SettingsAppManager @Inject constructor(
     private val context: Context,
     private val cryptoManager: CryptoManager
 )

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TelegramConfigManager @Inject constructor(
+internal class TelegramConfigManager @Inject constructor(
     private val settingsAppManager: SettingsAppManager
 ) : TelegramConfigChanger, TelegramConfigProvider {
     private val telegramConfigKey = stringPreferencesKey("telegramConfigKey")
