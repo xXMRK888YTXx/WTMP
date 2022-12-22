@@ -198,6 +198,8 @@ internal fun SettingsParam(
         is SettingsParamShape.None -> RoundedCornerShape(0.dp)
     }
 
+    val paramsAlpha = if(params.isEnable) 1f else 0.5f
+
     val onClick: () -> Unit = when (params) {
 
         is SettingsParamType.Button -> params.onClick
@@ -215,6 +217,7 @@ internal fun SettingsParam(
                 .padding(start = 10.dp, end = 10.dp)
                 .heightIn(min = 70.dp)
                 .clickable(
+                    enabled = params.isEnable,
                     onClick = onClick,
                 ),
             shape = cardShape,
@@ -236,7 +239,7 @@ internal fun SettingsParam(
                     Icon(
                         painter = painterResource(params.icon),
                         contentDescription = "",
-                        tint = primaryFontColor,
+                        tint = primaryFontColor.copy(paramsAlpha),
                         modifier = Modifier.size(25.dp)
                     )
 
@@ -248,7 +251,7 @@ internal fun SettingsParam(
                         fontFamily = openSansFont,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
-                        color = primaryFontColor,
+                        color = primaryFontColor.copy(paramsAlpha),
                         modifier = Modifier.widthIn(
                             max = 225.dp
                         )
@@ -261,10 +264,12 @@ internal fun SettingsParam(
                                 Switch(
                                     checked = params.isSwitched,
                                     onCheckedChange = params.onStateChanged,
+                                    enabled = params.isEnable,
                                     colors = SwitchDefaults.colors(
                                         checkedThumbColor = checkedSettingsSwitch,
                                         uncheckedThumbColor = uncheckedSettingsSwitch,
-                                        uncheckedTrackColor = uncheckedSettingsSwitch.copy(0.5f)
+                                        uncheckedTrackColor = uncheckedSettingsSwitch.copy(0.5f),
+                                        disabledCheckedThumbColor = uncheckedSettingsSwitch.copy(paramsAlpha)
                                     )
                                 )
                             }
@@ -281,7 +286,8 @@ internal fun SettingsParam(
                                     Icon(
                                         painter = painterResource(R.drawable.ic_arrow),
                                         contentDescription = "",
-                                        tint = uncheckedSettingsSwitch.copy(0.9f),
+                                        tint = uncheckedSettingsSwitch.copy(if (params.isEnable) 0.9f
+                                        else paramsAlpha),
                                         modifier = Modifier.size(25.dp)
                                     )
 
@@ -292,7 +298,8 @@ internal fun SettingsParam(
                                 Text(
                                     params.secondoryText,
                                     fontWeight = FontWeight.W500,
-                                    color = primaryFontColor.copy(0.6f),
+                                    color = primaryFontColor.copy(if (params.isEnable) 0.6f
+                                    else paramsAlpha-0.2f),
                                     fontFamily = openSansFont,
                                     fontSize = 16.sp,
                                     modifier = Modifier.padding(end = 10.dp)

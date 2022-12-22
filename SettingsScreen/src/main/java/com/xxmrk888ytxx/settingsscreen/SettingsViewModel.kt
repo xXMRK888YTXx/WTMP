@@ -13,10 +13,12 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedCon
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +28,7 @@ class SettingsViewModel @Inject constructor(
     private val failedUnlockTrackedConfigProvider: FailedUnlockTrackedConfigProvider,
     private val succeededUnlockTrackedConfigChanger: SucceededUnlockTrackedConfigChanger,
     private val succeededUnlockTrackedConfigProvider: SucceededUnlockTrackedConfigProvider,
+    private val telegramConfigProvider: TelegramConfigProvider
 ) : ViewModel() {
     val testParam = mutableStateOf(false)
 
@@ -38,6 +41,9 @@ class SettingsViewModel @Inject constructor(
     val appVersion: String by lazy {
         applicationInfoProvider.applicationVersion
     }
+
+    internal val isTelegramConfigSetup : Flow<Boolean>
+        get() = telegramConfigProvider.telegramConfig.map { it != null }
 
     internal val failedUnlockTrackedConfig: Flow<FailedUnlockTrackedConfig>
         get() = failedUnlockTrackedConfigProvider.config
