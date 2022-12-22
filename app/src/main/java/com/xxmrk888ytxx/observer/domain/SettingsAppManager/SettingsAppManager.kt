@@ -12,6 +12,16 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import kotlin.text.Charsets.UTF_8
 
+/**
+ * [Ru]
+ * Класс для записи/чтения настроек приложения
+ * Для управеления настройками используется библеотека DataStore
+ */
+/**
+ * [Ru]
+ * Class for writing/reading application settings
+ * To manage the settings, the DataStore library is used
+ */
 @AppScope
 internal class SettingsAppManager @Inject constructor(
     private val context: Context,

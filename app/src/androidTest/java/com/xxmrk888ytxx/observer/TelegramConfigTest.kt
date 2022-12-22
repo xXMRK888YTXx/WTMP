@@ -21,11 +21,11 @@ import org.junit.runner.RunWith
 internal class TelegramConfigTest : BaseSettingsAppManagerTest() {
 
     private val telegramConfigChanger:TelegramConfigChanger by lazy {
-        TelegramConfigManager(TestClass.settingsAppManager)
+        TelegramConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
     private val telegramConfigProvider:TelegramConfigProvider by lazy {
-        TelegramConfigManager(TestClass.settingsAppManager)
+        TelegramConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
     @org.junit.Test

@@ -13,11 +13,11 @@ import org.junit.Test
 internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
 
     private val succeededUnlockTrackedConfigChanger:SucceededUnlockTrackedConfigChanger by lazy {
-        SucceededUnlockTrackedConfigManager(TestClass.settingsAppManager)
+        SucceededUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
     private val succeededUnlockTrackedConfigProvider:SucceededUnlockTrackedConfigProvider by lazy {
-        SucceededUnlockTrackedConfigManager(TestClass.settingsAppManager)
+        SucceededUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
     @Before
