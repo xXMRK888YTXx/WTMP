@@ -18,6 +18,11 @@ internal class SucceededUnlockTrackedConfigManager @Inject constructor(
     private val joinPhotoToTelegramNotify = booleanPreferencesKey("SucceededUnlockTrackedConfigKeys/joinPhotoToTelegramNotify")
 
     override suspend fun updateIsTracked(state: Boolean) {
+        if(!state) {
+            updateMakePhoto(false)
+            updateNotifyInTelegram(false)
+            updateJoinPhotoToTelegramNotify(false)
+        }
         settingsAppManager.writeProperty(
             isTrackedKey,
             state
