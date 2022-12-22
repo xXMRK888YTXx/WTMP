@@ -4,6 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 
 @Composable
-inline fun <T> State<T>.remember() = remember { this }
+inline fun <reified T : Any> T.remember() = remember { this }
 
-inline fun <T> MutableState<T>.toState() : State<T> = this
+inline fun <reified T> MutableState<T>.toState() : State<T> = this

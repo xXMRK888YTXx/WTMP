@@ -161,7 +161,7 @@ internal fun SettingsCategory(categoryName: String, settingsParams: List<Setting
             val shape = if(settingsParams.visibleParamsSize == 1) SettingsParamShape.AllShape
             else when(index) {
                 0 -> SettingsParamShape.TopShape
-                settingsParams.lastIndex -> SettingsParamShape.BottomShape
+                settingsParams.visibleParamsLastIndex -> SettingsParamShape.BottomShape
                 else -> SettingsParamShape.None
             }
 

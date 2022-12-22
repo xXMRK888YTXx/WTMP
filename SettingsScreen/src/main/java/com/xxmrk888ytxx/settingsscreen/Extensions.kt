@@ -13,7 +13,10 @@ import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
  * This extension function is designed to get the number of visible elements
  * (which have [SettingsParamType.isVisible] == true) from the list of such elements
  */
-internal val List<SettingsParamType>.visibleParamsSize : Int
+internal inline val List<SettingsParamType>.visibleParamsSize : Int
     get() {
         return this.filter { it.isVisible }.size
     }
+
+internal inline val List<SettingsParamType>.visibleParamsLastIndex : Int
+    get() = this.filter { it.isVisible }.lastIndex
