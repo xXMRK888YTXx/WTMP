@@ -5,7 +5,7 @@ import com.xxmrk888ytxx.cryptomanager.CryptoManagerImpl
 import com.xxmrk888ytxx.observer.domain.SettingsAppManager.SettingsAppManager
 
 
-open class BaseSettingsAppManagerTest {
+internal open class BaseSettingsAppManagerTest {
 
     protected object TestClass {
         val context by lazy {InstrumentationRegistry.getInstrumentation().targetContext}

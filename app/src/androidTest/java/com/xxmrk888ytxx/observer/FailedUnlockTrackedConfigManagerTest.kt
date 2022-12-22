@@ -10,7 +10,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
+internal class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
 
     private val failedUnlockTrackedConfigChanger:FailedUnlockTrackedConfigChanger by lazy {
         FailedUnlockTrackedConfigManager(TestClass.settingsAppManager)
@@ -59,5 +59,28 @@ class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
         Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
         //
         Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+    }
+
+    @Test
+    fun installAllParamsTrueAndInstallIsTrackedParamFalseExpectAllParamsIsFalse() = runBlocking {
+        val expectedConfig = FailedUnlockTrackedConfig(isTracked = false,
+            makePhoto = false,
+            notifyInTelegram = false,
+            joinPhotoToTelegramNotify = false)
+
+        failedUnlockTrackedConfigChanger.updateIsTracked(true)
+        failedUnlockTrackedConfigChanger.updateMakePhoto(true)
+        failedUnlockTrackedConfigChanger.updateNotifyInTelegram(true)
+        failedUnlockTrackedConfigChanger.updateJoinPhotoToTelegramNotify(true)
+        Assert.assertEquals(
+            failedUnlockTrackedConfigProvider.config.first(),
+            FailedUnlockTrackedConfig(isTracked = true,
+                makePhoto = true,
+                notifyInTelegram = true,
+                joinPhotoToTelegramNotify = true)
+        )
+        failedUnlockTrackedConfigChanger.updateIsTracked(false)
+
+        Assert.assertEquals(expectedConfig,failedUnlockTrackedConfigProvider.config.first())
     }
 }
