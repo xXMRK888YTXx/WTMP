@@ -5,4 +5,5 @@ sealed class Screen(val route:String) {
     object SettingsScreen : Screen("SettingsScreen")
     object EventListScreen : Screen("EventListScreen")
     object TelegramSetupScreen : Screen("TelegramSetupScreen")
+    object EventDetailsScreen : Screen("EventDetailsScreen")
 }

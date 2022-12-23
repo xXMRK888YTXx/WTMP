@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.observer
 
+import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,10 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.UserActivityStats
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
+import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
+import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
 import com.xxmrk888ytxx.eventlistscreen.EventListScreen
 import com.xxmrk888ytxx.eventlistscreen.EventViewModel
 import com.xxmrk888ytxx.mainscreen.MainScreen
@@ -32,10 +31,6 @@ import javax.inject.Provider
 
 class MainActivity : ComponentActivity() {
 
-    @Inject lateinit var workerManager: WorkerManager
-    @Inject lateinit var cameraManager: CameraManager
-    @Inject lateinit var userActivityStats: UserActivityStats
-    @Inject lateinit var packageInfoProvider: PackageInfoProvider
     private val activityViewModel:ActivityViewModel by viewModels()
     //Screens ViewModels
     /**
@@ -48,6 +43,7 @@ class MainActivity : ComponentActivity() {
     @Inject lateinit var settingsViewModel: Provider<SettingsViewModel>
     @Inject lateinit var eventViewModel:Provider<EventViewModel>
     @Inject lateinit var telegramViewModel: Provider<TelegramViewModel>
+    @Inject lateinit var eventDetailsViewModel: EventDetailsViewModel.Factory
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +85,17 @@ class MainActivity : ComponentActivity() {
                                 telegramViewModel.get()
                             },
                             navigator = activityViewModel
+                        )
+                    }
+
+                    composable(Screen.EventDetailsScreen.route) {
+                        val eventId = it.arguments?.getInt(Navigator.EventDetailsScreenKey)
+                            ?: return@composable
+
+                        EventDetailsScreen(composeViewModel {
+                            eventDetailsViewModel.create(eventId)
+                        },
+                        navigator = activityViewModel
                         )
                     }
 

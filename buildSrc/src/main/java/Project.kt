@@ -14,6 +14,7 @@ object Project {
     const val CryptoManager = ":CryptoManager"
     const val Database = ":Database"
     const val EventDeviceTracker = ":EventDeviceTracker"
+    const val EventDetailsScreen = ":EventDetailsScreen"
     sealed class core(val route:String) {
         object core_Android : core(":core:core-Android")
         object core_Compose : core(":core:core-Compose")

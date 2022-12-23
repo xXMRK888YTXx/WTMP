@@ -28,4 +28,15 @@ internal class ActivityViewModel : ViewModel(),Navigator {
             launchSingleTop = true
         }
     }
+
+    override fun toEventDetailsScreen(eventId: Int) {
+        navController?.navigate(
+            Screen.EventDetailsScreen.route
+        ) {
+            launchSingleTop = true
+        }
+
+        navController?.getBackStackEntry(Screen.EventDetailsScreen.route)
+            ?.arguments?.putInt(Navigator.EventDetailsScreenKey,eventId)
+    }
 }

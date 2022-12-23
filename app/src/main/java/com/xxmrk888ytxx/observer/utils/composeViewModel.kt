@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
  * Данная функция предназначена для, того что бы созданная viewModel
  * была привязана к жизненному циклу экрана(не Activity, а к NavBackStackEntry, или если ещё проще,
  * то что бы viewModel жила пока пользователь окончательно не уйдет с экрана)
+ */
+/**
  * [En]
  * This function is intended to ensure that the created viewModel
  * was tied to the screen life cycle (not Activity, but to NavBackStackEntry, or even simpler,

@@ -74,8 +74,8 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
             items(eventList.value, key = { it.eventId }) { event ->
                 Box(Modifier.animateItemPlacement()) {
                     when(event) {
-                        is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
-                        is DeviceEvent.AppOpen -> AppOpenItem(event)
+                        is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,navigator)
+                        is DeviceEvent.AppOpen -> AppOpenItem(event,navigator)
                     }
                 }
             }

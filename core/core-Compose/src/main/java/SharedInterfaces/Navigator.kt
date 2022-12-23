@@ -15,4 +15,10 @@ interface Navigator {
     fun toEventListScreen()
 
     fun toTelegramSetupScreen()
+
+    fun toEventDetailsScreen(eventId:Int)
+
+    companion object {
+        const val EventDetailsScreenKey = "EventDetailsScreenKey"
+    }
 }

@@ -62,6 +62,7 @@ dependencies {
     implementation(project(Project.CryptoManager))
     implementation(project(Project.Database))
     implementation(project(Project.EventDeviceTracker))
+    implementation(project(Project.EventDetailsScreen))
 
     kapt (Deps.Dagger.DaggerKaptCompiler)
 

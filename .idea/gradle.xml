@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/Camera" />
             <option value="$PROJECT_DIR$/CryptoManager" />
             <option value="$PROJECT_DIR$/Database" />
+            <option value="$PROJECT_DIR$/EventDetailsScreen" />
             <option value="$PROJECT_DIR$/EventDeviceTracker" />
             <option value="$PROJECT_DIR$/EventListScreen" />
             <option value="$PROJECT_DIR$/MainScreen" />

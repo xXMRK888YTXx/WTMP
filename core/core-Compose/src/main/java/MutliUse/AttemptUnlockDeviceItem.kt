@@ -1,5 +1,6 @@
 package MutliUse
 
+import SharedInterfaces.Navigator
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -44,7 +45,7 @@ import theme.primaryFontColor
 
 @Composable
 @MustBeLocalization
-fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice) {
+fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice,navigator: Navigator) {
 
     val itemText = if(item is DeviceEvent.AttemptUnlockDevice.Failed) "Введён не верный пароль"
     else "Устройство разблокировано"
@@ -52,7 +53,12 @@ fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice) {
     val icon = if(item is DeviceEvent.AttemptUnlockDevice.Failed) R.drawable.ic_phone_lock
     else R.drawable.ic_lock_open
 
-    BaseEventCard(Color.Green) {
+    BaseEventCard(
+        Color.Green,
+        onClick = {
+            navigator.toEventDetailsScreen(item.eventId)
+        }
+    ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
             Icon(

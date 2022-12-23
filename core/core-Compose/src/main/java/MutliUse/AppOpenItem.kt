@@ -1,5 +1,6 @@
 package MutliUse
 
+import SharedInterfaces.Navigator
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
@@ -34,9 +35,14 @@ import theme.timeTextColor
 
 @Composable
 @MustBeLocalization
-fun AppOpenItem(item: DeviceEvent.AppOpen) {
+fun AppOpenItem(item: DeviceEvent.AppOpen,navigator: Navigator) {
 
-    BaseEventCard(colorLine = Color.Cyan) {
+    BaseEventCard(
+        colorLine = Color.Cyan,
+        onClick = {
+            navigator.toEventDetailsScreen(item.eventId)
+        }
+    ) {
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             LazySpacer(width = 5)
