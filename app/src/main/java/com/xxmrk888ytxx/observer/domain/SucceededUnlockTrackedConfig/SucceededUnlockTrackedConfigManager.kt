@@ -30,6 +30,8 @@ internal class SucceededUnlockTrackedConfigManager @Inject constructor(
     }
 
     override suspend fun updateMakePhoto(state: Boolean) {
+        if(!state) updateJoinPhotoToTelegramNotify(false)
+
         settingsAppManager.writeProperty(
             makePhotoKey,
             state
@@ -37,6 +39,8 @@ internal class SucceededUnlockTrackedConfigManager @Inject constructor(
     }
 
     override suspend fun updateNotifyInTelegram(state: Boolean) {
+        if(!state) updateJoinPhotoToTelegramNotify(false)
+
         settingsAppManager.writeProperty(
             notifyInTelegram,
             state
