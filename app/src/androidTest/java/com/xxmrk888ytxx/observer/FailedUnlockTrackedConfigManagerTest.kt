@@ -12,20 +12,20 @@ import org.junit.Test
 
 internal class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
 
-    private val failedUnlockTrackedConfigChanger:FailedUnlockTrackedConfigChanger by lazy {
+    private val changer:FailedUnlockTrackedConfigChanger by lazy {
         FailedUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
-    private val failedUnlockTrackedConfigProvider:FailedUnlockTrackedConfigProvider by lazy {
+    private val provider:FailedUnlockTrackedConfigProvider by lazy {
         FailedUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
     @Before
     fun init() = runBlocking {
-        failedUnlockTrackedConfigChanger.updateIsTracked(false)
-        failedUnlockTrackedConfigChanger.updateMakePhoto(false)
-        failedUnlockTrackedConfigChanger.updateNotifyInTelegram(false)
-        failedUnlockTrackedConfigChanger.updateJoinPhotoToTelegramNotify(false)
+        changer.updateIsTracked(false)
+        changer.updateMakePhoto(false)
+        changer.updateNotifyInTelegram(false)
+        changer.updateJoinPhotoToTelegramNotify(false)
     }
 
     @Test
@@ -36,29 +36,29 @@ internal class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest
             joinPhotoToTelegramNotify = false)
         //
         currentExpectedConfig = currentExpectedConfig.copy(isTracked = true)
-        failedUnlockTrackedConfigChanger.updateIsTracked(currentExpectedConfig.isTracked)
-        Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        changer.updateIsTracked(currentExpectedConfig.isTracked)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
 
         currentExpectedConfig = currentExpectedConfig.copy(makePhoto = true)
-        failedUnlockTrackedConfigChanger.updateMakePhoto(currentExpectedConfig.makePhoto)
-        Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        changer.updateMakePhoto(currentExpectedConfig.makePhoto)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
 
         currentExpectedConfig = currentExpectedConfig.copy(notifyInTelegram = true)
-        failedUnlockTrackedConfigChanger.updateNotifyInTelegram(currentExpectedConfig.notifyInTelegram)
-        Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        changer.updateNotifyInTelegram(currentExpectedConfig.notifyInTelegram)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
 
         currentExpectedConfig = currentExpectedConfig.copy(joinPhotoToTelegramNotify = true)
-        failedUnlockTrackedConfigChanger.updateJoinPhotoToTelegramNotify(currentExpectedConfig.joinPhotoToTelegramNotify)
-        Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        changer.updateJoinPhotoToTelegramNotify(currentExpectedConfig.joinPhotoToTelegramNotify)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
 
-        failedUnlockTrackedConfigChanger.updateIsTracked(currentExpectedConfig.isTracked)
-        Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        changer.updateIsTracked(currentExpectedConfig.isTracked)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
 
         currentExpectedConfig = currentExpectedConfig.copy(notifyInTelegram = true)
-        failedUnlockTrackedConfigChanger.updateNotifyInTelegram(currentExpectedConfig.notifyInTelegram)
-        Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        changer.updateNotifyInTelegram(currentExpectedConfig.notifyInTelegram)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
         //
-        Assert.assertEquals(currentExpectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
     }
 
     @Test
@@ -68,19 +68,42 @@ internal class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
 
-        failedUnlockTrackedConfigChanger.updateIsTracked(true)
-        failedUnlockTrackedConfigChanger.updateMakePhoto(true)
-        failedUnlockTrackedConfigChanger.updateNotifyInTelegram(true)
-        failedUnlockTrackedConfigChanger.updateJoinPhotoToTelegramNotify(true)
+        changer.updateIsTracked(true)
+        changer.updateMakePhoto(true)
+        changer.updateNotifyInTelegram(true)
+        changer.updateJoinPhotoToTelegramNotify(true)
         Assert.assertEquals(
-            failedUnlockTrackedConfigProvider.config.first(),
+            provider.config.first(),
             FailedUnlockTrackedConfig(isTracked = true,
                 makePhoto = true,
                 notifyInTelegram = true,
                 joinPhotoToTelegramNotify = true)
         )
-        failedUnlockTrackedConfigChanger.updateIsTracked(false)
+        changer.updateIsTracked(false)
 
-        Assert.assertEquals(expectedConfig,failedUnlockTrackedConfigProvider.config.first())
+        Assert.assertEquals(expectedConfig,provider.config.first())
+    }
+
+    @Test
+    fun setFalseMakePhotoAndNotifyInTelegramExpectJoinPhotoToTelegramNotifySetFalseToo() = runBlocking {
+        changer.updateIsTracked(true)
+        changer.updateMakePhoto(true)
+        changer.updateNotifyInTelegram(true)
+        changer.updateJoinPhotoToTelegramNotify(true)
+
+        changer.updateMakePhoto(false)
+        Assert.assertEquals(FailedUnlockTrackedConfig(isTracked = true,
+            makePhoto = false,
+            notifyInTelegram = true,
+            joinPhotoToTelegramNotify = false),
+            provider.config.first())
+        changer.updateMakePhoto(true)
+        changer.updateJoinPhotoToTelegramNotify(true)
+        changer.updateNotifyInTelegram(false)
+
+        Assert.assertEquals(FailedUnlockTrackedConfig(isTracked = true,
+            makePhoto = true,
+            notifyInTelegram = false,
+            joinPhotoToTelegramNotify = false),provider.config.first())
     }
 }
