@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.observer.domain
+package com.xxmrk888ytxx.observer.domain.EventDeviceTrackerCallback
 
 import android.util.Log
 import com.xxmrk888ytxx.coredeps.ApplicationScope
