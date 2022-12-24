@@ -227,6 +227,21 @@ internal class DeviceEventRepositoryImplTest {
         val listInDb = repo.getEventInTimeSpan(start,end).first()
         Assert.assertEquals(expectedList,listInDb)
     }
+
+    @Test
+    fun addEventExpectReturnsTheyId() = runBlocking {
+        val testList = getTestEventList()
+        val testList2 = getTestEventList()
+
+        testList.forEach {
+            val id = repo.addEvent(it)
+            Assert.assertEquals(it.eventId,id)
+        }
+        testList2.forEach {
+            val id = repo.addEvent(it)
+            Assert.assertEquals(it.eventId+12,id)
+        }
+    }
 }
 
 
