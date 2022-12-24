@@ -49,7 +49,7 @@ class DeviceEventRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addEvent(deviceEvent: DeviceEvent) {
+    override suspend fun addEvent(deviceEvent: DeviceEvent) : Int {
         mutex.withLock {
             withContext(Dispatchers.IO) {
                 val eventId = registerEvent(deviceEvent)
@@ -63,6 +63,7 @@ class DeviceEventRepositoryImpl @Inject constructor(
                     }
                 }
             }
+            return deviceEventDao.getLastEventId()
         }
     }
 

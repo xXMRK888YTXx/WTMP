@@ -9,7 +9,7 @@ interface DeviceEventRepository {
 
     fun getEventInTimeSpan(start:Long,end:Long) : Flow<List<DeviceEvent>>
 
-    suspend fun addEvent(deviceEvent: DeviceEvent)
+    suspend fun addEvent(deviceEvent: DeviceEvent) : Int
 
     suspend fun removeEvent(eventId:Int)
 }

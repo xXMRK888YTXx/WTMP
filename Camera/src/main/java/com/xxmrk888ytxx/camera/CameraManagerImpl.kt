@@ -1,6 +1,8 @@
 package com.xxmrk888ytxx.camera
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -23,13 +25,19 @@ import javax.inject.Inject
 class CameraManagerImpl @Inject constructor(private val context: Context) : LifecycleOwner,
     CameraManager {
 
+    private val handler by lazy {
+        Handler(Looper.getMainLooper())
+    }
+
     private fun onCreate() {
-        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
+        handler.post { lifecycleRegistry.currentState = Lifecycle.State.RESUMED }
     }
 
     private fun onDestroy(cameraProvider: ProcessCameraProvider) {
-        cameraProvider.unbindAll()
-        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        handler.post {
+            cameraProvider.unbindAll()
+            lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
+        }
     }
 
     private val lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
@@ -40,12 +48,17 @@ class CameraManagerImpl @Inject constructor(private val context: Context) : Life
         onErrorCreate:(e:Exception) -> Unit
     ) {
         onCreate()
-        val imageCapture = ImageCapture.Builder().build()
+        val imageCapture = ImageCapture
+            .Builder()
+            .setJpegQuality(80)
+            .build()
         val outputOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
         val cameraProvider = ProcessCameraProvider.getInstance(context).get()
-        cameraProvider.unbindAll()
-        cameraProvider.bindToLifecycle(
+        handler.post {
+            cameraProvider.unbindAll()
+            cameraProvider.bindToLifecycle(
                 this, CameraSelector.DEFAULT_FRONT_CAMERA,imageCapture)
+        }
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(context),
