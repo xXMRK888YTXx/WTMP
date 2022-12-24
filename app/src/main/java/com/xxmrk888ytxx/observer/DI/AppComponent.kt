@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.observer.DI
 import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.MainActivity
@@ -27,7 +28,8 @@ import javax.inject.Provider
         DatabaseModule::class,
         AppOpenChangedCallbackModule::class,
         FailedUnlockTrackedConfigModule::class,
-        SucceededUnlockTrackedConfigModule::class
+        SucceededUnlockTrackedConfigModule::class,
+        ImageRepositoryModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
@@ -44,4 +46,6 @@ interface AppComponent : WorkerComponentDeps {
     val adminEventsCallback:Provider<AdminEventsCallback>
 
     val eventDeviceTrackerCallback: Provider<EventDeviceTrackerCallback>
+
+    override val cameraManager:CameraManager
 }

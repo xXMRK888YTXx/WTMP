@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.workers.DI
 
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepositoryFactory
 import dagger.Component
 
@@ -16,4 +17,6 @@ internal interface WorkerComponent {
     }
 
     val telegramRepositoryFactory:TelegramRepositoryFactory
+
+    val cameraManager:CameraManager
 }

@@ -6,6 +6,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
+import com.xxmrk888ytxx.workers.Workers.MakeImageWorker
 import com.xxmrk888ytxx.workers.Workers.SendPhotoTelegramWorker
 import com.xxmrk888ytxx.workers.Workers.SendTelegramMessageWorker
 import javax.inject.Inject
@@ -19,9 +20,11 @@ class WorkerManagerImpl @Inject constructor(
             .putString(SendTelegramMessageWorker.telegramBotKeyDataKey,botKey)
             .putLong(SendTelegramMessageWorker.userIdDataKey,userId)
             .build()
+
         val worker = OneTimeWorkRequestBuilder<SendTelegramMessageWorker>()
             .setInputData(data)
             .build()
+
         WorkManager.getInstance(context)
             .enqueueUniqueWork("SendTelegramMessageWorker", ExistingWorkPolicy.KEEP,worker)
     }
@@ -38,10 +41,23 @@ class WorkerManagerImpl @Inject constructor(
             .putString(SendPhotoTelegramWorker.photoPathDataKey,photoPath)
             .putString(SendPhotoTelegramWorker.captionDataKey,caption)
             .build()
+
         val worker = OneTimeWorkRequestBuilder<SendPhotoTelegramWorker>()
             .setInputData(data)
             .build()
+
         WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
+            ExistingWorkPolicy.KEEP,worker)
+    }
+
+    override fun createImageWorker(imageDir:String) {
+        val data = Data.Builder().putString(MakeImageWorker.ImagePath,imageDir).build()
+
+        val worker = OneTimeWorkRequestBuilder<MakeImageWorker>()
+            .setInputData(data)
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniqueWork("MakeImageWorker",
             ExistingWorkPolicy.KEEP,worker)
     }
 
