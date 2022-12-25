@@ -29,7 +29,8 @@ import javax.inject.Provider
         AppOpenChangedCallbackModule::class,
         FailedUnlockTrackedConfigModule::class,
         SucceededUnlockTrackedConfigModule::class,
-        ImageRepositoryModule::class
+        ImageRepositoryModule::class,
+        ImageProviderModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

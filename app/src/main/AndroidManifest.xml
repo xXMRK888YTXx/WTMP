@@ -29,6 +29,15 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <provider
+            android:name=".domain.ContentProvider.ImageProvider"
+            android:authorities="com.xxmrk888ytxx.observer"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/image_provide_dir" />
+        </provider>
     </application>
 
 </manifest>
