@@ -21,3 +21,4 @@ val uncheckedSettingsSwitch = Color(0xFFE6E6E6)
 val snackbarColor = Color(0xFF2C3947)
 val okColor = Color(0xFF35862B)
 val errorColor = Color(0xFFC64851)
+val floatButtonColor = checkedSettingsSwitch

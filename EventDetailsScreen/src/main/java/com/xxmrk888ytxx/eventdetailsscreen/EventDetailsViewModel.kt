@@ -4,22 +4,22 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ImageProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.ImageRepository
+import com.xxmrk888ytxx.coredeps.launchAndCancelChildren
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import toState
 
 class EventDetailsViewModel @AssistedInject constructor(
     @Assisted val eventId:Int,
     private val deviceEventRepository: DeviceEventRepository,
-    private val imageRepository: ImageRepository
+    private val imageRepository: ImageRepository,
+    private val imageProvider: ImageProvider
 ) : ViewModel() {
 
     init {
@@ -46,9 +46,25 @@ class EventDetailsViewModel @AssistedInject constructor(
 
     }
 
+    internal fun openInGalleryCurrentImage() {
+        imageProviderScope.launchAndCancelChildren(Dispatchers.IO) {
+            val bitmap = (screenState.value as? ScreenState.ShowEvent)?.image
+                ?: return@launchAndCancelChildren
+            imageProvider.provideImageToGallery(bitmap)
+        }
+    }
+
+    override fun onCleared() {
+        imageProviderScope.cancel()
+        super.onCleared()
+    }
 
     @AssistedFactory
     interface Factory {
         fun create(eventId: Int) : EventDetailsViewModel
     }
+
+    private val imageProviderScope = CoroutineScope(SupervisorJob() +
+            Dispatchers.IO +
+            CoroutineName("imageProviderScope"))
 }

@@ -24,6 +24,7 @@ import com.xxmrk888ytxx.coredeps.toDateString
 import com.xxmrk888ytxx.coredeps.toTimeString
 import remember
 import theme.cardColor
+import theme.floatButtonColor
 import theme.openSansFont
 import theme.primaryFontColor
 
@@ -39,7 +40,10 @@ fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: N
             if(screenState.value is ScreenState.ShowEvent
                 &&
             (screenState.value as ScreenState.ShowEvent).image != null) {
-                FloatingActionButton(onClick = {  }) {
+                FloatingActionButton(
+                    onClick = { eventDetailsViewModel.openInGalleryCurrentImage() },
+                    backgroundColor = floatButtonColor
+                ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_open_image),
                         contentDescription = "",
