@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepositoryFactory
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepositoryFactory
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.launchAndCancelChildren
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
 import com.xxmrk888ytxx.telegramsetupscreen.models.ScreenState
@@ -93,7 +93,7 @@ class TelegramViewModel @Inject constructor(
         }
         viewModelScope.launch(Dispatchers.IO) {
             _isTelegramRequestProcessNow.value = true
-            val userId =  userIdText.value.toLong()
+            val userId =  userIdText.value.toLong(0)
             val botKey =  botKeyText.value
             if (isTelegramConfigValid(userId, botKey)) {
                 val telegramConfig = TelegramConfig(userId, botKey)
@@ -220,5 +220,13 @@ class TelegramViewModel @Inject constructor(
      */
     private class SnackBarScope : CoroutineScope {
         override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.Default
+    }
+
+    private fun String.toLong(defValue:Long) : Long {
+        return try {
+            this.toLong()
+        }catch (e:Exception) {
+            defValue
+        }
     }
 }
