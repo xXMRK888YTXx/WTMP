@@ -49,6 +49,14 @@ class DeviceEventRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getEvent(eventId: Int): Flow<DeviceEvent> {
+        return deviceEventDao.getEvent(eventId).map {
+            mutex.withLock {
+               it.mapToDeviceEvent() ?: DeviceEvent.AttemptUnlockDevice.Failed(1,1L)
+            }
+        }
+    }
+
     override suspend fun addEvent(deviceEvent: DeviceEvent) : Int {
         mutex.withLock {
             withContext(Dispatchers.IO) {
