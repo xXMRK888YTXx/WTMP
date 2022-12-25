@@ -242,6 +242,36 @@ internal class DeviceEventRepositoryImplTest {
             Assert.assertEquals(it.eventId+12,id)
         }
     }
+
+    @Test
+    fun addEventInDBAAndGiveFirstAndLastEventsExpectReturnsSequelsEvents() = runBlocking {
+        getTestEventList().forEach {
+            repo.addEvent(it)
+        }
+
+        val itemFromDB = repo.getEvent(getTestEventList()[0].eventId)
+        val itemFromDB2 = repo.getEvent(getTestEventList()[getTestEventList().lastIndex].eventId)
+
+        Assert.assertEquals(getTestEventList()[0],itemFromDB.first())
+        Assert.assertEquals(getTestEventList()[getTestEventList().lastIndex],itemFromDB2.first())
+    }
+
+    @Test
+    fun addEventInDBAAndGetOneEventExpectReturnsEqualsEvent() = runBlocking {
+        getTestEventList().forEach {
+            repo.addEvent(it)
+        }
+        val scope = CoroutineScope(Job())
+        CoroutineScope(Job()).launch {
+            getTestEventList().forEach {
+                scope.launch {
+                    Assert.assertEquals(it,repo.getEvent(it.eventId).first())
+                }
+            }
+            scope.cancel()
+        }
+        while (scope.isActive) { delay(100) }
+    }
 }
 
 
@@ -268,6 +298,7 @@ private fun getTestEventList(): List<DeviceEvent> {
             11),
         DeviceEvent.AttemptUnlockDevice.Succeeded(12, 12),
     )
+
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)

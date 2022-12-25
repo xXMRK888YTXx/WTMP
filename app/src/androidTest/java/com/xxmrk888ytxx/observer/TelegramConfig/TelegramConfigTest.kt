@@ -1,9 +1,10 @@
-package com.xxmrk888ytxx.observer
+package com.xxmrk888ytxx.observer.TelegramConfig
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
+import com.xxmrk888ytxx.observer.BaseSettingsAppManagerTest
 import com.xxmrk888ytxx.observer.domain.TelegramConfig.TelegramConfigManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

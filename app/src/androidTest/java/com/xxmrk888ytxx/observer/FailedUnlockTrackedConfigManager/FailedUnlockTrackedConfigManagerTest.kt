@@ -1,23 +1,24 @@
-package com.xxmrk888ytxx.observer
+package com.xxmrk888ytxx.observer.FailedUnlockTrackedConfigManager
 
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
-import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
-import com.xxmrk888ytxx.observer.domain.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
+import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
+import com.xxmrk888ytxx.observer.BaseSettingsAppManagerTest
+import com.xxmrk888ytxx.observer.domain.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigManager
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
+internal class FailedUnlockTrackedConfigManagerTest : BaseSettingsAppManagerTest() {
 
-    private val changer:SucceededUnlockTrackedConfigChanger by lazy {
-        SucceededUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
+    private val changer:FailedUnlockTrackedConfigChanger by lazy {
+        FailedUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
-    private val provider:SucceededUnlockTrackedConfigProvider by lazy {
-        SucceededUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
+    private val provider:FailedUnlockTrackedConfigProvider by lazy {
+        FailedUnlockTrackedConfigManager(SettingsAppManagerHolder.settingsAppManager)
     }
 
     @Before
@@ -30,7 +31,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
 
     @Test
     fun AlternatelyChangeConfigParamsExpectConfigInFlowEquelsExpectedConfig() = runBlocking {
-        var currentExpectedConfig = SucceededUnlockTrackedConfig(false,
+        var currentExpectedConfig = FailedUnlockTrackedConfig(false,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
@@ -63,7 +64,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
 
     @Test
     fun installAllParamsTrueAndInstallIsTrackedParamFalseExpectAllParamsIsFalse() = runBlocking {
-        val expectedConfig = SucceededUnlockTrackedConfig(isTracked = false,
+        val expectedConfig = FailedUnlockTrackedConfig(isTracked = false,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
@@ -74,7 +75,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
         changer.updateJoinPhotoToTelegramNotify(true)
         Assert.assertEquals(
             provider.config.first(),
-            SucceededUnlockTrackedConfig(isTracked = true,
+            FailedUnlockTrackedConfig(isTracked = true,
                 makePhoto = true,
                 notifyInTelegram = true,
                 joinPhotoToTelegramNotify = true)
@@ -92,7 +93,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
         changer.updateJoinPhotoToTelegramNotify(true)
 
         changer.updateMakePhoto(false)
-        Assert.assertEquals(SucceededUnlockTrackedConfig(isTracked = true,
+        Assert.assertEquals(FailedUnlockTrackedConfig(isTracked = true,
             makePhoto = false,
             notifyInTelegram = true,
             joinPhotoToTelegramNotify = false),
@@ -101,7 +102,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
         changer.updateJoinPhotoToTelegramNotify(true)
         changer.updateNotifyInTelegram(false)
 
-        Assert.assertEquals(SucceededUnlockTrackedConfig(isTracked = true,
+        Assert.assertEquals(FailedUnlockTrackedConfig(isTracked = true,
             makePhoto = true,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false),provider.config.first())
