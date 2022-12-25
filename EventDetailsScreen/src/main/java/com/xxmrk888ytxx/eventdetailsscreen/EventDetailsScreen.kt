@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.coredeps.toDateString
+import com.xxmrk888ytxx.coredeps.toTimeString
 import remember
 import theme.cardColor
 import theme.openSansFont
@@ -33,7 +34,21 @@ fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: N
         topBar = {
             TopBar(navigator)
         },
-        backgroundColor = Color.Transparent
+        backgroundColor = Color.Transparent,
+        floatingActionButton = {
+            if(screenState.value is ScreenState.ShowEvent
+                &&
+            (screenState.value as ScreenState.ShowEvent).image != null) {
+                FloatingActionButton(onClick = {  }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_open_image),
+                        contentDescription = "",
+                        tint = primaryFontColor,
+                        modifier = Modifier.size(25.dp)
+                    )
+                }
+            }
+        }
     ) { paddings ->
         Column(
             modifier = Modifier.padding(
@@ -48,7 +63,7 @@ fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: N
                 is ScreenState.ShowEvent -> {
                     LazySpacer(30)
                     ShowEventInfo((screenState.value as ScreenState.ShowEvent).event)
-                    CreatedImageViewer()
+                    CreatedImageViewer(eventDetailsViewModel)
                 }
 
                 is ScreenState.Loading -> {
@@ -60,7 +75,25 @@ fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: N
 }
 
 @Composable
-fun CreatedImageViewer() {
+fun CreatedImageViewer(eventDetailsViewModel: EventDetailsViewModel) {
+    if(eventDetailsViewModel.screenState.value is ScreenState.ShowEvent
+        && (eventDetailsViewModel.screenState.value as ScreenState.ShowEvent).image != null
+    ) {
+        AsyncImage(
+            model = (eventDetailsViewModel.screenState.value as ScreenState.ShowEvent).image,
+            contentDescription = "",
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        )
+    }
+    else {
+        PhotoStub()
+    }
+}
+
+@Composable
+internal fun PhotoStub() {
     Box(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -161,6 +194,16 @@ internal fun EventCardInfo(event: DeviceEvent) {
 
             Text(
                 text = event.time.toDateString(context),
+                color = primaryFontColor,
+                fontWeight = FontWeight.W600,
+                fontSize = 20.sp,
+                fontFamily = openSansFont
+            )
+
+            LazySpacer(height = 5)
+
+            Text(
+                text = event.time.toTimeString(),
                 color = primaryFontColor,
                 fontWeight = FontWeight.W600,
                 fontSize = 18.sp,
