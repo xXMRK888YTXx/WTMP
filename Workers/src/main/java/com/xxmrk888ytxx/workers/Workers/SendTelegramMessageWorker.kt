@@ -55,8 +55,12 @@ internal class SendTelegramMessageWorker(
 
 
     override suspend fun doWork(): Result {
-        telegramRepository.sendMessage(workerParams.inputData.getString(textDataKey) ?: " ")
-        return Result.success()
+        return try {
+            telegramRepository.sendMessage(workerParams.inputData.getString(textDataKey) ?: " ")
+            Result.success()
+        }catch (e:Exception) {
+            Result.retry()
+        }
     }
 
     companion object {

@@ -70,9 +70,14 @@ internal class SendPhotoTelegramWorker(
     internal fun getBitmapFromPath() = BitmapFactory.decodeFile(photoPath)
 
     override suspend fun doWork(): Result {
-        telegramRepository.sendPhoto(getBitmapFromPath(),
-            workerParams.inputData.getString(captionDataKey) ?: "")
-        return Result.success()
+        return try {
+            val bitmap = getBitmapFromPath()
+            telegramRepository.sendPhoto(bitmap,
+                workerParams.inputData.getString(captionDataKey) ?: "")
+            Result.success()
+        }catch (e:Exception) {
+            Result.retry()
+        }
     }
 
     companion object {

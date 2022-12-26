@@ -5,12 +5,11 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.WorkerParameters
-import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.DepsProvider.getDepsByApplication
 import com.xxmrk888ytxx.workers.DI.DaggerWorkerComponent
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import java.io.File
 
 class MakeImageWorker(
@@ -34,24 +33,38 @@ class MakeImageWorker(
         File(path)
     }
 
-    private fun isHaveCameraPermission() : Boolean {
+    private fun isHaveCameraPermission(): Boolean {
         return ContextCompat
             .checkSelfPermission(context, Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED
     }
 
     override suspend fun doWork(): Result {
-        if(!isHaveCameraPermission()) throw Exception("Application haven't permission to camera." +
+        if (!isHaveCameraPermission()) throw Exception("Application haven't permission to camera." +
                 "Request ${Manifest.permission.CAMERA} permission")
-        ApplicationScope.launch(Dispatchers.IO) {
+        try {
+            var result:Result? = null
+
             cameraManager.createPhoto(
                 imagePath,
                 onErrorCreate = {
                     throw it
+                },
+                onSuccess = {
+                    val output = Data
+                        .Builder()
+                        .putString(SendPhotoTelegramWorker.photoPathDataKey, imagePath.absolutePath)
+                        .build()
+                    result = Result.success(output)
                 }
             )
-        }.join()
-        return Result.success()
+
+            while (result == null) { delay(10) }
+
+            return result!!
+        }catch (e:Exception) {
+            return Result.retry()
+        }
     }
 
     companion object {
