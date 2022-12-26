@@ -29,7 +29,7 @@ import theme.openSansFont
 import theme.primaryFontColor
 
 @Composable
-fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: Navigator) {
+fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel, navigator: Navigator) {
     val screenState = eventDetailsViewModel.screenState.remember()
     Scaffold(
         topBar = {
@@ -37,9 +37,10 @@ fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: N
         },
         backgroundColor = Color.Transparent,
         floatingActionButton = {
-            if(screenState.value is ScreenState.ShowEvent
+            if (screenState.value is ScreenState.ShowEvent
                 &&
-            (screenState.value as ScreenState.ShowEvent).image != null) {
+                (screenState.value as ScreenState.ShowEvent).image != null
+            ) {
                 FloatingActionButton(
                     onClick = { eventDetailsViewModel.openInGalleryCurrentImage() },
                     backgroundColor = floatButtonColor
@@ -62,7 +63,7 @@ fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: N
                 top = paddings.calculateTopPadding()
             )
         ) {
-            when(screenState.value) {
+            when (screenState.value) {
 
                 is ScreenState.ShowEvent -> {
                     LazySpacer(30)
@@ -80,18 +81,17 @@ fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel,navigator: N
 
 @Composable
 fun CreatedImageViewer(eventDetailsViewModel: EventDetailsViewModel) {
-    if(eventDetailsViewModel.screenState.value is ScreenState.ShowEvent
+    if (eventDetailsViewModel.screenState.value is ScreenState.ShowEvent
         && (eventDetailsViewModel.screenState.value as ScreenState.ShowEvent).image != null
     ) {
         AsyncImage(
-            model = (eventDetailsViewModel.screenState.value as ScreenState.ShowEvent).image,
+            model = (eventDetailsViewModel.screenState.value as? ScreenState.ShowEvent)?.image,
             contentDescription = "",
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp)
         )
-    }
-    else {
+    } else {
         PhotoStub()
     }
 }
@@ -128,9 +128,9 @@ internal fun PhotoStub() {
 
 @Composable
 internal fun EventCardInfo(event: DeviceEvent) {
-    val defaultIcon:Painter = when(event) {
+    val defaultIcon: Painter = when (event) {
 
-        is DeviceEvent.AttemptUnlockDevice -> when(event) {
+        is DeviceEvent.AttemptUnlockDevice -> when (event) {
             is DeviceEvent.AttemptUnlockDevice.Failed -> painterResource(R.drawable.ic_phone_lock)
             is DeviceEvent.AttemptUnlockDevice.Succeeded -> painterResource(R.drawable.ic_lock_open)
         }
@@ -138,8 +138,8 @@ internal fun EventCardInfo(event: DeviceEvent) {
         is DeviceEvent.AppOpen -> painterResource(R.drawable.default_icon)
     }
 
-    val text = when(event) {
-        is DeviceEvent.AttemptUnlockDevice -> when(event) {
+    val text = when (event) {
+        is DeviceEvent.AttemptUnlockDevice -> when (event) {
             is DeviceEvent.AttemptUnlockDevice.Failed -> "Введён не верный пароль"
             is DeviceEvent.AttemptUnlockDevice.Succeeded -> "Устройство разблокировано"
         }
@@ -162,39 +162,29 @@ internal fun EventCardInfo(event: DeviceEvent) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(10.dp)
         ) {
-            Row(
-                Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                if(event is DeviceEvent.AppOpen) {
-                    AsyncImage(
-                        model = event.icon?.asImageBitmap() ?: R.drawable.default_icon,
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.size(40.dp)
-                    )
-                } else {
-                    Icon(
-                        painter = defaultIcon,
-                        contentDescription = "",
-                        tint = primaryFontColor,
-                        modifier = Modifier.size(25.dp)
-                    )
-                }
-
-                LazySpacer(width = 15)
-
-                Text (
-                    text = text,
-                    color = primaryFontColor,
-                    fontFamily = openSansFont,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.W600,
+            if (event is DeviceEvent.AppOpen) {
+                AsyncImage(
+                    model = event.icon?.asImageBitmap() ?: R.drawable.default_icon,
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(60.dp)
+                )
+            } else {
+                Icon(
+                    painter = defaultIcon,
+                    contentDescription = "",
+                    tint = primaryFontColor,
+                    modifier = Modifier.size(35.dp)
                 )
             }
 
-            LazySpacer(10)
+            Text(
+                text = text,
+                color = primaryFontColor,
+                fontFamily = openSansFont,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.W600,
+            )
 
             Text(
                 text = event.time.toDateString(context),
@@ -203,8 +193,6 @@ internal fun EventCardInfo(event: DeviceEvent) {
                 fontSize = 20.sp,
                 fontFamily = openSansFont
             )
-
-            LazySpacer(height = 5)
 
             Text(
                 text = event.time.toTimeString(),
@@ -220,13 +208,13 @@ internal fun EventCardInfo(event: DeviceEvent) {
 }
 
 @Composable
-internal fun ShowEventInfo(event:DeviceEvent) {
+internal fun ShowEventInfo(event: DeviceEvent) {
     EventCardInfo(event)
 
 }
 
 @Composable
-internal fun TopBar(navigator:Navigator) {
+internal fun TopBar(navigator: Navigator) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = navigator::navigateUp) {
             Icon(
