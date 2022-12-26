@@ -32,7 +32,7 @@ class WorkerManagerImpl @Inject constructor(
     override fun sendPhotoTelegram(
         botKey: String,
         userId: Long,
-        photoPath: String,
+        photoPath: String?,
         caption: String,
     ) {
         val data = Data.Builder()
@@ -61,5 +61,37 @@ class WorkerManagerImpl @Inject constructor(
             ExistingWorkPolicy.KEEP,worker)
     }
 
+    override suspend fun createMultiRequest(request:suspend WorkerManager.() -> Unit) {
+        val builder = MultiRequestBuilder()
+        request(builder)
+        if(!builder.isValidRequest) return
+        val sendMessageTelegramWorker = builder.sendMessageTelegramWorker
+        val sendPhotoTelegramWorker = builder.sendPhotoTelegramWorker
+        val createImageWorker = builder.createImageWorker
 
+        if(sendMessageTelegramWorker != null) {
+            WorkManager.getInstance(context)
+            WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
+                ExistingWorkPolicy.KEEP,sendMessageTelegramWorker)
+        }
+
+        if(sendPhotoTelegramWorker != null&&createImageWorker != null) {
+            WorkManager.getInstance(context)
+                .beginWith(createImageWorker)
+                .then(sendPhotoTelegramWorker)
+                .enqueue()
+        } else {
+            if(sendMessageTelegramWorker != null) {
+                WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
+                    ExistingWorkPolicy.KEEP,sendMessageTelegramWorker)
+            }
+
+            if(createImageWorker != null) {
+                WorkManager.getInstance(context).enqueueUniqueWork("MakeImageWorker",
+                    ExistingWorkPolicy.KEEP,createImageWorker)
+            }
+        }
+
+
+    }
 }
