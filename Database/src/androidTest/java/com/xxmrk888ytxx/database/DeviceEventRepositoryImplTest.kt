@@ -11,6 +11,7 @@ import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
 import com.xxmrk888ytxx.database.DI.DataBaseComponent
 import com.xxmrk888ytxx.database.Dao.AppOpenEventDao
 import com.xxmrk888ytxx.database.Dao.DeviceEventDao
+import com.xxmrk888ytxx.database.Dao.TrackedAppDao
 import com.xxmrk888ytxx.database.Dao.UnlockDeviceEvent
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -47,6 +48,8 @@ internal class DeviceEventRepositoryImplTest {
             override val appOpenEventDao: AppOpenEventDao = database.getAppOpenEventDao()
 
             override val unlockDeviceEvent: UnlockDeviceEvent = database.getUnlockDeviceEventDao()
+            override val trackedAppDao: TrackedAppDao
+                get() = TODO("Not yet implemented")
 
         }
 
