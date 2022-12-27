@@ -12,6 +12,6 @@ import androidx.room.PrimaryKey
     ]
 )
 data class TrackedAppEntity(
-    @PrimaryKey(autoGenerate = true) val id:Int,
+    @PrimaryKey(autoGenerate = true) val id:Int = 0,
     val packageName:String
 )

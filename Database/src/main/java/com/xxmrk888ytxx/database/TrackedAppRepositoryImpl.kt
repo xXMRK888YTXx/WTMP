@@ -27,12 +27,8 @@ class TrackedAppRepositoryImpl @Inject constructor(
 
     private val mutex = Mutex()
 
-    override fun getAllTrackedPackageNames(): Flow<String> {
-        return trackedAppDao.getAllTrackedApp().map {
-            mutex.withLock {
-                it.packageName
-            }
-        }
+    override fun getAllTrackedPackageNames(): Flow<List<String>> {
+        return trackedAppDao.getAllTrackedApp().map { it.map { it.packageName } }
     }
 
     override suspend fun addTrackedPackageName(packageName: String) {

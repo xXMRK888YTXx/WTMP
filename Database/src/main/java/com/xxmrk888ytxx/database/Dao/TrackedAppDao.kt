@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface TrackedAppDao {
 
     @Query("SELECT * FROM TrackedAppTable")
-    fun getAllTrackedApp() : Flow<TrackedAppEntity>
+    fun getAllTrackedApp() : Flow<List<TrackedAppEntity>>
 
     @Insert
     suspend fun addTrackedApp(trackedAppEntity: TrackedAppEntity)

@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface TrackedAppRepository {
 
-    fun getAllTrackedPackageNames() : Flow<String>
+    fun getAllTrackedPackageNames() : Flow<List<String>>
 
     suspend fun addTrackedPackageName(packageName: String)
 
