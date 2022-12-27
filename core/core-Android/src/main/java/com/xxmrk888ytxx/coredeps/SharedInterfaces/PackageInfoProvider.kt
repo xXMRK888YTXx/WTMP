@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.coredeps.SharedInterfaces
 
 import android.graphics.drawable.Drawable
+import com.xxmrk888ytxx.coredeps.models.AppInfo
 
 /**
  * [Ru]
@@ -16,5 +17,7 @@ interface PackageInfoProvider {
     fun getAppName(packageName:String) : String?
 
     fun getAppIcon(packageName:String) : Drawable?
+
+    suspend fun getAllApplicationInfo() : List<AppInfo>
 
 }

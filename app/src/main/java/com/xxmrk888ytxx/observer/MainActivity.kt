@@ -20,6 +20,8 @@ import com.xxmrk888ytxx.eventlistscreen.EventViewModel
 import com.xxmrk888ytxx.mainscreen.MainScreen
 import com.xxmrk888ytxx.mainscreen.MainViewModel
 import com.xxmrk888ytxx.observer.utils.appComponent
+import com.xxmrk888ytxx.selecttrackedappscreen.SelectTrackedAppScreen
+import com.xxmrk888ytxx.selecttrackedappscreen.SelectTrackedAppViewModel
 import com.xxmrk888ytxx.settingsscreen.SettingsScreen
 import com.xxmrk888ytxx.settingsscreen.SettingsViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
@@ -41,9 +43,10 @@ class MainActivity : ComponentActivity() {
      */
     @Inject lateinit var mainViewModel: Provider<MainViewModel>
     @Inject lateinit var settingsViewModel: Provider<SettingsViewModel>
-    @Inject lateinit var eventViewModel:Provider<EventViewModel>
+    @Inject lateinit var eventViewModel: Provider<EventViewModel>
     @Inject lateinit var telegramViewModel: Provider<TelegramViewModel>
     @Inject lateinit var eventDetailsViewModel: EventDetailsViewModel.Factory
+    @Inject lateinit var selectTrackedAppViewModel: Provider<SelectTrackedAppViewModel>
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +100,14 @@ class MainActivity : ComponentActivity() {
                         },
                         navigator = activityViewModel
                         )
+                    }
+
+                    composable(Screen.SelectTrackedAppScreen.route) {
+                        SelectTrackedAppScreen(
+                            selectTrackedAppViewModel = composeViewModel {
+                                selectTrackedAppViewModel.get()
+                            },
+                            navigator = activityViewModel)
                     }
 
                 }

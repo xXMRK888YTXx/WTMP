@@ -62,7 +62,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
 
             SettingsCategory(
                 "Отслеженание приложений",
-                getAppOpenObserverParams(settingsViewModel)
+                getAppOpenObserverParams(settingsViewModel,navigator)
             )
 
             LazySpacer(height = 15)

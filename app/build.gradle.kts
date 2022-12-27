@@ -63,6 +63,7 @@ dependencies {
     implementation(project(Project.Database))
     implementation(project(Project.EventDeviceTracker))
     implementation(project(Project.EventDetailsScreen))
+    implementation(project(Project.SelectTrackedAppScreen))
 
     kapt (Deps.Dagger.DaggerKaptCompiler)
 

@@ -39,4 +39,10 @@ internal class ActivityViewModel : ViewModel(),Navigator {
         navController?.getBackStackEntry(Screen.EventDetailsScreen.route)
             ?.arguments?.putInt(Navigator.EventDetailsScreenKey,eventId)
     }
+
+    override fun toSelectTrackedAppScreen() {
+        navController?.navigate(Screen.SelectTrackedAppScreen.route) {
+            launchSingleTop = true
+        }
+    }
 }

@@ -152,7 +152,10 @@ internal fun test(settingsViewModel: SettingsViewModel) : List<SettingsParamType
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
-internal fun getAppOpenObserverParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+internal fun getAppOpenObserverParams(
+    settingsViewModel: SettingsViewModel,
+    navigator: Navigator
+) : List<SettingsParamType> {
     val test = remember {
         mutableStateOf(false)
     }
@@ -167,8 +170,9 @@ internal fun getAppOpenObserverParams(settingsViewModel: SettingsViewModel) : Li
         SettingsParamType.Button(
             "Настройка отслеживания",
             R.drawable.ic_settings,
-            isVisible = test.value
-        ) {}
+            isVisible = test.value,
+            onClick = navigator::toSelectTrackedAppScreen
+        )
     )
 }
 

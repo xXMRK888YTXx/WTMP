@@ -1,10 +1,14 @@
 package com.xxmrk888ytxx.packageinfoprovider
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.toBitmap
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
+import com.xxmrk888ytxx.coredeps.models.AppInfo
 import javax.inject.Inject
+
 
 /**
  * [Ru]
@@ -20,7 +24,7 @@ import javax.inject.Inject
  * permission [android.permission.QUERY_ALL_PACKAGES] (already set in the module manifest)
  */
 class PackageInfoProviderImpl @Inject constructor(
-    private val context:Context
+    private val context: Context,
 ) : PackageInfoProvider {
 
     /**
@@ -63,6 +67,20 @@ class PackageInfoProviderImpl @Inject constructor(
         }catch (e: PackageManager.NameNotFoundException) {
             null
         }
+    }
+
+    @Suppress("DEPRECATION")
+    override suspend fun getAllApplicationInfo(): List<AppInfo> {
+        val packages: List<ApplicationInfo> =
+            context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+
+        return packages.filter { it.packageName != null }.map {
+            AppInfo(
+                appName = getAppName(it.packageName) ?: "error",
+                appPackageName = it.packageName,
+                appIcon = getAppIcon(it.packageName)?.toBitmap()
+            )
+        }.filter { it.appName != "error" }
     }
 
 }

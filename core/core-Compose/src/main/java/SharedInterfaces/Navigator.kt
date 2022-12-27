@@ -18,6 +18,8 @@ interface Navigator {
 
     fun toEventDetailsScreen(eventId:Int)
 
+    fun toSelectTrackedAppScreen()
+
     companion object {
         const val EventDetailsScreenKey = "EventDetailsScreenKey"
     }
