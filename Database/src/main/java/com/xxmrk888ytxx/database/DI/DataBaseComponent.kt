@@ -4,6 +4,7 @@ import android.content.Context
 import com.xxmrk888ytxx.database.DI.modules.DataBaseModule
 import com.xxmrk888ytxx.database.Dao.AppOpenEventDao
 import com.xxmrk888ytxx.database.Dao.DeviceEventDao
+import com.xxmrk888ytxx.database.Dao.TrackedAppDao
 import com.xxmrk888ytxx.database.Dao.UnlockDeviceEvent
 import dagger.BindsInstance
 import dagger.Component
@@ -26,4 +27,6 @@ internal interface DataBaseComponent {
     val appOpenEventDao:AppOpenEventDao
 
     val unlockDeviceEvent:UnlockDeviceEvent
+
+    val trackedAppDao:TrackedAppDao
 }

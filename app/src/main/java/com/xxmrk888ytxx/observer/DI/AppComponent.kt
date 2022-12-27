@@ -31,7 +31,8 @@ import javax.inject.Provider
         SucceededUnlockTrackedConfigModule::class,
         ImageRepositoryModule::class,
         ImageProviderModule::class,
-        HandleEventModule::class
+        HandleEventModule::class,
+        TrackedAppRepositoryModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
