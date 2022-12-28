@@ -3,17 +3,19 @@ package com.xxmrk888ytxx.settingsscreen
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.coredeps.Const.DEVELOPER_EMAIL
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
+import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
 import kotlinx.coroutines.Dispatchers
@@ -28,9 +30,10 @@ class SettingsViewModel @Inject constructor(
     private val failedUnlockTrackedConfigProvider: FailedUnlockTrackedConfigProvider,
     private val succeededUnlockTrackedConfigChanger: SucceededUnlockTrackedConfigChanger,
     private val succeededUnlockTrackedConfigProvider: SucceededUnlockTrackedConfigProvider,
-    private val telegramConfigProvider: TelegramConfigProvider
+    private val telegramConfigProvider: TelegramConfigProvider,
+    private val appOpenConfigProvider: AppOpenConfigProvider,
+    private val appOpenConfigChanger: AppOpenConfigChanger,
 ) : ViewModel() {
-    val testParam = mutableStateOf(false)
 
     @MustBeLocalization
     internal fun sendIntentToWriteDeveloper(context: Context) {
@@ -42,7 +45,7 @@ class SettingsViewModel @Inject constructor(
         applicationInfoProvider.applicationVersion
     }
 
-    internal val isTelegramConfigSetup : Flow<Boolean>
+    internal val isTelegramConfigSetup: Flow<Boolean>
         get() = telegramConfigProvider.telegramConfig.map { it != null }
 
     internal val failedUnlockTrackedConfig: Flow<FailedUnlockTrackedConfig>
@@ -51,52 +54,95 @@ class SettingsViewModel @Inject constructor(
     internal val succeededUnlockTrackedConfig: Flow<SucceededUnlockTrackedConfig>
         get() = succeededUnlockTrackedConfigProvider.config
 
-    fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
+    internal val appOpenConfig: Flow<AppOpenConfig>
+        get() = appOpenConfigProvider.config
+
+    internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateIsTracked(state)
         }
     }
 
-    fun updateMakePhotoFailedUnlockTrackedConfig(state: Boolean) {
+    internal fun updateMakePhotoFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateMakePhoto(state)
         }
     }
 
-    fun updateNotifyInTelegramFailedUnlockTrackedConfig(state: Boolean) {
+    internal fun updateNotifyInTelegramFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateNotifyInTelegram(state)
         }
     }
 
-    fun updateJoinPhotoToTelegramNotifyFailedUnlockTrackedConfig(state: Boolean) {
+    internal fun updateJoinPhotoToTelegramNotifyFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateJoinPhotoToTelegramNotify(state)
         }
     }
 
-    fun updateIsTrackedSucceededUnlockTrackedConfig(state: Boolean) {
+    internal fun updateIsTrackedSucceededUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateIsTracked(state)
         }
     }
 
-    fun updateMakePhotoSucceededUnlockTrackedConfig(state: Boolean) {
+    internal fun updateMakePhotoSucceededUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateMakePhoto(state)
         }
     }
 
-    fun updateNotifyInTelegramSucceededUnlockTrackedConfig(state: Boolean) {
+    internal fun updateNotifyInTelegramSucceededUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateNotifyInTelegram(state)
         }
     }
 
-    fun updateJoinPhotoToTelegramNotifySucceededUnlockTrackedConfig(state: Boolean) {
+    internal fun updateJoinPhotoToTelegramNotifySucceededUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateJoinPhotoToTelegramNotify(state)
         }
     }
 
+    internal fun updateIsTrackedAppOpenConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appOpenConfigChanger.updateIsTracked(state)
+        }
+    }
+
+    internal fun updateMakePhotoAppOpenConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appOpenConfigChanger.updateMakePhoto(state)
+        }
+    }
+
+    internal fun updateNotifyInTelegramAppOpenConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appOpenConfigChanger.updateNotifyInTelegram(state)
+        }
+    }
+
+    internal fun updateJoinPhotoToTelegramNotifyAppOpenConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appOpenConfigChanger.updateJoinPhotoToTelegramNotify(state)
+        }
+    }
+
+    internal var lastFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
+        FailedUnlockTrackedConfig(isTracked = false,
+            makePhoto = false,
+            notifyInTelegram = false,
+            joinPhotoToTelegramNotify = false)
+
+    internal var lastSucceededUnlockTrackedConfig: SucceededUnlockTrackedConfig =
+        SucceededUnlockTrackedConfig(isTracked = false,
+            makePhoto = false,
+            notifyInTelegram = false,
+            joinPhotoToTelegramNotify = false)
+
+    internal var lastAppOpenConfig: AppOpenConfig = AppOpenConfig(isTracked = false,
+        makePhoto = false,
+        notifyInTelegram = false,
+        joinPhotoToTelegramNotify = false)
 }
