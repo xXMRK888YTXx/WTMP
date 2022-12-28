@@ -3,16 +3,20 @@ package com.xxmrk888ytxx.selecttrackedappscreen
 import MutliUse.LazySpacer
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -59,7 +63,14 @@ fun SelectTrackedAppScreen(
                     (screenState.value as ScreenState.ShopAppListState).appList
                         .filterSearch(searchList.value)
                 ) { appInfo ->
-                    AppItem(appInfo)
+                    val trackedPackageNames = selectTrackedAppViewModel
+                        .trackedPackageNames.collectAsState(listOf())
+                    AppItem(
+                        appInfo = appInfo,
+                        trackedPackageNames = trackedPackageNames.value,
+                        onEnableTrack = selectTrackedAppViewModel::enableTrack,
+                        onDisableTrack = selectTrackedAppViewModel::disableTrack
+                    )
                 }
             }
         }
@@ -96,10 +107,22 @@ internal fun TopBar(navigator: Navigator) {
 }
 
 @Composable
-internal fun AppItem(appInfo: AppInfo) {
+internal fun AppItem(
+    appInfo: AppInfo,
+    trackedPackageNames:List<String>,
+    onEnableTrack:(packageName:String) -> Unit,
+    onDisableTrack:(packageName:String) -> Unit,
+) {
+    val onChangeState:() -> Unit = {
+        if(appInfo.appPackageName in trackedPackageNames) {
+            onDisableTrack(appInfo.appPackageName)
+        }
+        else onEnableTrack(appInfo.appPackageName)
+    }
     Column(Modifier
         .fillMaxWidth()
-        .padding(10.dp)) {
+        .padding(10.dp)
+        .clickable(onClick = onChangeState)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -126,7 +149,16 @@ internal fun AppItem(appInfo: AppInfo) {
             }
 
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-                Checkbox(checked = false, onCheckedChange = {}, modifier = Modifier)
+                Checkbox(
+                    checked = appInfo.appPackageName in trackedPackageNames,
+                    onCheckedChange = {
+                        onChangeState()
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = checkedSettingsSwitch,
+                        uncheckedColor = checkedSettingsSwitch
+                    )
+                )
             }
 
         }
@@ -142,6 +174,7 @@ internal fun AppItem(appInfo: AppInfo) {
 @Composable
 internal fun SearchLine(selectTrackedAppViewModel: SelectTrackedAppViewModel) {
     val searchListTest = selectTrackedAppViewModel.searchLineTest.remember()
+    val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = searchListTest.value,
         onValueChange = {
@@ -174,5 +207,10 @@ internal fun SearchLine(selectTrackedAppViewModel: SelectTrackedAppViewModel) {
             fontWeight = FontWeight.W600,
             fontFamily = openSansFont,
         ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus()
+            }
+        )
     )
 }
