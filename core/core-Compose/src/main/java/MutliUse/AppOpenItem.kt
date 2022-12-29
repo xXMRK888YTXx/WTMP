@@ -67,7 +67,7 @@ fun AppOpenItem(item: DeviceEvent.AppOpen,navigator: Navigator) {
                 )
 
                 Text(
-                    text = item.appName ?: "Ошибка получения имени",
+                    text = item.appName ?: item.packageName,
                     fontFamily = openSansFont,
                     fontSize = 16.sp,
                     color = timeTextColor,

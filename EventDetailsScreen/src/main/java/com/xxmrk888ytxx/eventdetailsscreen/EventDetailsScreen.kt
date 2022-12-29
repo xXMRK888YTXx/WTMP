@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -144,7 +143,7 @@ internal fun EventCardInfo(event: DeviceEvent) {
             is DeviceEvent.AttemptUnlockDevice.Succeeded -> "Устройство разблокировано"
         }
 
-        is DeviceEvent.AppOpen -> event.appName ?: "Не известное имя"
+        is DeviceEvent.AppOpen -> event.appName ?: event.packageName
     }
     val context = LocalContext.current
 
@@ -164,7 +163,7 @@ internal fun EventCardInfo(event: DeviceEvent) {
         ) {
             if (event is DeviceEvent.AppOpen) {
                 AsyncImage(
-                    model = event.icon?.asImageBitmap() ?: R.drawable.default_icon,
+                    model = event.icon ?: R.drawable.default_icon,
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.size(60.dp)
