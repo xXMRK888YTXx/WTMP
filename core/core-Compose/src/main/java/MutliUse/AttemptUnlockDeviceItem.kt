@@ -45,7 +45,11 @@ import theme.primaryFontColor
 
 @Composable
 @MustBeLocalization
-fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice,navigator: Navigator) {
+fun AttemptUnlockDeviceItem (
+    item: DeviceEvent.AttemptUnlockDevice,
+    navigator: Navigator,
+    onDelete:() -> Unit
+) {
 
     val itemText = if(item is DeviceEvent.AttemptUnlockDevice.Failed) "Введён не верный пароль"
     else "Устройство разблокировано"
@@ -57,7 +61,8 @@ fun AttemptUnlockDeviceItem(item: DeviceEvent.AttemptUnlockDevice,navigator: Nav
         Color.Green,
         onClick = {
             navigator.toEventDetailsScreen(item.eventId)
-        }
+        },
+        onDelete = onDelete
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 

@@ -40,9 +40,10 @@ import theme.*
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @MustBeLocalization
-fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
+fun MainScreen(mainViewModel: MainViewModel, navigator: Navigator) {
     val isEnable = mainViewModel.isEnable.remember()
     val eventList = mainViewModel.dayEventList.collectAsState(listOf())
+    val isRemoveDialogShow = mainViewModel.isRemoveDialogShow.remember()
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .padding(5.dp)) {
@@ -70,17 +71,21 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
                 modifier = Modifier.padding(start = 10.dp)
             )
         }
-        if(eventList.value.isNotEmpty()) {
+        if (eventList.value.isNotEmpty()) {
             items(eventList.value, key = { it.eventId }) { event ->
                 Box(Modifier.animateItemPlacement()) {
-                    when(event) {
-                        is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,navigator)
-                        is DeviceEvent.AppOpen -> AppOpenItem(event,navigator)
+                    val onDeleteEvent = {
+                        mainViewModel.showRemoveEventDialog(event.eventId)
+                    }
+                    when (event) {
+                        is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,
+                            navigator,
+                            onDeleteEvent)
+                        is DeviceEvent.AppOpen -> AppOpenItem(event, navigator, onDeleteEvent)
                     }
                 }
             }
-        }
-        else {
+        } else {
             item {
                 LazySpacer(5)
                 EventListStub()
@@ -94,6 +99,13 @@ fun MainScreen(mainViewModel: MainViewModel,navigator: Navigator) {
             LazySpacer(10)
         }
 
+    }
+    if (isRemoveDialogShow.value.first) {
+        RemoveEventDialog(onDismiss = mainViewModel::hideRemoveEventDialog,
+            onRemove = {
+                mainViewModel.removeEvent(isRemoveDialogShow.value.second)
+                mainViewModel.hideRemoveEventDialog()
+            })
     }
 }
 
@@ -114,11 +126,11 @@ internal fun EventListStub() {
 
 @Composable
 @MustBeLocalization
-internal fun EnableAppButton(isEnable:Boolean,onClick:() -> Unit) {
-    val fontColor = if(isEnable) disableAppButtonFontColor else enableAppButtonFontColor
+internal fun EnableAppButton(isEnable: Boolean, onClick: () -> Unit) {
+    val fontColor = if (isEnable) disableAppButtonFontColor else enableAppButtonFontColor
 
     GradientButton(
-        backgroundGradient = if(isEnable) disableAppButtonColor else enableAppButtonColor,
+        backgroundGradient = if (isEnable) disableAppButtonColor else enableAppButtonColor,
         shape = RoundedCornerShape(20.dp),
         onClick = onClick,
         modifier = Modifier
@@ -144,7 +156,7 @@ internal fun EnableAppButton(isEnable:Boolean,onClick:() -> Unit) {
             LazySpacer(width = 10)
 
             Text(
-                text = if(isEnable) "Выключить" else "Включить",
+                text = if (isEnable) "Выключить" else "Включить",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W600,
                 fontFamily = openSansFont,
@@ -244,10 +256,10 @@ internal fun StatsCard() {
 }
 
 @Composable
-internal fun StatsEvent(colorCircle:Color,statsName:String,statsCount:Int) {
+internal fun StatsEvent(colorCircle: Color, statsName: String, statsCount: Int) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Canvas(modifier = Modifier, onDraw = {
-            drawCircle(colorCircle,10f)
+            drawCircle(colorCircle, 10f)
         })
         LazySpacer(width = 10)
         Text(

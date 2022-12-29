@@ -1,7 +1,8 @@
 package MutliUse
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -30,10 +31,12 @@ import theme.cardColor
  *
  * @param content - internal content of this layout
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BaseEventCard(
     colorLine: Color,
     onClick:(() -> Unit)? = null,
+    onDelete:() -> Unit,
     content:@Composable ColumnScope.() -> Unit,
 ) {
     Card(
@@ -47,9 +50,13 @@ fun BaseEventCard(
                 bottom = 10.dp
             )
             .heightIn(min = 100.dp)
-            .clickable(enabled = onClick != null) {
-                onClick?.invoke()
-            }
+            .combinedClickable(enabled = onClick != null,
+                onClick = {
+                    onClick?.invoke()
+            }, onLongClick = {
+                onDelete()
+            })
+
         ,
         shape = RoundedCornerShape(20.dp),
     ) {

@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.eventlistscreen
 import MutliUse.AppOpenItem
 import MutliUse.AttemptUnlockDeviceItem
 import MutliUse.LazySpacer
+import MutliUse.RemoveEventDialog
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
+import remember
 import theme.openSansFont
 import theme.primaryFontColor
 
@@ -43,7 +45,7 @@ import theme.primaryFontColor
 @Composable
 fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
     val eventList = eventViewModel.eventList.collectAsState(mapOf())
-
+    val isRemoveDialogShow = eventViewModel.isRemoveDialogShow.remember()
     LazyColumn(Modifier.fillMaxSize()) {
 
         item {
@@ -60,7 +62,9 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
                             fontSize = 18.sp,
                             fontStyle = FontStyle.Normal,
                             color = primaryFontColor.copy(0.8f),
-                            modifier = Modifier.fillMaxWidth().animateItemPlacement(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItemPlacement(),
                             textAlign = TextAlign.Center
                         )
                         LazySpacer(height = 5)
@@ -68,15 +72,24 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
                 }
                 items(dayEvents.value,key = {it.eventId}) { event ->
                     Box(Modifier.animateItemPlacement()) {
+                        val onDeleteEvent = {
+                            eventViewModel.showRemoveEventDialog(event.eventId)
+                        }
                         when(event) {
-                            is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,navigator)
-                            is DeviceEvent.AppOpen -> AppOpenItem(event,navigator)
+                            is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,navigator,onDeleteEvent)
+                            is DeviceEvent.AppOpen -> AppOpenItem(event,navigator,onDeleteEvent)
                         }
                     }
                 }
             }
         }
         else item { ListStub() }
+    }
+    if(isRemoveDialogShow.value.first) {
+        RemoveEventDialog(onDismiss = eventViewModel::hideRemoveEventDialog) {
+            eventViewModel.removeEvent(isRemoveDialogShow.value.second)
+            eventViewModel.hideRemoveEventDialog()
+        }
     }
 }
 

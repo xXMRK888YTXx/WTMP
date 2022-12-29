@@ -35,13 +35,18 @@ import theme.timeTextColor
 
 @Composable
 @MustBeLocalization
-fun AppOpenItem(item: DeviceEvent.AppOpen,navigator: Navigator) {
+fun AppOpenItem(
+    item: DeviceEvent.AppOpen,
+    navigator: Navigator,
+    onDelete:() -> Unit
+) {
 
     BaseEventCard(
         colorLine = Color.Cyan,
         onClick = {
             navigator.toEventDetailsScreen(item.eventId)
-        }
+        },
+        onDelete = onDelete
     ) {
 
         Row(verticalAlignment = Alignment.CenterVertically) {

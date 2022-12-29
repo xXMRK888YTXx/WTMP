@@ -2,6 +2,8 @@ package com.xxmrk888ytxx.eventlistscreen
 
 import android.content.Context
 import android.graphics.Bitmap
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import toState
 import javax.inject.Inject
 
 class EventViewModel @Inject constructor(
@@ -80,6 +84,24 @@ class EventViewModel @Inject constructor(
         }
 
         return event.copy(appName = appName.await(), icon = icon.await())
+    }
+
+    private val _isRemoveDialogShow: MutableState<Pair<Boolean, Int>> = mutableStateOf(Pair(false,0))
+
+    internal val isRemoveDialogShow = _isRemoveDialogShow.toState()
+
+    internal fun showRemoveEventDialog(eventId:Int) {
+        _isRemoveDialogShow.value = Pair(true,eventId)
+    }
+
+    internal fun hideRemoveEventDialog() {
+        _isRemoveDialogShow.value = Pair(false,0)
+    }
+
+    internal fun removeEvent(eventId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deviceEventRepository.removeEvent(eventId)
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.mainscreen
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import toState
 import java.util.*
 import javax.inject.Inject
 
@@ -20,6 +23,24 @@ class MainViewModel @Inject constructor(
     private val deviceEventRepository: DeviceEventRepository
 ) : ViewModel() {
     val isEnable = mutableStateOf(true)
+
+    private val _isRemoveDialogShow:MutableState<Pair<Boolean,Int>> = mutableStateOf(Pair(false,0))
+
+    internal val isRemoveDialogShow = _isRemoveDialogShow.toState()
+
+    internal fun showRemoveEventDialog(eventId:Int) {
+        _isRemoveDialogShow.value = Pair(true,eventId)
+    }
+
+    internal fun hideRemoveEventDialog() {
+        _isRemoveDialogShow.value = Pair(false,0)
+    }
+
+    internal fun removeEvent(eventId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deviceEventRepository.removeEvent(eventId)
+        }
+    }
 
 
     private val startDayTime : Long
