@@ -37,6 +37,5 @@ import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 )
 internal data class AppOpenEventEntity(
     @PrimaryKey val eventId:Int,
-    val packageName:String,
-    val appName:String?
+    val packageName:String
 )

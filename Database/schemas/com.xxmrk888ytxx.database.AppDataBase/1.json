@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "161718157a18bb7997a66f9def2d50f2",
+    "identityHash": "7073ad47fabbd52048e9e00a5552947d",
     "entities": [
       {
         "tableName": "DeviceEvent",
@@ -96,7 +96,7 @@
       },
       {
         "tableName": "AppOpenEvents",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, `appName` TEXT, PRIMARY KEY(`eventId`), FOREIGN KEY(`eventId`) REFERENCES `DeviceEvent`(`eventId`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`eventId` INTEGER NOT NULL, `packageName` TEXT NOT NULL, PRIMARY KEY(`eventId`), FOREIGN KEY(`eventId`) REFERENCES `DeviceEvent`(`eventId`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "eventId",
@@ -109,12 +109,6 @@
             "columnName": "packageName",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "appName",
-            "columnName": "appName",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -197,7 +191,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '161718157a18bb7997a66f9def2d50f2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7073ad47fabbd52048e9e00a5552947d')"
     ]
   }
 }

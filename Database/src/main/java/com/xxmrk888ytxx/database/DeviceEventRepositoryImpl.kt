@@ -115,8 +115,7 @@ class DeviceEventRepositoryImpl @Inject constructor(
     private suspend fun DeviceEvent.AppOpen.mapToEntity(eventId: Int): AppOpenEventEntity {
         return AppOpenEventEntity(
             eventId = eventId,
-            packageName = this.packageName,
-            appName = this.appName
+            packageName = this.packageName
         )
     }
 
@@ -125,7 +124,7 @@ class DeviceEventRepositoryImpl @Inject constructor(
     ): DeviceEvent.AppOpen {
         return DeviceEvent.AppOpen(
             eventId = eventInfo.eventId,
-            appName = appName,
+            appName = null,
             packageName = packageName,
             icon = null,
             time = eventInfo.time
