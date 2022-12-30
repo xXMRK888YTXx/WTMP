@@ -44,15 +44,18 @@ fun MainScreen(mainViewModel: MainViewModel, navigator: Navigator) {
     val appState = mainViewModel.appState.collectAsState(false)
     val eventList = mainViewModel.dayEventList.collectAsState(listOf())
     val isRemoveDialogShow = mainViewModel.isRemoveDialogShow.remember()
+    val isPermissionDialogShow = mainViewModel.isShowRequestPermissionDialog.remember()
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .padding(5.dp)) {
         item { TopBar(navigator) }
 
         item {
-            EnableAppButton(isEnable = appState.value, onClick = {
-
-            })
+            EnableAppButton(
+                isEnable = appState.value,
+                onClick = if(!appState.value) mainViewModel::showRequestPermissionDialog
+                else mainViewModel::disableApp
+            )
         }
 
 //        item {
@@ -106,6 +109,10 @@ fun MainScreen(mainViewModel: MainViewModel, navigator: Navigator) {
                 mainViewModel.removeEvent(isRemoveDialogShow.value.second)
                 mainViewModel.hideRemoveEventDialog()
             })
+    }
+
+    if(isPermissionDialogShow.value) {
+        PermissionDialog(mainViewModel.requestedPermission,mainViewModel::hideRequestPermissionDialog)
     }
 }
 

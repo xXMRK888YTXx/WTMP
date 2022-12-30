@@ -29,6 +29,7 @@ fun GradientButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     shape:Shape = MaterialTheme.shapes.small,
+    enabled:Boolean = true,
     buttonContent:@Composable () -> Unit
 ) {
     Button(
@@ -36,6 +37,7 @@ fun GradientButton(
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
         contentPadding = PaddingValues(),
         onClick = { onClick() },
+        enabled = enabled,
         shape = shape
     ) {
         Box(
