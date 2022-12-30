@@ -21,7 +21,8 @@ class EventDeviceTrackerCallbackTest {
 
     private val eventDeviceTrackerCallback
     :EventDeviceTrackerCallback = EventDeviceTrackerCallbackImpl(
-        deviceEventRepository, succeededUnlockTrackedConfigProvider, handleEventUseCase
+        deviceEventRepository, succeededUnlockTrackedConfigProvider, handleEventUseCase, mockk(relaxed = true),
+        mockk(relaxed = true),mockk(relaxed = true)
     )
 
     @Test
