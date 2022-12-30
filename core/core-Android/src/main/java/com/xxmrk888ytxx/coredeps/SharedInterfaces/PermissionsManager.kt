@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.coredeps.SharedInterfaces
 
+import android.app.Activity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 
@@ -9,7 +10,7 @@ interface PermissionsManager {
 
     fun requestAccessibilityPermissions()
 
-    fun requestAdminPermissions()
+    fun requestAdminPermissions(activity: Activity)
 
     fun isCameraPermissionGranted() : Boolean
 

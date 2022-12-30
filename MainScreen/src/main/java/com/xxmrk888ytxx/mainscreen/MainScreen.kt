@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import remember
 import theme.*
@@ -40,7 +42,14 @@ import theme.*
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 @MustBeLocalization
-fun MainScreen(mainViewModel: MainViewModel, navigator: Navigator) {
+fun MainScreen(
+    mainViewModel: MainViewModel,
+    navigator: Navigator,
+    activityLifecycleRegister: ActivityLifecycleRegister
+) {
+    LaunchedEffect(key1 = activityLifecycleRegister, block = {
+        mainViewModel.registerInActivityLifecycle(activityLifecycleRegister)
+    })
     val appState = mainViewModel.appState.collectAsState(false)
     val eventList = mainViewModel.dayEventList.collectAsState(listOf())
     val isRemoveDialogShow = mainViewModel.isRemoveDialogShow.remember()

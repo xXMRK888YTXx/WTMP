@@ -1,5 +1,7 @@
 package com.xxmrk888ytxx.mainscreen
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Bitmap
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -23,6 +25,7 @@ import toState
 import java.util.*
 import javax.inject.Inject
 
+@SuppressLint("StaticFieldLeak")
 class MainViewModel @Inject constructor(
     private val packageInfoProvider: PackageInfoProvider,
     private val deviceEventRepository: DeviceEventRepository,
@@ -30,6 +33,11 @@ class MainViewModel @Inject constructor(
     private val permissionsManager: PermissionsManager,
     private val appStateChanger: AppStateChanger
 ) : ViewModel(),ActivityLifecycleCallback {
+
+    private var activityLifecycleRegister:ActivityLifecycleRegister? = null
+
+    private var activity:Activity? = null
+
     private val cameraPermissionState = MutableStateFlow(false)
 
     private val adminPermissionState = MutableStateFlow(false)
@@ -48,6 +56,21 @@ class MainViewModel @Inject constructor(
 
     override fun onResume() {
         checkPermission()
+    }
+
+    override fun onRegister(activity: Activity) {
+        super.onRegister(activity)
+        this.activity = activity
+    }
+
+    override fun onCreate(activity: Activity) {
+        super.onCreate(activity)
+        this.activity = activity
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        this.activity = null
     }
 
     internal fun showRemoveEventDialog(eventId:Int) {
@@ -140,8 +163,10 @@ class MainViewModel @Inject constructor(
                 RequestedPermission(
                     "Доступ к администраторам устройства",
                     adminPermissionState,
-                    permissionsManager::requestAdminPermissions
-                )
+                ) {
+                    val activity = activity ?: return@RequestedPermission
+                    permissionsManager.requestAdminPermissions(activity)
+                }
             )
         }
 
@@ -180,11 +205,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other?.javaClass?.name == this.javaClass.name
+    fun registerInActivityLifecycle(activityLifecycleRegister: ActivityLifecycleRegister) {
+        this.activityLifecycleRegister = activityLifecycleRegister
+        activityLifecycleRegister.registerCallback(this)
     }
 
-    override fun hashCode(): Int {
-        return this.javaClass.hashCode()
+    override fun onCleared() {
+        activityLifecycleRegister?.unregisterCallback(this)
+        activity = null
+        activityLifecycleRegister = null
+        super.onCleared()
     }
 }

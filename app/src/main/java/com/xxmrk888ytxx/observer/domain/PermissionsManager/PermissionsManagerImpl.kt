@@ -2,8 +2,9 @@ package com.xxmrk888ytxx.observer.domain.PermissionsManager
 
 import android.Manifest
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.Activity
 import android.app.admin.DevicePolicyManager
-import android.app.admin.DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,11 +13,13 @@ import android.view.accessibility.AccessibilityManager
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
+import com.xxmrk888ytxx.adminreceiver.AdminReceiver
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import javax.inject.Inject
 
+
 class PermissionsManagerImpl @Inject constructor(
-    private val context: Context
+    private val context: Context,
 ) : PermissionsManager {
 
     @OptIn(ExperimentalPermissionsApi::class)
@@ -30,10 +33,13 @@ class PermissionsManagerImpl @Inject constructor(
         })
     }
 
-    override fun requestAdminPermissions() {
-        context.startActivity(Intent(ACTION_ADD_DEVICE_ADMIN).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        })
+    override fun requestAdminPermissions(activity: Activity) {
+        val component = ComponentName(context,AdminReceiver::class.java)
+        val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, component)
+        // Start the add device admin activity
+        // Start the add device admin activity
+        activity.startActivityForResult(intent, 5)
     }
 
     override fun isCameraPermissionGranted(): Boolean {
