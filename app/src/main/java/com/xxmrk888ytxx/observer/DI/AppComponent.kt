@@ -33,7 +33,8 @@ import javax.inject.Provider
         ImageProviderModule::class,
         HandleEventModule::class,
         TrackedAppRepositoryModule::class,
-        AppOpenConfigManagerModule::class
+        AppOpenConfigManagerModule::class,
+        AppStateManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
