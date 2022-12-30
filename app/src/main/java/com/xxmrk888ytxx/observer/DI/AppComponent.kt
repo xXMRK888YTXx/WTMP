@@ -34,7 +34,9 @@ import javax.inject.Provider
         HandleEventModule::class,
         TrackedAppRepositoryModule::class,
         AppOpenConfigManagerModule::class,
-        AppStateManagerModule::class
+        AppStateManagerModule::class,
+        PermissionsManagerModule::class,
+        ActivityLifecycleCallbackModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

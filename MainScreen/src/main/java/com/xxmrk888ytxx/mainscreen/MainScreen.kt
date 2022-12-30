@@ -41,7 +41,7 @@ import theme.*
 @Composable
 @MustBeLocalization
 fun MainScreen(mainViewModel: MainViewModel, navigator: Navigator) {
-    val isEnable = mainViewModel.isEnable.remember()
+    val appState = mainViewModel.appState.collectAsState(false)
     val eventList = mainViewModel.dayEventList.collectAsState(listOf())
     val isRemoveDialogShow = mainViewModel.isRemoveDialogShow.remember()
     LazyColumn(modifier = Modifier
@@ -50,8 +50,8 @@ fun MainScreen(mainViewModel: MainViewModel, navigator: Navigator) {
         item { TopBar(navigator) }
 
         item {
-            EnableAppButton(isEnable = isEnable.value, onClick = {
-                mainViewModel.isEnable.value = !mainViewModel.isEnable.value
+            EnableAppButton(isEnable = appState.value, onClick = {
+
             })
         }
 

@@ -1,11 +1,14 @@
 package com.xxmrk888ytxx.mainscreen
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
@@ -20,9 +23,15 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val packageInfoProvider: PackageInfoProvider,
-    private val deviceEventRepository: DeviceEventRepository
-) : ViewModel() {
-    val isEnable = mutableStateOf(true)
+    private val deviceEventRepository: DeviceEventRepository,
+    private val appStateProvider: AppStateProvider
+) : ViewModel(),ActivityLifecycleCallback {
+
+    override fun onResume() {
+        Log.d("MyLog","onResume")
+    }
+
+    internal val appState = appStateProvider.isAppEnable
 
     private val _isRemoveDialogShow:MutableState<Pair<Boolean,Int>> = mutableStateOf(Pair(false,0))
 
@@ -96,5 +105,13 @@ class MainViewModel @Inject constructor(
         }
 
         return event.copy(appName = appName.await(), icon = icon.await())
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other?.javaClass?.name == this.javaClass.name
+    }
+
+    override fun hashCode(): Int {
+        return this.javaClass.hashCode()
     }
 }

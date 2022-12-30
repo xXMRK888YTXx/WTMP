@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
 import com.xxmrk888ytxx.eventlistscreen.EventListScreen
@@ -32,6 +33,10 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 class MainActivity : ComponentActivity() {
+
+
+    var activityLifecycleCallbacks:Set<@JvmSuppressWildcards ActivityLifecycleCallback>? = null
+        @Inject set
 
     private val activityViewModel:ActivityViewModel by viewModels()
     //Screens ViewModels
@@ -112,6 +117,44 @@ class MainActivity : ComponentActivity() {
 
                 }
             }
+        }
+        activityLifecycleCallbacks?.forEach {
+            it.onCreate()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        activityLifecycleCallbacks?.forEach {
+            it.onStart()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activityLifecycleCallbacks?.forEach {
+            it.onResume()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activityLifecycleCallbacks?.forEach {
+            it.onPause()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activityLifecycleCallbacks?.forEach {
+            it.onStop()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activityLifecycleCallbacks?.forEach {
+            it.onDestroy()
         }
     }
 }

@@ -104,4 +104,8 @@ object Deps {
             const val RoomTest = "androidx.room:room-testing:$version"
         }
     }
+    object Permissions {
+        const val permission = "com.google.accompanist:accompanist-permissions:0.26.2-beta"
+    }
+
 }

@@ -50,6 +50,7 @@ dependencies {
     api (Deps.ViewModel.ViewModelKotlin)
     api (Deps.Dagger.DaggerCore)
     api(Deps.Coroutines.CoroutinesAndroid)
+    api (Deps.Permissions.permission)
     api(files("libs/AndroidExtension.aar"))
 
     implementation(Deps.Moshi.moshi)
