@@ -35,8 +35,7 @@ import javax.inject.Provider
         TrackedAppRepositoryModule::class,
         AppOpenConfigManagerModule::class,
         AppStateManagerModule::class,
-        PermissionsManagerModule::class,
-        ActivityLifecycleCallbackModule::class
+        PermissionsManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

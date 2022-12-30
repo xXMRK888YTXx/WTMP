@@ -1,10 +1,15 @@
 package com.xxmrk888ytxx.observer
 
 import SharedInterfaces.Navigator
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
 
 internal class ActivityViewModel : ViewModel(),Navigator {
+
+    private val activityCallbacks = mutableListOf<ActivityLifecycleCallback>()
+
     var navController:NavController? = null
 
     override fun navigateUp() {
@@ -44,5 +49,38 @@ internal class ActivityViewModel : ViewModel(),Navigator {
         navController?.navigate(Screen.SelectTrackedAppScreen.route) {
             launchSingleTop = true
         }
+    }
+
+    fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback,activity: Activity) {
+        activityLifecycleCallback.onRegister(activity)
+        activityCallbacks.add(activityLifecycleCallback)
+    }
+
+    fun onCreate(activity: Activity) {
+        activityCallbacks.forEach { it.onCreate(activity) }
+    }
+
+    fun onStart() {
+        activityCallbacks.forEach { it.onStart() }
+    }
+
+    fun onResume() {
+        activityCallbacks.forEach { it.onResume() }
+    }
+
+    fun onPause() {
+        activityCallbacks.forEach { it.onPause() }
+    }
+
+    fun onStop() {
+        activityCallbacks.forEach { it.onStop() }
+    }
+
+    fun onDestroy() {
+        activityCallbacks.forEach { it.onDestroy() }
+    }
+
+    fun unregisterCallback(activityLifecycleCallback: ActivityLifecycleCallback) {
+        activityCallbacks.remove(activityLifecycleCallback)
     }
 }

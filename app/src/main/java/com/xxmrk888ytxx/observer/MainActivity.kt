@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
 import com.xxmrk888ytxx.eventlistscreen.EventListScreen
@@ -32,11 +33,7 @@ import theme.BackGroundColor
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainActivity : ComponentActivity() {
-
-
-    var activityLifecycleCallbacks:Set<@JvmSuppressWildcards ActivityLifecycleCallback>? = null
-        @Inject set
+class MainActivity : ComponentActivity(),ActivityLifecycleRegister {
 
     private val activityViewModel:ActivityViewModel by viewModels()
     //Screens ViewModels
@@ -69,7 +66,8 @@ class MainActivity : ComponentActivity() {
                     composable(Screen.MainScreen.route) {
                         MainScreen(
                             composeViewModel { mainViewModel.get() },
-                            navigator = activityViewModel
+                            navigator = activityViewModel,
+                            activityLifecycleRegister = this@MainActivity
                         )
                     }
 
@@ -118,43 +116,39 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        activityLifecycleCallbacks?.forEach {
-            it.onCreate()
-        }
+        activityViewModel.onCreate(this)
     }
 
     override fun onStart() {
         super.onStart()
-        activityLifecycleCallbacks?.forEach {
-            it.onStart()
-        }
+        activityViewModel.onStart()
     }
 
     override fun onResume() {
         super.onResume()
-        activityLifecycleCallbacks?.forEach {
-            it.onResume()
-        }
+        activityViewModel.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        activityLifecycleCallbacks?.forEach {
-            it.onPause()
-        }
+        activityViewModel.onPause()
     }
 
     override fun onStop() {
         super.onStop()
-        activityLifecycleCallbacks?.forEach {
-            it.onStop()
-        }
+        activityViewModel.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        activityLifecycleCallbacks?.forEach {
-            it.onDestroy()
-        }
+        activityViewModel.onDestroy()
+    }
+
+    override fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback) {
+        activityViewModel.registerCallback(activityLifecycleCallback,this)
+    }
+
+    override fun unregisterCallback(activityLifecycleCallback: ActivityLifecycleCallback) {
+        activityViewModel.unregisterCallback(activityLifecycleCallback)
     }
 }
