@@ -18,5 +18,7 @@ interface PermissionsManager {
 
     fun isAdminPermissionGranted() : Boolean
 
+    fun isNotificationPermissionGranted() : Boolean
+
 
 }
