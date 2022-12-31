@@ -2,6 +2,7 @@ package com.xxmrk888ytxx.observer.AdminDeviceController
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
@@ -11,7 +12,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -20,21 +23,49 @@ class AdminDeviceControllerTest {
     private val deviceEventRepository:DeviceEventRepository = mockk(relaxed = true)
     private val failedUnlockTrackedConfigProvider: FailedUnlockTrackedConfigProvider = mockk(relaxed = true)
     private val handleEventUseCase: HandleEventUseCase = mockk(relaxed = true)
+    private val appStateProvider:AppStateProvider = mockk(relaxed = true)
     private val adminEventsCallback: AdminEventsCallback =
-        AdminDeviceController(deviceEventRepository, failedUnlockTrackedConfigProvider, handleEventUseCase)
+        AdminDeviceController(deviceEventRepository,
+            failedUnlockTrackedConfigProvider,
+            handleEventUseCase,
+            appStateProvider
+        )
 
     @Test
     fun callAdminControllerIfTrackedFailedUnlockOffExpectEventNotTracked() = runBlocking {
-        val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
+        val config: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
+        val appState = MutableStateFlow<Boolean>(false)
 
-        flow.emit(FailedUnlockTrackedConfig(
+        config.emit(FailedUnlockTrackedConfig(
             isTracked = false,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false
         ))
 
+        coEvery { failedUnlockTrackedConfigProvider.config } returns config
+        coEvery { appStateProvider.isAppEnable } returns appState
+
+        adminEventsCallback.onPasswordFailed(0)
+
+        coVerify(exactly = 0) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 0) { handleEventUseCase.execute(any(),any(),any(),any(),any()) }
+    }
+
+    @Test
+    fun callMethodButAppStateIsFalseExpectEventNotAdd() = runBlocking {
+        val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
+        val appState = MutableStateFlow<Boolean>(false)
+
+        flow.emit(FailedUnlockTrackedConfig(
+            isTracked = true,
+            makePhoto = true,
+            notifyInTelegram = true,
+            joinPhotoToTelegramNotify = false
+        ))
+
         coEvery { failedUnlockTrackedConfigProvider.config } returns flow
+        coEvery { appStateProvider.isAppEnable } returns appState
 
         adminEventsCallback.onPasswordFailed(0)
 
@@ -45,6 +76,7 @@ class AdminDeviceControllerTest {
     @Test
     fun callTrackerExpectTheySendParams() = runBlocking {
         val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
+        val appState = MutableStateFlow<Boolean>(true)
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
@@ -54,6 +86,7 @@ class AdminDeviceControllerTest {
         ))
 
         coEvery { failedUnlockTrackedConfigProvider.config } returns flow
+        coEvery { appStateProvider.isAppEnable } returns appState
 
         adminEventsCallback.onPasswordFailed(0)
 
