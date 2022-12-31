@@ -8,7 +8,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
 
 internal class ActivityViewModel : ViewModel(),Navigator {
 
-    private val activityCallbacks = mutableListOf<ActivityLifecycleCallback>()
+    private val activityCallbacks = mutableSetOf<ActivityLifecycleCallback>()
 
     var navController:NavController? = null
 
@@ -52,8 +52,8 @@ internal class ActivityViewModel : ViewModel(),Navigator {
     }
 
     fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback,activity: Activity) {
-        activityLifecycleCallback.onRegister(activity)
         activityCallbacks.add(activityLifecycleCallback)
+        activityLifecycleCallback.onRegister(activity)
     }
 
     fun onCreate(activity: Activity) {
