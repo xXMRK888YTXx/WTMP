@@ -58,5 +58,6 @@ internal class EventDeviceTrackerService : AccessibilityService() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(receiver)
+        eventDeviceTrackerCallback.onServiceDestroy()
     }
 }

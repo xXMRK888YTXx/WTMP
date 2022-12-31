@@ -43,4 +43,6 @@ interface EventDeviceTrackerCallback {
      * Method to be called when unlocking the device
      */
     fun onScreenOn()
+
+    fun onServiceDestroy()
 }

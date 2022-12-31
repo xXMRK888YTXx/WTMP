@@ -2,12 +2,16 @@ package com.xxmrk888ytxx.observer
 
 import android.app.Application
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
+import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.DepsProvider.DepsProvider
 import com.xxmrk888ytxx.coredeps.Exceptions.DepsProviderNotFoundDeps
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
+import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.AppComponent
 import com.xxmrk888ytxx.observer.DI.DaggerAppComponent
-import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 class App : Application(),DepsProvider,ApplicationInfoProvider {
@@ -33,6 +37,27 @@ class App : Application(),DepsProvider,ApplicationInfoProvider {
 
     private val eventDeviceTrackerCallback: EventDeviceTrackerCallback
         get() = appComponent.eventDeviceTrackerCallback.get()
+
+    override fun onCreate() {
+        super.onCreate()
+        ApplicationScope.launch(Dispatchers.Default) {
+            try {
+                if(!appComponent.appStateProvider.isAppEnable.first()) return@launch
+                val permissionManager = appComponent.permissionsManager
+                val admin = permissionManager.isAdminPermissionGranted()
+                val accessibility = permissionManager.isAccessibilityPermissionGranted()
+                if(!admin||!accessibility) {
+                    appComponent.appStateChanger.updateAppState(false)
+                    if(!admin) {
+                        appComponent.notificationAppManager.sendAdminPermissionWithdrawnNotification()
+                    }
+                    if(!accessibility) {
+                        appComponent.notificationAppManager.sendAccessibilityPermissionWithdrawnNotification()
+                    }
+                }
+            }catch (_:Exception) {}
+        }
+    }
 
 
 

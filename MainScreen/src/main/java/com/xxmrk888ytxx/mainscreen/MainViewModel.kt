@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.mainscreen
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +44,8 @@ class MainViewModel @Inject constructor(
     private val adminPermissionState = MutableStateFlow(false)
 
     private val accessibilityPermissionsState = MutableStateFlow(false)
+
+    private val notificationPermissionState = MutableStateFlow(false)
 
     internal val appState = appStateProvider.isAppEnable
 
@@ -150,7 +153,14 @@ class MainViewModel @Inject constructor(
             val cameraState = rememberPermissionState(
                 android.Manifest.permission.CAMERA
             )
-            return listOf(
+            val notificationState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                rememberPermissionState(
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                )
+            } else {
+                null
+            }
+            val requestedPermissionList = mutableListOf (
                 RequestedPermission(
                     "Разрешение на доступ к камере",
                     cameraPermissionState) {
@@ -167,8 +177,17 @@ class MainViewModel @Inject constructor(
                 ) {
                     val activity = activity ?: return@RequestedPermission
                     permissionsManager.requestAdminPermissions(activity)
-                }
+                },
             )
+            if(notificationState != null) {
+                requestedPermissionList.add(RequestedPermission(
+                    "Разрешение на отправку уведомлений",
+                    notificationPermissionState,
+                ) {
+                    permissionsManager.requestRuntimePermission(notificationState)
+                })
+            }
+            return requestedPermissionList
         }
 
     internal fun showRequestPermissionDialog() {
@@ -189,15 +208,17 @@ class MainViewModel @Inject constructor(
         val camera = permissionsManager.isCameraPermissionGranted()
         val accessibility = permissionsManager.isAccessibilityPermissionGranted()
         val admin = permissionsManager.isAdminPermissionGranted()
+        val notification = permissionsManager.isNotificationPermissionGranted()
 
         viewModelScope.launch(Dispatchers.Default) {
             cameraPermissionState.emit(camera)
             accessibilityPermissionsState.emit(accessibility)
             adminPermissionState.emit(admin)
+            notificationPermissionState.emit(notification)
         }
 
 
-        return camera&&accessibility&&admin
+        return camera&&accessibility&&admin&&notification
     }
 
     internal fun disableApp() {

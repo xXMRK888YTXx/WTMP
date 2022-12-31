@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.observer.domain.EventDeviceTrackerCallback
 
 import com.xxmrk888ytxx.coredeps.ApplicationScope
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
@@ -10,7 +11,9 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TrackedAppRepositor
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerParams
+import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +25,9 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
     private val appOpenConfig: AppOpenConfigProvider,
     private val trackedAppRepository: TrackedAppRepository,
     private val packageInfoProvider: PackageInfoProvider,
-    private val appStateProvider: AppStateProvider
+    private val appStateProvider: AppStateProvider,
+    private val notificationAppManager: NotificationAppManager,
+    private val appStateChanger: AppStateChanger
 ): EventDeviceTrackerCallback {
 
     override val params: EventDeviceTrackerParams
@@ -78,6 +83,14 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 joinPhotoToTelegramNotify = config.first().joinPhotoToTelegramNotify,
                 "Устройтво было разблокировано"
             )
+        }
+    }
+
+    override fun onServiceDestroy() {
+        ApplicationScope.launch(Dispatchers.IO) {
+            if(!appStateProvider.isAppEnable.first()) return@launch
+            notificationAppManager.sendAccessibilityPermissionWithdrawnNotification()
+            appStateChanger.updateAppState(false)
         }
     }
 
