@@ -25,7 +25,6 @@ import toState
 import java.util.*
 import javax.inject.Inject
 
-@SuppressLint("StaticFieldLeak")
 class MainViewModel @Inject constructor(
     private val packageInfoProvider: PackageInfoProvider,
     private val deviceEventRepository: DeviceEventRepository,
@@ -36,6 +35,7 @@ class MainViewModel @Inject constructor(
 
     private var activityLifecycleRegister:ActivityLifecycleRegister? = null
 
+    @SuppressLint("StaticFieldLeak")
     private var activity:Activity? = null
 
     private val cameraPermissionState = MutableStateFlow(false)
@@ -55,7 +55,8 @@ class MainViewModel @Inject constructor(
     internal val isShowRequestPermissionDialog = _isShowRequestPermissionDialog.toState()
 
     override fun onResume() {
-        checkPermission()
+        if(_isShowRequestPermissionDialog.value)
+            checkPermission()
     }
 
     override fun onRegister(activity: Activity) {

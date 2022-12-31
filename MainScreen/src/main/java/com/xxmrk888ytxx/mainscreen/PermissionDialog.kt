@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.mainscreen
 
 import MutliUse.GradientButton
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,52 +38,48 @@ internal fun PermissionDialog(requestedPermission: List<RequestedPermission>,onD
                     val permissionState = it.permissionState.collectAsState(false)
                     val fontColor = if (permissionState.value) disableAppButtonFontColor
                     else enableAppButtonFontColor
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(10.dp),
-                        backgroundColor = cardColor
-                    ) {
-                        Column(Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp)) {
-                            Text(
-                                text = it.description,
-                                fontFamily = openSansFont,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.W600,
-                                color = primaryFontColor,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
+                    Column(Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)) {
+                        Text(
+                            text = it.description,
+                            fontFamily = openSansFont,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.W600,
+                            color = primaryFontColor,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
 
-                            GradientButton(
-                                backgroundGradient = if (permissionState.value) disableAppButtonColor
-                                else enableAppButtonColor,
-                                shape = RoundedCornerShape(20.dp),
-                                onClick = it.onRequest,
-                                enabled = !permissionState.value,
-                                modifier = Modifier
+                        GradientButton(
+                            backgroundGradient = if (permissionState.value) disableAppButtonColor
+                            else enableAppButtonColor,
+                            shape = RoundedCornerShape(15.dp),
+                            onClick = it.onRequest,
+                            enabled = !permissionState.value,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp).border(width = 1.dp,
+                                    brush =  if (permissionState.value) disableAppButtonColor
+                                    else enableAppButtonColor, RoundedCornerShape(15.dp))
+                        ) {
+
+                            Row(
+                                Modifier
                                     .fillMaxWidth()
-                                    .padding(10.dp)
+                                    .padding(0.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
                             ) {
+                                Text(
+                                    text = if (permissionState.value) "Предоставлено"
+                                    else "Предоставить",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.W600,
+                                    fontFamily = openSansFont,
+                                    color = fontColor
+                                )
 
-                                Row(
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(5.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.Center
-                                ) {
-                                    Text(
-                                        text = if (permissionState.value) "Предоставлено"
-                                        else "Предоставить",
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.W600,
-                                        fontFamily = openSansFont,
-                                        color = fontColor
-                                    )
-
-                                }
                             }
                         }
                     }
