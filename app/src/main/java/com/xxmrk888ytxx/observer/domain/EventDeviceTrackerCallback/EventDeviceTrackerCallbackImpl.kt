@@ -1,8 +1,8 @@
 package com.xxmrk888ytxx.observer.domain.EventDeviceTrackerCallback
 
 import com.xxmrk888ytxx.coredeps.ApplicationScope
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider

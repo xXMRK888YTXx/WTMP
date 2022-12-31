@@ -3,6 +3,8 @@ package com.xxmrk888ytxx.observer.DI
 import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.MainActivity
@@ -54,9 +56,9 @@ interface AppComponent : WorkerComponentDeps {
 
     val eventDeviceTrackerCallback: Provider<EventDeviceTrackerCallback>
 
-    val appStateProvider:AppStateProvider
+    val appStateProvider: AppStateProvider
 
-    val appStateChanger:AppStateChanger
+    val appStateChanger: AppStateChanger
 
     val permissionsManager:PermissionsManager
 

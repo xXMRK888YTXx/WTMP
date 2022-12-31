@@ -2,7 +2,7 @@ package com.xxmrk888ytxx.observer.AdminDeviceController
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
@@ -14,7 +14,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -23,7 +22,7 @@ class AdminDeviceControllerTest {
     private val deviceEventRepository:DeviceEventRepository = mockk(relaxed = true)
     private val failedUnlockTrackedConfigProvider: FailedUnlockTrackedConfigProvider = mockk(relaxed = true)
     private val handleEventUseCase: HandleEventUseCase = mockk(relaxed = true)
-    private val appStateProvider:AppStateProvider = mockk(relaxed = true)
+    private val appStateProvider: AppStateProvider = mockk(relaxed = true)
     private val adminEventsCallback: AdminEventsCallback =
         AdminDeviceController(deviceEventRepository,
             failedUnlockTrackedConfigProvider,

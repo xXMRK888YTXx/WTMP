@@ -5,6 +5,14 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 
 interface PermissionsManager {
+    /**
+     * [Ru]
+     * Запрашивает Runtime-разрешения
+     */
+    /**
+     * [En]
+     * Requests runtime permissions
+     */
     @OptIn(ExperimentalPermissionsApi::class)
     fun requestRuntimePermission(permission: PermissionState)
 

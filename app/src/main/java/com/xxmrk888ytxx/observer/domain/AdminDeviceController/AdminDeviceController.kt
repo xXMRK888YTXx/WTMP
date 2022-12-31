@@ -5,8 +5,8 @@ import android.content.Intent
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
 import com.xxmrk888ytxx.coredeps.ApplicationScope
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent

@@ -1,7 +1,7 @@
 package com.xxmrk888ytxx.observer.AppStateManager
 
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.observer.BaseSettingsAppManagerTest
 import com.xxmrk888ytxx.observer.domain.AppStateManager.AppStateManager
 import kotlinx.coroutines.flow.first

@@ -13,6 +13,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.mainscreen.models.RequestedPermission
@@ -57,6 +59,16 @@ class MainViewModel @Inject constructor(
 
     internal val isShowRequestPermissionDialog = _isShowRequestPermissionDialog.toState()
 
+    /**
+     * [Ru]
+     * При открытом [RequestPermissionDialog], выходе и возрасте в приложении
+     * будут проверяться наличие разрешений необходимых для работы приложении
+     */
+    /**
+     * [En]
+     * With [RequestPermissionDialog] open, exit and age in app
+     * the presence of permissions necessary for the application to work will be checked
+     */
     override fun onResume() {
         if(_isShowRequestPermissionDialog.value)
             checkPermission()

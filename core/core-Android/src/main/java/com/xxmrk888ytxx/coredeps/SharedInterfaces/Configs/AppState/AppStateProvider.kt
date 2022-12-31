@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.coredeps.SharedInterfaces
+package com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState
 
 import kotlinx.coroutines.flow.Flow
 

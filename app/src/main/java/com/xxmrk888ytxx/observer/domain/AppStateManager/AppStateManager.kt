@@ -1,15 +1,15 @@
 package com.xxmrk888ytxx.observer.domain.AppStateManager
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateChanger
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.observer.domain.SettingsAppManager.SettingsAppManager
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 internal class AppStateManager @Inject constructor(
     private val settingsAppManager: SettingsAppManager
-) : AppStateChanger,AppStateProvider {
+) : AppStateChanger, AppStateProvider {
 
     private val appStateKey = booleanPreferencesKey("appStateKey")
 
