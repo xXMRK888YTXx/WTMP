@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.observer.domain.EventDeviceTrackerCallback
 
 import com.xxmrk888ytxx.coredeps.ApplicationScope
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
@@ -20,7 +21,8 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
     private val handleEventUseCase: HandleEventUseCase,
     private val appOpenConfig: AppOpenConfigProvider,
     private val trackedAppRepository: TrackedAppRepository,
-    private val packageInfoProvider: PackageInfoProvider
+    private val packageInfoProvider: PackageInfoProvider,
+    private val appStateProvider: AppStateProvider
 ): EventDeviceTrackerCallback {
 
     override val params: EventDeviceTrackerParams
@@ -32,7 +34,8 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 appOpenConfig.config
             }
 
-            if(!config.first().isTracked||!isTrackedPackageName(packageName)) return@launch
+            if((!config.first().isTracked||!appStateProvider.isAppEnable.first())
+                ||!isTrackedPackageName(packageName)) return@launch
 
             val eventId = deviceEventRepository.addEvent(
                 DeviceEvent.AppOpen(0,null,packageName,
@@ -62,7 +65,7 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 succeededUnlockTrackedConfigProvider.config
             }
 
-            if(!config.first().isTracked) return@launch
+            if(!config.first().isTracked||!appStateProvider.isAppEnable.first()) return@launch
 
             val eventId =  deviceEventRepository.addEvent(
                 DeviceEvent.AttemptUnlockDevice.Succeeded(0,System.currentTimeMillis())
