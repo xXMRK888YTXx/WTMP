@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -97,7 +98,7 @@ internal fun TopBar(navigator: Navigator) {
         LazySpacer(width = 15)
 
         Text(
-            "Приложения",
+            stringResource(R.string.Applications),
             fontSize = 27.sp,
             fontWeight = FontWeight.W600,
             color = Color.White,
@@ -186,7 +187,7 @@ internal fun SearchLine(selectTrackedAppViewModel: SelectTrackedAppViewModel) {
         singleLine = true,
         label = {
             Text(
-                text = "Поиск",
+                text = stringResource(R.string.Search),
                 fontFamily = openSansFont,
                 fontSize = 17.sp,
                 fontWeight = FontWeight.W600,
