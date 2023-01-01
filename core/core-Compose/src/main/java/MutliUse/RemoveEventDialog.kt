@@ -11,11 +11,13 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.xxmrk888ytxx.core_compose.R
 import theme.*
 
 @Composable
@@ -32,7 +34,7 @@ fun RemoveEventDialog(onDismiss:() -> Unit,onRemove:() -> Unit) {
                     .padding(10.dp)
             ) {
                 Text(
-                    text = "Вы действительно хотите удалить данное событие?",
+                    text = stringResource(R.string.Delete_event),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(bottom = 25.dp, top = 25.dp)
@@ -56,7 +58,7 @@ fun RemoveEventDialog(onDismiss:() -> Unit,onRemove:() -> Unit) {
                             backgroundColor = settingsSeparatorLineColor,
                         )
                     ) {
-                        Text(text = "Отмена",
+                        Text(text = stringResource(R.string.Cancel),
                             color = primaryFontColor
                         )
                     }
@@ -72,7 +74,7 @@ fun RemoveEventDialog(onDismiss:() -> Unit,onRemove:() -> Unit) {
                             .padding(start = 5.dp, end = 5.dp),
                         shape = RoundedCornerShape(80),
                     ) {
-                        Text(text = "Ок",
+                        Text(text = stringResource(R.string.Ok),
                             color = primaryFontColor
                         )
                     }

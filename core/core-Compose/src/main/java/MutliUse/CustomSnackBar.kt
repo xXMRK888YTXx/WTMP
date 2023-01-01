@@ -14,7 +14,6 @@ import theme.snackbarColor
 @Composable
 fun CustomSnackBar(
     message: String,
-    isRtl: Boolean = true,
     textToIcon: Map<String, @Composable () -> Unit>? = null,
     defaultIcon: @Composable (() -> Unit)? = null,
 ) {

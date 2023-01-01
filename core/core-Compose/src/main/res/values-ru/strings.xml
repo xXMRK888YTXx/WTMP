@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Application_launch">Запуск приложения</string>
+    <string name="Device_unlocked">Устройство разблокировано</string>
+    <string name="Failed_to_unlock">Провалена попытка разблокировки</string>
+    <string name="Delete_event">Вы действительно хотите удалить данное событие?</string>
+    <string name="Cancel">Отмена</string>
+    <string name="Ok">Ок</string>
+</resources>
