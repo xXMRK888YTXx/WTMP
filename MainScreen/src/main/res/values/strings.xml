@@ -8,4 +8,8 @@
     <string name="View_all_time">View all time</string>
     <string name="Granted">Granted</string>
     <string name="Grant">Grant</string>
+    <string name="Permission_access_camera">Permission to access the camera</string>
+    <string name="Access_accessibility_services">Access to accessibility services</string>
+    <string name="Access_device_administrators">Access to device administrators</string>
+    <string name="Permission_send_notifications">Permission to send notifications</string>
 </resources>

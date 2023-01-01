@@ -33,7 +33,8 @@ class MainViewModel @Inject constructor(
     private val deviceEventRepository: DeviceEventRepository,
     private val appStateProvider: AppStateProvider,
     private val permissionsManager: PermissionsManager,
-    private val appStateChanger: AppStateChanger
+    private val appStateChanger: AppStateChanger,
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel(),ActivityLifecycleCallback {
 
     private var activityLifecycleRegister:ActivityLifecycleRegister? = null
@@ -161,7 +162,7 @@ class MainViewModel @Inject constructor(
 
     @OptIn(ExperimentalPermissionsApi::class)
     internal val requestedPermission : List<RequestedPermission>
-        @Composable get() {
+        @SuppressLint("ResourceType") @Composable get() {
             val cameraState = rememberPermissionState(
                 android.Manifest.permission.CAMERA
             )
@@ -174,17 +175,17 @@ class MainViewModel @Inject constructor(
             }
             val requestedPermissionList = mutableListOf (
                 RequestedPermission(
-                    "Разрешение на доступ к камере",
+                    resourcesProvider.getString(R.string.Permission_access_camera),
                     cameraPermissionState) {
                     permissionsManager.requestRuntimePermission(cameraState)
                 },
                 RequestedPermission(
-                    "Доступ к специальным службам",
+                    resourcesProvider.getString(R.string.Access_accessibility_services),
                     accessibilityPermissionsState,
                     permissionsManager::requestAccessibilityPermissions
                 ),
                 RequestedPermission(
-                    "Доступ к администраторам устройства",
+                    resourcesProvider.getString(R.string.Access_device_administrators),
                     adminPermissionState,
                 ) {
                     val activity = activity ?: return@RequestedPermission
@@ -193,7 +194,7 @@ class MainViewModel @Inject constructor(
             )
             if(notificationState != null) {
                 requestedPermissionList.add(RequestedPermission(
-                    "Разрешение на отправку уведомлений",
+                    resourcesProvider.getString(R.string.Permission_send_notifications),
                     notificationPermissionState,
                 ) {
                     permissionsManager.requestRuntimePermission(notificationState)

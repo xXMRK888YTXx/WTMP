@@ -8,4 +8,8 @@
     <string name="View_all_time">Посмотреть за всё время</string>
     <string name="Granted">Предоставлено</string>
     <string name="Grant">Предоставить</string>
+    <string name="Permission_access_camera">Разрешение на доступ к камере</string>
+    <string name="Access_accessibility_services">Доступ к специальным службам</string>
+    <string name="Access_device_administrators">Доступ к администраторам устройства</string>
+    <string name="Permission_send_notifications">Разрешение на отправку уведомлений</string>
 </resources>
