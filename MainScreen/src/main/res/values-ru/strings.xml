@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Events_for_today">События за сегодня</string>
+    <string name="No_events_today">За сегодня событий нет</string>
+    <string name="Switch_off">Выключить</string>
+    <string name="Turn_on">Включить</string>
+    <string name="Events">События</string>
+    <string name="View_all_time">Посмотреть за всё время</string>
+    <string name="Granted">Предоставлено</string>
+    <string name="Grant">Предоставить</string>
+</resources>

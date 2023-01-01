@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -72,8 +73,8 @@ internal fun PermissionDialog(requestedPermission: List<RequestedPermission>,onD
                                 horizontalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = if (permissionState.value) "Предоставлено"
-                                    else "Предоставить",
+                                    text = if (permissionState.value) stringResource(R.string.Granted)
+                                    else stringResource(R.string.Grant),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.W600,
                                     fontFamily = openSansFont,

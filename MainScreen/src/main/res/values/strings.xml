@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Events_for_today">Events for today</string>
+    <string name="No_events_today">There are no events for today</string>
+    <string name="Switch_off">Turn off</string>
+    <string name="Turn_on">Turn on</string>
+    <string name="Events">Events</string>
+    <string name="View_all_time">View all time</string>
+    <string name="Granted">Granted</string>
+    <string name="Grant">Grant</string>
+</resources>

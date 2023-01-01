@@ -2,7 +2,6 @@ package com.xxmrk888ytxx.mainscreen
 
 import MutliUse.*
 import SharedInterfaces.Navigator
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,14 +13,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import remember
@@ -41,7 +39,6 @@ import theme.*
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-@MustBeLocalization
 fun MainScreen(
     mainViewModel: MainViewModel,
     navigator: Navigator,
@@ -67,15 +64,9 @@ fun MainScreen(
             )
         }
 
-//        item {
-//            LazySpacer(5)
-//            StatsCard()
-//            LazySpacer(5)
-//        }
-
         item {
             Text(
-                text = "События за сегодня",
+                text = stringResource(R.string.Events_for_today),
                 fontFamily = openSansFont,
                 fontWeight = FontWeight.W600,
                 fontSize = 20.sp,
@@ -126,10 +117,9 @@ fun MainScreen(
 }
 
 @Composable
-@MustBeLocalization
 internal fun EventListStub() {
     Text(
-        text = "За сегодня событий нет",
+        text = stringResource(R.string.No_events_today),
         fontFamily = openSansFont,
         fontWeight = FontWeight.W900,
         fontSize = 28.sp,
@@ -141,7 +131,6 @@ internal fun EventListStub() {
 }
 
 @Composable
-@MustBeLocalization
 internal fun EnableAppButton(isEnable: Boolean, onClick: () -> Unit) {
     val fontColor = if (isEnable) disableAppButtonFontColor else enableAppButtonFontColor
 
@@ -172,7 +161,8 @@ internal fun EnableAppButton(isEnable: Boolean, onClick: () -> Unit) {
             LazySpacer(width = 10)
 
             Text(
-                text = if (isEnable) "Выключить" else "Включить",
+                text = if (isEnable) stringResource(R.string.Switch_off)
+                else stringResource(R.string.Turn_on),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W600,
                 fontFamily = openSansFont,
@@ -184,7 +174,6 @@ internal fun EnableAppButton(isEnable: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-@MustBeLocalization
 internal fun TopBar(navigator: Navigator) {
     Row(
         Modifier
@@ -193,7 +182,7 @@ internal fun TopBar(navigator: Navigator) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Отчёты",
+            text = stringResource(R.string.Events),
             fontFamily = openSansFont,
             fontWeight = FontWeight.W600,
             fontSize = 35.sp,
@@ -217,7 +206,6 @@ internal fun TopBar(navigator: Navigator) {
 }
 
 @Composable
-@MustBeLocalization
 internal fun ShowAllEventButton(navigator: Navigator) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -225,91 +213,9 @@ internal fun ShowAllEventButton(navigator: Navigator) {
         modifier = Modifier.fillMaxWidth()
     ) {
         StyleButton(
-            text = "Посмотреть за всё время",
+            text = stringResource(R.string.View_all_time),
             onClick = navigator::toEventListScreen
         )
     }
 }
-
-@Composable
-@MustBeLocalization
-internal fun StatsCard() {
-    Card(
-        backgroundColor = cardColor,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                start = 15.dp,
-                end = 15.dp,
-            )
-            .heightIn(min = 100.dp),
-        shape = RoundedCornerShape(20.dp),
-    ) {
-        Column(Modifier
-            .fillMaxSize()
-            .padding(10.dp)
-        ) {
-            Text(
-                text = "Статистика",
-                fontFamily = openSansFont,
-                maxLines = 1,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.W600,
-                color = primaryFontColor,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-            LazySpacer(5)
-            StatsEvent(Color.Green, statsName = "Разблокировок устройства", statsCount = 100)
-            LazySpacer(5)
-            StatsEvent(Color.Red, statsName = "Ошибок ввода пароля", statsCount = 100)
-            LazySpacer(5)
-            StatsEvent(Color.White, statsName = "Разблокировок устройства", statsCount = 1000)
-            LazySpacer(5)
-            StatsEvent(Color.Cyan, statsName = "Открыто приложений", statsCount = 0)
-        }
-    }
-}
-
-@Composable
-internal fun StatsEvent(colorCircle: Color, statsName: String, statsCount: Int) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Canvas(modifier = Modifier, onDraw = {
-            drawCircle(colorCircle, 10f)
-        })
-        LazySpacer(width = 10)
-        Text(
-            text = "$statsName: $statsCount",
-            fontFamily = openSansFont,
-            maxLines = 1,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.W300,
-            color = primaryFontColor.copy(0.9f),
-        )
-    }
-}
-
-//@Composable
-//@MustBeLocalization
-//internal fun DeviceEventList(eventList:List<DeviceEvent>) {
-//    LazyColumn() {
-//        item {
-//            Text(
-//                text = "События за сегодня",
-//                fontFamily = openSansFont,
-//                fontWeight = FontWeight.W600,
-//                fontSize = 20.sp,
-//                color = primaryFontColor,
-//                modifier = Modifier.padding(start = 10.dp)
-//            )
-//        }
-//        items(eventList) { event ->
-//            when(event) {
-//                is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event)
-//                is DeviceEvent.AppOpen -> AppOpenItem(event)
-//            }
-//        }
-//    }
-//}
-
 
