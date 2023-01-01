@@ -192,7 +192,7 @@ internal fun TopBar(navigator: Navigator) {
         LazySpacer(width = 15)
 
         Text(
-            "Настройки Telegram",
+            stringResource(R.string.Telegram_settings),
             fontSize = 27.sp,
             fontWeight = FontWeight.W600,
             color = Color.White,
@@ -222,7 +222,7 @@ internal fun InputTelegramConfigForm(
             if(!it.isDigitsOnly()) return@InputInfoTextField
             telegramViewModel.userIdText.value = it
         },
-        label = "Id пользователя",
+        label = stringResource(R.string.User_ID),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next
@@ -241,7 +241,7 @@ internal fun InputTelegramConfigForm(
         onValueChanged = {
             telegramViewModel.botKeyText.value = it
         },
-        label = "Bot-key",
+        label = stringResource(R.string.Bot_key),
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done
         ),
@@ -291,7 +291,7 @@ internal fun InputTelegramConfigForm(
                         )
                 ) {
                     Text(
-                        text = "Сохранить",
+                        text = stringResource(R.string.Save),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.W600,
                         fontFamily = openSansFont,
@@ -316,7 +316,7 @@ internal fun InputTelegramConfigForm(
     }
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         LazySpacer(height = 15)
-        StyleButton(text = "Где взять?") {}
+        StyleButton(text = stringResource(R.string.Where_to_get)) {}
     }
 }
 
@@ -345,7 +345,7 @@ internal fun TelegramDataSaveLabel(telegramViewModel: TelegramViewModel) {
             LazySpacer(width = 15)
 
             Text(
-                text = "Данные Telegram сохранены",
+                text = stringResource(R.string.Telegram_data_saved),
                 fontFamily = openSansFont,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.W600,
@@ -356,7 +356,7 @@ internal fun TelegramDataSaveLabel(telegramViewModel: TelegramViewModel) {
         LazySpacer(height = 15)
 
         StyleButton(
-            text = "Изменить данные",
+            text = stringResource(R.string.Change_data),
             isEnable = !isTelegramRequestProcessNow.value,
             onClick = telegramViewModel::toChangeTelegramConfigState
         )
@@ -384,7 +384,7 @@ internal fun TelegramDataSaveLabel(telegramViewModel: TelegramViewModel) {
                 }
             } else {
                 StyleButton(
-                    text = "Отправить тестовое сообщение",
+                    text = stringResource(R.string.Send_test_message),
                     onClick = telegramViewModel::checkTelegramConfig
                 )
             }

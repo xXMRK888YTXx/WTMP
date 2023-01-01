@@ -84,10 +84,11 @@ class TelegramViewModel @Inject constructor(
      * [En]
      * The function of checking and saving data from the Telegram bot
      */
+    @SuppressLint("ResourceType")
     fun saveTelegramConfig() {
         if (!isInputtedConfigValid()) {
             snackBarScope.launchAndCancelChildren {
-                snackState.showSnackbar("Заполните всё поля")
+                snackState.showSnackbar(resourcesProvider.getString(R.string.Fill_all_fields))
             }
             return
         }
@@ -102,6 +103,8 @@ class TelegramViewModel @Inject constructor(
             } else {
                 _screenState.value = ScreenState.ChangeTelegramConfigState
             }
+            botKeyText.value = ""
+            userIdText.value = ""
             _isTelegramRequestProcessNow.value = false
         }
     }
@@ -157,7 +160,7 @@ class TelegramViewModel @Inject constructor(
         return try {
             val telegramRepository = telegramRepositoryFactory.create(botKey, userId)
 
-            telegramRepository.sendMessage("Это тестовое сообщение")
+            telegramRepository.sendMessage(resourcesProvider.getString(R.string.This_test_message))
             snackBarScope.launchAndCancelChildren {
                 if (isTestConfigRequest) {
                     snackState.showSnackbar(

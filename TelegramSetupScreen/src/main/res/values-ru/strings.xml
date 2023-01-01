@@ -5,4 +5,14 @@
     <string name="No_connection_message">Не удалось связаться с серверами Telegram. Проверьте соединение с интернетом</string>
     <string name="unknown_error_message">Во время отправки запроса произошла неизвестная ошибка. Проверьте подключение к интернету и повторите попытку</string>
     <string name="Telegram_config_valid_message">Тестовое сообщение отправлены.Данные Telegram валидны.</string>
+    <string name="Telegram_settings">Настройки Telegram</string>
+    <string name="User_ID">Id пользователя</string>
+    <string name="Bot_key">bot-key</string>
+    <string name="Save">Сохранить</string>
+    <string name="Where_to_get">Где взять?</string>
+    <string name="Telegram_data_saved">Данные Telegram сохранены</string>
+    <string name="Change_data">Изменить данные</string>
+    <string name="Send_test_message">Отправить тестовое сообщение</string>
+    <string name="Fill_all_fields">Заполните всё поля</string>
+    <string name="This_test_message">Это тестовое сообщение</string>
 </resources>

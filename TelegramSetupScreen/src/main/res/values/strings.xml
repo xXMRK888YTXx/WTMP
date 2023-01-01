@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="Save_telegram_config_message">Настройки телеграм сохранены</string>
-    <string name="Telegram_cancel_message">Телеграм отклонил запрос, проверьте правильность данных,и то что вы начали переписку с ботом</string>
-    <string name="No_connection_message">Не удалось связаться с серверами Telegram. Проверьте соединение с интернетом</string>
-    <string name="unknown_error_message">Во время отправки запроса произошла неизвестная ошибка. Проверьте подключение к интернету и повторите попытку</string>
-    <string name="Telegram_config_valid_message">Тестовое сообщение отправлены.Данные Telegram валидны.</string>
+    <string name="Save_telegram_config_message">Telegram settings saved</string>
+    <string name="Telegram_cancel_message">Telegram rejected the request, check the data is correct, and that you started a correspondence with the bot</string>
+    <string name="No_connection_message">Unable to contact Telegram servers. Check internet connection</string>
+    <string name="unknown_error_message">An unknown error occurred while sending the request. Please check your internet connection and try again</string>
+    <string name="Telegram_config_valid_message">Test message sent. Telegram data is valid.</string>
+    <string name="Telegram_settings">Telegram Settings</string>
+    <string name="User_ID">User ID</string>
+    <string name="Bot_key">bot-key</string>
+    <string name="Save">Save</string>
+    <string name="Where_to_get">Where to get?</string>
+    <string name="Telegram_data_saved">Telegram data saved</string>
+    <string name="Change_data">To change the data</string>
+    <string name="Send_test_message">Send test message</string>
+    <string name="Fill_all_fields">Fill in all the fields</string>
+    <string name="This_test_message">This is a test message</string>
 
 </resources>
