@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -101,7 +102,7 @@ internal fun ListStub() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "Событий пока нет",
+            text = stringResource(R.string.No_events_yet),
             color = primaryFontColor,
             fontSize = 25.sp,
             fontFamily = openSansFont,
@@ -128,7 +129,7 @@ internal fun TopBar(navigator: Navigator) {
         LazySpacer(width = 15)
 
         Text (
-            "Всё события",
+            stringResource(R.string.All_events),
             fontSize = 27.sp,
             fontWeight = FontWeight.W600,
             color = Color.White,
