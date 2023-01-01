@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,7 +116,7 @@ internal fun PhotoStub() {
             LazySpacer(10)
 
             Text(
-                text = "Фотография отсутсвует",
+                text = stringResource(R.string.Photo_missing),
                 fontFamily = openSansFont,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.W600,
@@ -139,8 +140,8 @@ internal fun EventCardInfo(event: DeviceEvent) {
 
     val text = when (event) {
         is DeviceEvent.AttemptUnlockDevice -> when (event) {
-            is DeviceEvent.AttemptUnlockDevice.Failed -> "Введён не верный пароль"
-            is DeviceEvent.AttemptUnlockDevice.Succeeded -> "Устройство разблокировано"
+            is DeviceEvent.AttemptUnlockDevice.Failed -> stringResource(R.string.Failed_to_unlock)
+            is DeviceEvent.AttemptUnlockDevice.Succeeded -> stringResource(R.string.Device_unlocked)
         }
 
         is DeviceEvent.AppOpen -> event.appName ?: event.packageName
@@ -227,7 +228,7 @@ internal fun TopBar(navigator: Navigator) {
         LazySpacer(width = 15)
 
         Text(
-            "Подробности события",
+            stringResource(R.string.Event_details),
             fontSize = 27.sp,
             fontWeight = FontWeight.W600,
             color = Color.White,
