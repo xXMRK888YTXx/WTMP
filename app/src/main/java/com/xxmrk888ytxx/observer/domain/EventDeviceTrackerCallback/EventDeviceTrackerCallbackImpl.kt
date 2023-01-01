@@ -1,16 +1,19 @@
 package com.xxmrk888ytxx.observer.domain.EventDeviceTrackerCallback
 
+import android.annotation.SuppressLint
 import com.xxmrk888ytxx.coredeps.ApplicationScope
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TrackedAppRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerParams
+import com.xxmrk888ytxx.observer.R
 import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
 import kotlinx.coroutines.Dispatchers
@@ -27,12 +30,14 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
     private val packageInfoProvider: PackageInfoProvider,
     private val appStateProvider: AppStateProvider,
     private val notificationAppManager: NotificationAppManager,
-    private val appStateChanger: AppStateChanger
+    private val appStateChanger: AppStateChanger,
+    private val resourcesProvider: ResourcesProvider
 ): EventDeviceTrackerCallback {
 
     override val params: EventDeviceTrackerParams
         get() = EventDeviceTrackerParams.Builder().setIgnoreList(ignoreList).build()
 
+    @SuppressLint("ResourceType")
     override fun onOpenAppChanged(packageName: String) {
         ApplicationScope.launch {
             val config by lazy {
@@ -54,7 +59,9 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 isSendTelegramMessage = config.first().notifyInTelegram,
                 makePhoto = config.first().makePhoto,
                 joinPhotoToTelegramNotify = config.first().joinPhotoToTelegramNotify,
-                "Приложение $appName было открыто."
+                "${resourcesProvider.getString(R.string.Application)} " +
+                        appName +
+                        " ${resourcesProvider.getString(R.string.was_open)}"
             )
         }
     }
@@ -63,6 +70,7 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
         return packageName in trackedAppRepository.getAllTrackedPackageNames().first()
     }
 
+    @SuppressLint("ResourceType")
     override fun onScreenOn() {
         ApplicationScope.launch {
 
@@ -81,7 +89,7 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 isSendTelegramMessage = config.first().notifyInTelegram,
                 makePhoto = config.first().makePhoto,
                 joinPhotoToTelegramNotify = config.first().joinPhotoToTelegramNotify,
-                "Устройтво было разблокировано"
+                resourcesProvider.getString(R.string.Device_unlocked)
             )
         }
     }

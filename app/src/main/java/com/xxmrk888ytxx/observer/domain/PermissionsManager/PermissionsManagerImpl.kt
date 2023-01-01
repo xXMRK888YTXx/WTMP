@@ -38,8 +38,6 @@ class PermissionsManagerImpl @Inject constructor(
         val component = ComponentName(context,AdminReceiver::class.java)
         val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, component)
-        // Start the add device admin activity
-        // Start the add device admin activity
         activity.startActivityForResult(intent, 5)
     }
 

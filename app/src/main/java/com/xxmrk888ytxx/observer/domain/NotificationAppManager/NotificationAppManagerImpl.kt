@@ -14,7 +14,7 @@ import com.xxmrk888ytxx.observer.R
 import javax.inject.Inject
 
 class NotificationAppManagerImpl @Inject constructor(
-    private val context:Context
+    private val context:Context,
 ) : NotificationAppManager {
 
     private val channelId = "AppErrorChannel"
@@ -26,8 +26,8 @@ class NotificationAppManagerImpl @Inject constructor(
     @MustBeLocalization
     private fun createNotificationChannel() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelName = "Уведомления о ошибках приложения"
-            val description = "В данный канал приходят ошибки приложения"
+            val channelName = context.getString(R.string.Application_error_notifications)
+            val description = context.getString(R.string.Channel_description)
             val mChannel = NotificationChannel(channelId,channelName,
                 NotificationManager.IMPORTANCE_HIGH)
             mChannel.description = description
@@ -53,8 +53,8 @@ class NotificationAppManagerImpl @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val notification = NotificationCompat.Builder(context,channelId)
             .setSmallIcon(R.drawable.ic_error)
-            .setContentTitle("Права администратора отозваны")
-            .setContentText("Без данного разрешения работа приложения не возможна.")
+            .setContentTitle(context.getString(R.string.Administrator_rights_revoked))
+            .setContentText(context.getString(R.string.Without_this_permission_application_not_possible))
             .setContentIntent(pendingIntent)
             .build()
         notificationManager.notify(0,notification)
@@ -69,8 +69,8 @@ class NotificationAppManagerImpl @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val notification = NotificationCompat.Builder(context,channelId)
             .setSmallIcon(R.drawable.ic_error)
-            .setContentTitle("Доступ к специальным службам отозван")
-            .setContentText("Без данного разрешения работа приложения не возможна.")
+            .setContentTitle(context.getString(R.string.Accessibility_rights_revoked))
+            .setContentText(context.getString(R.string.Without_this_permission_application_not_possible))
             .setContentIntent(pendingIntent)
             .build()
         notificationManager.notify(1,notification)

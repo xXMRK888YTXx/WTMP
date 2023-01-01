@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Failed_unlock">Зафиксирована неудачная разблокировка устройства.</string>
+    <string name="Application">Приложение</string>
+    <string name="was_open">было открыто</string>
+    <string name="Device_unlocked">Устройство было разблокировано</string>
+    <string name="Application_error_notifications">Уведомления об ошибках приложения</string>
+    <string name="Channel_description">В данный канал приходят ошибки приложения</string>
+    <string name="Administrator_rights_revoked">Права администратора отозваны</string>
+    <string name="Without_this_permission_application_not_possible">Без данного разрешения работа приложения невозможна.</string>
+    <string name="Accessibility_rights_revoked">Доступ к специальным службам отозван</string>
+</resources>

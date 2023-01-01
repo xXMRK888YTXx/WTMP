@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.observer.domain.AdminDeviceController
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
@@ -9,7 +10,9 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChang
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
+import com.xxmrk888ytxx.observer.R
 import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +27,8 @@ internal class AdminDeviceController @Inject constructor(
     private val handleEventUseCase: HandleEventUseCase,
     private val appStateProvider: AppStateProvider,
     private val notificationAppManager: NotificationAppManager,
-    private val appStateChanger: AppStateChanger
+    private val appStateChanger: AppStateChanger,
+    private val resourcesProvider: ResourcesProvider
 ) : AdminEventsCallback {
     override fun onAdminEnabled() {
         logcatMessageD("onAdminEnabled")
@@ -38,6 +42,7 @@ internal class AdminDeviceController @Inject constructor(
         }
     }
 
+    @SuppressLint("ResourceType")
     override fun onPasswordFailed(currentFailedPasswordAttempts: Int) {
         ApplicationScope.launch {
             val config by lazy {
@@ -55,7 +60,7 @@ internal class AdminDeviceController @Inject constructor(
                 isSendTelegramMessage = config.first().notifyInTelegram,
                 makePhoto = config.first().makePhoto,
                 joinPhotoToTelegramNotify = config.first().joinPhotoToTelegramNotify,
-                "Зафиксирована неудачная разблокировка устройтва."
+                resourcesProvider.getString(R.string.Failed_unlock)
             )
 
 

@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Observer</string>
+    <string name="app_name" translatable="false">Observer</string>
+    <string name="Failed_unlock">A failed device unlock has been detected.</string>
+    <string name="Application">Application</string>
+    <string name="was_open">was_open</string>
+    <string name="Device_unlocked">The device has been unlocked</string>
+    <string name="Application_error_notifications">Application error notifications</string>
+    <string name="Channel_description">This channel receives application errors</string>
+    <string name="Administrator_rights_revoked">Administrator rights revoked</string>
+    <string name="Without_this_permission_application_not_possible">Without this permission, the application cannot work.</string>
+    <string name="Accessibility_rights_revoked">Access to accessibility service revoked</string>
 </resources>
