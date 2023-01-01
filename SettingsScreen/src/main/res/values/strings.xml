@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="Track_failed_attempts">Track failed attempts</string>
+    <string name="Take_photo">Take a photo</string>
+    <string name="Notify_in_Telegram">Notify in Telegram</string>
+    <string name="Attach_photo_to_message">Attach a photo to a message in Telegram</string>
+    <string name="Track_device_unlock">Track device unlock</string>
+    <string name="Enable_App_Tracking">Enable App Tracking</string>
+    <string name="Application_selection">Application selection</string>
+    <string name="Telegram_settings">Telegram Settings</string>
+    <string name="Application_version">Application version</string>
+    <string name="Write_to_the_developer">Write to the developer</string>
+    <string name="Application_log">Application log</string>
+    <string name="Set_password_when_logging_into_app">Set a password when logging into the app</string>
+    <string name="Unsuccessful_unlock_attempt">Unsuccessful unlock attempt</string>
+    <string name="Device_unlock">Device unlock</string>
+    <string name="Application_tracking">Application Tracking</string>
+    <string name="Security">Security</string>
+    <string name="Other">Other</string>
+    <string name="Settings">Settings</string>
+</resources>

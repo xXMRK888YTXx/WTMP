@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +42,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
 
         item {
             SettingsCategory(
-                "Неудачная попытка разблокировки",
+                stringResource(R.string.Unsuccessful_unlock_attempt),
                 getFailedUnlockDeviceParams(settingsViewModel)
             )
 
@@ -51,7 +52,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
         item {
 
             SettingsCategory(
-                "Разблокировка устройства",
+                stringResource(R.string.Device_unlock),
                 getSucceededUnlockDeviceParams(settingsViewModel)
             )
 
@@ -61,7 +62,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
         item {
 
             SettingsCategory(
-                "Отслеженание приложений",
+                stringResource(R.string.Application_tracking),
                 getAppOpenObserverParams(settingsViewModel,navigator)
             )
 
@@ -70,8 +71,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
 
         item {
             SettingsCategory (
-                "Безопасность",
-                getSecureParams(settingsViewModel)
+                stringResource(R.string.Security),
+                getSecureParams()
             )
 
             LazySpacer(15)
@@ -79,8 +80,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
 
         item {
             SettingsCategory(
-                "Настройки Telegram",
-                getTelegramOptionsParams(settingsViewModel,navigator)
+                stringResource(R.string.Telegram_settings),
+                getTelegramOptionsParams(navigator)
             )
 
             LazySpacer(height = 15)
@@ -88,7 +89,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
 
         item {
             SettingsCategory(
-                "Прочее",
+                stringResource(R.string.Other),
                 getAppInfoParams(settingsViewModel)
             )
 
@@ -117,7 +118,7 @@ internal fun TopBar(navigator: Navigator) {
         LazySpacer(width = 15)
 
         Text (
-            "Настройки",
+            stringResource(R.string.Settings),
             fontSize = 27.sp,
             fontWeight = FontWeight.W600,
             color = Color.White,

@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 
@@ -34,14 +35,14 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
     }
     return listOf(
         SettingsParamType.Switch(
-            "Отслеживать неудачные попытки",
+            stringResource(R.string.Track_failed_attempts),
             R.drawable.ic_phone_lock,
             config.value.isTracked,
             onStateChanged = settingsViewModel::updateIsTrackedFailedUnlockTrackedConfig
         ),
 
         SettingsParamType.Switch(
-            "Делать фотографию при неудачной попытке входа",
+            stringResource(R.string.Take_photo),
             R.drawable.ic_camera,
             config.value.makePhoto,
             isVisible = config.value.isTracked,
@@ -49,7 +50,7 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
         ),
 
         SettingsParamType.Switch(
-            "Уведомлять в Telegram",
+            stringResource(R.string.Notify_in_Telegram),
             R.drawable.ic_telegram,
             config.value.notifyInTelegram,
             isEnable = isTelegramConfigSetup.value,
@@ -58,7 +59,7 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
         ),
 
         SettingsParamType.Switch(
-            "Прикрепить фото к сообщению в Telegram",
+            stringResource(R.string.Attach_photo_to_message),
             R.drawable.ic_telegram,
             config.value.joinPhotoToTelegramNotify,
             isVisible = config.value.isTracked && config.value.makePhoto && config.value.notifyInTelegram,
@@ -81,14 +82,14 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel
     }
     return listOf(
         SettingsParamType.Switch(
-            "Отслеживать разблокировки устройства",
+            stringResource(R.string.Track_device_unlock),
             R.drawable.ic_lock_open,
             config.value.isTracked,
             onStateChanged = settingsViewModel::updateIsTrackedSucceededUnlockTrackedConfig
         ),
 
         SettingsParamType.Switch(
-            "Делать фотографию при разблокировке устройства",
+            stringResource(R.string.Take_photo),
             R.drawable.ic_camera,
             config.value.makePhoto,
             isVisible = config.value.isTracked,
@@ -96,7 +97,7 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel
         ),
 
         SettingsParamType.Switch(
-            "Уведомлять в Telegram",
+            stringResource(R.string.Notify_in_Telegram),
             R.drawable.ic_telegram,
             config.value.notifyInTelegram,
             isEnable = isTelegramConfigSetup.value,
@@ -105,7 +106,7 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel
         ),
 
         SettingsParamType.Switch(
-            "Прикрепить фото к сообщению в Telegram",
+            stringResource(R.string.Attach_photo_to_message),
             R.drawable.ic_telegram,
             config.value.joinPhotoToTelegramNotify,
             isVisible = config.value.isTracked && config.value.makePhoto && config.value.notifyInTelegram,
@@ -130,13 +131,13 @@ internal fun getAppOpenObserverParams(
     }
     return listOf(
         SettingsParamType.Switch(
-            "Включение отслежевания приложений",
+            stringResource(R.string.Enable_App_Tracking),
             R.drawable.ic_apps,
             config.value.isTracked,
             onStateChanged = settingsViewModel::updateIsTrackedAppOpenConfig
         ),
         SettingsParamType.Switch(
-            "Делать фотографию при разблокировке устройства",
+            stringResource(R.string.Take_photo),
             R.drawable.ic_camera,
             config.value.makePhoto,
             isVisible = config.value.isTracked,
@@ -144,7 +145,7 @@ internal fun getAppOpenObserverParams(
         ),
 
         SettingsParamType.Switch(
-            "Уведомлять в Telegram",
+            stringResource(R.string.Notify_in_Telegram),
             R.drawable.ic_telegram,
             config.value.notifyInTelegram,
             isEnable = isTelegramConfigSetup.value,
@@ -153,14 +154,14 @@ internal fun getAppOpenObserverParams(
         ),
 
         SettingsParamType.Switch(
-            "Прикрепить фото к сообщению в Telegram",
+            stringResource(R.string.Attach_photo_to_message),
             R.drawable.ic_telegram,
             config.value.joinPhotoToTelegramNotify,
             isVisible = config.value.isTracked && config.value.makePhoto && config.value.notifyInTelegram,
             onStateChanged = settingsViewModel::updateJoinPhotoToTelegramNotifyAppOpenConfig
         ),
         SettingsParamType.Button(
-            "Выбор приложений",
+            stringResource(R.string.Application_selection),
             R.drawable.ic_settings,
             isVisible = config.value.isTracked,
             onClick = navigator::toSelectTrackedAppScreen
@@ -172,12 +173,11 @@ internal fun getAppOpenObserverParams(
 @Composable
 @MustBeLocalization
 internal fun getTelegramOptionsParams(
-    settingsViewModel: SettingsViewModel,
     navigator: Navigator,
 ): List<SettingsParamType> {
     return listOf(
         SettingsParamType.Button(
-            "Настройки Telegram",
+            stringResource(R.string.Telegram_settings),
             R.drawable.ic_telegram,
             onClick = navigator::toTelegramSetupScreen
         )
@@ -191,17 +191,17 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
     val context = LocalContext.current
     return listOf(
         SettingsParamType.Label(
-            "Версия приложения",
+            stringResource(R.string.Application_version),
             R.drawable.ic_info,
             secondoryText = settingsViewModel.appVersion
         ),
         SettingsParamType.Button(
-            "Написать разработчику",
+            stringResource(R.string.Write_to_the_developer),
             R.drawable.ic_developer,
             onClick = { settingsViewModel.sendIntentToWriteDeveloper(context) }
         ),
         SettingsParamType.Button(
-            "Журнал приложения",
+            stringResource(R.string.Application_log),
             R.drawable.ic_list,
         ) {}
     )
@@ -210,11 +210,11 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
-internal fun getSecureParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+internal fun getSecureParams(): List<SettingsParamType> {
 
     return listOf(
         SettingsParamType.Button(
-            "Установить пароль при входе в приложение",
+            stringResource(R.string.Set_password_when_logging_into_app),
             R.drawable.ic_password
         ) {}
     )

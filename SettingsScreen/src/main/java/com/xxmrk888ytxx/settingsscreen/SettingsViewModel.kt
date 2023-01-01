@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.settingsscreen
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,6 +16,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedCon
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
@@ -33,12 +35,15 @@ class SettingsViewModel @Inject constructor(
     private val telegramConfigProvider: TelegramConfigProvider,
     private val appOpenConfigProvider: AppOpenConfigProvider,
     private val appOpenConfigChanger: AppOpenConfigChanger,
+    private val resourcesProvider: ResourcesProvider
 ) : ViewModel() {
 
+    @SuppressLint("ResourceType")
     @MustBeLocalization
     internal fun sendIntentToWriteDeveloper(context: Context) {
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$DEVELOPER_EMAIL"))
-        context.startActivity(Intent.createChooser(emailIntent, "Написать разработчику"))
+        context.startActivity(Intent.createChooser(emailIntent,
+            resourcesProvider.getString(R.string.Write_to_the_developer)))
     }
 
     val appVersion: String by lazy {

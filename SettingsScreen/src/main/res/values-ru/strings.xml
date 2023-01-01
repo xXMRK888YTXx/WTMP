@@ -1,2 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="Track_failed_attempts">Отслеживать неудачные попытки</string>
+    <string name="Take_photo">Делать фотографию</string>
+    <string name="Notify_in_Telegram">Уведомлять в Telegram</string>
+    <string name="Attach_photo_to_message">Прикрепить фото к сообщению в Telegram</string>
+    <string name="Track_device_unlock">Отслеживать разблокировки устройства</string>
+    <string name="Enable_App_Tracking">Включение отслеживания приложений</string>
+    <string name="Application_selection">Выбор приложений</string>
+    <string name="Telegram_settings">Настройки Telegram</string>
+    <string name="Application_version">Версия приложения</string>
+    <string name="Write_to_the_developer">Написать разработчику</string>
+    <string name="Application_log">Журнал приложения</string>
+    <string name="Set_password_when_logging_into_app">Установить пароль при входе в приложение</string>
+    <string name="Unsuccessful_unlock_attempt">Неудачная попытка разблокировки</string>
+    <string name="Device_unlock">Разблокировка устройства</string>
+    <string name="Application_tracking">Отслеживание приложений</string>
+    <string name="Security">Безопасность</string>
+    <string name="Other">Прочее</string>
+    <string name="Settings">Настройки</string>
+</resources>
