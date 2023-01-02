@@ -14,4 +14,6 @@ interface CryptoManager {
     fun encryptData(bytes: ByteArray): ByteArray
 
     fun decryptData(encryptedData: ByteArray): ByteArray
+
+    fun hashFromData(bytes: ByteArray) : String
 }

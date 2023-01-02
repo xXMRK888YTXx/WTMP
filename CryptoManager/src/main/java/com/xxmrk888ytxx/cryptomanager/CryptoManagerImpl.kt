@@ -4,6 +4,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties.*
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CryptoManager
 import java.security.KeyStore
+import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
@@ -50,6 +51,21 @@ class CryptoManagerImpl @Inject constructor() : CryptoManager {
         val encryptedBytes = encryptedData.drop(12).toByteArray()
         cipher.init(Cipher.DECRYPT_MODE, provideSecretKey(keyAlias), GCMParameterSpec(128, iv))
         return cipher.doFinal(encryptedBytes)
+    }
+
+    override fun hashFromData(bytes: ByteArray): String {
+        val digest: MessageDigest = MessageDigest.getInstance("SHA-512")
+        val hashBytes: ByteArray = digest.digest(bytes)
+        val hashString: StringBuilder = StringBuilder()
+
+        for (aMessageDigest:Byte in hashBytes) {
+            var h: String = Integer.toHexString(0xFF and aMessageDigest.toInt())
+            while (h.length < 2)
+                h = "0$h"
+            hashString.append(h)
+        }
+
+        return hashString.toString()
     }
 
     private fun provideSecretKey(keyAlias: String) : SecretKey {
