@@ -20,6 +20,8 @@ interface Navigator {
 
     fun toSelectTrackedAppScreen()
 
+    fun toSetupAppPasswordScreen()
+
     companion object {
         const val EventDetailsScreenKey = "EventDetailsScreenKey"
     }

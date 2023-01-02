@@ -72,7 +72,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
         item {
             SettingsCategory (
                 stringResource(R.string.Security),
-                getSecureParams()
+                getSecureParams(navigator)
             )
 
             LazySpacer(15)

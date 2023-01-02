@@ -26,6 +26,8 @@ import com.xxmrk888ytxx.selecttrackedappscreen.SelectTrackedAppScreen
 import com.xxmrk888ytxx.selecttrackedappscreen.SelectTrackedAppViewModel
 import com.xxmrk888ytxx.settingsscreen.SettingsScreen
 import com.xxmrk888ytxx.settingsscreen.SettingsViewModel
+import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordScreen
+import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
@@ -49,6 +51,7 @@ class MainActivity : ComponentActivity(),ActivityLifecycleRegister {
     @Inject lateinit var telegramViewModel: Provider<TelegramViewModel>
     @Inject lateinit var eventDetailsViewModel: EventDetailsViewModel.Factory
     @Inject lateinit var selectTrackedAppViewModel: Provider<SelectTrackedAppViewModel>
+    @Inject lateinit var setupAppPasswordViewModel: Provider<SetupAppPasswordViewModel>
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,6 +114,14 @@ class MainActivity : ComponentActivity(),ActivityLifecycleRegister {
                                 selectTrackedAppViewModel.get()
                             },
                             navigator = activityViewModel)
+                    }
+
+                    composable(Screen.SetupAppPasswordScreen.route) {
+                        SetupAppPasswordScreen(
+                            setupAppPasswordViewModel = composeViewModel {
+                                setupAppPasswordViewModel.get()
+                            }
+                        )
                     }
 
                 }

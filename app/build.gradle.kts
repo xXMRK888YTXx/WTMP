@@ -64,6 +64,7 @@ dependencies {
     implementation(project(Project.EventDeviceTracker))
     implementation(project(Project.EventDetailsScreen))
     implementation(project(Project.SelectTrackedAppScreen))
+    implementation(project(Project.SetupAppPasswordScreen))
 
     kapt (Deps.Dagger.DaggerKaptCompiler)
 

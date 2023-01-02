@@ -51,6 +51,12 @@ internal class ActivityViewModel : ViewModel(),Navigator {
         }
     }
 
+    override fun toSetupAppPasswordScreen() {
+        navController?.navigate(Screen.SetupAppPasswordScreen.route) {
+            launchSingleTop = true
+        }
+    }
+
     fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback,activity: Activity) {
         activityCallbacks.add(activityLifecycleCallback)
         activityLifecycleCallback.onRegister(activity)
