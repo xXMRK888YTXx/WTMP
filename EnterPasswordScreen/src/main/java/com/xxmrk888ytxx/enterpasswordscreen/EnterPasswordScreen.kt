@@ -2,6 +2,8 @@ package com.xxmrk888ytxx.enterpasswordscreen
 
 import MutliUse.LazySpacer
 import android.annotation.SuppressLint
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,9 +14,13 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W800
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +32,11 @@ import theme.openSansFont
 import theme.primaryFontColor
 
 @Composable
-fun EnterPasswordScreen() {
+fun EnterPasswordScreen(
+    callBack: EnterPasswordScreenCallBack,
+    descriptionText:String,
+    descriptionTextColor: Color
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,18 +45,26 @@ fun EnterPasswordScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        PasswordViewer()
+        PasswordViewer(
+            descriptionText,
+            descriptionTextColor,
+            callBack.passwordSize,
+            callBack.inputtedPasswordSize
+        )
 
-        //LazySpacer(20)
-
-        PasswordGrid(getGridButtonList(true))
+        PasswordGrid(getGridButtonList(false,callBack),callBack)
     }
 }
 
 
 
 @Composable
-internal fun PasswordViewer() {
+internal fun PasswordViewer(
+    descriptionText: String,
+    descriptionTextColor: Color,
+    passwordSize:Int,
+    inputtedPasswordSize:Int
+) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -55,11 +73,11 @@ internal fun PasswordViewer() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Введите пароль",
+            text = descriptionText,
             fontFamily = openSansFont,
             fontSize = 25.sp,
             fontWeight = W800,
-            color = primaryFontColor
+            color = descriptionTextColor
         )
 
         LazySpacer(20)
@@ -69,11 +87,14 @@ internal fun PasswordViewer() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            repeat(4) {
+            repeat(passwordSize) { passwordSize ->
                 Canvas(modifier = Modifier
                     .padding(start = 10.dp, end = 10.dp)
                     .size(20.dp)) {
-                    drawCircle(primaryFontColor)
+                    drawCircle(
+                        if(passwordSize >= inputtedPasswordSize) primaryFontColor
+                            else Color.Green
+                    )
                 }
             }
         }
@@ -83,9 +104,11 @@ internal fun PasswordViewer() {
 @SuppressLint("ResourceType")
 @Composable
 internal fun PasswordGrid(
-    gridButtonList:List<GridButtonType>
+    gridButtonList:List<GridButtonType>,
+    callBack: EnterPasswordScreenCallBack
 ) {
-    val height = (LocalConfiguration.current.screenHeightDp / gridButtonList.size + 50)
+    val gridSize = if(LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) 50.dp
+        else 100.dp
     LazyVerticalGrid(
         GridCells.Fixed(3),
         modifier = Modifier
@@ -97,12 +120,13 @@ internal fun PasswordGrid(
         items(gridButtonList) { item ->
             Box(
                 modifier = Modifier
-                    .fillMaxWidth().height(100.dp)
+                    .fillMaxWidth()
+                    .height(gridSize)
                     .clickable(enabled = item !is GridButtonType.Stub) {
-                        if(item is GridButtonType.NumberButton) {
-
+                        if (item is GridButtonType.NumberButton) {
+                            callBack.onInputNumber(item.number)
                         }
-                        if(item is GridButtonType.ActionButton) {
+                        if (item is GridButtonType.ActionButton) {
                             item.onClick()
                         }
                     },
@@ -146,7 +170,7 @@ internal fun validateNumberForButtonNumber(number:Int) {
 }
 
 @SuppressLint("ResourceType")
-internal fun getGridButtonList(isFingerPrintAvailable:Boolean) : List<GridButtonType> {
+internal fun getGridButtonList(isFingerPrintAvailable:Boolean,callBack: EnterPasswordScreenCallBack) : List<GridButtonType> {
     val fingerPrintButton = if(isFingerPrintAvailable)
         GridButtonType.ActionButton(R.drawable.ic_fingerprint) {}
         else GridButtonType.Stub
@@ -163,7 +187,9 @@ internal fun getGridButtonList(isFingerPrintAvailable:Boolean) : List<GridButton
         GridButtonType.NumberButton(9),
         fingerPrintButton,
         GridButtonType.NumberButton(0),
-        GridButtonType.ActionButton(R.drawable.ic_backspace) {}
+        GridButtonType.ActionButton(R.drawable.ic_backspace) {
+            callBack.onClearNumber()
+        }
     )
 }
 
@@ -171,5 +197,54 @@ internal fun getGridButtonList(isFingerPrintAvailable:Boolean) : List<GridButton
 @Composable
 @Preview
 fun test() {
-        EnterPasswordScreen()
+    val descriptionText = remember {
+        mutableStateOf("Введите пароль")
+    }
+    val context = LocalContext.current
+    val password = remember {
+        mutableStateOf("")
+    }
+    val color = remember {
+        mutableStateOf(primaryFontColor)
+    }
+    val callback = object : EnterPasswordScreenCallBack {
+        override fun onInputNumber(number: Int) {
+            color.value = primaryFontColor
+            descriptionText.value = "Введите пароль"
+            password.value += number.toString()
+
+            if(password.value.length == passwordSize) onPasswordInput()
+        }
+
+        override fun onClearNumber() {
+            password.value = password.value.dropLast(1)
+        }
+
+        override fun onClearAll() {
+            password.value = ""
+        }
+
+        override fun onPasswordInput() {
+            if(password.value == "1111") {
+                Toast.makeText(context,"Пароль верный",Toast.LENGTH_SHORT).show()
+                descriptionText.value = "Пароль верный"
+                color.value = Color.Green
+            }
+            else {
+                Toast.makeText(context,"Пароль неверный",Toast.LENGTH_SHORT).show()
+                descriptionText.value = "Пароль неверный"
+                color.value = Color.Red
+            }
+
+            onClearAll()
+        }
+
+        override val passwordSize: Int
+            get() = 4
+
+        override val inputtedPasswordSize: Int = password.value.length
+
+    }
+
+    EnterPasswordScreen(callback,descriptionText.value,color.value)
 }
