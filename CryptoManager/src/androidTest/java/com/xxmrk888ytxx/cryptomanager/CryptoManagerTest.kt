@@ -91,4 +91,34 @@ class CryptoManagerTest {
 
         Assert.assertEquals(testStr,dStr)
     }
+
+    @Test
+    fun getHashFromTwoEqualsStringExpectEqualsHashString() {
+        val testStr = "testStr"
+        val testStr2 = "testStr"
+
+        val hashStr = cryptoManager.hashFromData(testStr.toByteArray())
+        val hashStr2 = cryptoManager.hashFromData(testStr2.toByteArray())
+        println(hashStr)
+        println(hashStr2)
+
+        Assert.assertNotEquals(testStr,hashStr)
+        Assert.assertNotEquals(testStr2,hashStr2)
+        Assert.assertEquals(hashStr,hashStr2)
+    }
+
+    @Test
+    fun getHashFromTwoNotEqualsStringExpectNotEqualsHashString() {
+        val testStr = "testStr"
+        val testStr2 = "testStr2"
+
+        val hashStr = cryptoManager.hashFromData(testStr.toByteArray())
+        val hashStr2 = cryptoManager.hashFromData(testStr2.toByteArray())
+        println(hashStr)
+        println(hashStr2)
+
+        Assert.assertNotEquals(testStr,hashStr)
+        Assert.assertNotEquals(testStr2,hashStr2)
+        Assert.assertNotEquals(hashStr,hashStr2)
+    }
 }
