@@ -2,9 +2,11 @@ package com.xxmrk888ytxx.observer.DI
 
 import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.MainActivity
@@ -38,7 +40,8 @@ import javax.inject.Provider
         AppOpenConfigManagerModule::class,
         AppStateManagerModule::class,
         PermissionsManagerModule::class,
-        NotificationAppManagerModule::class
+        NotificationAppManagerModule::class,
+        AppPasswordManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
