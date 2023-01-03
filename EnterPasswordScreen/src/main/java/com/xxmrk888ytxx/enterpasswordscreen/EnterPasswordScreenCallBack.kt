@@ -7,6 +7,8 @@ interface EnterPasswordScreenCallBack {
 
     fun onClearAll()
 
+    fun onSendFingerPrintRequest()
+
     val passwordSize: Int
 
     val inputtedPasswordSize:Int

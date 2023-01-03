@@ -52,7 +52,7 @@ fun EnterPasswordScreen(
             callBack.inputtedPasswordSize
         )
 
-        PasswordGrid(getGridButtonList(false,callBack),callBack)
+        PasswordGrid(getGridButtonList(true,callBack),callBack)
     }
 }
 
@@ -178,7 +178,10 @@ internal fun validateNumberForButtonNumber(number:Int) {
 @SuppressLint("ResourceType")
 internal fun getGridButtonList(isFingerPrintAvailable:Boolean,callBack: EnterPasswordScreenCallBack) : List<GridButtonType> {
     val fingerPrintButton = if(isFingerPrintAvailable)
-        GridButtonType.ActionButton(R.drawable.ic_fingerprint) {}
+        GridButtonType.ActionButton(
+            R.drawable.ic_fingerprint,
+            onClick = callBack::onSendFingerPrintRequest
+        )
         else GridButtonType.Stub
 
     return listOf(
@@ -193,11 +196,11 @@ internal fun getGridButtonList(isFingerPrintAvailable:Boolean,callBack: EnterPas
         GridButtonType.NumberButton(9),
         fingerPrintButton,
         GridButtonType.NumberButton(0),
-        GridButtonType.ActionButton(R.drawable.ic_backspace, onLongPress = {
-            callBack.onClearAll()
-        }) {
-            callBack.onClearNumber()
-        }
+        GridButtonType.ActionButton(
+            R.drawable.ic_backspace,
+            onLongPress = callBack::onClearAll,
+            onClick = callBack::onClearNumber
+        )
     )
 }
 
@@ -243,6 +246,10 @@ fun test() {
 
         override fun onClearAll() {
             password.value = ""
+        }
+
+        override fun onSendFingerPrintRequest() {
+
         }
 
         override val passwordSize: Int
