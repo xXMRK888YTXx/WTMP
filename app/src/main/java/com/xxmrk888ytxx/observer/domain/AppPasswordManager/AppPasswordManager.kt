@@ -18,14 +18,13 @@ internal class AppPasswordManager @Inject constructor(
     private val appPasswordKey = stringPreferencesKey("AppPasswordKey")
 
     override suspend fun setupAppPassword(
-        oldPassword: String?,
-        newPassword:String
+        password:String
     ) {
-        if(!isValidOldPassword(oldPassword)) {
-            throw IllegalArgumentException("oldPassword is null or incorrect")
+        if(isPasswordSetup().first()) {
+            throw IllegalStateException("Password is already Setup")
         }
 
-        val passwordBytes = newPassword.toByteArray()
+        val passwordBytes = password.toByteArray()
         val passwordHash = cryptoManager.hashFromData(passwordBytes)
 
         settingsAppManager.writeProtectedProperty(appPasswordKey,passwordHash)
@@ -41,7 +40,7 @@ internal class AppPasswordManager @Inject constructor(
         return checkingPasswordHash == appPasswordHash
     }
 
-    override suspend fun isPasswordSetup(): Flow<Boolean> {
+    override fun isPasswordSetup(): Flow<Boolean> {
         return settingsAppManager.getProtectedProperty(appPasswordKey).map {
             it != null
         }

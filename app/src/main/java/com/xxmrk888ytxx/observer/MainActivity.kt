@@ -117,10 +117,14 @@ class MainActivity : FragmentActivity(),ActivityLifecycleRegister {
                     }
 
                     composable(Screen.SetupAppPasswordScreen.route) {
+                        val screenMode = it.arguments?.getInt(Navigator.SetupAppPasswordScreenModeKey)
+                            ?: return@composable
                         SetupAppPasswordScreen(
+                            screenMode = screenMode,
                             setupAppPasswordViewModel = composeViewModel {
                                 setupAppPasswordViewModel.get()
-                            }
+                            },
+                            navigator = activityViewModel
                         )
                     }
 

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id(Deps.Dagger.DaggerKaptPlugin)
 }
 
 android {
@@ -39,4 +40,5 @@ android {
 
 dependencies {
     implementation(project(Project.core.core_Compose.route))
+    kapt (Deps.Dagger.DaggerKaptCompiler)
 }

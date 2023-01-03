@@ -11,7 +11,7 @@
     <string name="Application_version">Application version</string>
     <string name="Write_to_the_developer">Write to the developer</string>
     <string name="Application_log">Application log</string>
-    <string name="Set_password_when_logging_into_app">Set a password when logging into the app</string>
+    <string name="Set_password_when_logging_into_app">Password when entering the application</string>
     <string name="Unsuccessful_unlock_attempt">Unsuccessful unlock attempt</string>
     <string name="Device_unlock">Device unlock</string>
     <string name="Application_tracking">Application Tracking</string>

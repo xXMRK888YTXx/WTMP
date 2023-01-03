@@ -11,7 +11,7 @@
     <string name="Application_version">Версия приложения</string>
     <string name="Write_to_the_developer">Написать разработчику</string>
     <string name="Application_log">Журнал приложения</string>
-    <string name="Set_password_when_logging_into_app">Установить пароль при входе в приложение</string>
+    <string name="Set_password_when_logging_into_app">Пароль при входе в приложение</string>
     <string name="Unsuccessful_unlock_attempt">Неудачная попытка разблокировки</string>
     <string name="Device_unlock">Разблокировка устройства</string>
     <string name="Application_tracking">Отслеживание приложений</string>

@@ -20,9 +20,17 @@ interface Navigator {
 
     fun toSelectTrackedAppScreen()
 
-    fun toSetupAppPasswordScreen()
+    fun toSetupAppPasswordScreen(setupAppPasswordScreenMode:SetupAppPasswordScreenMode)
 
     companion object {
         const val EventDetailsScreenKey = "EventDetailsScreenKey"
+
+        sealed class SetupAppPasswordScreenMode(val modeNum:Int) {
+            object SetupPassword : SetupAppPasswordScreenMode(0)
+
+            object RemovePassword : SetupAppPasswordScreenMode(1)
+        }
+
+        const val SetupAppPasswordScreenModeKey = "SetupAppPasswordScreenModeKey"
     }
 }

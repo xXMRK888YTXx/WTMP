@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.coredeps.Const.DEVELOPER_EMAIL
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
@@ -35,7 +36,8 @@ class SettingsViewModel @Inject constructor(
     private val telegramConfigProvider: TelegramConfigProvider,
     private val appOpenConfigProvider: AppOpenConfigProvider,
     private val appOpenConfigChanger: AppOpenConfigChanger,
-    private val resourcesProvider: ResourcesProvider
+    private val resourcesProvider: ResourcesProvider,
+    private val appPasswordProvider: AppPasswordProvider
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -133,6 +135,9 @@ class SettingsViewModel @Inject constructor(
             appOpenConfigChanger.updateJoinPhotoToTelegramNotify(state)
         }
     }
+
+    fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetup()
+
 
     internal var lastFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
         FailedUnlockTrackedConfig(isTracked = false,

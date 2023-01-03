@@ -210,13 +210,26 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
-internal fun getSecureParams(navigator: Navigator): List<SettingsParamType> {
-
+internal fun getSecureParams(
+    settingsViewModel: SettingsViewModel,
+    navigator: Navigator
+): List<SettingsParamType> {
+    val isAppPasswordSetup = settingsViewModel.isAppPasswordSetup().collectAsState(false)
     return listOf(
-        SettingsParamType.Button(
-            stringResource(R.string.Set_password_when_logging_into_app),
-            R.drawable.ic_password,
-            onClick =  navigator::toSetupAppPasswordScreen
-        )
+    SettingsParamType.Switch(
+        stringResource(R.string.Set_password_when_logging_into_app),
+        R.drawable.ic_password,
+        isSwitched = isAppPasswordSetup.value,
+    ) {
+        if(isAppPasswordSetup.value) {
+            navigator.toSetupAppPasswordScreen(
+                Navigator.Companion.SetupAppPasswordScreenMode.RemovePassword
+            )
+        } else {
+          navigator.toSetupAppPasswordScreen(
+              Navigator.Companion.SetupAppPasswordScreenMode.SetupPassword
+          )
+        }
+    }
     )
 }

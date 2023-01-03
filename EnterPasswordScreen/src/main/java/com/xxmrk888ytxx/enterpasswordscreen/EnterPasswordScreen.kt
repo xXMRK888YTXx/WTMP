@@ -3,7 +3,6 @@ package com.xxmrk888ytxx.enterpasswordscreen
 import MutliUse.LazySpacer
 import android.annotation.SuppressLint
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -12,16 +11,12 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.W800
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.enterpasswordscreen.models.GridButtonType
@@ -33,9 +28,12 @@ import theme.primaryFontColor
 fun EnterPasswordScreen(
     callBack: EnterPasswordScreenCallBack,
     descriptionText:String,
+    inputtedPasswordSize:Int,
     descriptionTextColor: Color = primaryFontColor,
     emptyPasswordCircleColor:Color = primaryFontColor
 ) {
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,10 +47,10 @@ fun EnterPasswordScreen(
             descriptionTextColor,
             emptyPasswordCircleColor,
             callBack.passwordSize,
-            callBack.inputtedPasswordSize
+            inputtedPasswordSize
         )
 
-        PasswordGrid(getGridButtonList(true,callBack),callBack)
+        PasswordGrid(getGridButtonList(callBack.enableFingerPrintAuthorization,callBack),callBack)
     }
 }
 
@@ -205,59 +203,59 @@ internal fun getGridButtonList(isFingerPrintAvailable:Boolean,callBack: EnterPas
 }
 
 
-@Composable
-@Preview
-fun test() {
-    val descriptionText = remember {
-        mutableStateOf("Введите пароль")
-    }
-    val context = LocalContext.current
-    val password = remember {
-        mutableStateOf("")
-    }
-    val color = remember {
-        mutableStateOf(primaryFontColor)
-    }
-    val callback = object : EnterPasswordScreenCallBack {
-        override fun onInputNumber(number: Int) {
-            color.value = primaryFontColor
-            descriptionText.value = "Введите пароль"
-            password.value += number.toString()
-
-            if(password.value.length == passwordSize) {
-                if(password.value == "1111") {
-                    Toast.makeText(context,"Пароль верный",Toast.LENGTH_SHORT).show()
-                    descriptionText.value = "Пароль верный"
-                    color.value = Color.Green
-                }
-                else {
-                    Toast.makeText(context,"Пароль неверный",Toast.LENGTH_SHORT).show()
-                    descriptionText.value = "Пароль неверный"
-                    color.value = Color.Red
-                }
-
-                onClearAll()
-            }
-        }
-
-        override fun onClearNumber() {
-            password.value = password.value.dropLast(1)
-        }
-
-        override fun onClearAll() {
-            password.value = ""
-        }
-
-        override fun onSendFingerPrintRequest() {
-
-        }
-
-        override val passwordSize: Int
-            get() = 4
-
-        override val inputtedPasswordSize: Int = password.value.length
-
-    }
-
-    EnterPasswordScreen(callback,descriptionText.value,color.value,color.value)
-}
+//@Composable
+//@Preview
+//fun test() {
+//    val descriptionText = remember {
+//        mutableStateOf("Введите пароль")
+//    }
+//    val context = LocalContext.current
+//    val password = remember {
+//        mutableStateOf("")
+//    }
+//    val color = remember {
+//        mutableStateOf(primaryFontColor)
+//    }
+//    val callback = object : EnterPasswordScreenCallBack {
+//        override fun onInputNumber(number: Int) {
+//            color.value = primaryFontColor
+//            descriptionText.value = "Введите пароль"
+//            password.value += number.toString()
+//
+//            if(password.value.length == passwordSize) {
+//                if(password.value == "1111") {
+//                    Toast.makeText(context,"Пароль верный",Toast.LENGTH_SHORT).show()
+//                    descriptionText.value = "Пароль верный"
+//                    color.value = Color.Green
+//                }
+//                else {
+//                    Toast.makeText(context,"Пароль неверный",Toast.LENGTH_SHORT).show()
+//                    descriptionText.value = "Пароль неверный"
+//                    color.value = Color.Red
+//                }
+//
+//                onClearAll()
+//            }
+//        }
+//
+//        override fun onClearNumber() {
+//            password.value = password.value.dropLast(1)
+//        }
+//
+//        override fun onClearAll() {
+//            password.value = ""
+//        }
+//
+//        override fun onSendFingerPrintRequest() {
+//
+//        }
+//
+//        override val passwordSize: Int
+//            get() = 4
+//
+//        override val inputtedPasswordSize: Int = password.value.length
+//
+//    }
+//
+//    EnterPasswordScreen(callback,descriptionText.value,color.value,color.value)
+//}

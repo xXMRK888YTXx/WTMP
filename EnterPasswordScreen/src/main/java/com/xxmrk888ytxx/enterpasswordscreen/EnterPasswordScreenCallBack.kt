@@ -11,5 +11,5 @@ interface EnterPasswordScreenCallBack {
 
     val passwordSize: Int
 
-    val inputtedPasswordSize:Int
+    val enableFingerPrintAuthorization : Boolean
 }

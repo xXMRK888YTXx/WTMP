@@ -6,6 +6,6 @@ interface AppPasswordProvider {
 
     suspend fun isAppPassword(checkingPassword:String) : Boolean
 
-    suspend fun isPasswordSetup() : Flow<Boolean>
+    fun isPasswordSetup() : Flow<Boolean>
 
 }
