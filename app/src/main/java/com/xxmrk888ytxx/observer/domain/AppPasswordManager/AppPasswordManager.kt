@@ -5,7 +5,9 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CryptoManager
 import com.xxmrk888ytxx.observer.domain.SettingsAppManager.SettingsAppManager
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class AppPasswordManager @Inject constructor(
@@ -30,7 +32,7 @@ internal class AppPasswordManager @Inject constructor(
     }
 
     override suspend fun isAppPassword(checkingPassword: String): Boolean {
-        if(!isPasswordSetup()) throw IllegalStateException("Password is not setup")
+        if(!isPasswordSetup().first()) throw IllegalStateException("Password is not setup")
 
         val checkingPasswordHash = cryptoManager.hashFromData(checkingPassword.toByteArray())
         val appPasswordHash = settingsAppManager.getProtectedProperty(appPasswordKey).first()
@@ -39,12 +41,14 @@ internal class AppPasswordManager @Inject constructor(
         return checkingPasswordHash == appPasswordHash
     }
 
-    override suspend fun isPasswordSetup(): Boolean {
-        return settingsAppManager.getProtectedProperty(appPasswordKey).first() != null
+    override suspend fun isPasswordSetup(): Flow<Boolean> {
+        return settingsAppManager.getProtectedProperty(appPasswordKey).map {
+            it != null
+        }
     }
 
     private suspend fun isValidOldPassword(oldPassword: String?) : Boolean {
-        if(!isPasswordSetup()) return true
+        if(!isPasswordSetup().first()) return true
         val checkingPassword = oldPassword ?: return false
         return isAppPassword(checkingPassword)
     }
