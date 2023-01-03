@@ -27,7 +27,10 @@ class AdminDeviceControllerTest {
         AdminDeviceController(deviceEventRepository,
             failedUnlockTrackedConfigProvider,
             handleEventUseCase,
-            appStateProvider
+            appStateProvider,
+            mockk(relaxed = true),
+            mockk(relaxed = true),
+            mockk(relaxed = true),
         )
 
     @Test

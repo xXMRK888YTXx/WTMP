@@ -1,7 +1,7 @@
 package com.xxmrk888ytxx.observer.EventDeviceTrackerCallback
 
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TrackedAppRepository
@@ -31,7 +31,8 @@ class EventDeviceTrackerCallbackTest {
     private val eventDeviceTrackerCallback
     :EventDeviceTrackerCallback = EventDeviceTrackerCallbackImpl(
         deviceEventRepository, succeededUnlockTrackedConfigProvider, handleEventUseCase,appOpenConfig,
-        trackedAppRepository,mockk(relaxed = true),appStateProvider
+        trackedAppRepository,mockk(relaxed = true),appStateProvider,mockk(relaxed = true),
+        mockk(relaxed = true),mockk(relaxed = true),
     )
 
     @Before
