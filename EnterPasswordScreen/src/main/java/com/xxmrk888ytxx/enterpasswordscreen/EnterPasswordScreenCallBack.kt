@@ -7,8 +7,6 @@ interface EnterPasswordScreenCallBack {
 
     fun onClearAll()
 
-    fun onPasswordInput()
-
     val passwordSize: Int
 
     val inputtedPasswordSize:Int

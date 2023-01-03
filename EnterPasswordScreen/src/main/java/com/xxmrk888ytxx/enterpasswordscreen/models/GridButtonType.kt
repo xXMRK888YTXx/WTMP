@@ -9,6 +9,7 @@ internal sealed class GridButtonType {
 
     data class ActionButton(
         @IdRes val icon:Int,
+        val onLongPress:(() -> Unit)? = null,
         val onClick:() -> Unit
     ) : GridButtonType()
 
