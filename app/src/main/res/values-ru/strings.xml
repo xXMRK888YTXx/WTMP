@@ -9,4 +9,7 @@
     <string name="Administrator_rights_revoked">Права администратора отозваны</string>
     <string name="Without_this_permission_application_not_possible">Без данного разрешения работа приложения невозможна.</string>
     <string name="Accessibility_rights_revoked">Доступ к специальным службам отозван</string>
+    <string name="Verify_your_identity">Подтвердите свои личность</string>
+    <string name="Use_biometric_data">Воспользуйтесь биометрическими данными</string>
+    <string name="Use_password">Использовать пароль</string>
 </resources>

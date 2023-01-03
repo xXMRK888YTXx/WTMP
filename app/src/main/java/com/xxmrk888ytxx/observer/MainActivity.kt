@@ -3,13 +3,13 @@ package com.xxmrk888ytxx.observer
 import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -35,7 +35,7 @@ import theme.BackGroundColor
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainActivity : ComponentActivity(),ActivityLifecycleRegister {
+class MainActivity : FragmentActivity(),ActivityLifecycleRegister {
 
     private val activityViewModel:ActivityViewModel by viewModels()
     //Screens ViewModels

@@ -9,4 +9,7 @@
     <string name="Administrator_rights_revoked">Administrator rights revoked</string>
     <string name="Without_this_permission_application_not_possible">Without this permission, the application cannot work.</string>
     <string name="Accessibility_rights_revoked">Access to accessibility service revoked</string>
+    <string name="Verify_your_identity">Verify your identity</string>
+    <string name="Use_biometric_data">Use biometric data</string>
+    <string name="Use_password">Use password</string>
 </resources>

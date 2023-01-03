@@ -107,5 +107,12 @@ object Deps {
     object Permissions {
         const val permission = "com.google.accompanist:accompanist-permissions:0.26.2-beta"
     }
+    object Biometric {
+        const val biometric = "androidx.biometric:biometric-ktx:1.2.0-alpha05"
+    }
+    object Fragment {
+        const val fragment = "androidx.fragment:fragment-ktx:1.5.5"
+    }
+
 
 }
