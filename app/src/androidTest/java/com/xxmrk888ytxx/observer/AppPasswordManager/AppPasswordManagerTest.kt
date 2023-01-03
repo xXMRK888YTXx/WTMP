@@ -5,6 +5,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvide
 import com.xxmrk888ytxx.cryptomanager.CryptoManagerImpl
 import com.xxmrk888ytxx.observer.BaseSettingsAppManagerTest
 import com.xxmrk888ytxx.observer.domain.AppPasswordManager.AppPasswordManager
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -43,7 +44,7 @@ internal class AppPasswordManagerTest : BaseSettingsAppManagerTest() {
 
     @Test
     fun checkPasswordSetupExpectReturnsTrue() = runBlocking {
-        Assert.assertEquals(true,provider.isPasswordSetup())
+        Assert.assertEquals(true,provider.isPasswordSetup().first())
     }
 
     @Test
