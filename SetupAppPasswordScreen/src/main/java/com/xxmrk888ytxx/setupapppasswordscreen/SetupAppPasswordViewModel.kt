@@ -20,7 +20,7 @@ import javax.inject.Inject
 class SetupAppPasswordViewModel @Inject constructor(
     private val appPasswordChanger: AppPasswordChanger,
     private val resourcesProvider: ResourcesProvider,
-    private val toastManager: ToastManager
+    private val toastManager: ToastManager,
 ) : ViewModel() {
 
     private val _screenMode:MutableState<ScreenMode> = mutableStateOf(ScreenMode.None)
@@ -43,7 +43,9 @@ class SetupAppPasswordViewModel @Inject constructor(
                         handleSetupPasswordState(_screenMode.value as ScreenMode.SetupPassword)
                     }
 
-                    is ScreenMode.RemovePassword -> {}
+                    is ScreenMode.RemovePassword -> {
+                        handleRemovePasswordState()
+                    }
 
                     is ScreenMode.None -> {}
                 }
@@ -64,6 +66,24 @@ class SetupAppPasswordViewModel @Inject constructor(
 
         override val enableFingerPrintAuthorization: Boolean = false
 
+    }
+
+    @SuppressLint("ResourceType")
+    private fun handleRemovePasswordState() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                appPasswordChanger.removePassword(inputPassword.value)
+                withContext(Dispatchers.Main) {
+                    toastManager.showToast(resourcesProvider.getString(R.string.Password_removed))
+                    navigator?.navigateUp()
+                }
+            }catch (e:Exception) {
+                descriptionText.value = resourcesProvider.getString(R.string.Wrong_password)
+                descriptionColor.value = errorColor
+                emptyPasswordCircleColor.value = errorColor
+                callBack.onClearAll()
+            }
+        }
     }
 
     internal fun setupScreenMode(mode:Int) {

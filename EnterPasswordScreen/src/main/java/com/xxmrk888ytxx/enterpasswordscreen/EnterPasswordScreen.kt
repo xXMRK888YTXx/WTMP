@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.enterpasswordscreen.models.GridButtonType
 import theme.BackGroundColor
+import theme.okColor
 import theme.openSansFont
 import theme.primaryFontColor
 
@@ -30,7 +31,8 @@ fun EnterPasswordScreen(
     descriptionText:String,
     inputtedPasswordSize:Int,
     descriptionTextColor: Color = primaryFontColor,
-    emptyPasswordCircleColor:Color = primaryFontColor
+    emptyPasswordCircleColor:Color = primaryFontColor,
+    inputtedPasswordCircleColor:Color = okColor
 ) {
 
 
@@ -46,6 +48,7 @@ fun EnterPasswordScreen(
             descriptionText,
             descriptionTextColor,
             emptyPasswordCircleColor,
+            inputtedPasswordCircleColor,
             callBack.passwordSize,
             inputtedPasswordSize
         )
@@ -61,6 +64,7 @@ internal fun PasswordViewer(
     descriptionText: String,
     descriptionTextColor: Color,
     emptyPasswordCircleColor:Color,
+    inputtedPasswordCircleColor:Color,
     passwordSize:Int,
     inputtedPasswordSize:Int
 ) {
@@ -92,7 +96,7 @@ internal fun PasswordViewer(
                     .size(20.dp)) {
                     drawCircle(
                         if(passwordSize >= inputtedPasswordSize) emptyPasswordCircleColor
-                            else Color.Green
+                            else inputtedPasswordCircleColor
                     )
                 }
             }
