@@ -67,6 +67,12 @@ internal class SettingsAppManager @Inject constructor(
         }
     }
 
+    suspend fun <KEYTYPE> removeProperty(key:Preferences.Key<KEYTYPE>) {
+        context.dataStore.edit {
+            it.remove(key)
+        }
+    }
+
     fun <KEYTYPE> isPropertyExist(key:Preferences.Key<KEYTYPE>) : Flow<Boolean> {
         return context.dataStore.data.map {
             it.contains(key)
