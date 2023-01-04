@@ -30,6 +30,12 @@ internal class AppPasswordManager @Inject constructor(
         settingsAppManager.writeProtectedProperty(appPasswordKey,passwordHash)
     }
 
+    override suspend fun removePassword(currentPassword: String) {
+        if(!isAppPassword(currentPassword)) throw IllegalArgumentException("Password is incorrect")
+
+        settingsAppManager.removeProperty(appPasswordKey)
+    }
+
     override suspend fun isAppPassword(checkingPassword: String): Boolean {
         if(!isPasswordSetup().first()) throw IllegalStateException("Password is not setup")
 
@@ -45,12 +51,4 @@ internal class AppPasswordManager @Inject constructor(
             it != null
         }
     }
-
-    private suspend fun isValidOldPassword(oldPassword: String?) : Boolean {
-        if(!isPasswordSetup().first()) return true
-        val checkingPassword = oldPassword ?: return false
-        return isAppPassword(checkingPassword)
-    }
-
-
 }
