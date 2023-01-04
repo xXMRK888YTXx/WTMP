@@ -8,4 +8,6 @@ sealed class Screen(val route:String) {
     object EventDetailsScreen : Screen("EventDetailsScreen")
     object SelectTrackedAppScreen : Screen("SelectTrackedAppScreen")
     object SetupAppPasswordScreen : Screen("SetupAppPasswordScreen")
+    object AppLoginScreen : Screen("AppLoginScreen")
+    object Stub : Screen("Stub")
 }

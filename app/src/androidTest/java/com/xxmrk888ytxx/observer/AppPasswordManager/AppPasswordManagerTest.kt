@@ -45,7 +45,7 @@ internal class AppPasswordManagerTest : BaseSettingsAppManagerTest() {
 
     @Test
     fun setupPasswordAndCheckThemExpectCheckPasswordReturnsTrue() = runBlocking {
-        Assert.assertEquals(false,provider.isPasswordSetup().first())
+        Assert.assertEquals(false,provider.isPasswordSetupFlow().first())
         
         changer.setupAppPassword(testPassword)
         
@@ -54,7 +54,7 @@ internal class AppPasswordManagerTest : BaseSettingsAppManagerTest() {
 
     @Test
     fun setupPasswordAndCheckIncorrectPasswordExpectCheckPasswordReturnsFalse() = runBlocking {
-        Assert.assertEquals(false,provider.isPasswordSetup().first())
+        Assert.assertEquals(false,provider.isPasswordSetupFlow().first())
 
         changer.setupAppPassword(testPassword)
 
@@ -63,13 +63,13 @@ internal class AppPasswordManagerTest : BaseSettingsAppManagerTest() {
     
     @Test
     fun checkPasswordStateExpectReturnsFalse() = runBlocking {
-        Assert.assertEquals(false,provider.isPasswordSetup().first())
+        Assert.assertEquals(false,provider.isPasswordSetupFlow().first())
     }
 
     @Test
     fun setupAndCheckPasswordStateExpectReturnsTrue() = runBlocking {
         changer.setupAppPassword(testPassword)
-        Assert.assertEquals(true,provider.isPasswordSetup().first())
+        Assert.assertEquals(true,provider.isPasswordSetupFlow().first())
     }
     
     @Test(expected = IllegalStateException::class)
@@ -102,7 +102,7 @@ internal class AppPasswordManagerTest : BaseSettingsAppManagerTest() {
         Assert.assertEquals(true,provider.isAppPassword(testPassword2))
         changer.removePassword(testPassword2)
 
-        Assert.assertEquals(false,provider.isPasswordSetup().first())
+        Assert.assertEquals(false,provider.isPasswordSetupFlow().first())
     }
     
 }

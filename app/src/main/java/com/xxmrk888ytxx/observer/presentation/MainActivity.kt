@@ -1,26 +1,30 @@
-package com.xxmrk888ytxx.observer
+package com.xxmrk888ytxx.observer.presentation
 
 import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
 import com.xxmrk888ytxx.eventlistscreen.EventListScreen
 import com.xxmrk888ytxx.eventlistscreen.EventViewModel
 import com.xxmrk888ytxx.mainscreen.MainScreen
 import com.xxmrk888ytxx.mainscreen.MainViewModel
+import com.xxmrk888ytxx.observer.Screen
+import com.xxmrk888ytxx.observer.presentation.AppLoginScreen.AppOpenScreen
+import com.xxmrk888ytxx.observer.presentation.AppLoginScreen.AppOpenViewModel
 import com.xxmrk888ytxx.observer.utils.appComponent
 import com.xxmrk888ytxx.selecttrackedappscreen.SelectTrackedAppScreen
 import com.xxmrk888ytxx.selecttrackedappscreen.SelectTrackedAppViewModel
@@ -31,13 +35,15 @@ import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import theme.BackGroundColor
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainActivity : FragmentActivity(),ActivityLifecycleRegister {
+class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
 
-    private val activityViewModel:ActivityViewModel by viewModels()
+    private val activityViewModel: ActivityViewModel by viewModels()
     //Screens ViewModels
     /**
      * [Ru]
@@ -52,6 +58,9 @@ class MainActivity : FragmentActivity(),ActivityLifecycleRegister {
     @Inject lateinit var eventDetailsViewModel: EventDetailsViewModel.Factory
     @Inject lateinit var selectTrackedAppViewModel: Provider<SelectTrackedAppViewModel>
     @Inject lateinit var setupAppPasswordViewModel: Provider<SetupAppPasswordViewModel>
+    @Inject internal lateinit var appOpenViewModel: Provider<AppOpenViewModel>
+
+    @Inject lateinit var appPasswordProvider: AppPasswordProvider
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +73,20 @@ class MainActivity : FragmentActivity(),ActivityLifecycleRegister {
                 .fillMaxSize()
                 .background(BackGroundColor))
             {
-                NavHost(navController = navController, startDestination = Screen.MainScreen.route) {
+                NavHost(
+                    navController = navController,
+                    startDestination = getStartDestination().route
+                ) {
+
+                    composable(Screen.AppLoginScreen.route) {
+                        AppOpenScreen(
+                            appOpenViewModel = composeViewModel {
+                                appOpenViewModel.get()
+                            },
+                            navController = navController,
+                            activityLifecycleRegister = this@MainActivity
+                        )
+                    }
 
                     composable(Screen.MainScreen.route) {
                         MainScreen(
@@ -127,11 +149,15 @@ class MainActivity : FragmentActivity(),ActivityLifecycleRegister {
                             navigator = activityViewModel
                         )
                     }
-
                 }
             }
         }
         activityViewModel.onCreate(this)
+    }
+
+    private fun getStartDestination(): Screen = runBlocking {
+        return@runBlocking if(appPasswordProvider.isPasswordSetupFlow().first()) Screen.AppLoginScreen
+            else Screen.MainScreen
     }
 
     override fun onStart() {

@@ -65,10 +65,12 @@ dependencies {
     implementation(project(Project.EventDetailsScreen))
     implementation(project(Project.SelectTrackedAppScreen))
     implementation(project(Project.SetupAppPasswordScreen))
+    implementation(project(Project.EnterPasswordScreen))
 
     kapt (Deps.Dagger.DaggerKaptCompiler)
 
     implementation(Deps.DataStore.dataStore)
+    implementation(Deps.AppCompat.appCompat)
 
     //Instrumental Test
     androidTestImplementation (Deps.InstrumentalTest.espresso)

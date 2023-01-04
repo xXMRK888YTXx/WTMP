@@ -24,7 +24,7 @@ internal class AppPasswordManager @Inject constructor(
     override suspend fun setupAppPassword(
         password:String
     ) {
-        if(isPasswordSetup().first()) {
+        if(isPasswordSetupFlow().first()) {
             throw IllegalStateException("Password is already Setup")
         }
 
@@ -46,7 +46,7 @@ internal class AppPasswordManager @Inject constructor(
     }
 
     override suspend fun isAppPassword(checkingPassword: String): Boolean {
-        if(!isPasswordSetup().first()) throw IllegalStateException("Password is not setup")
+        if(!isPasswordSetupFlow().first()) throw IllegalStateException("Password is not setup")
 
         val checkingPasswordHash = cryptoManager.hashFromData(checkingPassword.toByteArray())
         val appPasswordHash = settingsAppManager.getProtectedProperty(appPasswordKey).first()
@@ -55,7 +55,7 @@ internal class AppPasswordManager @Inject constructor(
         return checkingPasswordHash == appPasswordHash
     }
 
-    override fun isPasswordSetup(): Flow<Boolean> {
+    override fun isPasswordSetupFlow(): Flow<Boolean> {
         return settingsAppManager.getProtectedProperty(appPasswordKey).map {
             it != null
         }

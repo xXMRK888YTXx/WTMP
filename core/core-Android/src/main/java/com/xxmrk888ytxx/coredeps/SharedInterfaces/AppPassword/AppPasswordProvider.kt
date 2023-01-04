@@ -6,7 +6,7 @@ interface AppPasswordProvider {
 
     suspend fun isAppPassword(checkingPassword:String) : Boolean
 
-    fun isPasswordSetup() : Flow<Boolean>
+    fun isPasswordSetupFlow() : Flow<Boolean>
 
     fun isFingerPrintAuthorizationEnabled() : Flow<Boolean>
 

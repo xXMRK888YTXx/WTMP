@@ -113,6 +113,9 @@ object Deps {
     object Fragment {
         const val fragment = "androidx.fragment:fragment-ktx:1.5.5"
     }
+    object AppCompat {
+        const val appCompat = "androidx.appcompat:appcompat:1.5.1"
+    }
 
 
 }

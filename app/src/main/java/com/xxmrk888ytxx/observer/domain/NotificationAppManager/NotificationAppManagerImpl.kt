@@ -9,7 +9,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
-import com.xxmrk888ytxx.observer.MainActivity
+import com.xxmrk888ytxx.observer.presentation.MainActivity
 import com.xxmrk888ytxx.observer.R
 import javax.inject.Inject
 

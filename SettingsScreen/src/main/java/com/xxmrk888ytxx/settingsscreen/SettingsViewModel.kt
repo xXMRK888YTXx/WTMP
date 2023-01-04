@@ -140,7 +140,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetup()
+    fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetupFlow()
 
     fun getFingerPrintAuthorizationState() = appPasswordProvider.isFingerPrintAuthorizationEnabled()
 

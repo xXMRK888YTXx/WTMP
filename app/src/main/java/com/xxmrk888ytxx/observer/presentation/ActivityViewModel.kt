@@ -1,10 +1,11 @@
-package com.xxmrk888ytxx.observer
+package com.xxmrk888ytxx.observer.presentation
 
 import SharedInterfaces.Navigator
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
+import com.xxmrk888ytxx.observer.Screen
 
 internal class ActivityViewModel : ViewModel(),Navigator {
 
@@ -66,8 +67,8 @@ internal class ActivityViewModel : ViewModel(),Navigator {
     }
 
     fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback,activity: Activity) {
-        activityCallbacks.add(activityLifecycleCallback)
-        activityLifecycleCallback.onRegister(activity)
+        if(activityCallbacks.add(activityLifecycleCallback))
+            activityLifecycleCallback.onRegister(activity)
     }
 
     fun onCreate(activity: Activity) {
