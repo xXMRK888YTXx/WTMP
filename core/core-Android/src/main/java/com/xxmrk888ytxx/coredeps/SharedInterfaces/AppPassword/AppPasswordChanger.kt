@@ -5,4 +5,6 @@ interface AppPasswordChanger {
     suspend fun setupAppPassword(password:String)
 
     suspend fun removePassword(currentPassword:String)
+
+    suspend fun updateFingerPrintAuthorizationState(state:Boolean)
 }

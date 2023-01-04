@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.observer.domain.AppPasswordManager
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
@@ -16,6 +17,9 @@ internal class AppPasswordManager @Inject constructor(
 ) : AppPasswordChanger,AppPasswordProvider {
 
     private val appPasswordKey = stringPreferencesKey("AppPasswordKey")
+
+    private val fingerPrintAuthorizationStateKey
+        = booleanPreferencesKey("fingerPrintAuthorizationStateKey")
 
     override suspend fun setupAppPassword(
         password:String
@@ -34,6 +38,11 @@ internal class AppPasswordManager @Inject constructor(
         if(!isAppPassword(currentPassword)) throw IllegalArgumentException("Password is incorrect")
 
         settingsAppManager.removeProperty(appPasswordKey)
+        settingsAppManager.removeProperty(fingerPrintAuthorizationStateKey)
+    }
+
+    override suspend fun updateFingerPrintAuthorizationState(state: Boolean) {
+        settingsAppManager.writeProperty(fingerPrintAuthorizationStateKey,state)
     }
 
     override suspend fun isAppPassword(checkingPassword: String): Boolean {
@@ -50,5 +59,9 @@ internal class AppPasswordManager @Inject constructor(
         return settingsAppManager.getProtectedProperty(appPasswordKey).map {
             it != null
         }
+    }
+
+    override fun isFingerPrintAuthorizationEnabled(): Flow<Boolean> {
+        return settingsAppManager.getProperty(fingerPrintAuthorizationStateKey,false)
     }
 }

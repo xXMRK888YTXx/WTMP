@@ -41,7 +41,8 @@ import javax.inject.Provider
         AppStateManagerModule::class,
         PermissionsManagerModule::class,
         NotificationAppManagerModule::class,
-        AppPasswordManagerModule::class
+        AppPasswordManagerModule::class,
+        BiometricAuthorizationManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

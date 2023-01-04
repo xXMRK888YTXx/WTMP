@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Enter_password">Введите пароль</string>
-    <string name="Repeat_one_more">Повторите ещё раз</string>
-    <string name="Password_is_setup">Пароль установлен</string>
-    <string name="Password_setup_error">Во время установки пароля, произошла ошибка</string>
-    <string name="Passwords_not_equal">Пароли не совпадают</string>
-    <string name="Password_removed">Пароль удалён</string>
-    <string name="Wrong_password">Неверный пароль</string>
+    <string name="Enter_password">Enter password</string>
+    <string name="Repeat_one_more">Repeat one more time</string>
+    <string name="Password_is_setup">The password is set</string>
+    <string name="Password_setup_error">An error occurred while setting the password</string>
+    <string name="Passwords_not_equal">Password mismatch</string>
+    <string name="Password_removed">Password removed</string>
+    <string name="Wrong_password">Wrong password</string>
 </resources>

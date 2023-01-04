@@ -212,24 +212,41 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 @MustBeLocalization
 internal fun getSecureParams(
     settingsViewModel: SettingsViewModel,
-    navigator: Navigator
+    navigator: Navigator,
 ): List<SettingsParamType> {
-    val isAppPasswordSetup = settingsViewModel.isAppPasswordSetup().collectAsState(false)
-    return listOf(
-    SettingsParamType.Switch(
-        stringResource(R.string.Set_password_when_logging_into_app),
-        R.drawable.ic_password,
-        isSwitched = isAppPasswordSetup.value,
-    ) {
-        if(isAppPasswordSetup.value) {
-            navigator.toSetupAppPasswordScreen(
-                Navigator.Companion.SetupAppPasswordScreenMode.RemovePassword
-            )
-        } else {
-          navigator.toSetupAppPasswordScreen(
-              Navigator.Companion.SetupAppPasswordScreenMode.SetupPassword
-          )
-        }
+    val isAppPasswordSetup = settingsViewModel.isAppPasswordSetup()
+        .collectAsState(settingsViewModel.lastIsAppPasswordSetup)
+
+    val fingerPrintAuthorizationState = settingsViewModel.getFingerPrintAuthorizationState()
+        .collectAsState(initial = false)
+    SideEffect {
+        settingsViewModel.lastIsAppPasswordSetup = isAppPasswordSetup.value
     }
+    return listOf(
+        SettingsParamType.Switch(
+            stringResource(R.string.Set_password_when_logging_into_app),
+            R.drawable.ic_password,
+            isSwitched = isAppPasswordSetup.value,
+        ) {
+            if (isAppPasswordSetup.value) {
+                navigator.toSetupAppPasswordScreen(
+                    Navigator.Companion.SetupAppPasswordScreenMode.RemovePassword
+                )
+            } else {
+                navigator.toSetupAppPasswordScreen(
+                    Navigator.Companion.SetupAppPasswordScreenMode.SetupPassword
+                )
+            }
+        },
+
+        SettingsParamType.Switch(
+            stringResource(R.string.Login_with_finger_print),
+            R.drawable.ic_fingerprint,
+            fingerPrintAuthorizationState.value,
+            isVisible = settingsViewModel.isFingerPrintScannerAvailable&&isAppPasswordSetup.value,
+            isEnable = settingsViewModel.isFingerPrintScannerAvailable&&isAppPasswordSetup.value,
+            onStateChanged = settingsViewModel::updateFingerPrintAuthorizationState
+        )
+
     )
 }

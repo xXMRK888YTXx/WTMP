@@ -18,4 +18,5 @@
     <string name="Security">Безопасность</string>
     <string name="Other">Прочее</string>
     <string name="Settings">Настройки</string>
+    <string name="Login_with_finger_print">Вход по отпечатку</string>
 </resources>

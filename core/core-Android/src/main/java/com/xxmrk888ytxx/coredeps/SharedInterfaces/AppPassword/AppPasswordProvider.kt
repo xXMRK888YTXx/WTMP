@@ -8,4 +8,6 @@ interface AppPasswordProvider {
 
     fun isPasswordSetup() : Flow<Boolean>
 
+    fun isFingerPrintAuthorizationEnabled() : Flow<Boolean>
+
 }

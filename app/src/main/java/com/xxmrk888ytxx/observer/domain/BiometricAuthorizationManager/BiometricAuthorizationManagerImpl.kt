@@ -9,9 +9,10 @@ import com.xxmrk888ytxx.observer.R
 import javax.inject.Inject
 
 @Suppress("DEPRECATION")
-class BiometricAuthorizationManagerImpl @Inject constructor(
+internal class BiometricAuthorizationManagerImpl @Inject constructor(
     private val context: Context
 ) : BiometricAuthorizationManager {
+
     override fun isFingerPrintScannerAvailable(): Boolean {
         val fingerPrintManager = context.getSystemService(Context.FINGERPRINT_SERVICE)
                 as? FingerprintManager

@@ -18,4 +18,5 @@
     <string name="Security">Security</string>
     <string name="Other">Other</string>
     <string name="Settings">Settings</string>
+    <string name="Login_with_finger_print">Fingerprint login</string>
 </resources>
