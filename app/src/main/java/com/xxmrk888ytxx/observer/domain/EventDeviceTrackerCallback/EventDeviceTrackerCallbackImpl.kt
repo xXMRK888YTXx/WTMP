@@ -16,7 +16,6 @@ import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerParams
 import com.xxmrk888ytxx.observer.R
 import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -94,13 +93,7 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
         }
     }
 
-    override fun onServiceDestroy() {
-        ApplicationScope.launch(Dispatchers.IO) {
-            if(!appStateProvider.isAppEnable.first()) return@launch
-            notificationAppManager.sendAccessibilityPermissionWithdrawnNotification()
-            appStateChanger.updateAppState(false)
-        }
-    }
+    override fun onServiceDestroy() {}
 
     private val ignoreList:List<String>
         get() = listOf(
