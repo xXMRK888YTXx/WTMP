@@ -39,6 +39,7 @@ class AdminDeviceControllerTest {
         val appState = MutableStateFlow<Boolean>(false)
 
         config.emit(FailedUnlockTrackedConfig(
+            countFailedUnlockToTrigger = 1,
             isTracked = false,
             makePhoto = false,
             notifyInTelegram = false,
@@ -61,6 +62,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            countFailedUnlockToTrigger = 1,
             makePhoto = true,
             notifyInTelegram = true,
             joinPhotoToTelegramNotify = false
@@ -82,6 +84,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            countFailedUnlockToTrigger = 1,
             makePhoto = true,
             notifyInTelegram = true,
             joinPhotoToTelegramNotify = false
