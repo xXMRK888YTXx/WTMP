@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
+import remember
 
 /**
  * [Ru]
@@ -29,16 +30,40 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
     val config = settingsViewModel.failedUnlockTrackedConfig.collectAsState(
         settingsViewModel.lastFailedUnlockTrackedConfig
     )
+
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
+
     SideEffect {
         settingsViewModel.lastFailedUnlockTrackedConfig = config.value
     }
+
+    val dropDownList = (1..10).map {
+        SettingsParamType.DropDown.DropDownItem(
+            it.toString(),
+            onClick = {}
+        )
+    }.remember()
+
+    val numberInvalidAttemptsDropDownState = settingsViewModel.numberInvalidAttemptsDropDownState
+        .remember()
+
     return listOf(
         SettingsParamType.Switch(
             stringResource(R.string.Track_failed_attempts),
             R.drawable.ic_phone_lock,
             config.value.isTracked,
             onStateChanged = settingsViewModel::updateIsTrackedFailedUnlockTrackedConfig
+        ),
+
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Number_invalid_attempts_to_trigger),
+            icon = R.drawable.ic_key,
+            dropDownItems = dropDownList,
+            onShowDropDown = { numberInvalidAttemptsDropDownState.value = true },
+            onHideDropDown = { numberInvalidAttemptsDropDownState.value = false },
+            isDropDownVisible = numberInvalidAttemptsDropDownState.value,
+            showSelectedDropDownParam = "1",
+            isVisible = config.value.isTracked
         ),
 
         SettingsParamType.Switch(

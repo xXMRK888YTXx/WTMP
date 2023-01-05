@@ -19,4 +19,5 @@
     <string name="Other">Прочее</string>
     <string name="Settings">Настройки</string>
     <string name="Login_with_finger_print">Вход по отпечатку</string>
+    <string name="Number_invalid_attempts_to_trigger">Количество неверных попыток, для срабатывания</string>
 </resources>

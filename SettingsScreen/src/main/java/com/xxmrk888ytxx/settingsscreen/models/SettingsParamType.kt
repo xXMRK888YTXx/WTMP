@@ -93,4 +93,22 @@ internal sealed class SettingsParamType(
         override val isEnable: Boolean = true,
         override val isVisible: Boolean = true,
     ) : SettingsParamType(text,icon,isEnable,isVisible)
+
+    data class DropDown(
+        override val text: String,
+        override val icon: Int,
+        val dropDownItems:List<DropDownItem>,
+        val onShowDropDown: () -> Unit,
+        val onHideDropDown: () -> Unit,
+        val isDropDownVisible:Boolean,
+        val showSelectedDropDownParam:String,
+        override val isEnable: Boolean = true,
+        override val isVisible: Boolean = true
+    ) : SettingsParamType(text, icon, isEnable, isVisible) {
+
+        data class DropDownItem(
+            val text:String,
+            val onClick: () -> Unit
+        )
+    }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.coredeps.Const.DEVELOPER_EMAIL
@@ -172,4 +173,6 @@ class SettingsViewModel @Inject constructor(
     internal val isFingerPrintScannerAvailable : Boolean by lazy {
         biometricAuthorizationManager.isFingerPrintScannerAvailable()
     }
+
+    internal val numberInvalidAttemptsDropDownState = mutableStateOf(false)
 }

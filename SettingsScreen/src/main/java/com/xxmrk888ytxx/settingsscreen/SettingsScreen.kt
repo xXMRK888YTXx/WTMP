@@ -9,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
@@ -32,7 +38,7 @@ import theme.*
  */
 
 @Composable
-fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
+fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
     LazyColumn(Modifier.fillMaxSize()) {
 
         item {
@@ -63,14 +69,14 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel,navigator: Navigator) {
 
             SettingsCategory(
                 stringResource(R.string.Application_tracking),
-                getAppOpenObserverParams(settingsViewModel,navigator)
+                getAppOpenObserverParams(settingsViewModel, navigator)
             )
 
             LazySpacer(height = 15)
         }
 
         item {
-            SettingsCategory (
+            SettingsCategory(
                 stringResource(R.string.Security),
                 getSecureParams(settingsViewModel, navigator)
             )
@@ -117,7 +123,7 @@ internal fun TopBar(navigator: Navigator) {
 
         LazySpacer(width = 15)
 
-        Text (
+        Text(
             stringResource(R.string.Settings),
             fontSize = 27.sp,
             fontWeight = FontWeight.W600,
@@ -157,16 +163,16 @@ internal fun SettingsCategory(categoryName: String, settingsParams: List<Setting
             fontFamily = openSansFont
         )
         LazySpacer(height = 10)
-        settingsParams.forEachIndexed() { index,param ->
+        settingsParams.forEachIndexed() { index, param ->
 
-            val shape = if(settingsParams.visibleParamsSize == 1) SettingsParamShape.AllShape
-            else when(index) {
+            val shape = if (settingsParams.visibleParamsSize == 1) SettingsParamShape.AllShape
+            else when (index) {
                 0 -> SettingsParamShape.TopShape
                 settingsParams.visibleParamsLastIndex -> SettingsParamShape.BottomShape
                 else -> SettingsParamShape.None
             }
 
-            SettingsParam(param,shape)
+            SettingsParam(param, shape)
 
         }
     }
@@ -193,13 +199,14 @@ internal fun SettingsParam(
     val shapeSize = 10.dp
     val cardShape = when (shape) {
         is SettingsParamShape.AllShape -> RoundedCornerShape(shapeSize)
-        is SettingsParamShape.TopShape -> RoundedCornerShape(topStart = shapeSize, topEnd = shapeSize)
+        is SettingsParamShape.TopShape -> RoundedCornerShape(topStart = shapeSize,
+            topEnd = shapeSize)
         is SettingsParamShape.BottomShape -> RoundedCornerShape(bottomStart = shapeSize,
             bottomEnd = shapeSize)
         is SettingsParamShape.None -> RoundedCornerShape(0.dp)
     }
 
-    val paramsAlpha = if(params.isEnable) 1f else 0.5f
+    val paramsAlpha = if (params.isEnable) 1f else 0.5f
 
     val onClick: () -> Unit = when (params) {
 
@@ -209,7 +216,11 @@ internal fun SettingsParam(
             { params.onStateChanged(!params.isSwitched) }
         }
 
-        is SettingsParamType.Label -> { {} }
+        is SettingsParamType.Label -> {
+            {}
+        }
+
+        is SettingsParamType.DropDown -> params.onShowDropDown
     }
     AnimatedVisibility(params.isVisible) {
         Card(
@@ -270,7 +281,8 @@ internal fun SettingsParam(
                                         checkedThumbColor = checkedSettingsSwitch,
                                         uncheckedThumbColor = uncheckedSettingsSwitch,
                                         uncheckedTrackColor = uncheckedSettingsSwitch.copy(0.5f),
-                                        disabledCheckedThumbColor = uncheckedSettingsSwitch.copy(paramsAlpha)
+                                        disabledCheckedThumbColor = uncheckedSettingsSwitch.copy(
+                                            paramsAlpha)
                                     )
                                 )
                             }
@@ -300,10 +312,64 @@ internal fun SettingsParam(
                                     params.secondoryText,
                                     fontWeight = FontWeight.W500,
                                     color = primaryFontColor.copy(if (params.isEnable) 0.6f
-                                    else paramsAlpha-0.2f),
+                                    else paramsAlpha - 0.2f),
                                     fontFamily = openSansFont,
                                     fontSize = 16.sp,
                                     modifier = Modifier.padding(end = 10.dp)
+                                )
+                            }
+
+                            is SettingsParamType.DropDown -> {
+                                val annotatedLabelString = buildAnnotatedString {
+                                    append(params.showSelectedDropDownParam)
+                                    appendInlineContent("drop_down_triangle")
+                                }
+                                val inlineContentMap = mapOf(
+                                    "drop_down_triangle" to InlineTextContent(
+                                        Placeholder(20.sp,
+                                            20.sp,
+                                            PlaceholderVerticalAlign.TextCenter)
+                                    ) {
+                                        Icon(painter = painterResource(R.drawable.ic_drop_down_triangle),
+                                            contentDescription = "",
+                                            tint = secondoryFontColor,
+                                            modifier = Modifier.padding(top = 0.dp)
+                                        )
+                                    }
+                                )
+                                DropdownMenu(
+                                    expanded = params.isDropDownVisible,
+                                    onDismissRequest = params.onHideDropDown,
+                                    modifier = Modifier
+                                        .heightIn(max = 200.dp)
+                                        .background(dropDownColor)
+                                ) {
+                                    params.dropDownItems.forEach { item ->
+                                        DropdownMenuItem(onClick = item.onClick) {
+                                            Text(
+                                                text = item.text,
+                                                fontFamily = openSansFont,
+                                                fontSize = 18.sp,
+                                                fontWeight = FontWeight.W600,
+                                                color = primaryFontColor
+                                            )
+                                        }
+
+                                    }
+                                }
+
+                                Text(text = annotatedLabelString,
+                                    inlineContent = inlineContentMap,
+                                    fontWeight = FontWeight.W600,
+                                    fontSize = 18.sp,
+                                    fontFamily = openSansFont,
+                                    color = secondoryFontColor,
+                                    textAlign = TextAlign.End,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            params.onShowDropDown()
+                                        }
                                 )
                             }
                         }
