@@ -26,6 +26,8 @@ interface FailedUnlockTrackedConfigChanger {
      */
     suspend fun updateIsTracked(state:Boolean)
 
+    suspend fun updateCountFailedUnlockToTrigger(newCount:Int)
+
     suspend fun updateMakePhoto(state: Boolean)
 
     suspend fun updateNotifyInTelegram(state: Boolean)

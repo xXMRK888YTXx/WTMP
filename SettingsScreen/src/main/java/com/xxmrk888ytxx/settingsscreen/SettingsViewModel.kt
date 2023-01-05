@@ -75,6 +75,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    internal fun updateCountFailedUnlockToTrigger(newCount:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            failedUnlockTrackedConfigChanger.updateCountFailedUnlockToTrigger(newCount)
+        }
+    }
+
     internal fun updateMakePhotoFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateMakePhoto(state)
@@ -153,6 +159,7 @@ class SettingsViewModel @Inject constructor(
 
     internal var lastFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
         FailedUnlockTrackedConfig(isTracked = false,
+            countFailedUnlockToTrigger = 1,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)

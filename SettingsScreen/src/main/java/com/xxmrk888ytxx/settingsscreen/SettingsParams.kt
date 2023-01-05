@@ -37,15 +37,19 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
         settingsViewModel.lastFailedUnlockTrackedConfig = config.value
     }
 
-    val dropDownList = (1..10).map {
-        SettingsParamType.DropDown.DropDownItem(
-            it.toString(),
-            onClick = {}
-        )
-    }.remember()
 
     val numberInvalidAttemptsDropDownState = settingsViewModel.numberInvalidAttemptsDropDownState
         .remember()
+
+    val dropDownList = (1..10).map {
+        SettingsParamType.DropDown.DropDownItem(
+            it.toString(),
+            onClick = {
+                settingsViewModel.updateCountFailedUnlockToTrigger(it)
+                numberInvalidAttemptsDropDownState.value = false
+            }
+        )
+    }.remember()
 
     return listOf(
         SettingsParamType.Switch(
@@ -62,7 +66,7 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
             onShowDropDown = { numberInvalidAttemptsDropDownState.value = true },
             onHideDropDown = { numberInvalidAttemptsDropDownState.value = false },
             isDropDownVisible = numberInvalidAttemptsDropDownState.value,
-            showSelectedDropDownParam = "1",
+            showSelectedDropDownParam = config.value.countFailedUnlockToTrigger.toString(),
             isVisible = config.value.isTracked
         ),
 
