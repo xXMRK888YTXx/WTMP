@@ -13,6 +13,7 @@ import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
@@ -124,6 +125,7 @@ class EventDeviceTrackerCallbackTest {
         coEvery { appStateProvider.isAppEnable } returns appState
 
         eventDeviceTrackerCallback.onOpenAppChanged("test")
+        delay(1000)
 
         coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
         coVerify(exactly = 1) { handleEventUseCase.execute(

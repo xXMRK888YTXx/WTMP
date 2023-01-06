@@ -93,10 +93,40 @@ class AdminDeviceControllerTest {
         coEvery { failedUnlockTrackedConfigProvider.config } returns flow
         coEvery { appStateProvider.isAppEnable } returns appState
 
-        adminEventsCallback.onPasswordFailed(0)
+        adminEventsCallback.onPasswordFailed(1)
 
         coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
         coVerify(exactly = 1) { handleEventUseCase.execute(
+            any(),true,true,false,any()
+        ) }
+    }
+
+    @Test
+    fun setCountFailedUnlockToTriggerParamsAndCallOnPasswordFailedExpectThisWorkOnlyAfterCountFailedUnlockToTrigger()
+        = runBlocking {
+        val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
+        val appState = MutableStateFlow<Boolean>(true)
+
+        flow.emit(FailedUnlockTrackedConfig(
+            isTracked = true,
+            countFailedUnlockToTrigger = 5,
+            makePhoto = true,
+            notifyInTelegram = true,
+            joinPhotoToTelegramNotify = false
+        ))
+
+        coEvery { failedUnlockTrackedConfigProvider.config } returns flow
+        coEvery { appStateProvider.isAppEnable } returns appState
+
+        adminEventsCallback.onPasswordFailed(1)
+        adminEventsCallback.onPasswordFailed(2)
+        adminEventsCallback.onPasswordFailed(3)
+        adminEventsCallback.onPasswordFailed(4)
+        adminEventsCallback.onPasswordFailed(5)
+        adminEventsCallback.onPasswordFailed(6)
+
+        coVerify(exactly = 2) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 2) { handleEventUseCase.execute(
             any(),true,true,false,any()
         ) }
     }
