@@ -58,7 +58,10 @@ internal class SendTelegramMessageWorker(
         return try {
             telegramRepository.sendMessage(workerParams.inputData.getString(textDataKey) ?: " ")
             Result.success()
-        }catch (e:Exception) {
+        }catch (e:IllegalArgumentException) {
+            throw e
+        }
+        catch (e:Exception) {
             Result.retry()
         }
     }

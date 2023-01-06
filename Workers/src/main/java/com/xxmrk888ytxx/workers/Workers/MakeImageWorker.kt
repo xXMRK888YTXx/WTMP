@@ -92,7 +92,10 @@ class MakeImageWorker(
             while (result == null) { delay(10) }
 
             return result!!
-        }catch (e:Exception) {
+        }catch (e:IllegalArgumentException) {
+            throw e
+        }
+        catch (e:Exception) {
             return Result.retry()
         }
     }

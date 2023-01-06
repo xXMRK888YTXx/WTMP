@@ -75,7 +75,10 @@ internal class SendPhotoTelegramWorker(
             telegramRepository.sendPhoto(bitmap,
                 workerParams.inputData.getString(captionDataKey) ?: "")
             Result.success()
-        }catch (e:Exception) {
+        }catch (e:IllegalArgumentException) {
+            throw e
+        }
+        catch (e:Exception) {
             Result.retry()
         }
     }
