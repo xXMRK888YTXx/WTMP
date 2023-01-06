@@ -94,6 +94,28 @@ internal sealed class SettingsParamType(
         override val isVisible: Boolean = true,
     ) : SettingsParamType(text,icon,isEnable,isVisible)
 
+
+    /**
+     * [Ru]
+     * Данная модель представляет параметр настроек, с выпадающим меню
+     * Необходимые параметры помимо базовых:
+     * @param dropDownItems - Список отображаемых элементов элементов
+     * @param onShowDropDown - лямбда для показа выпадающего списка
+     * @param onHideDropDown - лямбда для скрытия выпадающего списка
+     * @param isDropDownVisible - значение которое показывает,виден ли выпадающий список
+     * @param showSelectedDropDownParam - значение которое будет показано, как выбранное
+     */
+
+    /**
+     * [En]
+     * This model represents the settings option, with a drop-down menu
+     * Required parameters in addition to the basic ones:
+     * @param dropDownItems - List of item items to display
+     * @param onShowDropDown - lambda for showing dropdown list
+     * @param onHideDropDown - lambda to hide the dropdown list
+     * @param isDropDownVisible - a value that indicates whether the dropdown list is visible
+     * @param showSelectedDropDownParam - the value that will be shown as selected
+     */
     data class DropDown(
         override val text: String,
         override val icon: Int,

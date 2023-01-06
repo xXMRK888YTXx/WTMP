@@ -7,7 +7,7 @@ package com.xxmrk888ytxx.coredeps.models
  * @param isTracked - Параметр отвечает, отслеживается ли неправильные попытки ввода пароля
  * @param makePhoto - Делать ли фотографию, при успешном отслеживании
  * @param countFailedUnlockToTrigger - отвечает сколько нужно сделать проваленных попыток
- * для тогг, что бы приложение начало их отслеживать
+ * для того, что бы приложение начало их отслеживать
  * @param notifyInTelegram - отправлять ли уведомление в Telegram, при успешном отслеживании
  * @param joinPhotoToTelegramNotify - прикреплять ли фотографию к уведомлению в Telegram
  */
