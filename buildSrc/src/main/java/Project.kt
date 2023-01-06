@@ -3,7 +3,6 @@ object Project {
     const val App = ":app"
     const val AdminReceiver = ":AdminReceiver"
     const val Camera = ":Camera"
-    const val UserActivityStats = ":UserActivityStats"
     const val ApiTelegram = ":Api-Telegram"
     const val Workers = ":Workers"
     const val MainScreen = ":MainScreen"

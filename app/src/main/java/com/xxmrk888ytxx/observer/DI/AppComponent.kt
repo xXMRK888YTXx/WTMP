@@ -9,8 +9,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvi
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.module.*
-import com.xxmrk888ytxx.observer.presentation.MainActivity
 import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
+import com.xxmrk888ytxx.observer.presentation.MainActivity
 import com.xxmrk888ytxx.workers.DI.WorkerComponentDeps
 import dagger.BindsInstance
 import dagger.Component
@@ -22,7 +22,6 @@ import javax.inject.Provider
         ToastManagerModule::class,
         AdminReceiverModule::class,
         CameraModule::class,
-        UserActivityStatsModule::class,
         TelegramRepositoryFactoryModule::class,
         WorkerManagerModule::class,
         PackageInfoProviderModule::class,
