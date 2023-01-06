@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Service_description">Данный сервис используется для отслежевания открытых приложений</string>
+    <string name="Service_description">This service will be used to monitor open applications and unlock the device.\n\nThe collected data is stored locally on the device and is not transferred
+        anywhere (except in the case in which you have
+        enabled sending notifications to the Telegram messenger).</string>
 </resources>
