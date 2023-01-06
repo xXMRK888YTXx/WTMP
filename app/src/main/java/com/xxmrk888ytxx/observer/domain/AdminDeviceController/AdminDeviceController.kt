@@ -49,7 +49,9 @@ internal class AdminDeviceController @Inject constructor(
                 failedUnlockTrackedConfigProvider.config
             }
 
-            if(!config.first().isTracked||!appStateProvider.isAppEnable.first()) return@launch
+            if(!config.first().isTracked||
+                !appStateProvider.isAppEnable.first()||
+                config.first().countFailedUnlockToTrigger > currentFailedPasswordAttempts) return@launch
 
             val eventId = deviceEventRepository.addEvent(DeviceEvent.AttemptUnlockDevice.Failed(
                 0,System.currentTimeMillis()
