@@ -19,5 +19,5 @@
     <string name="Other">Other</string>
     <string name="Settings">Settings</string>
     <string name="Login_with_finger_print">Fingerprint login</string>
-    <string name="Number_invalid_attempts_to_trigger">Количество неверных попыток, для срабатывания</string>
+    <string name="Number_invalid_attempts_to_trigger">Number of invalid attempts to trigger</string>
 </resources>

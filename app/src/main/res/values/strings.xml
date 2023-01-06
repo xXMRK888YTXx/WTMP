@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">Observer</string>
     <string name="Failed_unlock">A failed device unlock has been detected.</string>
     <string name="Application">Application</string>
-    <string name="was_open">was_open</string>
+    <string name="was_open">was open</string>
     <string name="Device_unlocked">The device has been unlocked</string>
     <string name="Application_error_notifications">Application error notifications</string>
     <string name="Channel_description">This channel receives application errors</string>
@@ -12,5 +12,5 @@
     <string name="Verify_your_identity">Verify your identity</string>
     <string name="Use_biometric_data">Use biometric data</string>
     <string name="Use_password">Use password</string>
-    <string name="Biometric_error">При биометрической разблокироввке произошла ошибка.Повторите попытку или введите пароль</string>
+    <string name="Biometric_error">An error occurred during the biometric unlock. Please try again or enter your password</string>
 </resources>

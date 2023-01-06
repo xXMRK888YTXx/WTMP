@@ -12,5 +12,5 @@
     <string name="Verify_your_identity">Подтвердите свои личность</string>
     <string name="Use_biometric_data">Воспользуйтесь биометрическими данными</string>
     <string name="Use_password">Использовать пароль</string>
-    <string name="Biometric_error">При биометрической разблокироввке произошла ошибка.Повторите попытку или введите пароль</string>
+    <string name="Biometric_error">При биометрической разблокировке произошла ошибка.Повторите попытку или введите пароль</string>
 </resources>
