@@ -43,7 +43,8 @@ import javax.inject.Provider
         NotificationAppManagerModule::class,
         AppPasswordManagerModule::class,
         BiometricAuthorizationManagerModule::class,
-        BootCallbackModule::class
+        BootCallbackModule::class,
+        BootDeviceTrackedConfigManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
