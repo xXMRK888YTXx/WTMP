@@ -20,4 +20,6 @@
     <string name="Settings">Settings</string>
     <string name="Login_with_finger_print">Fingerprint login</string>
     <string name="Number_invalid_attempts_to_trigger">Number of invalid attempts to trigger</string>
+    <string name="Device_launch_tracking">Device launch tracking</string>
+    <string name="Device_startup_track">Device launch tracking</string>
 </resources>

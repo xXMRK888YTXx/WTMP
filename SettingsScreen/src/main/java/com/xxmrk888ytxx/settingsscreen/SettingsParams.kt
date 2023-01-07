@@ -238,7 +238,54 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 
 @SuppressLint("ResourceType")
 @Composable
-@MustBeLocalization
+internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+    val config = settingsViewModel.bootDeviceConfig.collectAsState(
+        settingsViewModel.lastBootDeviceConfig
+    )
+
+    val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
+
+    SideEffect {
+        settingsViewModel.lastBootDeviceConfig = config.value
+    }
+
+    return listOf(
+        SettingsParamType.Switch(
+            stringResource(R.string.Device_startup_track),
+            R.drawable.ic_off,
+            config.value.isTracked,
+            onStateChanged = settingsViewModel::updateIsTrackedBootDeviceTrackedConfig
+        ),
+
+        SettingsParamType.Switch(
+            stringResource(R.string.Take_photo),
+            R.drawable.ic_camera,
+            config.value.makePhoto,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateMakePhotoBootDeviceTrackedConfig,
+        ),
+
+        SettingsParamType.Switch(
+            stringResource(R.string.Notify_in_Telegram),
+            R.drawable.ic_telegram,
+            config.value.notifyInTelegram,
+            isEnable = isTelegramConfigSetup.value,
+            isVisible = config.value.isTracked,
+            onStateChanged = settingsViewModel::updateNotifyInTelegramBootDeviceTrackedConfig
+        ),
+
+        SettingsParamType.Switch(
+            stringResource(R.string.Attach_photo_to_message),
+            R.drawable.ic_telegram,
+            config.value.joinPhotoToTelegramNotify,
+            isVisible = config.value.isTracked && config.value.makePhoto && config.value.notifyInTelegram,
+            onStateChanged = settingsViewModel::updateJoinPhotoToTelegramNotifyBootDeviceTrackedConfig
+        ),
+    )
+}
+
+@SuppressLint("ResourceType")
+@Composable
 internal fun getSecureParams(
     settingsViewModel: SettingsViewModel,
     navigator: Navigator,

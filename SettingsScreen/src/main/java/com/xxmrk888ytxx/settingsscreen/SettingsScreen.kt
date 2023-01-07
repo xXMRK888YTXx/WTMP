@@ -77,6 +77,14 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
         item {
             SettingsCategory(
+                categoryName = stringResource(R.string.Device_launch_tracking),
+                settingsParams = getBootDeviceParams(settingsViewModel))
+
+            LazySpacer(height = 15)
+        }
+
+        item {
+            SettingsCategory(
                 stringResource(R.string.Security),
                 getSecureParams(settingsViewModel, navigator)
             )

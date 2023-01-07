@@ -15,6 +15,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BiometricAuthorizationManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.BootDeviceTrackedConfig.BootDeviceTrackedConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.BootDeviceTrackedConfig.BootDeviceTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
@@ -22,6 +24,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTracked
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
+import com.xxmrk888ytxx.coredeps.models.BootDeviceTrackedConfig
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +46,8 @@ class SettingsViewModel @Inject constructor(
     private val appPasswordProvider: AppPasswordProvider,
     private val appPasswordChanger: AppPasswordChanger,
     private val biometricAuthorizationManager: BiometricAuthorizationManager,
+    private val bootDeviceTrackedConfigProvider: BootDeviceTrackedConfigProvider,
+    private val bootDeviceTrackedConfigChanger: BootDeviceTrackedConfigChanger
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -68,6 +73,9 @@ class SettingsViewModel @Inject constructor(
 
     internal val appOpenConfig: Flow<AppOpenConfig>
         get() = appOpenConfigProvider.config
+
+    internal val bootDeviceConfig : Flow<BootDeviceTrackedConfig>
+        get() = bootDeviceTrackedConfigProvider.config
 
     internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -147,6 +155,30 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    internal fun updateIsTrackedBootDeviceTrackedConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            bootDeviceTrackedConfigChanger.updateIsTracked(state)
+        }
+    }
+
+    internal fun updateMakePhotoBootDeviceTrackedConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            bootDeviceTrackedConfigChanger.updateMakePhoto(state)
+        }
+    }
+
+    internal fun updateNotifyInTelegramBootDeviceTrackedConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            bootDeviceTrackedConfigChanger.updateNotifyInTelegram(state)
+        }
+    }
+
+    internal fun updateJoinPhotoToTelegramNotifyBootDeviceTrackedConfig(state: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            bootDeviceTrackedConfigChanger.updateJoinPhotoToTelegramNotify(state)
+        }
+    }
+
     fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetupFlow()
 
     fun getFingerPrintAuthorizationState() = appPasswordProvider.isFingerPrintAuthorizationEnabled()
@@ -174,6 +206,11 @@ class SettingsViewModel @Inject constructor(
         makePhoto = false,
         notifyInTelegram = false,
         joinPhotoToTelegramNotify = false)
+
+    internal var lastBootDeviceConfig: BootDeviceTrackedConfig = BootDeviceTrackedConfig(
+        isTracked = false, makePhoto = false,
+        notifyInTelegram = false, joinPhotoToTelegramNotify = false
+    )
 
     internal var lastIsAppPasswordSetup : Boolean = false
     
