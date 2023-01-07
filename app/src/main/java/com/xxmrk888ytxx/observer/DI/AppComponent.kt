@@ -2,6 +2,7 @@ package com.xxmrk888ytxx.observer.DI
 
 import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
+import com.xxmrk888ytxx.bootreceiver.BootCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
@@ -41,7 +42,8 @@ import javax.inject.Provider
         PermissionsManagerModule::class,
         NotificationAppManagerModule::class,
         AppPasswordManagerModule::class,
-        BiometricAuthorizationManagerModule::class
+        BiometricAuthorizationManagerModule::class,
+        BootCallbackModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
@@ -58,6 +60,8 @@ interface AppComponent : WorkerComponentDeps {
     val adminEventsCallback:Provider<AdminEventsCallback>
 
     val eventDeviceTrackerCallback: Provider<EventDeviceTrackerCallback>
+
+    val bootCallback : Provider<BootCallback>
 
     val appStateProvider: AppStateProvider
 

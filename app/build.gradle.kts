@@ -65,6 +65,7 @@ dependencies {
     implementation(project(Project.SelectTrackedAppScreen))
     implementation(project(Project.SetupAppPasswordScreen))
     implementation(project(Project.EnterPasswordScreen))
+    implementation(project(Project.BootReceiver))
 
     kapt (Deps.Dagger.DaggerKaptCompiler)
 
