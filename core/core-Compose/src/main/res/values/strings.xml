@@ -6,4 +6,5 @@
     <string name="Delete_event">Are you sure you want to delete this event?</string>
     <string name="Cancel">Cancel</string>
     <string name="Ok">OK</string>
+    <string name="Device_loaded">Device loaded</string>
 </resources>

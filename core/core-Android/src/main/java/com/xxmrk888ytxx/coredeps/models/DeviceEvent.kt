@@ -57,4 +57,9 @@ sealed class DeviceEvent(open val eventId: Int,open val time:Long) {
         val icon: Bitmap?,
         override val time:Long
     ) : DeviceEvent(eventId,time)
+
+    data class DeviceLaunch(
+        override val eventId: Int,
+        override val time: Long
+    ) : DeviceEvent(eventId, time)
 }

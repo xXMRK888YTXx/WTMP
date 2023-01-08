@@ -13,4 +13,5 @@
     <string name="Use_biometric_data">Воспользуйтесь биометрическими данными</string>
     <string name="Use_password">Использовать пароль</string>
     <string name="Biometric_error">При биометрической разблокировке произошла ошибка.Повторите попытку или введите пароль</string>
+    <string name="Device_loaded">Устройство загружено</string>
 </resources>

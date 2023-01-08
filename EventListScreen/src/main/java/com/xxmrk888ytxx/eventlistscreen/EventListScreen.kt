@@ -1,9 +1,6 @@
 package com.xxmrk888ytxx.eventlistscreen
 
-import MutliUse.AppOpenItem
-import MutliUse.AttemptUnlockDeviceItem
-import MutliUse.LazySpacer
-import MutliUse.RemoveEventDialog
+import MutliUse.*
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -79,6 +76,7 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
                         when(event) {
                             is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,navigator,onDeleteEvent)
                             is DeviceEvent.AppOpen -> AppOpenItem(event,navigator,onDeleteEvent)
+                            is DeviceEvent.DeviceLaunch -> DeviceLaunchItem(event,navigator,onDeleteEvent)
                         }
                     }
                 }

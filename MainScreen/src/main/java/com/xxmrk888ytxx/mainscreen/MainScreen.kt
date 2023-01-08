@@ -85,6 +85,8 @@ fun MainScreen(
                             navigator,
                             onDeleteEvent)
                         is DeviceEvent.AppOpen -> AppOpenItem(event, navigator, onDeleteEvent)
+                        is DeviceEvent.DeviceLaunch ->
+                            DeviceLaunchItem(event = event, navigator = navigator, onDeleteEvent = onDeleteEvent)
                     }
                 }
             }

@@ -136,6 +136,8 @@ internal fun EventCardInfo(event: DeviceEvent) {
         }
 
         is DeviceEvent.AppOpen -> painterResource(R.drawable.default_icon)
+
+        is DeviceEvent.DeviceLaunch -> painterResource(R.drawable.ic_off)
     }
 
     val text = when (event) {
@@ -145,6 +147,8 @@ internal fun EventCardInfo(event: DeviceEvent) {
         }
 
         is DeviceEvent.AppOpen -> event.appName ?: event.packageName
+
+        is DeviceEvent.DeviceLaunch -> stringResource(R.string.Device_loaded)
     }
     val context = LocalContext.current
 

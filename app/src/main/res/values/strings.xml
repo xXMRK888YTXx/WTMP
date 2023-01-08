@@ -13,4 +13,5 @@
     <string name="Use_biometric_data">Use biometric data</string>
     <string name="Use_password">Use password</string>
     <string name="Biometric_error">An error occurred during the biometric unlock. Please try again or enter your password</string>
+    <string name="Device_loaded">Device loaded</string>
 </resources>

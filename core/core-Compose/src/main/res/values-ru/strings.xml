@@ -6,4 +6,5 @@
     <string name="Delete_event">Вы действительно хотите удалить данное событие?</string>
     <string name="Cancel">Отмена</string>
     <string name="Ok">Ок</string>
+    <string name="Device_loaded">Устройство загружено</string>
 </resources>

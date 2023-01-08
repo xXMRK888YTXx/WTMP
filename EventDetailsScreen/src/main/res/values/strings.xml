@@ -4,4 +4,5 @@
     <string name="Device_unlocked">Device unlocked</string>
     <string name="Failed_to_unlock">Unlock attempt failed</string>
     <string name="Event_details">Event details</string>
+    <string name="Device_loaded">Device loaded</string>
 </resources>
