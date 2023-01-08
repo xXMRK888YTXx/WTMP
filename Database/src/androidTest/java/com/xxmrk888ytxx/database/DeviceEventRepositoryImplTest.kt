@@ -242,7 +242,7 @@ internal class DeviceEventRepositoryImplTest {
         }
         testList2.forEach {
             val id = repo.addEvent(it)
-            Assert.assertEquals(it.eventId+12,id)
+            Assert.assertEquals(it.eventId+getTestEventList().size,id)
         }
     }
 
@@ -289,17 +289,19 @@ private fun getTestEventList(): List<DeviceEvent> {
         DeviceEvent.AttemptUnlockDevice.Succeeded(7, 7),
         DeviceEvent.AttemptUnlockDevice.Succeeded(8, 8),
         DeviceEvent.AppOpen(9, null, packageName = "fgehfg", null, 9),
-        DeviceEvent.AppOpen(10,
+        DeviceEvent.DeviceLaunch(10,633464),
+        DeviceEvent.AppOpen(11,
             null,
             packageName = "34fgehfg",
             null,
             10),
-        DeviceEvent.AppOpen(11,
+        DeviceEvent.AppOpen(12,
             null,
             packageName = "fgehfg",
             null,
             11),
-        DeviceEvent.AttemptUnlockDevice.Succeeded(12, 12),
+        DeviceEvent.AttemptUnlockDevice.Succeeded(13, 12),
+        DeviceEvent.DeviceLaunch(14,633464)
     )
 
 }
