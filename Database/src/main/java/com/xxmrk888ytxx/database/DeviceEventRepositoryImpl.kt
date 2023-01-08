@@ -69,6 +69,10 @@ class DeviceEventRepositoryImpl @Inject constructor(
                     is DeviceEvent.AttemptUnlockDevice -> {
                         unlockDeviceEventDao.addEvent(deviceEvent.mapToEntity(eventId))
                     }
+
+                    is DeviceEvent.DeviceLaunch -> {
+
+                    }
                 }
             }
             return deviceEventDao.getLastEventId()
@@ -91,14 +95,22 @@ class DeviceEventRepositoryImpl @Inject constructor(
 
     private suspend fun DeviceEventModel.mapToDeviceEvent(): DeviceEvent? {
         return when (eventInfo.eventType) {
+
             (0).toShort() -> {
                 val unlockEvent = this.unlockEvents ?: return null
                 unlockEvent.mapToDeviceEvent(eventInfo)
             }
+
             (1).toShort() -> {
                 val appOpenEvent = this.appOpenEvents ?: return null
                 appOpenEvent.mapToDeviceEvent(eventInfo)
             }
+
+            (2).toShort() -> {
+                val deviceLaunchEvent = this.eventInfo
+                DeviceEvent.DeviceLaunch(deviceLaunchEvent.eventId,deviceLaunchEvent.time)
+            }
+
             else -> error("Cannot be converted to DeviceEvent." +
                     "Not known eventType(${eventInfo.eventType})")
         }
@@ -166,6 +178,7 @@ class DeviceEventRepositoryImpl @Inject constructor(
         return when (this) {
             is DeviceEvent.AttemptUnlockDevice -> 0
             is DeviceEvent.AppOpen -> 1
+            is DeviceEvent.DeviceLaunch -> 2
         }
     }
     //
