@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Observer</string>
+    <string name="app_name" translatable="false">WTMP</string>
     <string name="Failed_unlock">A failed device unlock has been detected.</string>
     <string name="Application">Application</string>
     <string name="was_open">was open</string>
