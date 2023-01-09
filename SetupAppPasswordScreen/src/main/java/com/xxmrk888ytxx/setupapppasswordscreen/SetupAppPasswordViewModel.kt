@@ -6,9 +6,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.xxmrk888ytxx.androidextension.ToastManager.ToastManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ToastManager
 import com.xxmrk888ytxx.enterpasswordscreen.EnterPasswordScreenCallBack
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

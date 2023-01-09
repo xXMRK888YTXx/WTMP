@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
-import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
 import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
+import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.observer.R
 import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
@@ -30,6 +30,7 @@ internal class AdminDeviceController @Inject constructor(
     private val appStateChanger: AppStateChanger,
     private val resourcesProvider: ResourcesProvider
 ) : AdminEventsCallback {
+
     override fun onAdminEnabled() {
         logcatMessageD("onAdminEnabled")
     }

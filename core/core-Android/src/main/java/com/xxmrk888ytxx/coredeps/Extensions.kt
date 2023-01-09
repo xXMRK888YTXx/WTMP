@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.coredeps
 
 import android.content.Context
+import android.util.Log
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
@@ -174,4 +175,8 @@ inline fun <reified JSONCLASS> fromJson(jsonString: String?, jsonClass:Class<JSO
     val moshi = Moshi.Builder().build()
     if(jsonString == null) return null
     return moshi.adapter(jsonClass).fromJson(jsonString)
+}
+
+fun logcatMessageD(text:String) {
+    Log.d("MyLog",text)
 }

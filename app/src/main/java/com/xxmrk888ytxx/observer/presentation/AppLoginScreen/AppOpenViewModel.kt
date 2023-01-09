@@ -8,12 +8,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.xxmrk888ytxx.androidextension.ToastManager.ToastManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.BiometricAuthorizationManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.enterpasswordscreen.EnterPasswordScreenCallBack
 import com.xxmrk888ytxx.observer.Screen
 import com.xxmrk888ytxx.setupapppasswordscreen.R

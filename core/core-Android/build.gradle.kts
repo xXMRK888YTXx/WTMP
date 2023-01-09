@@ -53,7 +53,6 @@ dependencies {
     api (Deps.Permissions.permission)
     api (Deps.Biometric.biometric)
     api (Deps.Fragment.fragment)
-    api(files("libs/AndroidExtension.aar"))
 
     implementation(Deps.Moshi.moshi)
     kapt(Deps.Moshi.moshiKaptPlugin)

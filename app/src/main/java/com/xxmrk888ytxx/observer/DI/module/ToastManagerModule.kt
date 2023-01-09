@@ -1,15 +1,12 @@
 package com.xxmrk888ytxx.observer.DI.module
 
-import android.content.Context
-import com.xxmrk888ytxx.androidextension.ToastManager.ToastManager
-import com.xxmrk888ytxx.androidextension.ToastManager.ToastManagerDefImpl
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ToastManager
+import com.xxmrk888ytxx.observer.domain.ToastManager.ToastManagerImpl
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 
 @Module
-internal object ToastManagerModule {
-    @Provides
-    fun provideToastManager(context:Context) : ToastManager {
-        return ToastManagerDefImpl(context)
-    }
+internal interface ToastManagerModule {
+    @Binds
+    fun bindToastManager(toastManagerImpl: ToastManagerImpl) : ToastManager
 }

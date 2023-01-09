@@ -9,13 +9,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
 import com.xxmrk888ytxx.coredeps.Exceptions.TelegramCancelMessage
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TelegramRepositoryFactory
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.launchAndCancelChildren
+import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
 import com.xxmrk888ytxx.telegramsetupscreen.models.ScreenState
 import kotlinx.coroutines.*

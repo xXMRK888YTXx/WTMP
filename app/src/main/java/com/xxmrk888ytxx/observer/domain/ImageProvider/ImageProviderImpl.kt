@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.core.content.FileProvider
-import com.xxmrk888ytxx.androidextension.LogcatExtension.logcatMessageD
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ImageProvider
+import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.observer.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
