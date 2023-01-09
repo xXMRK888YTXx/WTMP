@@ -43,7 +43,7 @@ fun AppOpenItem(
 ) {
 
     BaseEventCard(
-        colorLine = Color.Cyan,
+        colorLine = Color.Cyan.copy(0.9f),
         onClick = {
             navigator.toEventDetailsScreen(item.eventId)
         },

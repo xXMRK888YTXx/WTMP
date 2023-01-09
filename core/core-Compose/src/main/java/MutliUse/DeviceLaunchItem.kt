@@ -26,7 +26,7 @@ fun DeviceLaunchItem(
     onDeleteEvent: () -> Unit
 ) {
     BaseEventCard(
-        Color.Green,
+        Color.Magenta.copy(0.9f),
         onClick = {
             navigator.toEventDetailsScreen(event.eventId)
         },

@@ -58,8 +58,11 @@ fun AttemptUnlockDeviceItem (
     val icon = if(item is DeviceEvent.AttemptUnlockDevice.Failed) R.drawable.ic_phone_lock
     else R.drawable.ic_lock_open
 
+    val eventColorLine = if(item is DeviceEvent.AttemptUnlockDevice.Failed)
+        Color.Red.copy(0.9f) else Color.Green.copy(0.9f)
+
     BaseEventCard(
-        Color.Green,
+        eventColorLine,
         onClick = {
             navigator.toEventDetailsScreen(item.eventId)
         },
