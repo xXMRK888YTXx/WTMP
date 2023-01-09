@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.coredeps.models
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,7 +13,7 @@ import com.squareup.moshi.JsonClass
  * The model stores data from the bot in Telegram
  */
 @JsonClass(generateAdapter = true)
-data class TelegramConfig(
+@Keep data class TelegramConfig(
     @Json(name = "userId") val userId:Long,
     @Json(name = "botKey") val botKey:String
 )

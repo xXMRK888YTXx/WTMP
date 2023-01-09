@@ -1,7 +1,8 @@
 package com.xxmrk888ytxx.api_telegram.models
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
-data class TelegramRequestResult constructor(
+@Keep data class TelegramRequestResult constructor(
    @SerializedName("ok") val isSuccessful:Boolean
 )
