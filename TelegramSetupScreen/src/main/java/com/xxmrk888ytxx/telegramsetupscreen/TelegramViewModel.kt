@@ -1,6 +1,9 @@
 package com.xxmrk888ytxx.telegramsetupscreen
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -211,6 +214,11 @@ class TelegramViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         snackBarScope.cancel()
+    }
+
+    internal fun toTelegramSetupGuide(context: Context) {
+        val url = context.getString(R.string.Setup_telegram_url)
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
     /**

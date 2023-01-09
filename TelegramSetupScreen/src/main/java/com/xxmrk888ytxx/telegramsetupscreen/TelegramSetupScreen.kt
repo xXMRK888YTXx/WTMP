@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -214,6 +215,8 @@ internal fun InputTelegramConfigForm(
 
     val botKeyFieldFocus = FocusRequester()
 
+    val context = LocalContext.current
+
     val focusManager =  LocalFocusManager.current
 
     InputInfoTextField(
@@ -316,7 +319,10 @@ internal fun InputTelegramConfigForm(
     }
     Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         LazySpacer(height = 15)
-        StyleButton(text = stringResource(R.string.Where_to_get)) {}
+        StyleButton(
+            text = stringResource(R.string.Where_to_get),
+            onClick = { telegramViewModel.toTelegramSetupGuide(context) }
+        )
     }
 }
 

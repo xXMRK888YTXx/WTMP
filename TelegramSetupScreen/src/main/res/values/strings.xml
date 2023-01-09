@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="Save_telegram_config_message">Telegram settings saved</string>
     <string name="Telegram_cancel_message">Telegram rejected the request, check the data is correct, and that you started a correspondence with the bot</string>
@@ -16,5 +16,7 @@
     <string name="Send_test_message">Send test message</string>
     <string name="Fill_all_fields">Fill in all the fields</string>
     <string name="This_test_message">This is a test message</string>
+    <string name="Setup_telegram_url">https://telegra.ph/How-to-get-bot-key-and-user-id-for-WTMP-application-En-01-09</string>
+
 
 </resources>

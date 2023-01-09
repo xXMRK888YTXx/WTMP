@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="Save_telegram_config_message">Настройки телеграм сохранены</string>
     <string name="Telegram_cancel_message">Телеграм отклонил запрос, проверьте правильность данных,и то что вы начали переписку с ботом</string>
     <string name="No_connection_message">Не удалось связаться с серверами Telegram. Проверьте соединение с интернетом</string>
@@ -15,4 +15,6 @@
     <string name="Send_test_message">Отправить тестовое сообщение</string>
     <string name="Fill_all_fields">Заполните всё поля</string>
     <string name="This_test_message">Это тестовое сообщение</string>
+    <string name="Setup_telegram_url">https://telegra.ph/Kak-poluchit-bot-key-i-user-id-dlya-prilozheniya-WTMP-Ru-01-09</string>
+
 </resources>
