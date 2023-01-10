@@ -22,6 +22,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedCon
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.RemoveAppManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
 import com.xxmrk888ytxx.coredeps.models.BootDeviceTrackedConfig
@@ -47,7 +48,8 @@ class SettingsViewModel @Inject constructor(
     private val appPasswordChanger: AppPasswordChanger,
     private val biometricAuthorizationManager: BiometricAuthorizationManager,
     private val bootDeviceTrackedConfigProvider: BootDeviceTrackedConfigProvider,
-    private val bootDeviceTrackedConfigChanger: BootDeviceTrackedConfigChanger
+    private val bootDeviceTrackedConfigChanger: BootDeviceTrackedConfigChanger,
+    private val removeAppManager: RemoveAppManager
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -179,14 +181,18 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetupFlow()
+    internal fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetupFlow()
 
-    fun getFingerPrintAuthorizationState() = appPasswordProvider.isFingerPrintAuthorizationEnabled()
+    internal fun getFingerPrintAuthorizationState() = appPasswordProvider.isFingerPrintAuthorizationEnabled()
 
-    fun updateFingerPrintAuthorizationState(state: Boolean) {
+    internal fun updateFingerPrintAuthorizationState(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             appPasswordChanger.updateFingerPrintAuthorizationState(state)
         }
+    }
+
+    internal fun removeApp() {
+        removeAppManager.requestRemoveApp()
     }
 
     internal var lastFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
