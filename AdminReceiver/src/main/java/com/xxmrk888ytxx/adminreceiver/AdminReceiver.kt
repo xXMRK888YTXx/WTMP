@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.UserHandle
 import com.xxmrk888ytxx.coredeps.DepsProvider.getDepsByApplication
+import com.xxmrk888ytxx.coredeps.logcatMessageD
 
 class AdminReceiver : DeviceAdminReceiver() {
 
@@ -17,6 +18,19 @@ class AdminReceiver : DeviceAdminReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         context.adminCallBack.onReceive(context, intent)
+
+        try {
+            if(intent.action == disableAdminAction) {
+                getManager(context).activeAdmins?.forEach {
+                    if(it.packageName == context.packageName) {
+                        getManager(context).removeActiveAdmin(it)
+                        return
+                    }
+                }
+            }
+        }catch (e:Exception) {
+            logcatMessageD(e.stackTraceToString())
+        }
     }
 
     override fun onEnabled(context: Context, intent: Intent) {
@@ -56,5 +70,9 @@ class AdminReceiver : DeviceAdminReceiver() {
     override fun onPasswordSucceeded(context: Context, intent: Intent, user: UserHandle) {
         super.onPasswordSucceeded(context, intent, user)
         context.adminCallBack.onPasswordSucceeded()
+    }
+
+    companion object {
+        const val disableAdminAction = "disableAdminAction"
     }
 }
