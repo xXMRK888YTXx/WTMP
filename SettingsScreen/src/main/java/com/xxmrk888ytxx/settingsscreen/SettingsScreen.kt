@@ -273,7 +273,7 @@ internal fun SettingsParam(
                         fontWeight = FontWeight.W400,
                         color = primaryFontColor.copy(paramsAlpha),
                         modifier = Modifier.widthIn(
-                            max = 225.dp
+                            max = 200.dp
                         )
                     )
 
@@ -291,7 +291,8 @@ internal fun SettingsParam(
                                         uncheckedTrackColor = uncheckedSettingsSwitch.copy(0.5f),
                                         disabledCheckedThumbColor = uncheckedSettingsSwitch.copy(
                                             paramsAlpha)
-                                    )
+                                    ),
+                                    modifier = Modifier.padding(end = 10.dp)
                                 )
                             }
 
@@ -334,14 +335,13 @@ internal fun SettingsParam(
                                 }
                                 val inlineContentMap = mapOf(
                                     "drop_down_triangle" to InlineTextContent(
-                                        Placeholder(20.sp,
+                                          Placeholder(20.sp,
                                             20.sp,
                                             PlaceholderVerticalAlign.TextCenter)
                                     ) {
                                         Icon(painter = painterResource(R.drawable.ic_drop_down_triangle),
                                             contentDescription = "",
                                             tint = secondoryFontColor,
-                                            modifier = Modifier.padding(top = 0.dp)
                                         )
                                     }
                                 )
@@ -377,7 +377,7 @@ internal fun SettingsParam(
                                         .fillMaxWidth()
                                         .clickable {
                                             params.onShowDropDown()
-                                        }
+                                        }.padding(end = 10.dp)
                                 )
                             }
                         }
