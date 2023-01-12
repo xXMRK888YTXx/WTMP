@@ -225,4 +225,14 @@ class SettingsViewModel @Inject constructor(
     }
 
     internal val numberInvalidAttemptsDropDownState = mutableStateOf(false)
+
+    internal fun openPolicyPrivacy(context: Context) {
+        val url = "https://xxmrk888ytxx.github.io/wtmp_privacy.htm"
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    internal fun openTerms(context: Context) {
+        val url = "https://xxmrk888ytxx.github.io/wtmp_terms.htm"
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
 }

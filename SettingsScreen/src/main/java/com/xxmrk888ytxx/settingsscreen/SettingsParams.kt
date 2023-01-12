@@ -230,6 +230,16 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
             onClick = { settingsViewModel.sendIntentToWriteDeveloper(context) }
         ),
         SettingsParamType.Button(
+            stringResource(R.string.Privacy_policy),
+            icon = R.drawable.ic_privacy_icon,
+            onClick = { settingsViewModel.openPolicyPrivacy(context) }
+        ),
+        SettingsParamType.Button(
+            stringResource(R.string.Terms),
+            icon = R.drawable.ic_terms_icon,
+            onClick = { settingsViewModel.openTerms(context) }
+        ),
+        SettingsParamType.Button(
             text = stringResource(R.string.Remove_app),
             icon = R.drawable.ic_baseline_delete_24,
             onClick = settingsViewModel::removeApp

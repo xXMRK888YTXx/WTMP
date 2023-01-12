@@ -23,4 +23,6 @@
     <string name="Device_launch_tracking">Отслеживание запуска устройства</string>
     <string name="Device_startup_track">Отслеживать запуск устройства</string>
     <string name="Remove_app">Удалить приложение</string>
+    <string name="Privacy_policy">Политика конфиденциальности</string>
+    <string name="Terms">Условия использования</string>
 </resources>

@@ -23,4 +23,6 @@
     <string name="Device_launch_tracking">Device launch tracking</string>
     <string name="Device_startup_track">Device launch tracking</string>
     <string name="Remove_app">Delete app</string>
+    <string name="Privacy_policy">Privacy Policy</string>
+    <string name="Terms">Terms of Use</string>
 </resources>
