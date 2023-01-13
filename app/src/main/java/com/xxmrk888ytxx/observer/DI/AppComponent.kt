@@ -45,7 +45,8 @@ import javax.inject.Provider
         BiometricAuthorizationManagerModule::class,
         BootCallbackModule::class,
         BootDeviceTrackedConfigManagerModule::class,
-        RemoveAppManagerModule::class
+        RemoveAppManagerModule::class,
+        AdAppManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

@@ -10,9 +10,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.xxmrk888ytxx.adutils.AdAppManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
@@ -35,7 +37,9 @@ import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import theme.BackGroundColor
 import javax.inject.Inject
@@ -61,11 +65,15 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
     @Inject internal lateinit var appOpenViewModel: Provider<AppOpenViewModel>
 
     @Inject lateinit var appPasswordProvider: AppPasswordProvider
+    @Inject lateinit var adAppManager: AdAppManager
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
+        lifecycleScope.launch(Dispatchers.Default) {
+            adAppManager.initAdmob()
+        }
         setContent {
             val navController = rememberNavController()
             activityViewModel.navController = navController

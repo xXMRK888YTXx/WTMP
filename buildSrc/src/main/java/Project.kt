@@ -18,6 +18,7 @@ object Project {
     const val SetupAppPasswordScreen = ":SetupAppPasswordScreen"
     const val EnterPasswordScreen = ":EnterPasswordScreen"
     const val BootReceiver = ":BootReceiver"
+    const val AdUtils = ":AdUtils"
     sealed class core(val route:String) {
         object core_Android : core(":core:core-Android")
         object core_Compose : core(":core:core-Compose")

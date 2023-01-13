@@ -116,6 +116,9 @@ object Deps {
     object AppCompat {
         const val appCompat = "androidx.appcompat:appcompat:1.5.1"
     }
+    object AdMob {
+        const val adMob = "com.google.android.gms:play-services-ads:21.4.0"
+    }
 
 
 }

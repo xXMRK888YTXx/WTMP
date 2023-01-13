@@ -73,6 +73,7 @@ dependencies {
     implementation(project(Project.SetupAppPasswordScreen))
     implementation(project(Project.EnterPasswordScreen))
     implementation(project(Project.BootReceiver))
+    implementation(project(Project.AdUtils))
 
     kapt (Deps.Dagger.DaggerKaptCompiler)
 
