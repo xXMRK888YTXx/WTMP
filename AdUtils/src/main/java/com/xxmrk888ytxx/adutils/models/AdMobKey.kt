@@ -10,4 +10,6 @@ sealed class AdMobKey(internal val key:String) {
     object MainScreenToEventListScreenAd : AdMobKey("ca-app-pub-6313040706847570/5717938950")
 
     object MainScreenToSettingsScreenAd : AdMobKey("ca-app-pub-6313040706847570/9593303464")
+
+    internal object TestBannerKey : AdMobKey("ca-app-pub-3940256099942544/6300978111")
 }

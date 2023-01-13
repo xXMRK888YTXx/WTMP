@@ -11,6 +11,4 @@ class AdMobManagerImpl @Inject constructor(
     override fun initAdmob() {
         MobileAds.initialize(context)
     }
-
-
 }

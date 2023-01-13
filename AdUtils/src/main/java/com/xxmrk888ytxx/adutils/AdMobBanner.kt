@@ -18,7 +18,8 @@ fun AdMobBanner(adMobKey:AdMobKey,background: Color) {
         factory = { context ->
             AdView(context).apply {
                 setAdSize(AdSize.BANNER)
-                adUnitId = adMobKey.key
+                adUnitId = if(BuildConfig.DEBUG) AdMobKey.TestBannerKey.key
+                    else adMobKey.key
                 loadAd(AdRequest.Builder().build())
             }
         }
