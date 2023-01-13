@@ -177,6 +177,14 @@ inline fun <reified JSONCLASS> fromJson(jsonString: String?, jsonClass:Class<JSO
     return moshi.adapter(jsonClass).fromJson(jsonString)
 }
 
+/**
+ * [Ru]
+ * Функция отправляет сообщение в logcat в канал debug
+ */
+/**
+ * [En]
+ * The function sends a message to logcat in the debug channel
+ */
 fun logcatMessageD(text:String) {
     Log.d("MyLog",text)
 }

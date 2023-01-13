@@ -58,6 +58,14 @@ sealed class DeviceEvent(open val eventId: Int,open val time:Long) {
         override val time:Long
     ) : DeviceEvent(eventId,time)
 
+    /**
+     * [Ru]
+     * Модель данных используется для отображение данных о запуске устройства
+     */
+    /**
+     * [En]
+     * The data model is used to display device startup data
+     */
     data class DeviceLaunch(
         override val eventId: Int,
         override val time: Long

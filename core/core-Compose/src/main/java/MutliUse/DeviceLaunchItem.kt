@@ -19,6 +19,17 @@ import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import theme.openSansFont
 import theme.primaryFontColor
 
+/**
+ * [Ru]
+ * Данная функция создаёт из модели [DeviceEvent.DeviceLaunch] карточку с информацией
+ * о собитии получаемого из модели
+ */
+
+/**
+ * [En]
+ * This function creates a card with information from the [DeviceEvent.DeviceLaunch] model
+ * about the event received from the model
+ */
 @Composable
 fun DeviceLaunchItem(
     event: DeviceEvent.DeviceLaunch,
