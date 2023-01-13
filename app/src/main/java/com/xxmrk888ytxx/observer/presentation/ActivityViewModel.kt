@@ -1,10 +1,13 @@
 package com.xxmrk888ytxx.observer.presentation
 
 import SharedInterfaces.Navigator
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.ifNotNull
+import com.xxmrk888ytxx.observer.DI.AppComponent
 import com.xxmrk888ytxx.observer.Screen
 
 internal class ActivityViewModel : ViewModel(),Navigator {
@@ -12,6 +15,16 @@ internal class ActivityViewModel : ViewModel(),Navigator {
     private val activityCallbacks = mutableSetOf<ActivityLifecycleCallback>()
 
     var navController:NavController? = null
+
+    private var appComponent:AppComponent? = null
+
+    @SuppressLint("StaticFieldLeak")
+    internal var activity:Activity? = null
+
+    fun initAppComponent(appComponent: AppComponent) {
+        if(this.appComponent != null) return
+        this.appComponent = appComponent
+    }
 
     override fun navigateUp() {
         navController?.navigateUp()
@@ -21,11 +34,19 @@ internal class ActivityViewModel : ViewModel(),Navigator {
         navController?.navigate(Screen.SettingsScreen.route) {
             launchSingleTop = true
         }
+
+        activity.ifNotNull {
+            appComponent?.adAppManager?.showMainScreenToSettingsScreenInterstitialAd(this)
+        }
     }
 
     override fun toEventListScreen() {
         navController?.navigate(Screen.EventListScreen.route) {
             launchSingleTop = true
+        }
+
+        activity.ifNotNull {
+            appComponent?.adAppManager?.showMainScreenToEventListScreenInterstitialAd(this)
         }
     }
 
@@ -40,6 +61,10 @@ internal class ActivityViewModel : ViewModel(),Navigator {
             Screen.EventDetailsScreen.route
         ) {
             launchSingleTop = true
+        }
+
+        activity.ifNotNull {
+            appComponent?.adAppManager?.showMainScreenToEventDetailsScreenInterstitialAd(this)
         }
 
         navController?.getBackStackEntry(Screen.EventDetailsScreen.route)
@@ -97,5 +122,10 @@ internal class ActivityViewModel : ViewModel(),Navigator {
 
     fun unregisterCallback(activityLifecycleCallback: ActivityLifecycleCallback) {
         activityCallbacks.remove(activityLifecycleCallback)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        activity = null
     }
 }

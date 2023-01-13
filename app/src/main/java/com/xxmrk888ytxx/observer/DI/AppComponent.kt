@@ -2,6 +2,7 @@ package com.xxmrk888ytxx.observer.DI
 
 import android.content.Context
 import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
+import com.xxmrk888ytxx.adutils.AdAppManager
 import com.xxmrk888ytxx.bootreceiver.BootCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
@@ -75,4 +76,6 @@ interface AppComponent : WorkerComponentDeps {
     val notificationAppManager: NotificationAppManager
 
     override val cameraManager:CameraManager
+
+    val adAppManager:AdAppManager
 }

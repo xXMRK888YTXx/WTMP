@@ -188,3 +188,9 @@ inline fun <reified JSONCLASS> fromJson(jsonString: String?, jsonClass:Class<JSO
 fun logcatMessageD(text:String) {
     Log.d("MyLog",text)
 }
+
+inline fun <reified T : Any> T?.ifNotNull(onNotNull:T.() -> Unit) {
+    if(this != null) {
+        onNotNull(this)
+    }
+}

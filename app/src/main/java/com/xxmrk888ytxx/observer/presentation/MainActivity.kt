@@ -77,6 +77,8 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
         setContent {
             val navController = rememberNavController()
             activityViewModel.navController = navController
+            activityViewModel.initAppComponent(appComponent)
+            activityViewModel.activity = this
             Column(Modifier
                 .fillMaxSize()
                 .background(BackGroundColor))
@@ -190,6 +192,7 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
 
     override fun onDestroy() {
         super.onDestroy()
+        activityViewModel.activity = null
         activityViewModel.onDestroy()
     }
 
