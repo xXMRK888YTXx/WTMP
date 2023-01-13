@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class EventViewModel @Inject constructor(
     private val context:Context,
     private val packageInfoProvider: PackageInfoProvider,
-    private val deviceEventRepository: DeviceEventRepository
+    private val deviceEventRepository: DeviceEventRepository,
+    private val adStateManager: AdStateManager
 ): ViewModel() {
 
     private val savedAppImages = mutableMapOf<String, Bitmap?>()
@@ -103,5 +105,7 @@ class EventViewModel @Inject constructor(
             deviceEventRepository.removeEvent(eventId)
         }
     }
+
+    internal val isNeedShowAd = adStateManager.isNeedShowAd
 
 }

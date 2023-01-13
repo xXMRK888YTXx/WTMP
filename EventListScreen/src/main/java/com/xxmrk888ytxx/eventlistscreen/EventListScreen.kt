@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,6 +16,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -22,9 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.xxmrk888ytxx.adutils.AdMobBanner
+import com.xxmrk888ytxx.adutils.models.AdMobKey
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import remember
+import theme.BackGroundColor
 import theme.openSansFont
 import theme.primaryFontColor
 
@@ -44,45 +49,65 @@ import theme.primaryFontColor
 fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
     val eventList = eventViewModel.eventList.collectAsState(mapOf())
     val isRemoveDialogShow = eventViewModel.isRemoveDialogShow.remember()
-    LazyColumn(Modifier.fillMaxSize()) {
-
-        item {
-            TopBar(navigator)
-            LazySpacer(10)
+    val isNeedShowAd = eventViewModel.isNeedShowAd.collectAsState(false)
+    Scaffold(
+        Modifier.fillMaxSize(),
+        backgroundColor = Color.Transparent,
+        bottomBar = {
+            if(isNeedShowAd.value)
+                AdMobBanner(adMobKey = AdMobKey.EventListScreenBanner, background = BackGroundColor)
         }
-        if(eventList.value.isNotEmpty()) {
-            eventList.value.forEach { dayEvents ->
-                item {
-                    key(dayEvents.key) {
-                        Text(
-                            text = dayEvents.key,
-                            fontFamily = openSansFont,
-                            fontSize = 18.sp,
-                            fontStyle = FontStyle.Normal,
-                            color = primaryFontColor.copy(0.8f),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .animateItemPlacement(),
-                            textAlign = TextAlign.Center
-                        )
-                        LazySpacer(height = 5)
-                    }
-                }
-                items(dayEvents.value,key = {it.eventId}) { event ->
-                    Box(Modifier.animateItemPlacement()) {
-                        val onDeleteEvent = {
-                            eventViewModel.showRemoveEventDialog(event.eventId)
+    ) {
+        LazyColumn(
+            Modifier
+                .fillMaxSize()
+                .padding(
+                    top = it.calculateTopPadding(),
+                    bottom = it.calculateBottomPadding(),
+                    start = it.calculateLeftPadding(LocalLayoutDirection.current),
+                    end = it.calculateRightPadding(LocalLayoutDirection.current)
+                )
+        ) {
+
+            item {
+                TopBar(navigator)
+                LazySpacer(10)
+            }
+            if(eventList.value.isNotEmpty()) {
+                eventList.value.forEach { dayEvents ->
+                    item {
+                        key(dayEvents.key) {
+                            Text(
+                                text = dayEvents.key,
+                                fontFamily = openSansFont,
+                                fontSize = 18.sp,
+                                fontStyle = FontStyle.Normal,
+                                color = primaryFontColor.copy(0.8f),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .animateItemPlacement(),
+                                textAlign = TextAlign.Center
+                            )
+                            LazySpacer(height = 5)
                         }
-                        when(event) {
-                            is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,navigator,onDeleteEvent)
-                            is DeviceEvent.AppOpen -> AppOpenItem(event,navigator,onDeleteEvent)
-                            is DeviceEvent.DeviceLaunch -> DeviceLaunchItem(event,navigator,onDeleteEvent)
+                    }
+                    items(dayEvents.value,key = {it.eventId}) { event ->
+                        Box(Modifier.animateItemPlacement()) {
+                            val onDeleteEvent = {
+                                eventViewModel.showRemoveEventDialog(event.eventId)
+                            }
+                            when(event) {
+                                is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,navigator,onDeleteEvent)
+                                is DeviceEvent.AppOpen -> AppOpenItem(event,navigator,onDeleteEvent)
+                                is DeviceEvent.DeviceLaunch -> DeviceLaunchItem(event,navigator,onDeleteEvent)
+                            }
                         }
                     }
                 }
             }
+            else item { ListStub() }
         }
-        else item { ListStub() }
+
     }
     if(isRemoveDialogShow.value.first) {
         RemoveEventDialog(onDismiss = eventViewModel::hideRemoveEventDialog) {
