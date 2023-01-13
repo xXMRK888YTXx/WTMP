@@ -39,6 +39,22 @@ Ru
 
 [Database] - Модуль с базой данных приложения
 
+[BootReceiver] - В модуле находится ресивер для получения информации о запуске устройства
+
+[EnterPasswordScreen] - В модуле находится базовый экран для ввода пароля для входа в приложение
+
+[EventDetailsScreen] - В модуле находится экран который  показывает подробности,
+ событий собираемые приложением
+
+[EventDeviceTracker] - В модуле находится сервис который собирает
+события устройства(разблокировка экрана,открытие приложений)
+
+[SelectTrackedAppScreen] - В модуле находится экран для выбора приложений, которые будут отслеживаться
+приложением
+
+[SetupAppPasswordScreen] - В модуле находится специально настроенный [EnterPasswordScreen]
+для установки/удаление пароля для входа в приложение
+
 En
 
 Description of modules
@@ -80,3 +96,17 @@ Description of modules
 [CryptoManager] - The module contains a class for data encryption
 
 [Database] - Module with application database
+
+[BootReceiver] - The module contains a receiver to receive information about the device startup
+
+[EnterPasswordScreen] - The module contains a basic screen for entering a password to enter the application
+
+[EventDetailsScreen] - The module contains a screen that shows the details of events collected by the application
+
+[EventDeviceTracker] - The module contains a service that collects device events (screen unlock, application opening)
+
+[SelectTrackedAppScreen] - The module contains a screen for selecting applications to be tracked
+application
+
+[SetupAppPasswordScreen] - The module contains a specially configured [EnterPasswordScreen]
+ to set / remove a password to enter the application
