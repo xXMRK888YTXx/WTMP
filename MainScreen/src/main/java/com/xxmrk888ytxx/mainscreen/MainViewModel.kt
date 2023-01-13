@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
+import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
@@ -34,7 +35,8 @@ class MainViewModel @Inject constructor(
     private val appStateProvider: AppStateProvider,
     private val permissionsManager: PermissionsManager,
     private val appStateChanger: AppStateChanger,
-    private val resourcesProvider: ResourcesProvider
+    private val resourcesProvider: ResourcesProvider,
+    private val adStateManager: AdStateManager
 ) : ViewModel(),ActivityLifecycleCallback {
 
     private var activityLifecycleRegister:ActivityLifecycleRegister? = null
@@ -244,6 +246,8 @@ class MainViewModel @Inject constructor(
         this.activityLifecycleRegister = activityLifecycleRegister
         activityLifecycleRegister.registerCallback(this)
     }
+
+    internal val isShowAd = adStateManager.isNeedShowAd
 
     override fun onCleared() {
         activityLifecycleRegister?.unregisterCallback(this)

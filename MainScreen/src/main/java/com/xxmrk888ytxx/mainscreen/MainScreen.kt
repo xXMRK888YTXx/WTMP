@@ -13,6 +13,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -20,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.xxmrk888ytxx.adutils.AdMobBanner
+import com.xxmrk888ytxx.adutils.models.AdMobKey
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import remember
@@ -51,59 +55,77 @@ fun MainScreen(
     val eventList = mainViewModel.dayEventList.collectAsState(listOf())
     val isRemoveDialogShow = mainViewModel.isRemoveDialogShow.remember()
     val isPermissionDialogShow = mainViewModel.isShowRequestPermissionDialog.remember()
-    LazyColumn(modifier = Modifier
-        .fillMaxSize()
-        .padding(5.dp)) {
-        item { TopBar(navigator) }
-
-        item {
-            EnableAppButton(
-                isEnable = appState.value,
-                onClick = if(!appState.value) mainViewModel::showRequestPermissionDialog
-                else mainViewModel::disableApp
-            )
+    val isNeedShowAd = mainViewModel.isShowAd.collectAsState(true)
+    Scaffold(
+        Modifier
+            .fillMaxSize()
+            .padding(5.dp),
+        backgroundColor = Color.Transparent,
+        bottomBar = {
+            if(isNeedShowAd.value)
+                AdMobBanner(adMobKey = AdMobKey.MainScreenBanner, background = BackGroundColor)
         }
-
-        item {
-            Text(
-                text = stringResource(R.string.Events_for_today),
-                fontFamily = openSansFont,
-                fontWeight = FontWeight.W600,
-                fontSize = 20.sp,
-                color = primaryFontColor,
-                modifier = Modifier.padding(start = 10.dp)
+    ) {
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .padding(
+                top = it.calculateTopPadding(),
+                start = it.calculateLeftPadding(LocalLayoutDirection.current),
+                end = it.calculateRightPadding(LocalLayoutDirection.current),
+                bottom = it.calculateBottomPadding()
             )
-        }
-        if (eventList.value.isNotEmpty()) {
-            items(eventList.value, key = { it.eventId }) { event ->
-                Box(Modifier.animateItemPlacement()) {
-                    val onDeleteEvent = {
-                        mainViewModel.showRemoveEventDialog(event.eventId)
-                    }
-                    when (event) {
-                        is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,
-                            navigator,
-                            onDeleteEvent)
-                        is DeviceEvent.AppOpen -> AppOpenItem(event, navigator, onDeleteEvent)
-                        is DeviceEvent.DeviceLaunch ->
-                            DeviceLaunchItem(event = event, navigator = navigator, onDeleteEvent = onDeleteEvent)
+        ) {
+            item { TopBar(navigator) }
+
+            item {
+                EnableAppButton(
+                    isEnable = appState.value,
+                    onClick = if(!appState.value) mainViewModel::showRequestPermissionDialog
+                    else mainViewModel::disableApp
+                )
+            }
+
+            item {
+                Text(
+                    text = stringResource(R.string.Events_for_today),
+                    fontFamily = openSansFont,
+                    fontWeight = FontWeight.W600,
+                    fontSize = 20.sp,
+                    color = primaryFontColor,
+                    modifier = Modifier.padding(start = 10.dp)
+                )
+            }
+            if (eventList.value.isNotEmpty()) {
+                items(eventList.value, key = { it.eventId }) { event ->
+                    Box(Modifier.animateItemPlacement()) {
+                        val onDeleteEvent = {
+                            mainViewModel.showRemoveEventDialog(event.eventId)
+                        }
+                        when (event) {
+                            is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,
+                                navigator,
+                                onDeleteEvent)
+                            is DeviceEvent.AppOpen -> AppOpenItem(event, navigator, onDeleteEvent)
+                            is DeviceEvent.DeviceLaunch ->
+                                DeviceLaunchItem(event = event, navigator = navigator, onDeleteEvent = onDeleteEvent)
+                        }
                     }
                 }
+            } else {
+                item {
+                    LazySpacer(5)
+                    EventListStub()
+                    LazySpacer(5)
+                }
             }
-        } else {
+
             item {
-                LazySpacer(5)
-                EventListStub()
-                LazySpacer(5)
+                LazySpacer(10)
+                ShowAllEventButton(navigator)
+                LazySpacer(10)
             }
-        }
 
-        item {
-            LazySpacer(10)
-            ShowAllEventButton(navigator)
-            LazySpacer(10)
         }
-
     }
     if (isRemoveDialogShow.value.first) {
         RemoveEventDialog(onDismiss = mainViewModel::hideRemoveEventDialog,
