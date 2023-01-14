@@ -12,4 +12,10 @@
     <string name="Access_accessibility_services">Доступ к специальным службам</string>
     <string name="Access_device_administrators">Доступ к администраторам устройства</string>
     <string name="Permission_send_notifications">Разрешение на отправку уведомлений</string>
+    <string name="First_part_Accessibility_permission_description">"Согласно политике Google Play, нам необходимо уведомить вас для чего мы запрашиваем Accessibility разрешения.\n\n"</string>
+    <string name="This_permission_will_be_used">Данное разрешение будет использоваться для:\n\n</string>
+    <string name="Getting_unlock_information">1. Получения информации о разблокировке устройства\n\n</string>
+    <string name="Getting_information_about_open_applications">2. Получение информации об открытых приложениях\n\n</string>
+    <string name="This_data_is_stored_the_device">Эти данные хранятся на устройстве и не кому не передаются(за исключением Telegram, если вы включили соответсвующую функцию в настройках)\n\n</string>
+    <string name="For_the_application_to_work_you_must_agree">Для работы приложение необходимо согласиться со сбором этих данных и предоставить разрешение в настройках устройства.</string>
 </resources>

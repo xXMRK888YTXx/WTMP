@@ -46,7 +46,7 @@ import theme.*
 fun MainScreen(
     mainViewModel: MainViewModel,
     navigator: Navigator,
-    activityLifecycleRegister: ActivityLifecycleRegister
+    activityLifecycleRegister: ActivityLifecycleRegister,
 ) {
     LaunchedEffect(key1 = activityLifecycleRegister, block = {
         mainViewModel.registerInActivityLifecycle(activityLifecycleRegister)
@@ -56,31 +56,36 @@ fun MainScreen(
     val isRemoveDialogShow = mainViewModel.isRemoveDialogShow.remember()
     val isPermissionDialogShow = mainViewModel.isShowRequestPermissionDialog.remember()
     val isNeedShowAd = mainViewModel.isShowAd.collectAsState(true)
+    val isAccessibilityPermissionsDialogShow = mainViewModel.isAccessibilityPermissionsDialogShow
+        .remember()
+
+
     Scaffold(
         Modifier
             .fillMaxSize()
             .padding(5.dp),
         backgroundColor = Color.Transparent,
         bottomBar = {
-            if(isNeedShowAd.value)
+            if (isNeedShowAd.value)
                 AdMobBanner(adMobKey = AdMobKey.MainScreenBanner, background = BackGroundColor)
         }
     ) {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                top = it.calculateTopPadding(),
-                start = it.calculateLeftPadding(LocalLayoutDirection.current),
-                end = it.calculateRightPadding(LocalLayoutDirection.current),
-                bottom = it.calculateBottomPadding()
-            )
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = it.calculateTopPadding(),
+                    start = it.calculateLeftPadding(LocalLayoutDirection.current),
+                    end = it.calculateRightPadding(LocalLayoutDirection.current),
+                    bottom = it.calculateBottomPadding()
+                )
         ) {
             item { TopBar(navigator) }
 
             item {
                 EnableAppButton(
                     isEnable = appState.value,
-                    onClick = if(!appState.value) mainViewModel::showRequestPermissionDialog
+                    onClick = if (!appState.value) mainViewModel::showRequestPermissionDialog
                     else mainViewModel::disableApp
                 )
             }
@@ -102,12 +107,18 @@ fun MainScreen(
                             mainViewModel.showRemoveEventDialog(event.eventId)
                         }
                         when (event) {
-                            is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(event,
+                            is DeviceEvent.AttemptUnlockDevice -> AttemptUnlockDeviceItem(
+                                event,
                                 navigator,
-                                onDeleteEvent)
+                                onDeleteEvent
+                            )
                             is DeviceEvent.AppOpen -> AppOpenItem(event, navigator, onDeleteEvent)
                             is DeviceEvent.DeviceLaunch ->
-                                DeviceLaunchItem(event = event, navigator = navigator, onDeleteEvent = onDeleteEvent)
+                                DeviceLaunchItem(
+                                    event = event,
+                                    navigator = navigator,
+                                    onDeleteEvent = onDeleteEvent
+                                )
                         }
                     }
                 }
@@ -127,6 +138,7 @@ fun MainScreen(
 
         }
     }
+
     if (isRemoveDialogShow.value.first) {
         RemoveEventDialog(onDismiss = mainViewModel::hideRemoveEventDialog,
             onRemove = {
@@ -135,8 +147,26 @@ fun MainScreen(
             })
     }
 
-    if(isPermissionDialogShow.value) {
-        PermissionDialog(mainViewModel.requestedPermission,mainViewModel::hideRequestPermissionDialog)
+    if (isPermissionDialogShow.value) {
+        PermissionDialog(
+            mainViewModel.requestedPermission,
+            mainViewModel::hideRequestPermissionDialog
+        )
+    }
+
+    if (isAccessibilityPermissionsDialogShow.value) {
+        YesNoDialog(
+            dialogDescription = buildString {
+                append(stringResource(R.string.First_part_Accessibility_permission_description))
+                append(stringResource(R.string.This_permission_will_be_used))
+                append(stringResource(R.string.Getting_unlock_information))
+                append(stringResource(R.string.Getting_information_about_open_applications))
+                append(stringResource(R.string.This_data_is_stored_the_device))
+                append(stringResource(R.string.For_the_application_to_work_you_must_agree))
+            },
+            onConfirm = mainViewModel::requestAccessibilityPermission,
+            onCancel = { mainViewModel.isAccessibilityPermissionsDialogShow.value = false }
+        )
     }
 }
 

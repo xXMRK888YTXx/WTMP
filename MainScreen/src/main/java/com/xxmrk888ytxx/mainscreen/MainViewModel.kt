@@ -58,6 +58,8 @@ class MainViewModel @Inject constructor(
 
     internal val isRemoveDialogShow = _isRemoveDialogShow.toState()
 
+    internal val isAccessibilityPermissionsDialogShow = mutableStateOf(false)
+
     private val _isShowRequestPermissionDialog = mutableStateOf(false)
 
     internal val isShowRequestPermissionDialog = _isShowRequestPermissionDialog.toState()
@@ -184,7 +186,7 @@ class MainViewModel @Inject constructor(
                 RequestedPermission(
                     resourcesProvider.getString(R.string.Access_accessibility_services),
                     accessibilityPermissionsState,
-                    permissionsManager::requestAccessibilityPermissions
+                    onRequest = { isAccessibilityPermissionsDialogShow.value = true }
                 ),
                 RequestedPermission(
                     resourcesProvider.getString(R.string.Access_device_administrators),
@@ -254,5 +256,10 @@ class MainViewModel @Inject constructor(
         activity = null
         activityLifecycleRegister = null
         super.onCleared()
+    }
+
+    fun requestAccessibilityPermission() {
+        permissionsManager.requestAccessibilityPermissions()
+        isAccessibilityPermissionsDialogShow.value = false
     }
 }
