@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Photo_missing">Фотография отсутсвует</string>
+    <string name="Photo_missing">Фотография отсутствует</string>
     <string name="Device_unlocked">Устройство разблокировано</string>
     <string name="Failed_to_unlock">Провалена попытка разблокировки</string>
     <string name="Event_details">Подробности события</string>
