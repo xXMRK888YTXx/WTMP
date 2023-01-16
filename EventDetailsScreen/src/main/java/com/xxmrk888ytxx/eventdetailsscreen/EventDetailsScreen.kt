@@ -19,9 +19,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import coil.size.Size
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.coredeps.toDateString
 import com.xxmrk888ytxx.coredeps.toTimeString
+import kotlinx.coroutines.Dispatchers
 import remember
 import theme.cardColor
 import theme.floatButtonColor
@@ -84,13 +87,18 @@ fun CreatedImageViewer(eventDetailsViewModel: EventDetailsViewModel) {
     if (eventDetailsViewModel.screenState.value is ScreenState.ShowEvent
         && (eventDetailsViewModel.screenState.value as ScreenState.ShowEvent).image != null
     ) {
-        AsyncImage(
-            model = (eventDetailsViewModel.screenState.value as? ScreenState.ShowEvent)?.image,
-            contentDescription = "",
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-        )
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .dispatcher(Dispatchers.Default)
+                    .size(1600,1080)
+                    .data((eventDetailsViewModel.screenState.value as? ScreenState.ShowEvent)?.image)
+                    .build()
+                ,
+                contentDescription = "",
+                modifier = Modifier.padding(10.dp)
+            )
+        }
     } else {
         PhotoStub()
     }
@@ -168,10 +176,12 @@ internal fun EventCardInfo(event: DeviceEvent) {
         ) {
             if (event is DeviceEvent.AppOpen) {
                 AsyncImage(
-                    model = event.icon ?: R.drawable.default_icon,
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .dispatcher(Dispatchers.Default)
+                        .data(event.icon ?: R.drawable.default_icon)
+                        .size(Size(70,70)).build(),
                     contentDescription = "",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(60.dp)
                 )
             } else {
                 Icon(
