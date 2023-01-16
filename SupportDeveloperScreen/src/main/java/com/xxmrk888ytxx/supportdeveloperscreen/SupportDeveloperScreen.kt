@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,6 +65,21 @@ fun SupportDeveloperScreen(supportDeveloperViewModel:SupportDeveloperViewModel) 
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
+
+            LazySpacer(15)
+
+            Text(
+                text = stringResource(R.string.Any_purchase_permanently_turns_off_ads),
+                fontWeight = FontWeight.W600,
+                fontFamily = openSansFont,
+                fontSize = 18.sp,
+                color = primaryFontColor,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                fontStyle = FontStyle.Italic
+            )
+
+
 
             supportPrices.forEach {
                 LazySpacer(10)
