@@ -91,6 +91,10 @@ internal class ActivityViewModel : ViewModel(),Navigator {
             )
     }
 
+    override fun toSupportDeveloperScreen() {
+        navController?.navigate(Screen.SupportDeveloperScreen.route) { launchSingleTop = true }
+    }
+
     fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback,activity: Activity) {
         if(activityCallbacks.add(activityLifecycleCallback))
             activityLifecycleCallback.onRegister(activity)

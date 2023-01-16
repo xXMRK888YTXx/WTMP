@@ -37,6 +37,7 @@ import theme.*
  * This screen is designed to configure the application
  */
 
+@SuppressLint("ResourceType")
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
     LazyColumn(Modifier.fillMaxSize()) {
@@ -44,6 +45,19 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
         item {
             TopBar(navigator)
             LazySpacer(20)
+        }
+
+        item {
+            SettingsCategory(
+                categoryName = stringResource(R.string.Paid_content),
+                settingsParams = listOf(
+                    SettingsParamType.Button(
+                        text = stringResource(R.string.Support_author),
+                        icon = R.drawable.baseline_attach_money_24,
+                        onClick = navigator::toSupportDeveloperScreen
+                    )
+                ))
+            LazySpacer(15)
         }
 
         item {
@@ -377,7 +391,8 @@ internal fun SettingsParam(
                                         .fillMaxWidth()
                                         .clickable {
                                             params.onShowDropDown()
-                                        }.padding(end = 10.dp)
+                                        }
+                                        .padding(end = 10.dp)
                                 )
                             }
                         }

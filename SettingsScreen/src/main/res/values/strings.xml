@@ -25,4 +25,6 @@
     <string name="Remove_app">Delete app</string>
     <string name="Privacy_policy">Privacy Policy</string>
     <string name="Terms">Terms of Use</string>
+    <string name="Paid_content">Paid content</string>
+    <string name="Support_author">Support the author</string>
 </resources>

@@ -33,6 +33,8 @@ import com.xxmrk888ytxx.settingsscreen.SettingsScreen
 import com.xxmrk888ytxx.settingsscreen.SettingsViewModel
 import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordScreen
 import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordViewModel
+import com.xxmrk888ytxx.supportdeveloperscreen.SupportDeveloperScreen
+import com.xxmrk888ytxx.supportdeveloperscreen.SupportDeveloperViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
     @Inject lateinit var selectTrackedAppViewModel: Provider<SelectTrackedAppViewModel>
     @Inject lateinit var setupAppPasswordViewModel: Provider<SetupAppPasswordViewModel>
     @Inject internal lateinit var appOpenViewModel: Provider<AppOpenViewModel>
+    @Inject lateinit var supportDeveloperViewModel: Provider<SupportDeveloperViewModel>
 
     @Inject lateinit var appPasswordProvider: AppPasswordProvider
     @Inject lateinit var adAppManager: AdAppManager
@@ -74,9 +77,10 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
             activityViewModel.navController = navController
             activityViewModel.initAppComponent(appComponent)
             activityViewModel.activity = this
-            Column(Modifier
-                .fillMaxSize()
-                .background(BackGroundColor))
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(BackGroundColor))
             {
                 NavHost(
                     navController = navController,
@@ -152,6 +156,14 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
                                 setupAppPasswordViewModel.get()
                             },
                             navigator = activityViewModel
+                        )
+                    }
+
+                    composable(Screen.SupportDeveloperScreen.route) {
+                        SupportDeveloperScreen(
+                            supportDeveloperViewModel = composeViewModel() {
+                                supportDeveloperViewModel.get()
+                            }
                         )
                     }
                 }

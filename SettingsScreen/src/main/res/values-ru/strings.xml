@@ -25,4 +25,6 @@
     <string name="Remove_app">Удалить приложение</string>
     <string name="Privacy_policy">Политика конфиденциальности</string>
     <string name="Terms">Условия использования</string>
+    <string name="Paid_content">Платный контент</string>
+    <string name="Support_author">Поддержать автора</string>
 </resources>
