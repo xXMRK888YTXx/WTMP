@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -37,9 +36,7 @@ import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import theme.BackGroundColor
 import javax.inject.Inject
@@ -71,9 +68,7 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
-        lifecycleScope.launch(Dispatchers.Default) {
-            adAppManager.initAdmob()
-        }
+        adAppManager.initAdmob()
         setContent {
             val navController = rememberNavController()
             activityViewModel.navController = navController
