@@ -47,7 +47,8 @@ import javax.inject.Provider
         BootCallbackModule::class,
         BootDeviceTrackedConfigManagerModule::class,
         RemoveAppManagerModule::class,
-        AdAppManagerModule::class
+        AdAppManagerModule::class,
+        BillingManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
