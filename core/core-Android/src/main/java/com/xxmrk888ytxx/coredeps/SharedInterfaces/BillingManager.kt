@@ -1,9 +1,13 @@
 package com.xxmrk888ytxx.coredeps.SharedInterfaces
 
+import android.app.Activity
+
 interface BillingManager {
-    fun buyDeveloperSupportOn5Dollars()
 
-    fun buyDeveloperSupportOn10Dollars()
+    fun connectToGooglePlay()
+    fun buyDeveloperSupportOn5Dollars(activity:Activity)
 
-    fun buyDeveloperSupportOn15Dollars()
+    fun buyDeveloperSupportOn10Dollars(activity:Activity)
+
+    fun buyDeveloperSupportOn15Dollars(activity:Activity)
 }

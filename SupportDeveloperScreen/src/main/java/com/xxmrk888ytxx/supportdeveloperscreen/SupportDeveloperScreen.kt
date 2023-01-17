@@ -10,6 +10,7 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
@@ -18,13 +19,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import theme.BackGroundColor
 import theme.checkedSettingsSwitch
 import theme.openSansFont
 import theme.primaryFontColor
 
 @Composable
-fun SupportDeveloperScreen(supportDeveloperViewModel:SupportDeveloperViewModel) {
+fun SupportDeveloperScreen(
+    supportDeveloperViewModel:SupportDeveloperViewModel,
+    activityLifecycleRegister: ActivityLifecycleRegister
+) {
+    LaunchedEffect(key1 = activityLifecycleRegister, block = {
+        supportDeveloperViewModel.registerActivityCallBack(activityLifecycleRegister)
+    })
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -42,8 +50,10 @@ fun SupportDeveloperScreen(supportDeveloperViewModel:SupportDeveloperViewModel) 
                 )
                 .verticalScroll(rememberScrollState()),
         ) {
-            val supportPrices:List<Pair<Int,() -> Unit>> = listOf(Pair(5) {}, Pair(10) {},
-                Pair(15) {})
+            val supportPrices:List<Pair<Int,() -> Unit>> = listOf(
+                Pair(5,supportDeveloperViewModel::buyDeveloperSupportOn5Dollars),
+                Pair(10,supportDeveloperViewModel::buyDeveloperSupportOn10Dollars),
+                Pair(15,supportDeveloperViewModel::buyDeveloperSupportOn15Dollars))
             Text(
                 text = stringResource(R.string.Top_label),
                 fontFamily = openSansFont,

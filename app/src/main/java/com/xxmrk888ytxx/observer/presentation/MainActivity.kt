@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,6 +18,7 @@ import com.xxmrk888ytxx.adutils.AdAppManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
 import com.xxmrk888ytxx.eventlistscreen.EventListScreen
@@ -66,17 +68,21 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
 
     @Inject lateinit var appPasswordProvider: AppPasswordProvider
     @Inject lateinit var adAppManager: AdAppManager
+    @Inject lateinit var billingManager: Provider<BillingManager>
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         adAppManager.initAdmob()
+        activityViewModel.initAppComponent(appComponent)
+        activityViewModel.activity = this
+        billingManager.get().connectToGooglePlay()
         setContent {
             val navController = rememberNavController()
-            activityViewModel.navController = navController
-            activityViewModel.initAppComponent(appComponent)
-            activityViewModel.activity = this
+            LaunchedEffect(key1 = Unit, block = {
+                activityViewModel.navController = navController
+            })
             Column(
                 Modifier
                     .fillMaxSize()
@@ -163,7 +169,8 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
                         SupportDeveloperScreen(
                             supportDeveloperViewModel = composeViewModel() {
                                 supportDeveloperViewModel.get()
-                            }
+                            },
+                            activityLifecycleRegister = this@MainActivity
                         )
                     }
                 }
