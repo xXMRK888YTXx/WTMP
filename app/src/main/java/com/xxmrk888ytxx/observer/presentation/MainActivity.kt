@@ -198,9 +198,9 @@ class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         activityViewModel.activity = null
         activityViewModel.onDestroy()
+        super.onDestroy()
     }
 
     override fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback) {
