@@ -2,7 +2,9 @@ package com.xxmrk888ytxx.supportdeveloperscreen
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
@@ -10,8 +12,13 @@ import com.xxmrk888ytxx.coredeps.ifNotNull
 import javax.inject.Inject
 
 class SupportDeveloperViewModel @Inject constructor(
-    private val billingManager: BillingManager
+    private val billingManager: BillingManager,
+    private val adStateManager: AdStateManager
 ) : ViewModel(),ActivityLifecycleCallback {
+
+    internal val isShowCongratulationsDialog = mutableStateOf(false)
+
+    internal val isNeedShowAd = adStateManager.isNeedShowAd
 
     override fun onRegister(activity: Activity) {
         super.onRegister(activity)
