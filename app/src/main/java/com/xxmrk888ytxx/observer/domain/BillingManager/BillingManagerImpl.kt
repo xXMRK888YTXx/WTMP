@@ -6,6 +6,7 @@ import com.android.billingclient.api.*
 import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PurchaseCallback.PurchaseListenerManager
 import com.xxmrk888ytxx.coredeps.ifNotNull
 import com.xxmrk888ytxx.observer.DI.AppScope
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @AppScope
 internal class BillingManagerImpl @Inject constructor(
     private val context: Context,
-    private val adStateManager: AdStateManager
+    private val adStateManager: AdStateManager,
+    private val purchaseListenerManager: PurchaseListenerManager
 ) : BillingManager {
 
     private val productIdMap:MutableMap<String,ProductDetails?> = mutableMapOf(
@@ -49,6 +51,7 @@ internal class BillingManagerImpl @Inject constructor(
                 if(billingClient.responseCode == BillingClient.BillingResponseCode.OK) {
                     ApplicationScope.launch(Dispatchers.IO) {
                         adStateManager.changeAdState(false)
+                        purchaseListenerManager.notifyListeners()
                     }
                 }
             }

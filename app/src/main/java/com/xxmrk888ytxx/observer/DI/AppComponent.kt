@@ -9,6 +9,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PurchaseCallback.PurchaseListenerManager
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.module.*
 import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
@@ -48,7 +49,8 @@ import javax.inject.Provider
         BootDeviceTrackedConfigManagerModule::class,
         RemoveAppManagerModule::class,
         AdAppManagerModule::class,
-        BillingManagerModule::class
+        BillingManagerModule::class,
+        PurchaseListenerManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
@@ -79,4 +81,6 @@ interface AppComponent : WorkerComponentDeps {
     override val cameraManager:CameraManager
 
     val adAppManager:AdAppManager
+
+    val purchaseListenerManager: PurchaseListenerManager
 }

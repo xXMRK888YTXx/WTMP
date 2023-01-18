@@ -3,16 +3,20 @@ package com.xxmrk888ytxx.observer.presentation
 import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import android.app.Activity
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PurchaseCallback.PurchaseListener
 import com.xxmrk888ytxx.coredeps.ifNotNull
 import com.xxmrk888ytxx.observer.DI.AppComponent
 import com.xxmrk888ytxx.observer.Screen
 
-internal class ActivityViewModel : ViewModel(),Navigator {
+internal class ActivityViewModel : ViewModel(),Navigator, PurchaseListener {
 
     private val activityCallbacks = mutableSetOf<ActivityLifecycleCallback>()
+
+    internal val isShowCongratulationsDialog = mutableStateOf(false)
 
     var navController:NavController? = null
 
@@ -24,6 +28,7 @@ internal class ActivityViewModel : ViewModel(),Navigator {
     fun initAppComponent(appComponent: AppComponent) {
         if(this.appComponent != null) return
         this.appComponent = appComponent
+        appComponent.purchaseListenerManager.registerListener(this)
     }
 
     override fun navigateUp() {
@@ -130,6 +135,11 @@ internal class ActivityViewModel : ViewModel(),Navigator {
 
     override fun onCleared() {
         super.onCleared()
+        appComponent?.purchaseListenerManager?.unregisterListener(this)
         activity = null
+    }
+
+    override fun onPurchase() {
+        isShowCongratulationsDialog.value = true
     }
 }
