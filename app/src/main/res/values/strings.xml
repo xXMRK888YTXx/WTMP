@@ -14,4 +14,7 @@
     <string name="Use_password">Use password</string>
     <string name="Biometric_error">An error occurred during the biometric unlock. Please try again or enter your password</string>
     <string name="Device_loaded">Device loaded</string>
+    <string name="Congratulations_text">Thank you, your support is important to us.</string>
+    <string name="Ads_will_be_disabled">Advertising will be disabled.</string>
+    <string name="Close">Close</string>
 </resources>

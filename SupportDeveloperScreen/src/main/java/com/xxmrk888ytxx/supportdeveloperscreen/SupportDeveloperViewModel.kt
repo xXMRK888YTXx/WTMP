@@ -2,7 +2,6 @@ package com.xxmrk888ytxx.supportdeveloperscreen
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
@@ -15,8 +14,6 @@ class SupportDeveloperViewModel @Inject constructor(
     private val billingManager: BillingManager,
     private val adStateManager: AdStateManager
 ) : ViewModel(),ActivityLifecycleCallback {
-
-    internal val isShowCongratulationsDialog = mutableStateOf(false)
 
     internal val isNeedShowAd = adStateManager.isNeedShowAd
 

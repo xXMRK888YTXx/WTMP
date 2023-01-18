@@ -4,7 +4,5 @@
     <string name="Top_label">Спасибо за интерес к моему приложению</string>
     <string name="description">Разработка приложения заняла у меня много сил и времени, и я рад, что вы пользуетесь им. Если есть средства и желание, можете поддержать меня финансово.</string>
     <string name="Any_purchase_permanently_turns_off_ads">Любая покупка навсегда выключает рекламу, и если в будущем у программы появится платные функции они будут сразу вам доступны</string>
-    <string name="Congratulations_text">Спасибо, ваша поддержка важна для нас.</string>
-    <string name="Ads_will_be_disabled">Реклама будет отключена.</string>
-    <string name="Close">Закрыть</string>
+    <string name="Thanks_for_support">Спасибо за поддержку. Реклама отключена</string>
 </resources>

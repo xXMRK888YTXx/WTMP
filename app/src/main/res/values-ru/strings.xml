@@ -14,4 +14,7 @@
     <string name="Use_password">Использовать пароль</string>
     <string name="Biometric_error">При биометрической разблокировке произошла ошибка.Повторите попытку или введите пароль</string>
     <string name="Device_loaded">Устройство загружено</string>
+    <string name="Congratulations_text">Спасибо, ваша поддержка важна для нас.</string>
+    <string name="Ads_will_be_disabled">Реклама будет отключена.</string>
+    <string name="Close">Закрыть</string>
 </resources>
