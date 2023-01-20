@@ -3,7 +3,7 @@ package com.xxmrk888ytxx.observer.presentation.AppLoginScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.enterpasswordscreen.EnterPasswordScreen
 import remember
 

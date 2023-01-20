@@ -6,7 +6,7 @@ import android.app.Activity
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PurchaseCallback.PurchaseListener
 import com.xxmrk888ytxx.coredeps.ifNotNull
 import com.xxmrk888ytxx.observer.DI.AppComponent
@@ -100,7 +100,7 @@ internal class ActivityViewModel : ViewModel(),Navigator, PurchaseListener {
         navController?.navigate(Screen.SupportDeveloperScreen.route) { launchSingleTop = true }
     }
 
-    fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback,activity: Activity) {
+    fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback, activity: Activity) {
         if(activityCallbacks.add(activityLifecycleCallback))
             activityLifecycleCallback.onRegister(activity)
     }

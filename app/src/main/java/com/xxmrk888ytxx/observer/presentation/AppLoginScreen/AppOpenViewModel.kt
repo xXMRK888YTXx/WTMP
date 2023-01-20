@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
 import com.xxmrk888ytxx.enterpasswordscreen.EnterPasswordScreenCallBack
 import com.xxmrk888ytxx.observer.Screen
@@ -27,7 +29,7 @@ internal class AppOpenViewModel @Inject constructor(
     private val biometricAuthorizationManager: BiometricAuthorizationManager,
     private val resourcesProvider: ResourcesProvider,
     private val toastManager: ToastManager
-) : ViewModel(),ActivityLifecycleCallback {
+) : ViewModel(), ActivityLifecycleCallback {
 
     @SuppressLint("StaticFieldLeak")
     private var fragmentActivity:FragmentActivity? = null
@@ -60,7 +62,7 @@ internal class AppOpenViewModel @Inject constructor(
 
     var navController:NavController? = null
 
-    private var activityLifecycleRegister:ActivityLifecycleRegister? = null
+    private var activityLifecycleRegister: ActivityLifecycleRegister? = null
 
     val inputPassword = mutableStateOf("")
 

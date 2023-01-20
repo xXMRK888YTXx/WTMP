@@ -28,8 +28,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.xxmrk888ytxx.adutils.AdAppManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
@@ -61,7 +61,7 @@ import theme.*
 import javax.inject.Inject
 import javax.inject.Provider
 
-class MainActivity : AppCompatActivity(),ActivityLifecycleRegister {
+class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
 
     private val activityViewModel: ActivityViewModel by viewModels()
     //Screens ViewModels

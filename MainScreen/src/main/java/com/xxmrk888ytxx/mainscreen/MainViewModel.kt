@@ -14,6 +14,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
@@ -37,9 +39,9 @@ class MainViewModel @Inject constructor(
     private val appStateChanger: AppStateChanger,
     private val resourcesProvider: ResourcesProvider,
     private val adStateManager: AdStateManager
-) : ViewModel(),ActivityLifecycleCallback {
+) : ViewModel(), ActivityLifecycleCallback {
 
-    private var activityLifecycleRegister:ActivityLifecycleRegister? = null
+    private var activityLifecycleRegister: ActivityLifecycleRegister? = null
 
     @SuppressLint("StaticFieldLeak")
     private var activity:Activity? = null
