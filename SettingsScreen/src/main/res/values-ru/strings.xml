@@ -29,4 +29,7 @@
     <string name="Support_author">Поддержать автора</string>
     <string name="Select_language">Выбрать язык</string>
     <string name="Localization">Локализация</string>
+    <string name="Systemic">Системный</string>
+    <string name="Cancel">Отмена</string>
+    <string name="Ok">Ок</string>
 </resources>

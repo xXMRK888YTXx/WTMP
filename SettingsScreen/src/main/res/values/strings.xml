@@ -29,4 +29,9 @@
     <string name="Support_author">Support the author</string>
     <string name="Select_language">Select language</string>
     <string name="Localization">Localization</string>
+    <string name="Systemic">Systemic</string>
+    <string name="English" translatable="false">English</string>
+    <string name="Rus" translatable="false">Русский</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Ok">OK</string>
 </resources>

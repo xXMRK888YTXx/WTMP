@@ -441,9 +441,9 @@ internal fun SettingsParam(
 internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
 
     val localeList = listOf(
-        LocaleParams("Системный",SupportedLanguage.System),
-        LocaleParams("English",SupportedLanguage.EN),
-        LocaleParams("Русский",SupportedLanguage.RU)
+        LocaleParams(stringResource(R.string.Systemic),SupportedLanguage.System),
+        LocaleParams(stringResource(R.string.English),SupportedLanguage.EN),
+        LocaleParams(stringResource(R.string.Rus),SupportedLanguage.RU)
     ).remember()
 
     Dialog(onDismissRequest = settingsViewModel::hideSelectLocaleDialog) {
@@ -498,7 +498,7 @@ internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
                             backgroundColor = settingsSeparatorLineColor,
                         )
                     ) {
-                        Text(text = "Отмена",
+                        Text(text = stringResource(R.string.Cancel),
                             color = primaryFontColor
                         )
                     }
@@ -513,7 +513,7 @@ internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
                             .padding(start = 5.dp, end = 5.dp),
                         shape = RoundedCornerShape(80),
                     ) {
-                        Text(text = "Ок",
+                        Text(text = stringResource(R.string.Ok),
                             color = primaryFontColor
                         )
                     }
