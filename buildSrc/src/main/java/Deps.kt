@@ -114,7 +114,9 @@ object Deps {
         const val fragment = "androidx.fragment:fragment-ktx:1.5.5"
     }
     object AppCompat {
-        const val appCompat = "androidx.appcompat:appcompat:1.5.1"
+        private const val version = "1.6.0"
+        const val appCompat = "androidx.appcompat:appcompat:$version"
+        const val appCompatRes = "androidx.appcompat:appcompat-resources:$version"
     }
     object AdMob {
         const val adMob = "com.google.android.gms:play-services-ads:21.4.0"

@@ -337,3 +337,15 @@ internal fun getSecureParams(
 
     )
 }
+
+@SuppressLint("ResourceType")
+@Composable
+internal fun getLocalisationParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+    return listOf(
+        SettingsParamType.Button(
+            text = stringResource(R.string.Select_language),
+            icon = R.drawable.ic_language,
+            onClick = settingsViewModel::showSelectLocaleDialog
+        )
+    )
+}

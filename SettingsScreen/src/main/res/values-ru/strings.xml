@@ -27,4 +27,6 @@
     <string name="Terms">Условия использования</string>
     <string name="Paid_content">Платный контент</string>
     <string name="Support_author">Поддержать автора</string>
+    <string name="Select_language">Выбрать язык</string>
+    <string name="Localization">Локализация</string>
 </resources>

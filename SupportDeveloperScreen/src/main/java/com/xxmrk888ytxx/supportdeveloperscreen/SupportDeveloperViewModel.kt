@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.lifecycle.ViewModel
 import com.xxmrk888ytxx.adutils.AdStateManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleRegister
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.coredeps.ifNotNull
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class SupportDeveloperViewModel @Inject constructor(
     private val billingManager: BillingManager,
     private val adStateManager: AdStateManager
-) : ViewModel(),ActivityLifecycleCallback {
+) : ViewModel(), ActivityLifecycleCallback {
 
     internal val isNeedShowAd = adStateManager.isNeedShowAd
 
@@ -35,7 +35,7 @@ class SupportDeveloperViewModel @Inject constructor(
     @SuppressLint("StaticFieldLeak")
     private var activity:Activity? = null
 
-    private var activityLifecycleRegister:ActivityLifecycleRegister? = null
+    private var activityLifecycleRegister: ActivityLifecycleRegister? = null
 
     fun registerActivityCallBack(activityLifecycleRegister: ActivityLifecycleRegister) {
         this.activityLifecycleRegister = activityLifecycleRegister

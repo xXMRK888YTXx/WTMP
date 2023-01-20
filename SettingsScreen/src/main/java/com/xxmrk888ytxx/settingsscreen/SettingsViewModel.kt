@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.coredeps.Const.DEVELOPER_EMAIL
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.BiometricAuthorizationManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.BootDeviceTrackedConfig.BootDeviceTrackedConfigChanger
@@ -22,16 +22,12 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedCon
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.RemoveAppManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
-import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
-import com.xxmrk888ytxx.coredeps.models.BootDeviceTrackedConfig
-import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
-import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
+import com.xxmrk888ytxx.coredeps.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import toState
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
@@ -49,7 +45,8 @@ class SettingsViewModel @Inject constructor(
     private val biometricAuthorizationManager: BiometricAuthorizationManager,
     private val bootDeviceTrackedConfigProvider: BootDeviceTrackedConfigProvider,
     private val bootDeviceTrackedConfigChanger: BootDeviceTrackedConfigChanger,
-    private val removeAppManager: RemoveAppManager
+    private val removeAppManager: RemoveAppManager,
+    private val localizationManager: LocalizationManager
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -78,6 +75,13 @@ class SettingsViewModel @Inject constructor(
 
     internal val bootDeviceConfig : Flow<BootDeviceTrackedConfig>
         get() = bootDeviceTrackedConfigProvider.config
+
+    internal val currentSelectedLocale:MutableState<SupportedLanguage> =
+        mutableStateOf(SupportedLanguage.System)
+
+    private val _selectLocaleDialogShowState = mutableStateOf(false)
+
+    internal val selectLocaleDialogShowState = _selectLocaleDialogShowState.toState()
 
     internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -234,5 +238,21 @@ class SettingsViewModel @Inject constructor(
     internal fun openTerms(context: Context) {
         val url = "https://xxmrk888ytxx.github.io/wtmp_terms.htm"
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    internal fun showSelectLocaleDialog() {
+        currentSelectedLocale.value = localizationManager.currentLocalization
+        _selectLocaleDialogShowState.value = true
+    }
+
+    internal fun hideSelectLocaleDialog() {
+        _selectLocaleDialogShowState.value = false
+        currentSelectedLocale.value = SupportedLanguage.System
+    }
+
+    fun setupCurrentSelectedLocaleAndHideLocaleDialog() {
+        val currentSelectedLocale = currentSelectedLocale.value
+        hideSelectLocaleDialog()
+        localizationManager.setupLocalization(currentSelectedLocale)
     }
 }

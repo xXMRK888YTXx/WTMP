@@ -27,4 +27,6 @@
     <string name="Terms">Terms of Use</string>
     <string name="Paid_content">Paid content</string>
     <string name="Support_author">Support the author</string>
+    <string name="Select_language">Select language</string>
+    <string name="Localization">Localization</string>
 </resources>

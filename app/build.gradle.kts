@@ -80,6 +80,7 @@ dependencies {
 
     implementation(Deps.DataStore.dataStore)
     implementation(Deps.AppCompat.appCompat)
+    implementation(Deps.AppCompat.appCompatRes)
     implementation(Deps.Billing.billing)
     implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
     implementation ("com.google.firebase:firebase-crashlytics-ktx")

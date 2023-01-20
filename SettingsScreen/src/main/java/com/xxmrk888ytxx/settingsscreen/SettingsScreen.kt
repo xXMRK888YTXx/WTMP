@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
@@ -25,9 +26,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.models.SupportedLanguage
+import com.xxmrk888ytxx.settingsscreen.models.LocaleParams
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamShape
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
+import remember
 import theme.*
 
 /**
@@ -40,6 +45,9 @@ import theme.*
 @SuppressLint("ResourceType")
 @Composable
 fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
+
+    val selectLocaleDialogShowState = settingsViewModel.selectLocaleDialogShowState.remember()
+
     LazyColumn(Modifier.fillMaxSize()) {
 
         item {
@@ -117,13 +125,25 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
         item {
             SettingsCategory(
+                categoryName = stringResource(R.string.Localization),
+                settingsParams = getLocalisationParams(settingsViewModel)
+            )
+
+            LazySpacer(15)
+        }
+
+        item {
+            SettingsCategory(
                 stringResource(R.string.Other),
                 getAppInfoParams(settingsViewModel)
             )
 
             LazySpacer(height = 15)
         }
+    }
 
+    if(selectLocaleDialogShowState.value) {
+        SelectLocaleDialog(settingsViewModel)
     }
 }
 
@@ -412,6 +432,94 @@ internal fun SettingsParam(
                     )
                 }
             }
+
+        }
+    }
+}
+
+@Composable
+internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
+
+    val localeList = listOf(
+        LocaleParams("Системный",SupportedLanguage.System),
+        LocaleParams("English",SupportedLanguage.EN),
+        LocaleParams("Русский",SupportedLanguage.RU)
+    ).remember()
+
+    Dialog(onDismissRequest = settingsViewModel::hideSelectLocaleDialog) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            backgroundColor = cardColor
+        ) {
+            Column(Modifier.fillMaxWidth()) {
+                LazyColumn(Modifier.fillMaxWidth()) {
+                    items(localeList) { locale ->
+                        val onChangeSelected = {
+                            settingsViewModel.currentSelectedLocale.value = locale.localeType
+                        }.remember()
+
+                        Row(
+                            Modifier.fillMaxWidth().clickable(onClick = onChangeSelected),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = locale.localeType.language ==
+                                        settingsViewModel.currentSelectedLocale.value.language,
+                                onClick = onChangeSelected,
+                                colors = RadioButtonDefaults.colors(
+                                    selectedColor = selectedRadioButtonColor,
+                                    unselectedColor = unselectedRadioButtonColor
+                                )
+                            )
+
+                            LazySpacer(width = 15)
+
+                            Text(
+                                text = locale.localeName,
+                                fontFamily = openSansFont,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.W500,
+                                color = primaryFontColor
+                            )
+                        }
+                    }
+                }
+
+                Row() {
+
+                    OutlinedButton(
+                        onClick = settingsViewModel::hideSelectLocaleDialog,
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .padding(start = 5.dp, end = 5.dp),
+                        shape = RoundedCornerShape(80),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = settingsSeparatorLineColor,
+                        )
+                    ) {
+                        Text(text = "Отмена",
+                            color = primaryFontColor
+                        )
+                    }
+
+                    OutlinedButton(
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = checkedSettingsSwitch,
+                        ),
+                        onClick = settingsViewModel::setupCurrentSelectedLocaleAndHideLocaleDialog,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 5.dp, end = 5.dp),
+                        shape = RoundedCornerShape(80),
+                    ) {
+                        Text(text = "Ок",
+                            color = primaryFontColor
+                        )
+                    }
+                }
+            }
+
 
         }
     }

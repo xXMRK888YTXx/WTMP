@@ -50,7 +50,8 @@ import javax.inject.Provider
         RemoveAppManagerModule::class,
         AdAppManagerModule::class,
         BillingManagerModule::class,
-        PurchaseListenerManagerModule::class
+        PurchaseListenerManagerModule::class,
+        LocalizationManagerModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
