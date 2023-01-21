@@ -18,4 +18,6 @@
     <string name="Getting_information_about_open_applications">2. Getting information about open applications\n\n</string>
     <string name="This_data_is_stored_the_device">This data is stored on the device and is not shared with anyone (except for Telegram, if you have enabled the corresponding function in the settings)\n\n</string>
     <string name="For_the_application_to_work_you_must_agree">For the application to work, you must agree to the collection of this data and grant permission in the device settings.</string>
+    <string name="Warning">Warning</string>
+    <string name="Admin_permission_warming">If you grant administrator rights to my application, then it cannot be uninstalled in the usual way. This is a limitation of the system, and unfortunately there is nothing I can do about it. Therefore, in order to remove the application, you need to manually revoke administrator rights or go to the application settings and find the button to remove it.</string>
 </resources>

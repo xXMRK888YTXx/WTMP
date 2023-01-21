@@ -58,6 +58,7 @@ fun MainScreen(
     val isNeedShowAd = mainViewModel.isShowAd.collectAsState(true)
     val isAccessibilityPermissionsDialogShow = mainViewModel.isAccessibilityPermissionsDialogShow
         .remember()
+    val isAdminPermissionsDialogShow = mainViewModel.isAdminPermissionsDialogShow.remember()
 
 
     Scaffold(
@@ -152,6 +153,10 @@ fun MainScreen(
             mainViewModel.requestedPermission,
             mainViewModel::hideRequestPermissionDialog
         )
+    }
+
+    if(isAdminPermissionsDialogShow.value) {
+        AdminPermissionWarmingDialog(mainViewModel)
     }
 
     if (isAccessibilityPermissionsDialogShow.value) {
@@ -273,3 +278,15 @@ internal fun ShowAllEventButton(navigator: Navigator) {
     }
 }
 
+
+@Composable
+internal fun AdminPermissionWarmingDialog(mainViewModel: MainViewModel) {
+    YesNoDialog(
+        dialogDescription = buildString {
+            append(stringResource(R.string.Warning)+"\n\n")
+            append(stringResource(R.string.Admin_permission_warming))
+        },
+        onConfirm = mainViewModel::requestAdminPermission,
+        onCancel = { mainViewModel.isAdminPermissionsDialogShow.value = false }
+    )
+}
