@@ -32,4 +32,8 @@
     <string name="Systemic">Системный</string>
     <string name="Cancel">Отмена</string>
     <string name="Ok">Ок</string>
+    <string name="Ignore_battery_optimization_already_enabled">Игнорирование оптимизации батареи уже включено</string>
+    <string name="Disable_battery_optimization">Отключить оптимизацию батареи</string>
+    <string name="Open_dontkillmyapp">Открыть dontkillmyapp</string>
+    <string name="Battery_optimization">Оптимизация батареи</string>
 </resources>

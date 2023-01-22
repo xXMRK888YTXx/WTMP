@@ -34,4 +34,8 @@
     <string name="Rus" translatable="false">Русский</string>
     <string name="Cancel">Cancel</string>
     <string name="Ok">OK</string>
+    <string name="Ignore_battery_optimization_already_enabled">Ignore battery optimization already enabled</string>
+    <string name="Disable_battery_optimization">Disable battery optimization</string>
+    <string name="Open_dontkillmyapp">Open dontkillmyapp</string>
+    <string name="Battery_optimization">Battery optimization</string>
 </resources>

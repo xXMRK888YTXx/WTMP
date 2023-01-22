@@ -107,6 +107,15 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
         item {
             SettingsCategory(
+                categoryName = stringResource(R.string.Battery_optimization),
+                settingsParams = getBatteryOptimizationParams(settingsViewModel)
+            )
+
+            LazySpacer(height = 15)
+        }
+
+        item {
+            SettingsCategory(
                 stringResource(R.string.Security),
                 getSecureParams(settingsViewModel, navigator)
             )
@@ -460,7 +469,9 @@ internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
                         }.remember()
 
                         Row(
-                            Modifier.fillMaxWidth().clickable(onClick = onChangeSelected),
+                            Modifier
+                                .fillMaxWidth()
+                                .clickable(onClick = onChangeSelected),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(

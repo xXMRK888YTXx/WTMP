@@ -8,10 +8,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Settings
 import android.view.accessibility.AccessibilityManager
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.xxmrk888ytxx.adminreceiver.AdminReceiver
@@ -39,6 +42,14 @@ class PermissionsManagerImpl @Inject constructor(
         val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN)
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, component)
         activity.startActivityForResult(intent, 5)
+    }
+
+    override fun requestIgnoreBatteryOptimization() {
+        val intent = Intent()
+        intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+        intent.data = Uri.parse("package:${context.packageName}")
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
     }
 
     override fun isCameraPermissionGranted(): Boolean {
@@ -81,5 +92,10 @@ class PermissionsManagerImpl @Inject constructor(
         } else {
             true
         }
+    }
+
+    override fun isIgnoreBatteryOptimizationEnable(): Boolean {
+        return context.getSystemService<PowerManager>()
+            ?.isIgnoringBatteryOptimizations(context.packageName) ?: false
     }
 }

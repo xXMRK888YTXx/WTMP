@@ -349,3 +349,25 @@ internal fun getLocalisationParams(settingsViewModel: SettingsViewModel) : List<
         )
     )
 }
+
+@SuppressLint("ResourceType")
+@Composable
+internal fun getBatteryOptimizationParams(
+    settingsViewModel: SettingsViewModel
+) : List<SettingsParamType> {
+    val context = LocalContext.current
+
+    return listOf(
+        SettingsParamType.Button(
+            text = stringResource(R.string.Disable_battery_optimization),
+            icon = R.drawable.ic_battery,
+            onClick = settingsViewModel::requestIgnoreBatteryOptimisation
+        ),
+
+        SettingsParamType.Button(
+            text = stringResource(R.string.Open_dontkillmyapp),
+            icon = R.drawable.ic_battery,
+            onClick = { settingsViewModel.openDontKillMyAppWebSite(context) }
+        )
+    )
+}

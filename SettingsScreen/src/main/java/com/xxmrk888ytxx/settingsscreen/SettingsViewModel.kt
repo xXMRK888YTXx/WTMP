@@ -46,7 +46,9 @@ class SettingsViewModel @Inject constructor(
     private val bootDeviceTrackedConfigProvider: BootDeviceTrackedConfigProvider,
     private val bootDeviceTrackedConfigChanger: BootDeviceTrackedConfigChanger,
     private val removeAppManager: RemoveAppManager,
-    private val localizationManager: LocalizationManager
+    private val localizationManager: LocalizationManager,
+    private val permissionsManager: PermissionsManager,
+    private val toastManager: ToastManager
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -255,4 +257,19 @@ class SettingsViewModel @Inject constructor(
         hideSelectLocaleDialog()
         localizationManager.setupLocalization(currentSelectedLocale)
     }
+
+    @SuppressLint("ResourceType")
+    internal fun requestIgnoreBatteryOptimisation() {
+        if(!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
+            permissionsManager.requestIgnoreBatteryOptimization()
+        } else {
+            toastManager.showToast(R.string.Ignore_battery_optimization_already_enabled)
+        }
+    }
+
+    internal fun openDontKillMyAppWebSite(context: Context) {
+        val url = "https://dontkillmyapp.com/"
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
 }

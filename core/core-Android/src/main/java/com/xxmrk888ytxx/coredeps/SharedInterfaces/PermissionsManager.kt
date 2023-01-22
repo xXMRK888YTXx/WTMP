@@ -20,6 +20,8 @@ interface PermissionsManager {
 
     fun requestAdminPermissions(activity: Activity)
 
+    fun requestIgnoreBatteryOptimization()
+
     fun isCameraPermissionGranted() : Boolean
 
     fun isAccessibilityPermissionGranted() : Boolean
@@ -27,6 +29,8 @@ interface PermissionsManager {
     fun isAdminPermissionGranted() : Boolean
 
     fun isNotificationPermissionGranted() : Boolean
+
+    fun isIgnoreBatteryOptimizationEnable() : Boolean
 
 
 }
