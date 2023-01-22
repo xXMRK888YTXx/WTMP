@@ -3,14 +3,13 @@ package com.xxmrk888ytxx.mainscreen
 import MutliUse.*
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,6 +58,8 @@ fun MainScreen(
     val isAccessibilityPermissionsDialogShow = mainViewModel.isAccessibilityPermissionsDialogShow
         .remember()
     val isAdminPermissionsDialogShow = mainViewModel.isAdminPermissionsDialogShow.remember()
+    val isRequestIgnoreBatteryOptimisationDialogShow = mainViewModel
+        .isRequestIgnoreBatteryOptimisationDialogShow.remember()
 
 
     Scaffold(
@@ -86,8 +87,10 @@ fun MainScreen(
             item {
                 EnableAppButton(
                     isEnable = appState.value,
-                    onClick = if (!appState.value) mainViewModel::showRequestPermissionDialog
-                    else mainViewModel::disableApp
+                    onClick = if (!appState.value)
+                        mainViewModel::showRequestIgnoreBatteryOptimisationDialog
+                    else
+                        mainViewModel::disableApp
                 )
             }
 
@@ -172,6 +175,10 @@ fun MainScreen(
             onConfirm = mainViewModel::requestAccessibilityPermission,
             onCancel = { mainViewModel.isAccessibilityPermissionsDialogShow.value = false }
         )
+    }
+
+    if(isRequestIgnoreBatteryOptimisationDialogShow.value) {
+        RequestIgnoreBatteryOptimisationDialog(mainViewModel)
     }
 }
 
@@ -289,4 +296,54 @@ internal fun AdminPermissionWarmingDialog(mainViewModel: MainViewModel) {
         onConfirm = mainViewModel::requestAdminPermission,
         onCancel = { mainViewModel.isAdminPermissionsDialogShow.value = false }
     )
+}
+
+@Composable
+internal fun RequestIgnoreBatteryOptimisationDialog(mainViewModel: MainViewModel) {
+    val notShowAgain = remember {
+        mutableStateOf(false)
+    }
+
+    YesNoDialog(
+        onConfirm = {
+            mainViewModel.requestIgnoreBatteryOptimisationDialogHandlePressOk(notShowAgain.value)
+        },
+        onCancel = {
+            mainViewModel.requestIgnoreBatteryOptimisationDialogHandlePressCancel(notShowAgain.value)
+        },
+        cancelButtonText = stringResource(R.string.Later),
+    ) {
+        Text(
+            text = stringResource(R.string.RequestIgnoreBatteryOptimisationDialogText),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(bottom = 25.dp, top = 25.dp)
+                .fillMaxWidth(),
+            fontSize = 17.sp,
+            color = primaryFontColor,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansFont
+        )
+
+        LazySpacer(15)
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().clickable {
+                notShowAgain.value = !notShowAgain.value
+            }
+        ) {
+            Checkbox(checked = notShowAgain.value, onCheckedChange = {
+                notShowAgain.value = it
+            })
+
+            Text(
+                text = stringResource(R.string.Dont_show_again),
+                fontFamily = openSansFont,
+                fontWeight = FontWeight.W700,
+                color = primaryFontColor,
+                fontSize = 15.sp,
+            )
+        }
+    }
 }

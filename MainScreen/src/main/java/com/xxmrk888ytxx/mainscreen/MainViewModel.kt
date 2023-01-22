@@ -38,7 +38,8 @@ class MainViewModel @Inject constructor(
     private val permissionsManager: PermissionsManager,
     private val appStateChanger: AppStateChanger,
     private val resourcesProvider: ResourcesProvider,
-    private val adStateManager: AdStateManager
+    private val adStateManager: AdStateManager,
+    private val dialogShowStateManager: DialogShowStateManager
 ) : ViewModel(), ActivityLifecycleCallback {
 
     private var activityLifecycleRegister: ActivityLifecycleRegister? = null
@@ -67,6 +68,10 @@ class MainViewModel @Inject constructor(
     private val _isShowRequestPermissionDialog = mutableStateOf(false)
 
     internal val isShowRequestPermissionDialog = _isShowRequestPermissionDialog.toState()
+
+    internal val isRequestIgnoreBatteryOptimisationDialogShow = mutableStateOf(false)
+
+    private var isNeedShowRequestIgnoreBatteryOptimisationDialog = true
 
     /**
      * [Ru]
@@ -208,7 +213,7 @@ class MainViewModel @Inject constructor(
             return requestedPermissionList
         }
 
-    internal fun showRequestPermissionDialog() {
+    private fun showRequestPermissionDialog() {
         if(checkPermission()) {
             viewModelScope.launch(Dispatchers.IO) {
                 appStateChanger.updateAppState(true)
@@ -216,6 +221,42 @@ class MainViewModel @Inject constructor(
             return
         }
         _isShowRequestPermissionDialog.value = true
+    }
+
+    internal fun showRequestIgnoreBatteryOptimisationDialog() {
+        if(!isNeedShowRequestIgnoreBatteryOptimisationDialog) {
+            showRequestPermissionDialog()
+        } else {
+            isRequestIgnoreBatteryOptimisationDialogShow.value = true
+        }
+    }
+
+    internal fun requestIgnoreBatteryOptimisationDialogHandlePressOk(isNeverShowAgainState:Boolean) {
+        isRequestIgnoreBatteryOptimisationDialogShow.value = false
+
+        if(!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
+            permissionsManager.requestIgnoreBatteryOptimization()
+        }
+
+        if(isNeverShowAgainState) {
+            viewModelScope.launch(Dispatchers.IO) {
+                dialogShowStateManager.setupIgnoreIgnoreBatteryOptimisationDialogShowState(false)
+            }
+        }
+
+        showRequestPermissionDialog()
+    }
+
+    internal fun requestIgnoreBatteryOptimisationDialogHandlePressCancel(isNeverShowAgainState:Boolean) {
+        isRequestIgnoreBatteryOptimisationDialogShow.value = false
+
+        if(isNeverShowAgainState) {
+            viewModelScope.launch(Dispatchers.IO) {
+                dialogShowStateManager.setupIgnoreIgnoreBatteryOptimisationDialogShowState(false)
+            }
+        }
+
+        showRequestPermissionDialog()
     }
 
     internal fun hideRequestPermissionDialog() {
@@ -268,5 +309,17 @@ class MainViewModel @Inject constructor(
         val activity = activity ?: return
         permissionsManager.requestAdminPermissions(activity)
         isAdminPermissionsDialogShow.value = false
+    }
+
+    private fun observeRequestIgnoreBatteryOptimisationDialogShowState() {
+        viewModelScope.launch(Dispatchers.Default) {
+            dialogShowStateManager.isIgnoreIgnoreBatteryOptimisationDialogNeedShow.collect() {
+                isNeedShowRequestIgnoreBatteryOptimisationDialog = it
+            }
+        }
+    }
+
+    init {
+        observeRequestIgnoreBatteryOptimisationDialogShowState()
     }
 }

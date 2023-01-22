@@ -1,9 +1,6 @@
 package MutliUse
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -53,6 +50,64 @@ fun YesNoDialog(
                     fontWeight = FontWeight.Bold,
                     fontFamily = openSansFont
                 )
+
+                Row() {
+                    OutlinedButton(
+                        onClick = onCancel,
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .padding(start = 5.dp, end = 5.dp),
+                        shape = RoundedCornerShape(80),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = settingsSeparatorLineColor,
+                        )
+                    ) {
+                        Text(text = cancelButtonText,
+                            color = primaryFontColor
+                        )
+                    }
+                    OutlinedButton(
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = checkedSettingsSwitch,
+                        ),
+                        onClick = onConfirm,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 5.dp, end = 5.dp),
+                        shape = RoundedCornerShape(80),
+                    ) {
+                        Text(text = confirmButtonText,
+                            color = primaryFontColor
+                        )
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun YesNoDialog(
+    confirmButtonText:String = stringResource(R.string.Ok),
+    cancelButtonText:String = stringResource(R.string.Cancel),
+    onConfirm:() -> Unit,
+    onCancel:() -> Unit,
+    dialogContent:@Composable ColumnScope.() -> Unit
+) {
+    Dialog(onDismissRequest = onCancel) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            backgroundColor = cardColor
+        ) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                dialogContent(this)
 
                 Row() {
                     OutlinedButton(
