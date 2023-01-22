@@ -17,4 +17,7 @@
     <string name="Congratulations_text">Спасибо, ваша поддержка важна для нас.</string>
     <string name="Ads_will_be_disabled">Реклама будет отключена.</string>
     <string name="Close">Закрыть</string>
+    <string name="I_accept">Я принимаю</string>
+    <string name="Terms_of_Use">Условия использования</string>
+    <string name="Privacy_policy">Политику конфиденциальности</string>
 </resources>

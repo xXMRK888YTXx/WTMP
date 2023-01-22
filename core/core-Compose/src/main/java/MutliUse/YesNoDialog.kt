@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.xxmrk888ytxx.core_compose.R
 import theme.*
 
@@ -24,10 +25,18 @@ fun YesNoDialog(
     dialogDescription:String,
     confirmButtonText:String = stringResource(R.string.Ok),
     cancelButtonText:String = stringResource(R.string.Cancel),
+    leaveFromDialogIfClickOutSide:Boolean = true,
+    enableConfirmButton:Boolean = true,
     onConfirm:() -> Unit,
     onCancel:() -> Unit,
 ) {
-    Dialog(onDismissRequest = onCancel) {
+    Dialog(
+        onDismissRequest = onCancel,
+        properties = DialogProperties(
+            dismissOnBackPress = leaveFromDialogIfClickOutSide,
+            dismissOnClickOutside = leaveFromDialogIfClickOutSide
+        )
+    ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
@@ -69,12 +78,14 @@ fun YesNoDialog(
                     OutlinedButton(
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = checkedSettingsSwitch,
+                            disabledBackgroundColor = checkedSettingsSwitch.copy(0.5f)
                         ),
                         onClick = onConfirm,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 5.dp, end = 5.dp),
                         shape = RoundedCornerShape(80),
+                        enabled = enableConfirmButton
                     ) {
                         Text(text = confirmButtonText,
                             color = primaryFontColor
@@ -93,9 +104,17 @@ fun YesNoDialog(
     cancelButtonText:String = stringResource(R.string.Cancel),
     onConfirm:() -> Unit,
     onCancel:() -> Unit,
+    leaveFromDialogIfClickOutSide:Boolean = true,
+    enableConfirmButton:Boolean = true,
     dialogContent:@Composable ColumnScope.() -> Unit
 ) {
-    Dialog(onDismissRequest = onCancel) {
+    Dialog(
+        onDismissRequest = onCancel,
+        properties = DialogProperties(
+            dismissOnBackPress = leaveFromDialogIfClickOutSide,
+            dismissOnClickOutside = leaveFromDialogIfClickOutSide
+        )
+    ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
@@ -127,12 +146,14 @@ fun YesNoDialog(
                     OutlinedButton(
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = checkedSettingsSwitch,
+                            disabledBackgroundColor = checkedSettingsSwitch.copy(0.5f)
                         ),
                         onClick = onConfirm,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 5.dp, end = 5.dp),
                         shape = RoundedCornerShape(80),
+                        enabled = enableConfirmButton
                     ) {
                         Text(text = confirmButtonText,
                             color = primaryFontColor

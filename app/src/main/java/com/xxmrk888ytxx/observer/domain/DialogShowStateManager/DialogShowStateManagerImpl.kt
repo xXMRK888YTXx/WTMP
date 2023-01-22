@@ -13,6 +13,8 @@ internal class DialogShowStateManagerImpl @Inject constructor(
     private val ignoreIgnoreBatteryOptimisationDialogShowStateKey =
         booleanPreferencesKey("ignoreIgnoreBatteryOptimisationDialogShowStateKey")
 
+    private val agreementDialogStateKey = booleanPreferencesKey("agreementDialogStateKey")
+
     override suspend fun setupIgnoreIgnoreBatteryOptimisationDialogShowState(state: Boolean) {
         settingsAppManager.writeProperty(ignoreIgnoreBatteryOptimisationDialogShowStateKey,state)
     }
@@ -20,4 +22,11 @@ internal class DialogShowStateManagerImpl @Inject constructor(
     override val isIgnoreIgnoreBatteryOptimisationDialogNeedShow: Flow<Boolean>
         get() = settingsAppManager
             .getProperty(ignoreIgnoreBatteryOptimisationDialogShowStateKey,true)
+
+    override suspend fun setupAgreementDialog(state: Boolean) {
+        settingsAppManager.writeProperty(agreementDialogStateKey,state)
+    }
+
+    override val isAgreementDialogNeedShow: Flow<Boolean>
+        get() = settingsAppManager.getProperty(agreementDialogStateKey,true)
 }

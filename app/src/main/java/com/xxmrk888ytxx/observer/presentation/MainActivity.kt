@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,6 +34,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.Acti
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.DialogShowStateManager
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
 import com.xxmrk888ytxx.eventlistscreen.EventListScreen
@@ -54,7 +57,9 @@ import com.xxmrk888ytxx.supportdeveloperscreen.SupportDeveloperViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import remember
 import theme.*
@@ -84,6 +89,7 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
     @Inject lateinit var appPasswordProvider: AppPasswordProvider
     @Inject lateinit var adAppManager: AdAppManager
     @Inject lateinit var billingManager: Provider<BillingManager>
+    @Inject lateinit var dialogShowStateManager: DialogShowStateManager
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,10 +101,17 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
         billingManager.get().connectToGooglePlay()
         setContent {
             val isShowCongratulationsDialog = activityViewModel.isShowCongratulationsDialog.remember()
+
             val navController = rememberNavController()
+
+            val agreementDialogState = dialogShowStateManager.isAgreementDialogNeedShow.collectAsState(
+                initial = false
+            )
+
             LaunchedEffect(key1 = Unit, block = {
                 activityViewModel.navController = navController
             })
+
             Column(
                 Modifier
                     .fillMaxSize()
@@ -192,6 +205,17 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
                 }
                 if(isShowCongratulationsDialog.value) {
                     CongratulationsDialog(activityViewModel)
+                }
+
+                if(agreementDialogState.value) {
+                    AgreementDialog(
+                        onConfirm = {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                dialogShowStateManager.setupAgreementDialog(false)
+                            }
+                        },
+                        onCancel = this@MainActivity::finish
+                    )
                 }
             }
         }

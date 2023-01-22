@@ -158,7 +158,7 @@ fun MainScreen(
         )
     }
 
-    if(isAdminPermissionsDialogShow.value) {
+    if (isAdminPermissionsDialogShow.value) {
         AdminPermissionWarmingDialog(mainViewModel)
     }
 
@@ -177,7 +177,7 @@ fun MainScreen(
         )
     }
 
-    if(isRequestIgnoreBatteryOptimisationDialogShow.value) {
+    if (isRequestIgnoreBatteryOptimisationDialogShow.value) {
         RequestIgnoreBatteryOptimisationDialog(mainViewModel)
     }
 }
@@ -290,7 +290,7 @@ internal fun ShowAllEventButton(navigator: Navigator) {
 internal fun AdminPermissionWarmingDialog(mainViewModel: MainViewModel) {
     YesNoDialog(
         dialogDescription = buildString {
-            append(stringResource(R.string.Warning)+"\n\n")
+            append(stringResource(R.string.Warning) + "\n\n")
             append(stringResource(R.string.Admin_permission_warming))
         },
         onConfirm = mainViewModel::requestAdminPermission,
@@ -329,13 +329,21 @@ internal fun RequestIgnoreBatteryOptimisationDialog(mainViewModel: MainViewModel
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().clickable {
-                notShowAgain.value = !notShowAgain.value
-            }
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    notShowAgain.value = !notShowAgain.value
+                }
         ) {
-            Checkbox(checked = notShowAgain.value, onCheckedChange = {
-                notShowAgain.value = it
-            })
+            Checkbox(
+                checked = notShowAgain.value, onCheckedChange = {
+                    notShowAgain.value = it
+                },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = Purple500,
+                    uncheckedColor = Purple500
+                )
+            )
 
             Text(
                 text = stringResource(R.string.Dont_show_again),

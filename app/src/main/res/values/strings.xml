@@ -17,4 +17,7 @@
     <string name="Congratulations_text">Thank you, your support is important to us.</string>
     <string name="Ads_will_be_disabled">Advertising will be disabled.</string>
     <string name="Close">Close</string>
+    <string name="I_accept">I accept</string>
+    <string name="Terms_of_Use">Terms of Use</string>
+    <string name="Privacy_policy">Privacy Policy</string>
 </resources>
