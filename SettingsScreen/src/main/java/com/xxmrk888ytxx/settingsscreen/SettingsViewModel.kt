@@ -8,6 +8,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.xxmrk888ytxx.coredeps.Const
 import com.xxmrk888ytxx.coredeps.Const.DEVELOPER_EMAIL
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
@@ -233,13 +234,11 @@ class SettingsViewModel @Inject constructor(
     internal val numberInvalidAttemptsDropDownState = mutableStateOf(false)
 
     internal fun openPolicyPrivacy(context: Context) {
-        val url = "https://xxmrk888ytxx.github.io/wtmp_privacy.htm"
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Const.PRIVACY_POLICY)))
     }
 
     internal fun openTerms(context: Context) {
-        val url = "https://xxmrk888ytxx.github.io/wtmp_terms.htm"
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Const.TERMS)))
     }
 
     internal fun showSelectLocaleDialog() {
