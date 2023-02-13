@@ -14,9 +14,14 @@ internal class BiometricAuthorizationManagerImpl @Inject constructor(
 ) : BiometricAuthorizationManager {
 
     override fun isFingerPrintScannerAvailable(): Boolean {
-        val fingerPrintManager = context.getSystemService(Context.FINGERPRINT_SERVICE)
-                as? FingerprintManager
-        return fingerPrintManager?.hasEnrolledFingerprints() ?: false
+        return try {
+            val fingerPrintManager = context.getSystemService(Context.FINGERPRINT_SERVICE)
+                    as FingerprintManager
+            fingerPrintManager.hasEnrolledFingerprints()
+        }catch (e:Exception) {
+            false
+        }
+
     }
 
     override fun sendBiometricAuthorizationRequest(
