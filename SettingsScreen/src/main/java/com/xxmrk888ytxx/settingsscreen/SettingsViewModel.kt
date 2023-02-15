@@ -86,6 +86,12 @@ class SettingsViewModel @Inject constructor(
 
     internal val selectLocaleDialogShowState = _selectLocaleDialogShowState.toState()
 
+    internal val operationLimitFailedUnlockDropDownState = mutableStateOf(false)
+
+    internal val operationLimitSucceededUnlockDropDownState = mutableStateOf(false)
+
+    internal val operationLimitAppOpenDropDownState = mutableStateOf(false)
+
     internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateIsTracked(state)
