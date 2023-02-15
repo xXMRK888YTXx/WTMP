@@ -40,6 +40,7 @@ class AdminDeviceControllerTest {
 
         config.emit(FailedUnlockTrackedConfig(
             countFailedUnlockToTrigger = 1,
+            timeOperationLimit = 0,
             isTracked = false,
             makePhoto = false,
             notifyInTelegram = false,
@@ -62,6 +63,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = true,
             notifyInTelegram = true,
@@ -84,6 +86,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = true,
             notifyInTelegram = true,
@@ -109,6 +112,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 5,
             makePhoto = true,
             notifyInTelegram = true,

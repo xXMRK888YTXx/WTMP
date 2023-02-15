@@ -49,6 +49,7 @@ class EventDeviceTrackerCallbackTest {
 
         config.emit(SucceededUnlockTrackedConfig(
             isTracked = false,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false
@@ -70,6 +71,7 @@ class EventDeviceTrackerCallbackTest {
 
         flow.emit(SucceededUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             makePhoto = true,
             notifyInTelegram = true,
             joinPhotoToTelegramNotify = false
@@ -93,6 +95,7 @@ class EventDeviceTrackerCallbackTest {
 
         flow.emit(SucceededUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             makePhoto = true,
             notifyInTelegram = true,
             joinPhotoToTelegramNotify = false
@@ -114,6 +117,7 @@ class EventDeviceTrackerCallbackTest {
         val flow: MutableSharedFlow<AppOpenConfig> = MutableStateFlow(
             AppOpenConfig(
                 isTracked = true,
+                timeOperationLimit = 0,
                 makePhoto = true,
                 notifyInTelegram = true,
                 joinPhotoToTelegramNotify = false
@@ -138,6 +142,7 @@ class EventDeviceTrackerCallbackTest {
         val flow: MutableSharedFlow<AppOpenConfig> = MutableStateFlow(
             AppOpenConfig(
                 isTracked = true,
+                timeOperationLimit = 0,
                 makePhoto = true,
                 notifyInTelegram = true,
                 joinPhotoToTelegramNotify = false
@@ -161,9 +166,10 @@ class EventDeviceTrackerCallbackTest {
         val flow: MutableSharedFlow<AppOpenConfig> = MutableStateFlow(
             AppOpenConfig(
                 isTracked = true,
+                timeOperationLimit = 0,
                 makePhoto = true,
                 notifyInTelegram = true,
-                joinPhotoToTelegramNotify = false
+                joinPhotoToTelegramNotify = false,
             )
         )
         val appState = MutableStateFlow<Boolean>(true)

@@ -24,6 +24,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
     @Before
     fun init() = runBlocking {
         changer.updateIsTracked(false)
+        changer.updateTimeOperationLimit(0)
         changer.updateMakePhoto(false)
         changer.updateNotifyInTelegram(false)
         changer.updateJoinPhotoToTelegramNotify(false)
@@ -32,12 +33,17 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
     @Test
     fun AlternatelyChangeConfigParamsExpectConfigInFlowEquelsExpectedConfig() = runBlocking {
         var currentExpectedConfig = SucceededUnlockTrackedConfig(false,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
         //
         currentExpectedConfig = currentExpectedConfig.copy(isTracked = true)
         changer.updateIsTracked(currentExpectedConfig.isTracked)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
+
+        currentExpectedConfig = currentExpectedConfig.copy(timeOperationLimit = 4000)
+        changer.updateTimeOperationLimit(currentExpectedConfig.timeOperationLimit)
         Assert.assertEquals(currentExpectedConfig,provider.config.first())
 
         currentExpectedConfig = currentExpectedConfig.copy(makePhoto = true)
@@ -65,6 +71,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
     @Test
     fun installAllParamsTrueAndInstallIsTrackedParamFalseExpectAllParamsIsFalse() = runBlocking {
         val expectedConfig = SucceededUnlockTrackedConfig(isTracked = false,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
@@ -76,6 +83,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
         Assert.assertEquals(
             provider.config.first(),
             SucceededUnlockTrackedConfig(isTracked = true,
+                timeOperationLimit = 0,
                 makePhoto = true,
                 notifyInTelegram = true,
                 joinPhotoToTelegramNotify = true)
@@ -94,6 +102,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
 
         changer.updateMakePhoto(false)
         Assert.assertEquals(SucceededUnlockTrackedConfig(isTracked = true,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = true,
             joinPhotoToTelegramNotify = false),
@@ -103,6 +112,7 @@ internal class SucceededUnlockTrackedConfigManagerTest : BaseSettingsAppManagerT
         changer.updateNotifyInTelegram(false)
 
         Assert.assertEquals(SucceededUnlockTrackedConfig(isTracked = true,
+            timeOperationLimit = 0,
             makePhoto = true,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false),provider.config.first())
