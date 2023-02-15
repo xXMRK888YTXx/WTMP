@@ -42,7 +42,6 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
         .remember()
 
 
-
     val numberInvalidAttemptsToTriggerDropDownList = (1..10).map {
         SettingsParamType.DropDown.DropDownItem(
             it.toString(),
@@ -53,10 +52,12 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
         )
     }.remember()
 
-    val operationLimitDropDown = operationLimitDropDownItems(onChangeTime = {}).remember()
+    val operationLimitDropDown = operationLimitDropDownItems(
+        onChangeTime = settingsViewModel::updateTimeOperationLimitFailedUnlockTrackedConfig
+    ).remember()
 
     val operationLimitDropDownState = settingsViewModel
-            .operationLimitFailedUnlockDropDownState.remember()
+        .operationLimitFailedUnlockDropDownState.remember()
 
     return listOf(
         SettingsParamType.Switch(
@@ -84,9 +85,11 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
             onShowDropDown = { operationLimitDropDownState.value = true },
             onHideDropDown = { operationLimitDropDownState.value = false },
             isDropDownVisible = operationLimitDropDownState.value,
-            showSelectedDropDownParam = operationLimitTimeNamePair().find { it.first == 0 }?.second
+            showSelectedDropDownParam = operationLimitTimeNamePair()
+                .find { it.first == config.value.timeOperationLimit }?.second
                 ?: stringResource(id = R.string.No),
-            isVisible = config.value.isTracked
+            isVisible = config.value.isTracked,
+            hideDropDownAfterSelect = true
         ),
 
         SettingsParamType.Switch(
@@ -129,7 +132,9 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel
         settingsViewModel.lastSucceededUnlockTrackedConfig = config.value
     }
 
-    val operationLimitDropDown = operationLimitDropDownItems(onChangeTime = {}).remember()
+    val operationLimitDropDown = operationLimitDropDownItems(
+        onChangeTime = settingsViewModel::updateTimeOperationLimitSucceededUnlockTrackedConfig
+    ).remember()
 
     val operationLimitDropDownState = settingsViewModel
         .operationLimitSucceededUnlockDropDownState.remember()
@@ -148,9 +153,11 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel
             onShowDropDown = { operationLimitDropDownState.value = true },
             onHideDropDown = { operationLimitDropDownState.value = false },
             isDropDownVisible = operationLimitDropDownState.value,
-            showSelectedDropDownParam = operationLimitTimeNamePair().find { it.first == 0 }?.second
+            showSelectedDropDownParam = operationLimitTimeNamePair()
+                .find { it.first == config.value.timeOperationLimit }?.second
                 ?: stringResource(id = R.string.No),
-            isVisible = config.value.isTracked
+            isVisible = config.value.isTracked,
+            hideDropDownAfterSelect = true
         ),
 
         SettingsParamType.Switch(
@@ -195,7 +202,9 @@ internal fun getAppOpenObserverParams(
         settingsViewModel.lastAppOpenConfig = config.value
     }
 
-    val operationLimitDropDown = operationLimitDropDownItems(onChangeTime = {}).remember()
+    val operationLimitDropDown = operationLimitDropDownItems(
+        onChangeTime = settingsViewModel::updateTimeOperationLimitAppOpenConfig
+    ).remember()
 
     val operationLimitDropDownState = settingsViewModel
         .operationLimitAppOpenDropDownState.remember()
@@ -208,15 +217,18 @@ internal fun getAppOpenObserverParams(
         ),
 
         SettingsParamType.DropDown(
-            text = stringResource(R.string.Work_no_more_than),
+            text = stringResource(R.string.Work_no_more_than)
+                    + " (${stringResource(R.string.one_application)})",
             icon = R.drawable.ic_time_limit,
             dropDownItems = operationLimitDropDown,
             onShowDropDown = { operationLimitDropDownState.value = true },
             onHideDropDown = { operationLimitDropDownState.value = false },
             isDropDownVisible = operationLimitDropDownState.value,
-            showSelectedDropDownParam = operationLimitTimeNamePair().find { it.first == 0 }?.second
+            showSelectedDropDownParam = operationLimitTimeNamePair()
+                .find { it.first == config.value.timeOperationLimit }?.second
                 ?: stringResource(id = R.string.No),
-            isVisible = config.value.isTracked
+            isVisible = config.value.isTracked,
+            hideDropDownAfterSelect = true
         ),
 
         SettingsParamType.Switch(
@@ -303,7 +315,7 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 
 @SuppressLint("ResourceType")
 @Composable
-internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     val config = settingsViewModel.bootDeviceConfig.collectAsState(
         settingsViewModel.lastBootDeviceConfig
     )
@@ -384,8 +396,8 @@ internal fun getSecureParams(
             stringResource(R.string.Login_with_finger_print),
             R.drawable.ic_fingerprint,
             fingerPrintAuthorizationState.value,
-            isVisible = settingsViewModel.isFingerPrintScannerAvailable&&isAppPasswordSetup.value,
-            isEnable = settingsViewModel.isFingerPrintScannerAvailable&&isAppPasswordSetup.value,
+            isVisible = settingsViewModel.isFingerPrintScannerAvailable && isAppPasswordSetup.value,
+            isEnable = settingsViewModel.isFingerPrintScannerAvailable && isAppPasswordSetup.value,
             onStateChanged = settingsViewModel::updateFingerPrintAuthorizationState
         )
 
@@ -394,7 +406,7 @@ internal fun getSecureParams(
 
 @SuppressLint("ResourceType")
 @Composable
-internal fun getLocalisationParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+internal fun getLocalisationParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     return listOf(
         SettingsParamType.Button(
             text = stringResource(R.string.Select_language),
@@ -407,8 +419,8 @@ internal fun getLocalisationParams(settingsViewModel: SettingsViewModel) : List<
 @SuppressLint("ResourceType")
 @Composable
 internal fun getBatteryOptimizationParams(
-    settingsViewModel: SettingsViewModel
-) : List<SettingsParamType> {
+    settingsViewModel: SettingsViewModel,
+): List<SettingsParamType> {
     val context = LocalContext.current
 
     return listOf(
@@ -427,7 +439,7 @@ internal fun getBatteryOptimizationParams(
 }
 
 @Composable
-fun operationLimitTimeNamePair() : List<Pair<Int,String>> {
+fun operationLimitTimeNamePair(): List<Pair<Int, String>> {
     return listOf(
         0 to stringResource(R.string.No),
         60_000 to stringResource(R.string.one_minute),
@@ -440,8 +452,8 @@ fun operationLimitTimeNamePair() : List<Pair<Int,String>> {
 
 @Composable
 internal fun operationLimitDropDownItems(
-    onChangeTime:(Int) -> Unit
-) : List<SettingsParamType.DropDown.DropDownItem> {
+    onChangeTime: (Int) -> Unit,
+): List<SettingsParamType.DropDown.DropDownItem> {
 
     return operationLimitTimeNamePair().map {
         SettingsParamType.DropDown.DropDownItem(

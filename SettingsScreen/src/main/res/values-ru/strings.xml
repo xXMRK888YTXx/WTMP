@@ -43,4 +43,5 @@
     <string name="Thirty_minutes">30 минут</string>
     <string name="sixty_minutes">60 минут</string>
     <string name="Work_no_more_than">Срабатывать не чаще чем в</string>
+    <string name="one_application">одно приложение</string>
 </resources>

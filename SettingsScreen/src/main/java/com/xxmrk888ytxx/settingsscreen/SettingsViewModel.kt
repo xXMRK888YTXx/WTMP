@@ -98,6 +98,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    internal fun updateTimeOperationLimitFailedUnlockTrackedConfig(newTime:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            failedUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
+        }
+    }
+
     internal fun updateCountFailedUnlockToTrigger(newCount:Int) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateCountFailedUnlockToTrigger(newCount)
@@ -128,6 +134,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    internal fun updateTimeOperationLimitSucceededUnlockTrackedConfig(newTime:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            succeededUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
+        }
+    }
+
     internal fun updateMakePhotoSucceededUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateMakePhoto(state)
@@ -149,6 +161,12 @@ class SettingsViewModel @Inject constructor(
     internal fun updateIsTrackedAppOpenConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             appOpenConfigChanger.updateIsTracked(state)
+        }
+    }
+
+    internal fun updateTimeOperationLimitAppOpenConfig(newTime:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appOpenConfigChanger.updateTimeOperationLimit(newTime)
         }
     }
 
