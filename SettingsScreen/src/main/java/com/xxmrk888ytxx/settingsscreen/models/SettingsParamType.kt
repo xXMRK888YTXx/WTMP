@@ -124,6 +124,7 @@ internal sealed class SettingsParamType(
         val onHideDropDown: () -> Unit,
         val isDropDownVisible:Boolean,
         val showSelectedDropDownParam:String,
+        val hideDropDownAfterSelect:Boolean = false,
         override val isEnable: Boolean = true,
         override val isVisible: Boolean = true
     ) : SettingsParamType(text, icon, isEnable, isVisible) {

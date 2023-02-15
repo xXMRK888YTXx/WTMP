@@ -396,7 +396,13 @@ internal fun SettingsParam(
                                         .background(dropDownColor)
                                 ) {
                                     params.dropDownItems.forEach { item ->
-                                        DropdownMenuItem(onClick = item.onClick) {
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                item.onClick()
+                                                if(params.hideDropDownAfterSelect)
+                                                    params.onHideDropDown()
+                                            }
+                                        ) {
                                             Text(
                                                 text = item.text,
                                                 fontFamily = openSansFont,
