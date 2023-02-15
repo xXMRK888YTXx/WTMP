@@ -27,6 +27,8 @@ interface AppOpenConfigChanger {
      */
     suspend fun updateIsTracked(state:Boolean)
 
+    suspend fun updateTimeOperationLimit(newTime:Int)
+
     suspend fun updateMakePhoto(state: Boolean)
 
     suspend fun updateNotifyInTelegram(state: Boolean)

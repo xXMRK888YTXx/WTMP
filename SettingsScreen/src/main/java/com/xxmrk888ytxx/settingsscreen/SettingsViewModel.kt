@@ -210,6 +210,7 @@ class SettingsViewModel @Inject constructor(
 
     internal var lastFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
         FailedUnlockTrackedConfig(isTracked = false,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = false,
             notifyInTelegram = false,
@@ -217,11 +218,13 @@ class SettingsViewModel @Inject constructor(
 
     internal var lastSucceededUnlockTrackedConfig: SucceededUnlockTrackedConfig =
         SucceededUnlockTrackedConfig(isTracked = false,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
 
     internal var lastAppOpenConfig: AppOpenConfig = AppOpenConfig(isTracked = false,
+        timeOperationLimit = 0,
         makePhoto = false,
         notifyInTelegram = false,
         joinPhotoToTelegramNotify = false)
