@@ -6,13 +6,12 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.RemoveEventImageUseCase
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
 import com.xxmrk888ytxx.database.DI.DataBaseComponent
 import com.xxmrk888ytxx.database.Dao.*
-import io.mockk.every
-import io.mockk.mockkStatic
-import io.mockk.spyk
+import io.mockk.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.*
@@ -33,7 +32,9 @@ internal class DeviceEventRepositoryImplTest {
         ApplicationProvider.getApplicationContext<Context>()
     }
 
-    private val repo = spyk(DeviceEventRepositoryImpl(context))
+    private val removeEventImageUseCase: RemoveEventImageUseCase = mockk(relaxed = true)
+
+    private val repo = spyk(DeviceEventRepositoryImpl(context,removeEventImageUseCase))
 
     @Before
     fun init() {
@@ -273,6 +274,16 @@ internal class DeviceEventRepositoryImplTest {
             scope.cancel()
         }
         while (scope.isActive) { delay(100) }
+    }
+
+    @Test
+    fun removeEventExpectRepositoryCallRemoveEventImageUseCase() = runTest {
+        val testEvent = getTestEventList()[0]
+
+        repo.addEvent(testEvent)
+        repo.removeEvent(testEvent.eventId)
+
+        coVerify(exactly = 1) { removeEventImageUseCase.execute(testEvent.eventId) }
     }
 }
 
