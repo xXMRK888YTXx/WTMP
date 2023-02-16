@@ -147,7 +147,7 @@ class AdminDeviceControllerTest {
     }
 
     @Test
-    fun setTimeLimitAndCallMethodExpectInfomationWillBeSaveIfLimitTimeOut() = runBlocking {
+    fun setTimeLimitAndCallMethodExpectInformationWillBeSaveIfLimitTimeOut() = runBlocking {
         val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
         val appState = MutableStateFlow<Boolean>(true)
         val timeLimit = 100
