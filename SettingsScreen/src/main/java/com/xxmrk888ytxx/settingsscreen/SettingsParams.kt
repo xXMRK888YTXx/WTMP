@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.models.StorageConfig
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 import remember
 
@@ -28,13 +29,13 @@ import remember
 @MustBeLocalization
 internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     val config = settingsViewModel.failedUnlockTrackedConfig.collectAsState(
-        settingsViewModel.lastFailedUnlockTrackedConfig
+        settingsViewModel.cashedFailedUnlockTrackedConfig
     )
 
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
 
     SideEffect {
-        settingsViewModel.lastFailedUnlockTrackedConfig = config.value
+        settingsViewModel.cashedFailedUnlockTrackedConfig = config.value
     }
 
 
@@ -125,11 +126,11 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
 @MustBeLocalization
 internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     val config = settingsViewModel.succeededUnlockTrackedConfig.collectAsState(
-        settingsViewModel.lastSucceededUnlockTrackedConfig
+        settingsViewModel.cashedSucceededUnlockTrackedConfig
     )
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
     SideEffect {
-        settingsViewModel.lastSucceededUnlockTrackedConfig = config.value
+        settingsViewModel.cashedSucceededUnlockTrackedConfig = config.value
     }
 
     val operationLimitDropDown = operationLimitDropDownItems(
@@ -195,11 +196,11 @@ internal fun getAppOpenObserverParams(
     navigator: Navigator,
 ): List<SettingsParamType> {
     val config = settingsViewModel.appOpenConfig.collectAsState(
-        settingsViewModel.lastAppOpenConfig
+        settingsViewModel.cashedAppOpenConfig
     )
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
     SideEffect {
-        settingsViewModel.lastAppOpenConfig = config.value
+        settingsViewModel.cashedAppOpenConfig = config.value
     }
 
     val operationLimitDropDown = operationLimitDropDownItems(
@@ -317,13 +318,13 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 @Composable
 internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     val config = settingsViewModel.bootDeviceConfig.collectAsState(
-        settingsViewModel.lastBootDeviceConfig
+        settingsViewModel.cashedBootDeviceConfig
     )
 
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
 
     SideEffect {
-        settingsViewModel.lastBootDeviceConfig = config.value
+        settingsViewModel.cashedBootDeviceConfig = config.value
     }
 
     return listOf(
@@ -368,12 +369,12 @@ internal fun getSecureParams(
     navigator: Navigator,
 ): List<SettingsParamType> {
     val isAppPasswordSetup = settingsViewModel.isAppPasswordSetup()
-        .collectAsState(settingsViewModel.lastIsAppPasswordSetup)
+        .collectAsState(settingsViewModel.cashedIsAppPasswordSetup)
 
     val fingerPrintAuthorizationState = settingsViewModel.getFingerPrintAuthorizationState()
         .collectAsState(initial = false)
     SideEffect {
-        settingsViewModel.lastIsAppPasswordSetup = isAppPasswordSetup.value
+        settingsViewModel.cashedIsAppPasswordSetup = isAppPasswordSetup.value
     }
     return listOf(
         SettingsParamType.Switch(
@@ -419,6 +420,8 @@ internal fun getLocalisationParams(settingsViewModel: SettingsViewModel): List<S
 @Composable
 internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
 
+    val storageConfig = settingsViewModel.storageConfig.collectAsState(StorageConfig())
+
     val maxReportDropDownState = settingsViewModel.maxReportDropDownDialogState.remember()
 
     val maxTimeStoreReportsDropDownDialogState =
@@ -446,14 +449,18 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
 
     val maxReportDropDownItem = maxReportsNameCountPair.map {
         SettingsParamType.DropDown.DropDownItem(it.second) {
-
+            settingsViewModel.updateMaxReportCountStorageConfig(it.first)
         }
     }
 
     val maxTimeStoreReportsDropDownItem = maxTimeStoreReportsNameTimePair.map {
         SettingsParamType.DropDown.DropDownItem(it.second) {
-
+            settingsViewModel.updateMaxReportStorageTimeStorageConfig(it.first)
         }
+    }
+
+    SideEffect {
+        settingsViewModel.cashedStorageConfig = storageConfig.value
     }
 
     return listOf(
@@ -464,7 +471,9 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
             onShowDropDown = { maxReportDropDownState.value = true },
             onHideDropDown = { maxReportDropDownState.value = false },
             isDropDownVisible = maxReportDropDownState.value,
-            showSelectedDropDownParam = maxReportsNameCountPair[0].second,
+            showSelectedDropDownParam = maxReportsNameCountPair
+                .find { it.first == storageConfig.value.maxReportCount }?.second
+                ?: maxReportsNameCountPair[0].second,
             hideDropDownAfterSelect = true
         ),
 
@@ -475,7 +484,9 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
             onShowDropDown = { maxTimeStoreReportsDropDownDialogState.value = true },
             onHideDropDown = { maxTimeStoreReportsDropDownDialogState.value = false },
             isDropDownVisible = maxTimeStoreReportsDropDownDialogState.value,
-            showSelectedDropDownParam = maxTimeStoreReportsNameTimePair[0].second,
+            showSelectedDropDownParam = maxTimeStoreReportsNameTimePair
+                .find { it.first == storageConfig.value.maxReportStorageTime }?.second
+                ?: maxTimeStoreReportsNameTimePair[0].second,
             hideDropDownAfterSelect = true
         )
     )
