@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.xxmrk888ytxx.coredeps.models.AppOpenTimeLimitModel
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
 import com.xxmrk888ytxx.database.DI.DataBaseComponent
 import com.xxmrk888ytxx.database.Dao.*
@@ -66,46 +67,45 @@ class AppOpenTimeLimitRepositoryImplTest {
 
         testList.forEach {
             GlobalScope.launch {
-                repo.addLimit(it.first,it.second)
+                repo.addLimit(it)
             }
         }
 
         delay(300)
-        repo.addLimit("e",325L)
 
         testList.forEach {
-            Assert.assertEquals(it.second,repo.getTimeLimitForApp(it.first)!!.second)
+            Assert.assertEquals(it.endLimitTime,repo.getTimeLimitForApp(it.packageName)!!.endLimitTime)
         }
     }
 
     @Test
     fun addLimitAndReplaceTimeExpectInDBSSaveLasted() = runTest {
-        val testData = Pair("1",1L)
-        val testData2 = Pair("1",2L)
-        repo.addLimit(testData.first,testData.second)
-        Assert.assertEquals(testData,repo.getTimeLimitForApp(testData.first))
+        val testData = AppOpenTimeLimitModel("1",1L,1)
+        val testData2 = AppOpenTimeLimitModel("1",2L,1)
+        repo.addLimit(testData)
+        Assert.assertEquals(testData,repo.getTimeLimitForApp(testData.packageName))
 
-        repo.addLimit(testData2.first,testData2.second)
+        repo.addLimit(testData2)
 
-        Assert.assertEquals(testData2,repo.getTimeLimitForApp(testData.first))
+        Assert.assertEquals(testData2,repo.getTimeLimitForApp(testData.packageName))
     }
 
     @Test
     fun insertLimitAndRemoveThemExpectAfterRemoveReturnNull() = runTest {
-        val testData = Pair("1",1L)
+        val testData = AppOpenTimeLimitModel("1",1L,1)
 
-        repo.addLimit(testData.first,testData.second)
-        Assert.assertEquals(testData,repo.getTimeLimitForApp(testData.first))
-        repo.removeLimit(testData.first)
+        repo.addLimit(testData)
+        Assert.assertEquals(testData,repo.getTimeLimitForApp(testData.packageName))
+        repo.removeLimit(testData.packageName)
 
-        Assert.assertNull(repo.getTimeLimitForApp(testData.first))
+        Assert.assertNull(repo.getTimeLimitForApp(testData.packageName))
     }
 
 
-    private fun getTestList() : List<Pair<String,Long>> {
-        val list = mutableListOf<Pair<String,Long>>()
+    private fun getTestList() : List<AppOpenTimeLimitModel> {
+        val list = mutableListOf<AppOpenTimeLimitModel>()
         repeat(10) {
-            list.add(Pair(it.toString(),System.currentTimeMillis()))
+            list.add(AppOpenTimeLimitModel(it.toString(),System.currentTimeMillis(),System.currentTimeMillis().toInt()))
         }
 
         return list

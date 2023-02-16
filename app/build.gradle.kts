@@ -95,5 +95,10 @@ dependencies {
     androidTestImplementation (Deps.InstrumentalTest.testRules)
     androidTestImplementation(Deps.TestAndroid.MockkAndroid)
     androidTestImplementation(Deps.TestAndroid.MockkAgent)
+
+    //Test
+    testImplementation(Deps.TestAndroid.MockkAndroid)
+    testImplementation(Deps.TestAndroid.MockkAgent)
+    testImplementation(Deps.Test.Testing)
 }
 
