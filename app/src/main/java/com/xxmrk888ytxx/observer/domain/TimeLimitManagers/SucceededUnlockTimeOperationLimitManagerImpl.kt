@@ -9,12 +9,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-internal class FailedUnlockTimeOperationLimitManagerImpl @Inject constructor(
-    private val settingsAppManager: SettingsAppManager,
+internal class SucceededUnlockTimeOperationLimitManagerImpl @Inject constructor(
+    private val settingsAppManager: SettingsAppManager
 ) : TimeOperationLimitManager<Nothing> {
-
-    private val limitEnableBeforeTimeKey = longPreferencesKey("FailedUnlock/limitEnableBeforeTime")
-    private val lastLimitTime = intPreferencesKey("FailedUnlock/lastLimitTime")
+    private val limitEnableBeforeTimeKey = longPreferencesKey("SucceededUnlock/limitEnableBeforeTime")
+    private val lastLimitTime = intPreferencesKey("SucceededUnlock/lastLimitTime")
 
     /**
      * [Ru]
@@ -55,14 +54,14 @@ internal class FailedUnlockTimeOperationLimitManagerImpl @Inject constructor(
      * 1001: enableLimit(1000) - new limit set
      */
     override suspend fun enableLimit(installedPeriodLimit: Int, otherData: Nothing?) {
-        if (isLimitEnable(installedPeriodLimit, otherData))
+        if(isLimitEnable(installedPeriodLimit,otherData))
             return
 
         val newLimitTime = System.currentTimeMillis() + installedPeriodLimit
 
         withContext(Dispatchers.IO) {
-            settingsAppManager.writeProperty(limitEnableBeforeTimeKey, newLimitTime)
-            settingsAppManager.writeProperty(lastLimitTime, installedPeriodLimit)
+            settingsAppManager.writeProperty(limitEnableBeforeTimeKey,newLimitTime)
+            settingsAppManager.writeProperty(lastLimitTime,installedPeriodLimit)
         }
     }
 
@@ -111,11 +110,11 @@ internal class FailedUnlockTimeOperationLimitManagerImpl @Inject constructor(
      * 501: isLimitEnable(1000) == false
      */
     override suspend fun isLimitEnable(installedPeriodLimit: Int, otherData: Nothing?): Boolean {
-        if (installedPeriodLimit == 0) return false
-        val limitEnableBeforeTime = settingsAppManager.getProperty(limitEnableBeforeTimeKey, 0)
-        val lastLimitTime = settingsAppManager.getProperty(lastLimitTime, 0)
+        if(installedPeriodLimit == 0) return false
+        val limitEnableBeforeTime = settingsAppManager.getProperty(limitEnableBeforeTimeKey,0)
+        val lastLimitTime = settingsAppManager.getProperty(lastLimitTime,0)
 
-        if (lastLimitTime.first() != installedPeriodLimit) {
+        if(lastLimitTime.first() != installedPeriodLimit) {
             disableLimit()
             return false
         }
@@ -124,7 +123,7 @@ internal class FailedUnlockTimeOperationLimitManagerImpl @Inject constructor(
         val limitState = limitEnableBeforeTime.first() > System.currentTimeMillis()
 
         //Resetting obsolete values
-        if (!limitState && (limitEnableBeforeTime.first() != 0L || lastLimitTime.first() != 0)) {
+        if(!limitState&&(limitEnableBeforeTime.first() != 0L||lastLimitTime.first() != 0)) {
             disableLimit()
         }
 
@@ -141,8 +140,9 @@ internal class FailedUnlockTimeOperationLimitManagerImpl @Inject constructor(
      */
     override suspend fun disableLimit() {
         withContext(Dispatchers.IO) {
-            settingsAppManager.writeProperty(limitEnableBeforeTimeKey, 0)
-            settingsAppManager.writeProperty(limitEnableBeforeTimeKey, 0)
+            settingsAppManager.writeProperty(limitEnableBeforeTimeKey,0)
+            settingsAppManager.writeProperty(limitEnableBeforeTimeKey,0)
         }
     }
+
 }
