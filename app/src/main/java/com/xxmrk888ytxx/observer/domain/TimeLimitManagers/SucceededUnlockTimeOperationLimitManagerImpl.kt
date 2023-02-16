@@ -138,7 +138,7 @@ internal class SucceededUnlockTimeOperationLimitManagerImpl @Inject constructor(
      * [En]
      * Will cancel the set limit
      */
-    override suspend fun disableLimit() {
+    override suspend fun disableLimit(otherData: Nothing?) {
         withContext(Dispatchers.IO) {
             settingsAppManager.writeProperty(limitEnableBeforeTimeKey,0)
             settingsAppManager.writeProperty(limitEnableBeforeTimeKey,0)

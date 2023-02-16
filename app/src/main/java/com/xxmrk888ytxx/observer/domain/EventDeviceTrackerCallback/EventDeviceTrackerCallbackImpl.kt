@@ -10,6 +10,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TrackedAppRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.AppOpenLimitManagerQualifier
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.SucceededUnlockLimitManagerQualifier
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
@@ -34,7 +35,9 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
     private val appStateChanger: AppStateChanger,
     private val resourcesProvider: ResourcesProvider,
     @SucceededUnlockLimitManagerQualifier
-    private val timeOperationLimitManager: TimeOperationLimitManager<Nothing>,
+    private val timeOperationLimitManagerForScreenOn: TimeOperationLimitManager<Nothing>,
+    @AppOpenLimitManagerQualifier
+    private val timeOperationLimitManagerAppOpen: TimeOperationLimitManager<String>,
 ) : EventDeviceTrackerCallback {
 
     override val params: EventDeviceTrackerParams
@@ -48,8 +51,17 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
             }
 
             if ((!config.first().isTracked || !appStateProvider.isAppEnable.first())
-                || !isTrackedPackageName(packageName)
+                || !isTrackedPackageName(packageName) || timeOperationLimitManagerAppOpen.isLimitEnable(
+                    config.first().timeOperationLimit,
+                    packageName
+                )
             ) return@launch
+
+            if (config.first().timeOperationLimit != 0)
+                timeOperationLimitManagerAppOpen.enableLimit(
+                    config.first().timeOperationLimit,
+                    packageName
+                )
 
             val eventId = deviceEventRepository.addEvent(
                 DeviceEvent.AppOpen(
@@ -85,11 +97,11 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
             }
 
             if (!config.first().isTracked || !appStateProvider.isAppEnable.first()
-                || timeOperationLimitManager.isLimitEnable(config.first().timeOperationLimit)
+                || timeOperationLimitManagerForScreenOn.isLimitEnable(config.first().timeOperationLimit)
             ) return@launch
 
-            if(config.first().timeOperationLimit != 0)
-                timeOperationLimitManager.enableLimit(config.first().timeOperationLimit)
+            if (config.first().timeOperationLimit != 0)
+                timeOperationLimitManagerForScreenOn.enableLimit(config.first().timeOperationLimit)
 
             val eventId = deviceEventRepository.addEvent(
                 DeviceEvent.AttemptUnlockDevice.Succeeded(0, System.currentTimeMillis())

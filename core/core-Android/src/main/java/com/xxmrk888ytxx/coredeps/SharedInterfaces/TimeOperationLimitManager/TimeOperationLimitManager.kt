@@ -5,5 +5,5 @@ interface TimeOperationLimitManager<D> {
 
     suspend fun isLimitEnable(installedPeriodLimit:Int,otherData: D? = null) : Boolean
 
-    suspend fun disableLimit()
+    suspend fun disableLimit(otherData: D? = null)
 }
