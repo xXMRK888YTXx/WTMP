@@ -53,7 +53,8 @@ import javax.inject.Provider
         PurchaseListenerManagerModule::class,
         LocalizationManagerModule::class,
         DialogShowStateManagerModule::class,
-        TimeLimitManagersModule::class
+        TimeLimitManagersModule::class,
+        DeviceEventRepositoryModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
