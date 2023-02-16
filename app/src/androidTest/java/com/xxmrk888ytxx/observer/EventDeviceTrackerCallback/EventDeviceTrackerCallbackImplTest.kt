@@ -10,7 +10,7 @@ import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
 import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.domain.EventDeviceTrackerCallback.EventDeviceTrackerCallbackImpl
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

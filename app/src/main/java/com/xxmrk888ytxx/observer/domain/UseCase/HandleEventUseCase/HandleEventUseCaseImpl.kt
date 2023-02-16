@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.observer.domain.UseCase
+package com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
 
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.ImageRepository

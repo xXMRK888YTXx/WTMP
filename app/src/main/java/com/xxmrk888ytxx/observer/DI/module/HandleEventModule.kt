@@ -1,7 +1,7 @@
 package com.xxmrk888ytxx.observer.DI.module
 
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCaseImpl
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCaseImpl
 import dagger.Binds
 import dagger.Module
 

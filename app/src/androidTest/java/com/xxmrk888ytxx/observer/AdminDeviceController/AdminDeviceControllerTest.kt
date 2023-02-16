@@ -8,7 +8,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventReposito
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.observer.domain.AdminDeviceController.AdminDeviceController
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
