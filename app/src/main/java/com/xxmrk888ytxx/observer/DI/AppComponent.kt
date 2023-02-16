@@ -54,7 +54,8 @@ import javax.inject.Provider
         LocalizationManagerModule::class,
         DialogShowStateManagerModule::class,
         TimeLimitManagersModule::class,
-        DeviceEventRepositoryModule::class
+        DeviceEventRepositoryModule::class,
+        RemoveEventImageUseCaseModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
