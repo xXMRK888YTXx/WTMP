@@ -1,7 +1,9 @@
 package com.xxmrk888ytxx.database
 
 import android.content.Context
+import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.RemoveEventImageUseCase
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
 import com.xxmrk888ytxx.database.DI.DataBaseComponent
@@ -12,13 +14,15 @@ import com.xxmrk888ytxx.database.models.DeviceEventModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DeviceEventRepositoryImpl @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val removeEventImageUseCase: RemoveEventImageUseCase
 ) : DeviceEventRepository {
 
     private val dataBaseComponent: DataBaseComponent by lazy {
@@ -89,6 +93,10 @@ class DeviceEventRepositoryImpl @Inject constructor(
             withContext(Dispatchers.IO) {
                 deviceEventDao.removeEvent(eventId)
             }
+        }
+
+        ApplicationScope.launch(Dispatchers.IO) {
+            removeEventImageUseCase.execute(eventId)
         }
     }
 
