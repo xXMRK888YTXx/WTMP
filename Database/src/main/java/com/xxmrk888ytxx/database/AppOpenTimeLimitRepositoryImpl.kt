@@ -2,6 +2,7 @@ package com.xxmrk888ytxx.database
 
 import android.content.Context
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.AppOpenTimeLimitRepository
+import com.xxmrk888ytxx.coredeps.models.AppOpenTimeLimitModel
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
 import com.xxmrk888ytxx.database.DI.DataBaseComponent
 import com.xxmrk888ytxx.database.Dao.AppOpenTimeLimitDao
@@ -26,13 +27,17 @@ class AppOpenTimeLimitRepositoryImpl @Inject constructor(
 
     private val mutex:Mutex = Mutex()
 
-    override suspend fun getTimeLimitForApp(packageName: String): Pair<String, Long>? {
+    override suspend fun getTimeLimitForApp(packageName: String): AppOpenTimeLimitModel? {
         mutex.withLock {
-            var result:Pair<String,Long>? = null
+            var result:AppOpenTimeLimitModel? = null
             withContext(Dispatchers.IO) {
                val resultEntity = appOpenTimeLimitDao.getTimeLimitForApp(packageName)
                if(resultEntity != null) {
-                   result = Pair(resultEntity.packageName,resultEntity.timeLimitEnableBeforeTime)
+                   result = AppOpenTimeLimitModel(
+                       packageName = resultEntity.packageName,
+                       endLimitTime = resultEntity.timeLimitEnableBeforeTime,
+                       timeSetupLimit = resultEntity.timeSetupLimit
+                   )
                }
             }
 
@@ -40,10 +45,16 @@ class AppOpenTimeLimitRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addLimit(packageName: String, time: Long) {
+    override suspend fun addLimit(appOpenTimeLimitModel:AppOpenTimeLimitModel) {
         mutex.withLock {
             withContext(Dispatchers.IO) {
-                appOpenTimeLimitDao.insertLimit(AppOpenTimeLimitEntity(packageName,time))
+                appOpenTimeLimitDao.insertLimit(
+                    AppOpenTimeLimitEntity(
+                        packageName = appOpenTimeLimitModel.packageName,
+                        timeLimitEnableBeforeTime = appOpenTimeLimitModel.endLimitTime,
+                        timeSetupLimit = appOpenTimeLimitModel.timeSetupLimit
+                    )
+                )
             }
         }
     }

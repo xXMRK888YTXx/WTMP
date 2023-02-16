@@ -12,5 +12,6 @@ import androidx.room.PrimaryKey
 )
 internal data class AppOpenTimeLimitEntity (
     @PrimaryKey val packageName:String,
-    val timeLimitEnableBeforeTime:Long
+    val timeLimitEnableBeforeTime:Long,
+    val timeSetupLimit:Int
 )

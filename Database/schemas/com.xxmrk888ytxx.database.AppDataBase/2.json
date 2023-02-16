@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "ac5d83f5c5d5dd1d81569b3dd9502bd5",
+    "identityHash": "ffdce320c15e207fbb342c27f81798c9",
     "entities": [
       {
         "tableName": "DeviceEvent",
@@ -189,7 +189,7 @@
       },
       {
         "tableName": "AppOpenTimeLimit",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `timeLimitEnableBeforeTime` INTEGER NOT NULL, PRIMARY KEY(`packageName`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`packageName` TEXT NOT NULL, `timeLimitEnableBeforeTime` INTEGER NOT NULL, `timeSetupLimit` INTEGER NOT NULL, PRIMARY KEY(`packageName`))",
         "fields": [
           {
             "fieldPath": "packageName",
@@ -200,6 +200,12 @@
           {
             "fieldPath": "timeLimitEnableBeforeTime",
             "columnName": "timeLimitEnableBeforeTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeSetupLimit",
+            "columnName": "timeSetupLimit",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -227,7 +233,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ac5d83f5c5d5dd1d81569b3dd9502bd5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ffdce320c15e207fbb342c27f81798c9')"
     ]
   }
 }
