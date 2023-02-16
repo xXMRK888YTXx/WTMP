@@ -44,4 +44,13 @@
     <string name="sixty_minutes">60 минут</string>
     <string name="Work_no_more_than">Срабатывать не чаще чем в</string>
     <string name="one_application">одно приложение</string>
+    <string name="Storage">Хранилище</string>
+    <string name="Maximum_reports">Максимум отчётов</string>
+    <string name="Report_storage_time">Время хранения отчёта</string>
+    <string name="One_day">1 день</string>
+    <string name="three_days">3 дня</string>
+    <string name="One_week">1 неделя</string>
+    <string name="Two_weeks">2 недели</string>
+    <string name="Three_weeks">3 недели</string>
+    <string name="one_month">1 месяц</string>
 </resources>

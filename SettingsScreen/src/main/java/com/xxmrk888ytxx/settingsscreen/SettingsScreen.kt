@@ -64,7 +64,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                         icon = R.drawable.baseline_attach_money_24,
                         onClick = navigator::toSupportDeveloperScreen
                     )
-                ))
+                )
+            )
             LazySpacer(15)
         }
 
@@ -100,9 +101,20 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
         item {
             SettingsCategory(
                 categoryName = stringResource(R.string.Device_launch_tracking),
-                settingsParams = getBootDeviceParams(settingsViewModel))
+                settingsParams = getBootDeviceParams(settingsViewModel)
+            )
 
             LazySpacer(height = 15)
+        }
+
+        item {
+            SettingsCategory(
+                categoryName = stringResource(R.string.Storage), settingsParams = getStorageParams(
+                    settingsViewModel = settingsViewModel
+                )
+            )
+
+            LazySpacer(15)
         }
 
         item {
@@ -151,7 +163,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
         }
     }
 
-    if(selectLocaleDialogShowState.value) {
+    if (selectLocaleDialogShowState.value) {
         SelectLocaleDialog(settingsViewModel)
     }
 }
@@ -165,7 +177,8 @@ internal fun TopBar(navigator: Navigator) {
     ) {
 
         IconButton(onClick = navigator::navigateUp) {
-            Icon(painter = painterResource(R.drawable.ic_back_arrow),
+            Icon(
+                painter = painterResource(R.drawable.ic_back_arrow),
                 contentDescription = "",
                 tint = Color.White,
                 modifier = Modifier.size(25.dp)
@@ -200,12 +213,14 @@ internal fun TopBar(navigator: Navigator) {
  */
 @Composable
 internal fun SettingsCategory(categoryName: String, settingsParams: List<SettingsParamType>) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(
-            start = 10.dp,
-            end = 10.dp
-        )) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 10.dp,
+                end = 10.dp
+            )
+    ) {
         Text(
             text = categoryName,
             fontSize = 16.sp,
@@ -250,10 +265,14 @@ internal fun SettingsParam(
     val shapeSize = 10.dp
     val cardShape = when (shape) {
         is SettingsParamShape.AllShape -> RoundedCornerShape(shapeSize)
-        is SettingsParamShape.TopShape -> RoundedCornerShape(topStart = shapeSize,
-            topEnd = shapeSize)
-        is SettingsParamShape.BottomShape -> RoundedCornerShape(bottomStart = shapeSize,
-            bottomEnd = shapeSize)
+        is SettingsParamShape.TopShape -> RoundedCornerShape(
+            topStart = shapeSize,
+            topEnd = shapeSize
+        )
+        is SettingsParamShape.BottomShape -> RoundedCornerShape(
+            bottomStart = shapeSize,
+            bottomEnd = shapeSize
+        )
         is SettingsParamShape.None -> RoundedCornerShape(0.dp)
     }
 
@@ -333,7 +352,8 @@ internal fun SettingsParam(
                                         uncheckedThumbColor = uncheckedSettingsSwitch,
                                         uncheckedTrackColor = uncheckedSettingsSwitch.copy(0.5f),
                                         disabledCheckedThumbColor = uncheckedSettingsSwitch.copy(
-                                            paramsAlpha)
+                                            paramsAlpha
+                                        )
                                     ),
                                     modifier = Modifier.padding(end = 10.dp)
                                 )
@@ -351,8 +371,10 @@ internal fun SettingsParam(
                                     Icon(
                                         painter = painterResource(R.drawable.ic_arrow),
                                         contentDescription = "",
-                                        tint = uncheckedSettingsSwitch.copy(if (params.isEnable) 0.9f
-                                        else paramsAlpha),
+                                        tint = uncheckedSettingsSwitch.copy(
+                                            if (params.isEnable) 0.9f
+                                            else paramsAlpha
+                                        ),
                                         modifier = Modifier.size(25.dp)
                                     )
 
@@ -363,8 +385,10 @@ internal fun SettingsParam(
                                 Text(
                                     params.secondoryText,
                                     fontWeight = FontWeight.W500,
-                                    color = primaryFontColor.copy(if (params.isEnable) 0.6f
-                                    else paramsAlpha - 0.2f),
+                                    color = primaryFontColor.copy(
+                                        if (params.isEnable) 0.6f
+                                        else paramsAlpha - 0.2f
+                                    ),
                                     fontFamily = openSansFont,
                                     fontSize = 16.sp,
                                     modifier = Modifier.padding(end = 10.dp)
@@ -378,11 +402,14 @@ internal fun SettingsParam(
                                 }
                                 val inlineContentMap = mapOf(
                                     "drop_down_triangle" to InlineTextContent(
-                                          Placeholder(20.sp,
+                                        Placeholder(
                                             20.sp,
-                                            PlaceholderVerticalAlign.TextCenter)
+                                            20.sp,
+                                            PlaceholderVerticalAlign.TextCenter
+                                        )
                                     ) {
-                                        Icon(painter = painterResource(R.drawable.ic_drop_down_triangle),
+                                        Icon(
+                                            painter = painterResource(R.drawable.ic_drop_down_triangle),
                                             contentDescription = "",
                                             tint = secondoryFontColor,
                                         )
@@ -399,7 +426,7 @@ internal fun SettingsParam(
                                         DropdownMenuItem(
                                             onClick = {
                                                 item.onClick()
-                                                if(params.hideDropDownAfterSelect)
+                                                if (params.hideDropDownAfterSelect)
                                                     params.onHideDropDown()
                                             }
                                         ) {
@@ -437,8 +464,10 @@ internal fun SettingsParam(
             }
 
             if (shape !is SettingsParamShape.BottomShape) {
-                Box(contentAlignment = Alignment.BottomCenter,
-                    modifier = Modifier.fillMaxHeight()) {
+                Box(
+                    contentAlignment = Alignment.BottomCenter,
+                    modifier = Modifier.fillMaxHeight()
+                ) {
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -456,9 +485,9 @@ internal fun SettingsParam(
 internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
 
     val localeList = listOf(
-        LocaleParams(stringResource(R.string.Systemic),SupportedLanguage.System),
-        LocaleParams(stringResource(R.string.English),SupportedLanguage.EN),
-        LocaleParams(stringResource(R.string.Rus),SupportedLanguage.RU)
+        LocaleParams(stringResource(R.string.Systemic), SupportedLanguage.System),
+        LocaleParams(stringResource(R.string.English), SupportedLanguage.EN),
+        LocaleParams(stringResource(R.string.Rus), SupportedLanguage.RU)
     ).remember()
 
     Dialog(onDismissRequest = settingsViewModel::hideSelectLocaleDialog) {
@@ -515,7 +544,8 @@ internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
                             backgroundColor = settingsSeparatorLineColor,
                         )
                     ) {
-                        Text(text = stringResource(R.string.Cancel),
+                        Text(
+                            text = stringResource(R.string.Cancel),
                             color = primaryFontColor
                         )
                     }
@@ -530,7 +560,8 @@ internal fun SelectLocaleDialog(settingsViewModel: SettingsViewModel) {
                             .padding(start = 5.dp, end = 5.dp),
                         shape = RoundedCornerShape(80),
                     ) {
-                        Text(text = stringResource(R.string.Ok),
+                        Text(
+                            text = stringResource(R.string.Ok),
                             color = primaryFontColor
                         )
                     }

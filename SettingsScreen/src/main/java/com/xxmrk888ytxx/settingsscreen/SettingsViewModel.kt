@@ -92,6 +92,10 @@ class SettingsViewModel @Inject constructor(
 
     internal val operationLimitAppOpenDropDownState = mutableStateOf(false)
 
+    internal val maxReportDropDownDialogState = mutableStateOf(false)
+
+    internal val maxTimeStoreReportsDropDownDialogState = mutableStateOf(false)
+
     internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateIsTracked(state)

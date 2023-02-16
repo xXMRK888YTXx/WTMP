@@ -416,6 +416,71 @@ internal fun getLocalisationParams(settingsViewModel: SettingsViewModel): List<S
     )
 }
 
+@Composable
+internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+
+    val maxReportDropDownState = settingsViewModel.maxReportDropDownDialogState.remember()
+
+    val maxTimeStoreReportsDropDownDialogState =
+        settingsViewModel.maxTimeStoreReportsDropDownDialogState.remember()
+
+    val maxReportsNameCountPair = listOf(
+        0 to stringResource(R.string.Infinity_symbol),
+        100 to 100.toString(),
+        200 to 200.toString(),
+        250 to 250.toString(),
+        500 to 500.toString(),
+        750 to 750.toString(),
+        1000 to 1000.toString()
+    )
+
+    val maxTimeStoreReportsNameTimePair = listOf(
+        0L to stringResource(R.string.Infinity_symbol),
+        86_400_000L to stringResource(R.string.One_day),
+        259_200_000L to stringResource(R.string.three_days),
+        604_800_000L to stringResource(R.string.One_week),
+        1_209_600_000L to stringResource(R.string.Two_weeks),
+        1_814_400_000L to stringResource(R.string.Three_weeks),
+        2_678_400_000L to stringResource(R.string.one_month)
+    )
+
+    val maxReportDropDownItem = maxReportsNameCountPair.map {
+        SettingsParamType.DropDown.DropDownItem(it.second) {
+
+        }
+    }
+
+    val maxTimeStoreReportsDropDownItem = maxTimeStoreReportsNameTimePair.map {
+        SettingsParamType.DropDown.DropDownItem(it.second) {
+
+        }
+    }
+
+    return listOf(
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Maximum_reports),
+            icon = R.drawable.ic_time_limit,
+            dropDownItems = maxReportDropDownItem,
+            onShowDropDown = { maxReportDropDownState.value = true },
+            onHideDropDown = { maxReportDropDownState.value = false },
+            isDropDownVisible = maxReportDropDownState.value,
+            showSelectedDropDownParam = maxReportsNameCountPair[0].second,
+            hideDropDownAfterSelect = true
+        ),
+
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Report_storage_time),
+            icon = R.drawable.ic_timer,
+            dropDownItems = maxTimeStoreReportsDropDownItem,
+            onShowDropDown = { maxTimeStoreReportsDropDownDialogState.value = true },
+            onHideDropDown = { maxTimeStoreReportsDropDownDialogState.value = false },
+            isDropDownVisible = maxTimeStoreReportsDropDownDialogState.value,
+            showSelectedDropDownParam = maxTimeStoreReportsNameTimePair[0].second,
+            hideDropDownAfterSelect = true
+        )
+    )
+}
+
 @SuppressLint("ResourceType")
 @Composable
 internal fun getBatteryOptimizationParams(
