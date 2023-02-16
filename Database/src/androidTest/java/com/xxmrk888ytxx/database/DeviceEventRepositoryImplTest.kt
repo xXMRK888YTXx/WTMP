@@ -9,10 +9,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
 import com.xxmrk888ytxx.database.DI.DataBaseComponent
-import com.xxmrk888ytxx.database.Dao.AppOpenEventDao
-import com.xxmrk888ytxx.database.Dao.DeviceEventDao
-import com.xxmrk888ytxx.database.Dao.TrackedAppDao
-import com.xxmrk888ytxx.database.Dao.UnlockDeviceEvent
+import com.xxmrk888ytxx.database.Dao.*
 import io.mockk.every
 import io.mockk.mockkStatic
 import io.mockk.spyk
@@ -49,6 +46,8 @@ internal class DeviceEventRepositoryImplTest {
 
             override val unlockDeviceEvent: UnlockDeviceEvent = database.getUnlockDeviceEventDao()
             override val trackedAppDao: TrackedAppDao
+                get() = TODO("Not yet implemented")
+            override val appOpenTimeLimitDao: AppOpenTimeLimitDao
                 get() = TODO("Not yet implemented")
 
         }
