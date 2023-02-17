@@ -6,8 +6,9 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.MaxStorageReportUseCa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class MaxStorageReportUseCaseImpl constructor(
+internal class MaxStorageReportUseCaseImpl @Inject constructor(
     private val configProvider: StorageConfigProvider
 ) : MaxStorageReportUseCase {
     override suspend fun execute(deviceEventRepository: DeviceEventRepository) {

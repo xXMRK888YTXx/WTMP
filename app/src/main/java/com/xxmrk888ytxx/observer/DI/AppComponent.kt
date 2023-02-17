@@ -56,7 +56,9 @@ import javax.inject.Provider
         TimeLimitManagersModule::class,
         DeviceEventRepositoryModule::class,
         RemoveEventImageUseCaseModule::class,
-        StorageConfigManagerModule::class
+        StorageConfigManagerModule::class,
+        MaxTimeStorageReportUseCaseModule::class,
+        MaxStorageReportUseCaseModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {
