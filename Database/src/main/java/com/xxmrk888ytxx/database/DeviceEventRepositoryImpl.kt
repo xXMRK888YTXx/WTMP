@@ -3,6 +3,8 @@ package com.xxmrk888ytxx.database
 import android.content.Context
 import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.MaxStorageReportUseCase
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.MaxTimeStorageReportUseCase
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.RemoveEventImageUseCase
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
@@ -12,6 +14,7 @@ import com.xxmrk888ytxx.database.Entity.DeviceEventEntity
 import com.xxmrk888ytxx.database.Entity.UnlockDeviceEventEntity
 import com.xxmrk888ytxx.database.models.DeviceEventModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -22,7 +25,9 @@ import javax.inject.Inject
 
 class DeviceEventRepositoryImpl @Inject constructor(
     private val context: Context,
-    private val removeEventImageUseCase: RemoveEventImageUseCase
+    private val removeEventImageUseCase: RemoveEventImageUseCase,
+    private val maxStorageReportUseCase: MaxStorageReportUseCase,
+    private val maxTimeStorageReportUseCase: MaxTimeStorageReportUseCase
 ) : DeviceEventRepository {
 
     private val dataBaseComponent: DataBaseComponent by lazy {
@@ -36,6 +41,18 @@ class DeviceEventRepositoryImpl @Inject constructor(
     private val unlockDeviceEventDao by lazy { dataBaseComponent.unlockDeviceEvent }
 
     private val mutex = Mutex()
+
+    private var validateEventListActiveJob:Job? = null
+    private fun validateEventList() {
+        if(validateEventListActiveJob?.isActive == true) return
+
+         validateEventListActiveJob = ApplicationScope.launch(Dispatchers.IO) {
+             maxStorageReportUseCase.execute(this@DeviceEventRepositoryImpl)
+             maxTimeStorageReportUseCase.execute(this@DeviceEventRepositoryImpl)
+
+             validateEventListActiveJob = null
+         }
+    }
 
     override fun getAllEvents(): Flow<List<DeviceEvent>> {
         return deviceEventDao.getAllEvents().map { eventList ->
@@ -74,11 +91,12 @@ class DeviceEventRepositoryImpl @Inject constructor(
                         unlockDeviceEventDao.addEvent(deviceEvent.mapToEntity(eventId))
                     }
 
-                    is DeviceEvent.DeviceLaunch -> {
-
-                    }
+                    is DeviceEvent.DeviceLaunch -> {}
                 }
             }
+
+            validateEventList()
+
             return deviceEventDao.getLastEventId()
         }
     }
@@ -98,6 +116,8 @@ class DeviceEventRepositoryImpl @Inject constructor(
         ApplicationScope.launch(Dispatchers.IO) {
             removeEventImageUseCase.execute(eventId)
         }
+
+        validateEventList()
     }
 
 
