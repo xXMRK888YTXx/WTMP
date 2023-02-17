@@ -6,6 +6,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.MaxStorageReportUseCase
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.MaxTimeStorageReportUseCase
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.RemoveEventImageUseCase
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
@@ -34,7 +36,12 @@ internal class DeviceEventRepositoryImplTest {
 
     private val removeEventImageUseCase: RemoveEventImageUseCase = mockk(relaxed = true)
 
-    private val repo = spyk(DeviceEventRepositoryImpl(context,removeEventImageUseCase))
+    private val maxStorageReportUseCase = mockk<MaxStorageReportUseCase>(relaxed = true)
+
+    private val maxTimeStorageReportUseCase = mockk<MaxTimeStorageReportUseCase>(relaxed = true)
+
+    private val repo = spyk(DeviceEventRepositoryImpl(context,removeEventImageUseCase,
+        maxStorageReportUseCase, maxTimeStorageReportUseCase))
 
     @Before
     fun init() {
@@ -284,6 +291,17 @@ internal class DeviceEventRepositoryImplTest {
         repo.removeEvent(testEvent.eventId)
 
         coVerify(exactly = 1) { removeEventImageUseCase.execute(testEvent.eventId) }
+    }
+
+    @Test
+    fun addEventAndRemoveItExpectRepositoryCallUseCasesForValidate() = runTest {
+        val testEvent = getTestEventList()[0]
+
+        repo.addEvent(testEvent)
+        repo.removeEvent(testEvent.eventId)
+
+        coVerify(exactly = 2) { maxStorageReportUseCase.execute(repo) }
+        coVerify(exactly = 2) { maxTimeStorageReportUseCase.execute(repo) }
     }
 }
 
