@@ -8,6 +8,15 @@ import android.os.UserHandle
 import com.xxmrk888ytxx.coredeps.DepsProvider.getDepsByApplication
 import com.xxmrk888ytxx.coredeps.logcatMessageD
 
+/**
+ * [Ru]
+ *  * Ресивер который используется для получения информации как администратор устройства
+ */
+
+/**
+ * [En]
+ * * The receiver that is used to receive information as the device administrator
+ */
 class AdminReceiver : DeviceAdminReceiver() {
 
     private val Context.adminCallBack : AdminEventsCallback
