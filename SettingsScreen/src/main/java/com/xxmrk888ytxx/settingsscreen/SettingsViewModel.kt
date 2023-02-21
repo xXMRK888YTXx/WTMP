@@ -322,4 +322,9 @@ class SettingsViewModel @Inject constructor(
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 
+    internal fun openSourceCodePage(context: Context) {
+        val url = "https://github.com/xXMRK888YTXx/WTMP"
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
 }

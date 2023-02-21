@@ -292,6 +292,11 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
             secondoryText = settingsViewModel.appVersion
         ),
         SettingsParamType.Button(
+            text = stringResource(R.string.Source_code),
+            icon = R.drawable.ic_source_code,
+            onClick = { settingsViewModel.openSourceCodePage(context) }
+        ),
+        SettingsParamType.Button(
             stringResource(R.string.Write_to_the_developer),
             R.drawable.ic_developer,
             onClick = { settingsViewModel.sendIntentToWriteDeveloper(context) }
