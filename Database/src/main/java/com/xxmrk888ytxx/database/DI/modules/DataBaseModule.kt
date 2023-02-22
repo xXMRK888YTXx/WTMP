@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.xxmrk888ytxx.database.AppDataBase
 import com.xxmrk888ytxx.database.DI.DataBaseScope
-import com.xxmrk888ytxx.database.Dao.AppOpenEventDao
-import com.xxmrk888ytxx.database.Dao.DeviceEventDao
-import com.xxmrk888ytxx.database.Dao.TrackedAppDao
-import com.xxmrk888ytxx.database.Dao.UnlockDeviceEvent
+import com.xxmrk888ytxx.database.Dao.*
 import dagger.Module
 import dagger.Provides
 
@@ -37,5 +34,10 @@ internal class DataBaseModule {
     @Provides
     fun provideTrackedAppDao(dataBase: AppDataBase) : TrackedAppDao {
         return dataBase.getTrackedAppDao()
+    }
+
+    @Provides
+    fun provideAppOpenTimeLimitDao(dataBase: AppDataBase) : AppOpenTimeLimitDao {
+        return dataBase.getAppOpenTimeLimitDao()
     }
 }

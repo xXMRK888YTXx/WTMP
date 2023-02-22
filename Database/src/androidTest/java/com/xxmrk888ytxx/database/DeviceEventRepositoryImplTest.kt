@@ -6,16 +6,14 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.MaxStorageReportUseCase
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.MaxTimeStorageReportUseCase
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.RemoveEventImageUseCase
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.database.DI.DaggerDataBaseComponent
 import com.xxmrk888ytxx.database.DI.DataBaseComponent
-import com.xxmrk888ytxx.database.Dao.AppOpenEventDao
-import com.xxmrk888ytxx.database.Dao.DeviceEventDao
-import com.xxmrk888ytxx.database.Dao.TrackedAppDao
-import com.xxmrk888ytxx.database.Dao.UnlockDeviceEvent
-import io.mockk.every
-import io.mockk.mockkStatic
-import io.mockk.spyk
+import com.xxmrk888ytxx.database.Dao.*
+import io.mockk.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.*
@@ -36,7 +34,14 @@ internal class DeviceEventRepositoryImplTest {
         ApplicationProvider.getApplicationContext<Context>()
     }
 
-    private val repo = spyk(DeviceEventRepositoryImpl(context))
+    private val removeEventImageUseCase: RemoveEventImageUseCase = mockk(relaxed = true)
+
+    private val maxStorageReportUseCase = mockk<MaxStorageReportUseCase>(relaxed = true)
+
+    private val maxTimeStorageReportUseCase = mockk<MaxTimeStorageReportUseCase>(relaxed = true)
+
+    private val repo = spyk(DeviceEventRepositoryImpl(context,removeEventImageUseCase,
+        maxStorageReportUseCase, maxTimeStorageReportUseCase))
 
     @Before
     fun init() {
@@ -49,6 +54,8 @@ internal class DeviceEventRepositoryImplTest {
 
             override val unlockDeviceEvent: UnlockDeviceEvent = database.getUnlockDeviceEventDao()
             override val trackedAppDao: TrackedAppDao
+                get() = TODO("Not yet implemented")
+            override val appOpenTimeLimitDao: AppOpenTimeLimitDao
                 get() = TODO("Not yet implemented")
 
         }
@@ -274,6 +281,27 @@ internal class DeviceEventRepositoryImplTest {
             scope.cancel()
         }
         while (scope.isActive) { delay(100) }
+    }
+
+    @Test
+    fun removeEventExpectRepositoryCallRemoveEventImageUseCase() = runTest {
+        val testEvent = getTestEventList()[0]
+
+        repo.addEvent(testEvent)
+        repo.removeEvent(testEvent.eventId)
+
+        coVerify(exactly = 1) { removeEventImageUseCase.execute(testEvent.eventId) }
+    }
+
+    @Test
+    fun addEventAndRemoveItExpectRepositoryCallUseCasesForValidate() = runTest {
+        val testEvent = getTestEventList()[0]
+
+        repo.addEvent(testEvent)
+        repo.removeEvent(testEvent.eventId)
+
+        coVerify(exactly = 2) { maxStorageReportUseCase.execute(repo) }
+        coVerify(exactly = 2) { maxTimeStorageReportUseCase.execute(repo) }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.xxmrk888ytxx.observer.domain.UseCase
+package com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
 
 internal interface HandleEventUseCase {
     suspend fun execute(

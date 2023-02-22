@@ -52,7 +52,13 @@ import javax.inject.Provider
         BillingManagerModule::class,
         PurchaseListenerManagerModule::class,
         LocalizationManagerModule::class,
-        DialogShowStateManagerModule::class
+        DialogShowStateManagerModule::class,
+        TimeLimitManagersModule::class,
+        DeviceEventRepositoryModule::class,
+        RemoveEventImageUseCaseModule::class,
+        StorageConfigManagerModule::class,
+        MaxTimeStorageReportUseCaseModule::class,
+        MaxStorageReportUseCaseModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

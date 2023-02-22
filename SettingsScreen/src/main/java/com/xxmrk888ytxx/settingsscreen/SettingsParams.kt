@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.models.StorageConfig
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 import remember
 
@@ -28,20 +29,21 @@ import remember
 @MustBeLocalization
 internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     val config = settingsViewModel.failedUnlockTrackedConfig.collectAsState(
-        settingsViewModel.lastFailedUnlockTrackedConfig
+        settingsViewModel.cashedFailedUnlockTrackedConfig
     )
 
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
 
     SideEffect {
-        settingsViewModel.lastFailedUnlockTrackedConfig = config.value
+        settingsViewModel.cashedFailedUnlockTrackedConfig = config.value
     }
 
 
     val numberInvalidAttemptsDropDownState = settingsViewModel.numberInvalidAttemptsDropDownState
         .remember()
 
-    val dropDownList = (1..10).map {
+
+    val numberInvalidAttemptsToTriggerDropDownList = (1..10).map {
         SettingsParamType.DropDown.DropDownItem(
             it.toString(),
             onClick = {
@@ -50,6 +52,13 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
             }
         )
     }.remember()
+
+    val operationLimitDropDown = operationLimitDropDownItems(
+        onChangeTime = settingsViewModel::updateTimeOperationLimitFailedUnlockTrackedConfig
+    ).remember()
+
+    val operationLimitDropDownState = settingsViewModel
+        .operationLimitFailedUnlockDropDownState.remember()
 
     return listOf(
         SettingsParamType.Switch(
@@ -62,12 +71,26 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
         SettingsParamType.DropDown(
             text = stringResource(R.string.Number_invalid_attempts_to_trigger),
             icon = R.drawable.ic_key,
-            dropDownItems = dropDownList,
+            dropDownItems = numberInvalidAttemptsToTriggerDropDownList,
             onShowDropDown = { numberInvalidAttemptsDropDownState.value = true },
             onHideDropDown = { numberInvalidAttemptsDropDownState.value = false },
             isDropDownVisible = numberInvalidAttemptsDropDownState.value,
             showSelectedDropDownParam = config.value.countFailedUnlockToTrigger.toString(),
             isVisible = config.value.isTracked
+        ),
+
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Work_no_more_than),
+            icon = R.drawable.ic_time_limit,
+            dropDownItems = operationLimitDropDown,
+            onShowDropDown = { operationLimitDropDownState.value = true },
+            onHideDropDown = { operationLimitDropDownState.value = false },
+            isDropDownVisible = operationLimitDropDownState.value,
+            showSelectedDropDownParam = operationLimitTimeNamePair()
+                .find { it.first == config.value.timeOperationLimit }?.second
+                ?: stringResource(id = R.string.No),
+            isVisible = config.value.isTracked,
+            hideDropDownAfterSelect = true
         ),
 
         SettingsParamType.Switch(
@@ -103,18 +126,39 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
 @MustBeLocalization
 internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     val config = settingsViewModel.succeededUnlockTrackedConfig.collectAsState(
-        settingsViewModel.lastSucceededUnlockTrackedConfig
+        settingsViewModel.cashedSucceededUnlockTrackedConfig
     )
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
     SideEffect {
-        settingsViewModel.lastSucceededUnlockTrackedConfig = config.value
+        settingsViewModel.cashedSucceededUnlockTrackedConfig = config.value
     }
+
+    val operationLimitDropDown = operationLimitDropDownItems(
+        onChangeTime = settingsViewModel::updateTimeOperationLimitSucceededUnlockTrackedConfig
+    ).remember()
+
+    val operationLimitDropDownState = settingsViewModel
+        .operationLimitSucceededUnlockDropDownState.remember()
     return listOf(
         SettingsParamType.Switch(
             stringResource(R.string.Track_device_unlock),
             R.drawable.ic_lock_open,
             config.value.isTracked,
             onStateChanged = settingsViewModel::updateIsTrackedSucceededUnlockTrackedConfig
+        ),
+
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Work_no_more_than),
+            icon = R.drawable.ic_time_limit,
+            dropDownItems = operationLimitDropDown,
+            onShowDropDown = { operationLimitDropDownState.value = true },
+            onHideDropDown = { operationLimitDropDownState.value = false },
+            isDropDownVisible = operationLimitDropDownState.value,
+            showSelectedDropDownParam = operationLimitTimeNamePair()
+                .find { it.first == config.value.timeOperationLimit }?.second
+                ?: stringResource(id = R.string.No),
+            isVisible = config.value.isTracked,
+            hideDropDownAfterSelect = true
         ),
 
         SettingsParamType.Switch(
@@ -152,12 +196,19 @@ internal fun getAppOpenObserverParams(
     navigator: Navigator,
 ): List<SettingsParamType> {
     val config = settingsViewModel.appOpenConfig.collectAsState(
-        settingsViewModel.lastAppOpenConfig
+        settingsViewModel.cashedAppOpenConfig
     )
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
     SideEffect {
-        settingsViewModel.lastAppOpenConfig = config.value
+        settingsViewModel.cashedAppOpenConfig = config.value
     }
+
+    val operationLimitDropDown = operationLimitDropDownItems(
+        onChangeTime = settingsViewModel::updateTimeOperationLimitAppOpenConfig
+    ).remember()
+
+    val operationLimitDropDownState = settingsViewModel
+        .operationLimitAppOpenDropDownState.remember()
     return listOf(
         SettingsParamType.Switch(
             stringResource(R.string.Enable_App_Tracking),
@@ -165,6 +216,22 @@ internal fun getAppOpenObserverParams(
             config.value.isTracked,
             onStateChanged = settingsViewModel::updateIsTrackedAppOpenConfig
         ),
+
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Work_no_more_than)
+                    + " (${stringResource(R.string.one_application)})",
+            icon = R.drawable.ic_time_limit,
+            dropDownItems = operationLimitDropDown,
+            onShowDropDown = { operationLimitDropDownState.value = true },
+            onHideDropDown = { operationLimitDropDownState.value = false },
+            isDropDownVisible = operationLimitDropDownState.value,
+            showSelectedDropDownParam = operationLimitTimeNamePair()
+                .find { it.first == config.value.timeOperationLimit }?.second
+                ?: stringResource(id = R.string.No),
+            isVisible = config.value.isTracked,
+            hideDropDownAfterSelect = true
+        ),
+
         SettingsParamType.Switch(
             stringResource(R.string.Take_photo),
             R.drawable.ic_camera,
@@ -225,6 +292,11 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
             secondoryText = settingsViewModel.appVersion
         ),
         SettingsParamType.Button(
+            text = stringResource(R.string.Source_code),
+            icon = R.drawable.ic_source_code,
+            onClick = { settingsViewModel.openSourceCodePage(context) }
+        ),
+        SettingsParamType.Button(
             stringResource(R.string.Write_to_the_developer),
             R.drawable.ic_developer,
             onClick = { settingsViewModel.sendIntentToWriteDeveloper(context) }
@@ -249,15 +321,15 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 
 @SuppressLint("ResourceType")
 @Composable
-internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     val config = settingsViewModel.bootDeviceConfig.collectAsState(
-        settingsViewModel.lastBootDeviceConfig
+        settingsViewModel.cashedBootDeviceConfig
     )
 
     val isTelegramConfigSetup = settingsViewModel.isTelegramConfigSetup.collectAsState(false)
 
     SideEffect {
-        settingsViewModel.lastBootDeviceConfig = config.value
+        settingsViewModel.cashedBootDeviceConfig = config.value
     }
 
     return listOf(
@@ -302,12 +374,12 @@ internal fun getSecureParams(
     navigator: Navigator,
 ): List<SettingsParamType> {
     val isAppPasswordSetup = settingsViewModel.isAppPasswordSetup()
-        .collectAsState(settingsViewModel.lastIsAppPasswordSetup)
+        .collectAsState(settingsViewModel.cashedIsAppPasswordSetup)
 
     val fingerPrintAuthorizationState = settingsViewModel.getFingerPrintAuthorizationState()
         .collectAsState(initial = false)
     SideEffect {
-        settingsViewModel.lastIsAppPasswordSetup = isAppPasswordSetup.value
+        settingsViewModel.cashedIsAppPasswordSetup = isAppPasswordSetup.value
     }
     return listOf(
         SettingsParamType.Switch(
@@ -330,8 +402,8 @@ internal fun getSecureParams(
             stringResource(R.string.Login_with_finger_print),
             R.drawable.ic_fingerprint,
             fingerPrintAuthorizationState.value,
-            isVisible = settingsViewModel.isFingerPrintScannerAvailable&&isAppPasswordSetup.value,
-            isEnable = settingsViewModel.isFingerPrintScannerAvailable&&isAppPasswordSetup.value,
+            isVisible = settingsViewModel.isFingerPrintScannerAvailable && isAppPasswordSetup.value,
+            isEnable = settingsViewModel.isFingerPrintScannerAvailable && isAppPasswordSetup.value,
             onStateChanged = settingsViewModel::updateFingerPrintAuthorizationState
         )
 
@@ -340,7 +412,7 @@ internal fun getSecureParams(
 
 @SuppressLint("ResourceType")
 @Composable
-internal fun getLocalisationParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+internal fun getLocalisationParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
     return listOf(
         SettingsParamType.Button(
             text = stringResource(R.string.Select_language),
@@ -350,11 +422,86 @@ internal fun getLocalisationParams(settingsViewModel: SettingsViewModel) : List<
     )
 }
 
+@Composable
+internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+
+    val storageConfig = settingsViewModel.storageConfig.collectAsState(StorageConfig())
+
+    val maxReportDropDownState = settingsViewModel.maxReportDropDownDialogState.remember()
+
+    val maxTimeStoreReportsDropDownDialogState =
+        settingsViewModel.maxTimeStoreReportsDropDownDialogState.remember()
+
+    val maxReportsNameCountPair = listOf(
+        0 to stringResource(R.string.Infinity_symbol),
+        100 to 100.toString(),
+        200 to 200.toString(),
+        250 to 250.toString(),
+        500 to 500.toString(),
+        750 to 750.toString(),
+        1000 to 1000.toString()
+    )
+
+    val maxTimeStoreReportsNameTimePair = listOf(
+        0L to stringResource(R.string.Infinity_symbol),
+        86_400_000L to stringResource(R.string.One_day),
+        259_200_000L to stringResource(R.string.three_days),
+        604_800_000L to stringResource(R.string.One_week),
+        1_209_600_000L to stringResource(R.string.Two_weeks),
+        1_814_400_000L to stringResource(R.string.Three_weeks),
+        2_678_400_000L to stringResource(R.string.one_month)
+    )
+
+    val maxReportDropDownItem = maxReportsNameCountPair.map {
+        SettingsParamType.DropDown.DropDownItem(it.second) {
+            settingsViewModel.updateMaxReportCountStorageConfig(it.first)
+        }
+    }
+
+    val maxTimeStoreReportsDropDownItem = maxTimeStoreReportsNameTimePair.map {
+        SettingsParamType.DropDown.DropDownItem(it.second) {
+            settingsViewModel.updateMaxReportStorageTimeStorageConfig(it.first)
+        }
+    }
+
+    SideEffect {
+        settingsViewModel.cashedStorageConfig = storageConfig.value
+    }
+
+    return listOf(
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Maximum_reports),
+            icon = R.drawable.ic_time_limit,
+            dropDownItems = maxReportDropDownItem,
+            onShowDropDown = { maxReportDropDownState.value = true },
+            onHideDropDown = { maxReportDropDownState.value = false },
+            isDropDownVisible = maxReportDropDownState.value,
+            showSelectedDropDownParam = maxReportsNameCountPair
+                .find { it.first == storageConfig.value.maxReportCount }?.second
+                ?: maxReportsNameCountPair[0].second,
+            hideDropDownAfterSelect = true
+        ),
+
+        SettingsParamType.DropDown(
+            text = stringResource(R.string.Report_storage_time),
+            icon = R.drawable.ic_timer,
+            dropDownItems = maxTimeStoreReportsDropDownItem,
+            onShowDropDown = { maxTimeStoreReportsDropDownDialogState.value = true },
+            onHideDropDown = { maxTimeStoreReportsDropDownDialogState.value = false },
+            isDropDownVisible = maxTimeStoreReportsDropDownDialogState.value,
+            showSelectedDropDownParam = maxTimeStoreReportsNameTimePair
+                .find { it.first == storageConfig.value.maxReportStorageTime }?.second
+                ?: maxTimeStoreReportsNameTimePair[0].second,
+            hideDropDownAfterSelect = true
+        )
+    )
+}
+
 @SuppressLint("ResourceType")
 @Composable
 internal fun getBatteryOptimizationParams(
-    settingsViewModel: SettingsViewModel
-) : List<SettingsParamType> {
+    settingsViewModel: SettingsViewModel,
+): List<SettingsParamType> {
     val context = LocalContext.current
 
     return listOf(
@@ -370,4 +517,29 @@ internal fun getBatteryOptimizationParams(
             onClick = { settingsViewModel.openDontKillMyAppWebSite(context) }
         )
     )
+}
+
+@Composable
+fun operationLimitTimeNamePair(): List<Pair<Int, String>> {
+    return listOf(
+        0 to stringResource(R.string.No),
+        60_000 to stringResource(R.string.one_minute),
+        300_000 to stringResource(R.string.five_minute),
+        600_000 to stringResource(R.string.ten_minutes),
+        1_800_000 to stringResource(R.string.Thirty_minutes),
+        3_600_000 to stringResource(R.string.sixty_minutes)
+    )
+}
+
+@Composable
+internal fun operationLimitDropDownItems(
+    onChangeTime: (Int) -> Unit,
+): List<SettingsParamType.DropDown.DropDownItem> {
+
+    return operationLimitTimeNamePair().map {
+        SettingsParamType.DropDown.DropDownItem(
+            text = it.second,
+            onClick = { onChangeTime(it.first) }
+        )
+    }
 }

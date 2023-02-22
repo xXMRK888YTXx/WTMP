@@ -36,4 +36,22 @@
     <string name="Disable_battery_optimization">Отключить оптимизацию батареи</string>
     <string name="Open_dontkillmyapp">Открыть dontkillmyapp</string>
     <string name="Battery_optimization">Оптимизация батареи</string>
+    <string name="No">Нет</string>
+    <string name="one_minute">1 минута</string>
+    <string name="five_minute">5 минут</string>
+    <string name="ten_minutes">10 минут</string>
+    <string name="Thirty_minutes">30 минут</string>
+    <string name="sixty_minutes">60 минут</string>
+    <string name="Work_no_more_than">Срабатывать не чаще чем в</string>
+    <string name="one_application">одно приложение</string>
+    <string name="Storage">Хранилище</string>
+    <string name="Maximum_reports">Максимум отчётов</string>
+    <string name="Report_storage_time">Время хранения отчёта</string>
+    <string name="One_day">1 день</string>
+    <string name="three_days">3 дня</string>
+    <string name="One_week">1 неделя</string>
+    <string name="Two_weeks">2 недели</string>
+    <string name="Three_weeks">3 недели</string>
+    <string name="one_month">1 месяц</string>
+    <string name="Source_code">Исходный код</string>
 </resources>

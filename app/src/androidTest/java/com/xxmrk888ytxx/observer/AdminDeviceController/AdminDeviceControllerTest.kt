@@ -5,15 +5,18 @@ import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.observer.domain.AdminDeviceController.AdminDeviceController
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -23,6 +26,7 @@ class AdminDeviceControllerTest {
     private val failedUnlockTrackedConfigProvider: FailedUnlockTrackedConfigProvider = mockk(relaxed = true)
     private val handleEventUseCase: HandleEventUseCase = mockk(relaxed = true)
     private val appStateProvider: AppStateProvider = mockk(relaxed = true)
+    private val timeOperationLimitManager:TimeOperationLimitManager<Nothing> = mockk(relaxed = true)
     private val adminEventsCallback: AdminEventsCallback =
         AdminDeviceController(deviceEventRepository,
             failedUnlockTrackedConfigProvider,
@@ -31,7 +35,13 @@ class AdminDeviceControllerTest {
             mockk(relaxed = true),
             mockk(relaxed = true),
             mockk(relaxed = true),
+            timeOperationLimitManager
         )
+
+    @Before
+    fun before() {
+        coEvery { timeOperationLimitManager.isLimitEnable(any()) } returns false
+    }
 
     @Test
     fun callAdminControllerIfTrackedFailedUnlockOffExpectEventNotTracked() = runBlocking {
@@ -40,6 +50,7 @@ class AdminDeviceControllerTest {
 
         config.emit(FailedUnlockTrackedConfig(
             countFailedUnlockToTrigger = 1,
+            timeOperationLimit = 0,
             isTracked = false,
             makePhoto = false,
             notifyInTelegram = false,
@@ -62,6 +73,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = true,
             notifyInTelegram = true,
@@ -84,6 +96,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = true,
             notifyInTelegram = true,
@@ -109,6 +122,7 @@ class AdminDeviceControllerTest {
 
         flow.emit(FailedUnlockTrackedConfig(
             isTracked = true,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 5,
             makePhoto = true,
             notifyInTelegram = true,
@@ -124,7 +138,41 @@ class AdminDeviceControllerTest {
         adminEventsCallback.onPasswordFailed(4)
         adminEventsCallback.onPasswordFailed(5)
         adminEventsCallback.onPasswordFailed(6)
+        delay(50)
 
+        coVerify(exactly = 2) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 2) { handleEventUseCase.execute(
+            any(),true,true,false,any()
+        ) }
+    }
+
+    @Test
+    fun setTimeLimitAndCallMethodExpectInformationWillBeSaveIfLimitTimeOut() = runBlocking {
+        val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
+        val appState = MutableStateFlow<Boolean>(true)
+        val timeLimit = 100
+
+        flow.emit(FailedUnlockTrackedConfig(
+            isTracked = true,
+            timeOperationLimit = timeLimit,
+            countFailedUnlockToTrigger = 1,
+            makePhoto = true,
+            notifyInTelegram = true,
+            joinPhotoToTelegramNotify = false
+        ))
+
+        coEvery { failedUnlockTrackedConfigProvider.config } returns flow
+        coEvery { appStateProvider.isAppEnable } returns appState
+
+        adminEventsCallback.onPasswordFailed(1)
+        coEvery { timeOperationLimitManager.isLimitEnable(timeLimit) } returns true
+        adminEventsCallback.onPasswordFailed(2)
+        adminEventsCallback.onPasswordFailed(3)
+        coEvery { timeOperationLimitManager.isLimitEnable(timeLimit) } returns false
+        adminEventsCallback.onPasswordFailed(4)
+        delay(50)
+
+        coVerify(exactly = 4) { timeOperationLimitManager.isLimitEnable(timeLimit) }
         coVerify(exactly = 2) { deviceEventRepository.addEvent(any()) }
         coVerify(exactly = 2) { handleEventUseCase.execute(
             any(),true,true,false,any()

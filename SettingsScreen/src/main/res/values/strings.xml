@@ -38,4 +38,23 @@
     <string name="Disable_battery_optimization">Disable battery optimization</string>
     <string name="Open_dontkillmyapp">Open dontkillmyapp</string>
     <string name="Battery_optimization">Battery optimization</string>
+    <string name="No">No</string>
+    <string name="one_minute">1 minute</string>
+    <string name="five_minute">5 minutes</string>
+    <string name="ten_minutes">10 minutes</string>
+    <string name="Thirty_minutes">30 minutes</string>
+    <string name="sixty_minutes">60 minutes</string>
+    <string name="Work_no_more_than">Work no more than</string>
+    <string name="one_application">one application</string>
+    <string name="Storage">Storage</string>
+    <string name="Maximum_reports">Maximum reports</string>
+    <string name="Report_storage_time">Report storage time</string>
+    <string name="Infinity_symbol" translatable="false">Ꚙ</string>
+    <string name="One_day">1 day</string>
+    <string name="three_days">3 days</string>
+    <string name="One_week">1 Week</string>
+    <string name="Two_weeks">2 weeks</string>
+    <string name="Three_weeks">3 weeks</string>
+    <string name="one_month">1 month</string>
+    <string name="Source_code">Source code</string>
 </resources>

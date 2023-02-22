@@ -10,12 +10,15 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TrackedAppRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.AppOpenLimitManagerQualifier
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.SucceededUnlockLimitManagerQualifier
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerParams
 import com.xxmrk888ytxx.observer.R
 import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,8 +33,12 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
     private val appStateProvider: AppStateProvider,
     private val notificationAppManager: NotificationAppManager,
     private val appStateChanger: AppStateChanger,
-    private val resourcesProvider: ResourcesProvider
-): EventDeviceTrackerCallback {
+    private val resourcesProvider: ResourcesProvider,
+    @SucceededUnlockLimitManagerQualifier
+    private val timeOperationLimitManagerForScreenOn: TimeOperationLimitManager<Nothing>,
+    @AppOpenLimitManagerQualifier
+    private val timeOperationLimitManagerAppOpen: TimeOperationLimitManager<String>,
+) : EventDeviceTrackerCallback {
 
     override val params: EventDeviceTrackerParams
         get() = EventDeviceTrackerParams.Builder().setIgnoreList(ignoreList).build()
@@ -43,12 +50,24 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 appOpenConfig.config
             }
 
-            if((!config.first().isTracked||!appStateProvider.isAppEnable.first())
-                ||!isTrackedPackageName(packageName)) return@launch
+            if ((!config.first().isTracked || !appStateProvider.isAppEnable.first())
+                || !isTrackedPackageName(packageName) || timeOperationLimitManagerAppOpen.isLimitEnable(
+                    config.first().timeOperationLimit,
+                    packageName
+                )
+            ) return@launch
+
+            if (config.first().timeOperationLimit != 0)
+                timeOperationLimitManagerAppOpen.enableLimit(
+                    config.first().timeOperationLimit,
+                    packageName
+                )
 
             val eventId = deviceEventRepository.addEvent(
-                DeviceEvent.AppOpen(0,null,packageName,
-                    null,System.currentTimeMillis())
+                DeviceEvent.AppOpen(
+                    0, null, packageName,
+                    null, System.currentTimeMillis()
+                )
             )
 
             val appName = packageInfoProvider.getAppName(packageName) ?: packageName
@@ -77,10 +96,15 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 succeededUnlockTrackedConfigProvider.config
             }
 
-            if(!config.first().isTracked||!appStateProvider.isAppEnable.first()) return@launch
+            if (!config.first().isTracked || !appStateProvider.isAppEnable.first()
+                || timeOperationLimitManagerForScreenOn.isLimitEnable(config.first().timeOperationLimit)
+            ) return@launch
 
-            val eventId =  deviceEventRepository.addEvent(
-                DeviceEvent.AttemptUnlockDevice.Succeeded(0,System.currentTimeMillis())
+            if (config.first().timeOperationLimit != 0)
+                timeOperationLimitManagerForScreenOn.enableLimit(config.first().timeOperationLimit)
+
+            val eventId = deviceEventRepository.addEvent(
+                DeviceEvent.AttemptUnlockDevice.Succeeded(0, System.currentTimeMillis())
             )
 
             handleEventUseCase.execute(
@@ -95,7 +119,7 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
 
     override fun onServiceDestroy() {}
 
-    private val ignoreList:List<String>
+    private val ignoreList: List<String>
         get() = listOf(
             "com.android.vending",
             "com.google.android.permissioncontroller"

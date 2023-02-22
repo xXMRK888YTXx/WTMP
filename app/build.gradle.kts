@@ -14,8 +14,8 @@ android {
         applicationId = Config.packageName
         minSdk = Config.minSdk
         targetSdk = Config.compileSdk
-        versionCode = 11
-        versionName = "1.0.2r"
+        versionCode = 13
+        versionName = "1.1.1r"
 
         testInstrumentationRunner =  "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -95,5 +95,10 @@ dependencies {
     androidTestImplementation (Deps.InstrumentalTest.testRules)
     androidTestImplementation(Deps.TestAndroid.MockkAndroid)
     androidTestImplementation(Deps.TestAndroid.MockkAgent)
+
+    //Test
+    testImplementation(Deps.TestAndroid.MockkAndroid)
+    testImplementation(Deps.TestAndroid.MockkAgent)
+    testImplementation(Deps.Test.Testing)
 }
 

@@ -20,6 +20,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.BootDeviceTrackedConfi
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.BootDeviceTrackedConfig.BootDeviceTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.StorageConfig.StorageConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.StorageConfig.StorageConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
@@ -49,7 +51,9 @@ class SettingsViewModel @Inject constructor(
     private val removeAppManager: RemoveAppManager,
     private val localizationManager: LocalizationManager,
     private val permissionsManager: PermissionsManager,
-    private val toastManager: ToastManager
+    private val toastManager: ToastManager,
+    private val storageConfigProvider: StorageConfigProvider,
+    private val storageConfigChanger: StorageConfigChanger,
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -86,9 +90,25 @@ class SettingsViewModel @Inject constructor(
 
     internal val selectLocaleDialogShowState = _selectLocaleDialogShowState.toState()
 
+    internal val operationLimitFailedUnlockDropDownState = mutableStateOf(false)
+
+    internal val operationLimitSucceededUnlockDropDownState = mutableStateOf(false)
+
+    internal val operationLimitAppOpenDropDownState = mutableStateOf(false)
+
+    internal val maxReportDropDownDialogState = mutableStateOf(false)
+
+    internal val maxTimeStoreReportsDropDownDialogState = mutableStateOf(false)
+
     internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateIsTracked(state)
+        }
+    }
+
+    internal fun updateTimeOperationLimitFailedUnlockTrackedConfig(newTime:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            failedUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
         }
     }
 
@@ -122,6 +142,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    internal fun updateTimeOperationLimitSucceededUnlockTrackedConfig(newTime:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            succeededUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
+        }
+    }
+
     internal fun updateMakePhotoSucceededUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateMakePhoto(state)
@@ -143,6 +169,12 @@ class SettingsViewModel @Inject constructor(
     internal fun updateIsTrackedAppOpenConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             appOpenConfigChanger.updateIsTracked(state)
+        }
+    }
+
+    internal fun updateTimeOperationLimitAppOpenConfig(newTime:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            appOpenConfigChanger.updateTimeOperationLimit(newTime)
         }
     }
 
@@ -188,6 +220,20 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    internal fun updateMaxReportCountStorageConfig(newValue:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            storageConfigChanger.updateMaxReportCount(newValue)
+        }
+    }
+
+    internal fun updateMaxReportStorageTimeStorageConfig(newValue:Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            storageConfigChanger.updateMaxReportStorageTime(newValue)
+        }
+    }
+
+    internal val storageConfig = storageConfigProvider.storageConfig
+
     internal fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetupFlow()
 
     internal fun getFingerPrintAuthorizationState() = appPasswordProvider.isFingerPrintAuthorizationEnabled()
@@ -202,30 +248,35 @@ class SettingsViewModel @Inject constructor(
         removeAppManager.requestRemoveApp()
     }
 
-    internal var lastFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
+    internal var cashedFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
         FailedUnlockTrackedConfig(isTracked = false,
+            timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
 
-    internal var lastSucceededUnlockTrackedConfig: SucceededUnlockTrackedConfig =
+    internal var cashedSucceededUnlockTrackedConfig: SucceededUnlockTrackedConfig =
         SucceededUnlockTrackedConfig(isTracked = false,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
 
-    internal var lastAppOpenConfig: AppOpenConfig = AppOpenConfig(isTracked = false,
+    internal var cashedAppOpenConfig: AppOpenConfig = AppOpenConfig(isTracked = false,
+        timeOperationLimit = 0,
         makePhoto = false,
         notifyInTelegram = false,
         joinPhotoToTelegramNotify = false)
 
-    internal var lastBootDeviceConfig: BootDeviceTrackedConfig = BootDeviceTrackedConfig(
+    internal var cashedBootDeviceConfig: BootDeviceTrackedConfig = BootDeviceTrackedConfig(
         isTracked = false, makePhoto = false,
         notifyInTelegram = false, joinPhotoToTelegramNotify = false
     )
 
-    internal var lastIsAppPasswordSetup : Boolean = false
+    internal var cashedIsAppPasswordSetup : Boolean = false
+
+    internal var cashedStorageConfig = StorageConfig()
     
     internal val isFingerPrintScannerAvailable : Boolean by lazy {
         biometricAuthorizationManager.isFingerPrintScannerAvailable()
@@ -268,6 +319,11 @@ class SettingsViewModel @Inject constructor(
 
     internal fun openDontKillMyAppWebSite(context: Context) {
         val url = "https://dontkillmyapp.com/"
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    internal fun openSourceCodePage(context: Context) {
+        val url = "https://github.com/xXMRK888YTXx/WTMP"
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
     }
 

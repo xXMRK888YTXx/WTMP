@@ -6,8 +6,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.Telegra
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.ImageRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCaseImpl
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCaseImpl
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

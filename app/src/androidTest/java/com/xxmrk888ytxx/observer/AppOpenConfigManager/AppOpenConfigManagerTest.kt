@@ -23,6 +23,7 @@ internal class AppOpenConfigManagerTest : BaseSettingsAppManagerTest() {
     @Before
     fun init() = runBlocking {
         changer.updateIsTracked(false)
+        changer.updateTimeOperationLimit(0)
         changer.updateMakePhoto(false)
         changer.updateNotifyInTelegram(false)
         changer.updateJoinPhotoToTelegramNotify(false)
@@ -31,12 +32,17 @@ internal class AppOpenConfigManagerTest : BaseSettingsAppManagerTest() {
     @Test
     fun AlternatelyChangeConfigParamsExpectConfigInFlowEquelsExpectedConfig() = runBlocking {
         var currentExpectedConfig = AppOpenConfig(false,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
         //
         currentExpectedConfig = currentExpectedConfig.copy(isTracked = true)
         changer.updateIsTracked(currentExpectedConfig.isTracked)
+        Assert.assertEquals(currentExpectedConfig,provider.config.first())
+
+        currentExpectedConfig = currentExpectedConfig.copy(timeOperationLimit = 3000)
+        changer.updateTimeOperationLimit(currentExpectedConfig.timeOperationLimit)
         Assert.assertEquals(currentExpectedConfig,provider.config.first())
 
         currentExpectedConfig = currentExpectedConfig.copy(makePhoto = true)
@@ -64,6 +70,7 @@ internal class AppOpenConfigManagerTest : BaseSettingsAppManagerTest() {
     @Test
     fun installAllParamsTrueAndInstallIsTrackedParamFalseExpectAllParamsIsFalse() = runBlocking {
         val expectedConfig = AppOpenConfig(isTracked = false,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false)
@@ -75,6 +82,7 @@ internal class AppOpenConfigManagerTest : BaseSettingsAppManagerTest() {
         Assert.assertEquals(
             provider.config.first(),
             AppOpenConfig(isTracked = true,
+                timeOperationLimit = 0,
                 makePhoto = true,
                 notifyInTelegram = true,
                 joinPhotoToTelegramNotify = true)
@@ -93,6 +101,7 @@ internal class AppOpenConfigManagerTest : BaseSettingsAppManagerTest() {
 
         changer.updateMakePhoto(false)
         Assert.assertEquals(AppOpenConfig(isTracked = true,
+            timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = true,
             joinPhotoToTelegramNotify = false),
@@ -102,6 +111,7 @@ internal class AppOpenConfigManagerTest : BaseSettingsAppManagerTest() {
         changer.updateNotifyInTelegram(false)
 
         Assert.assertEquals(AppOpenConfig(isTracked = true,
+            timeOperationLimit = 0,
             makePhoto = true,
             notifyInTelegram = false,
             joinPhotoToTelegramNotify = false),provider.config.first())

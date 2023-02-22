@@ -9,7 +9,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventReposito
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.observer.R
-import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
+import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,7 @@ internal class BootCallbackImpl @Inject constructor(
     private val bootDeviceTrackedConfigProvider: BootDeviceTrackedConfigProvider,
     private val appStateProvider: AppStateProvider,
     private val deviceEventRepository: DeviceEventRepository,
-    private val handleEventUseCase:HandleEventUseCase,
+    private val handleEventUseCase: HandleEventUseCase,
     private val resourcesProvider: ResourcesProvider
 ) : BootCallback {
 
