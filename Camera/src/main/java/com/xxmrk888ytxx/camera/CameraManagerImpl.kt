@@ -12,8 +12,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
+import com.xxmrk888ytxx.coredeps.logcatMessageD
 import java.io.File
 import javax.inject.Inject
+import kotlin.math.log
 
 /**
  * [Ru]
@@ -47,34 +49,46 @@ class CameraManagerImpl @Inject constructor(private val context: Context) : Life
         onSuccess:() -> Unit,
         onErrorCreate:(e:Exception) -> Unit
     ) {
-        onCreate()
-        val imageCapture = ImageCapture
-            .Builder()
-            .setJpegQuality(80)
-            .build()
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
-        val cameraProvider = ProcessCameraProvider.getInstance(context).get()
-        handler.post {
-            cameraProvider.unbindAll()
-            cameraProvider.bindToLifecycle(
-                this, CameraSelector.DEFAULT_FRONT_CAMERA,imageCapture)
-        }
-        imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(context),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    onSuccess()
-                    onDestroy(cameraProvider)
-                }
-
-                override fun onError(exception: ImageCaptureException) {
-                    onErrorCreate(exception)
-                    onDestroy(cameraProvider)
-                }
-
+        try {
+            onCreate()
+            val imageCapture = ImageCapture
+                .Builder()
+                .setJpegQuality(80)
+                .build()
+            val outputOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
+            val cameraProvider = ProcessCameraProvider.getInstance(context).get()
+            handler.post {
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    this, CameraSelector.DEFAULT_FRONT_CAMERA,imageCapture)
             }
-        )
+            imageCapture.takePicture(
+                outputOptions,
+                ContextCompat.getMainExecutor(context),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                        onSuccess()
+                        onDestroy(cameraProvider)
+                    }
+
+                    override fun onError(exception: ImageCaptureException) {
+                        onErrorCreate(exception)
+                        onDestroy(cameraProvider)
+                    }
+
+                }
+            )
+        }catch (e:Exception) {
+            if(lifecycle.currentState == Lifecycle.State.RESUMED) {
+                try {
+                    onDestroy(ProcessCameraProvider.getInstance(context).get())
+                }catch (e:Exception) {
+                    logcatMessageD("Error unBind camera after exception ${e.printStackTrace()}")
+                }
+            }
+            onErrorCreate(e)
+            logcatMessageD("Create photo error ${e.printStackTrace()}")
+        }
 
     }
 
