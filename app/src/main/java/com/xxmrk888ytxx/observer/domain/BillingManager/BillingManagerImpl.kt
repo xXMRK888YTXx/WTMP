@@ -8,6 +8,7 @@ import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PurchaseCallback.PurchaseListenerManager
 import com.xxmrk888ytxx.coredeps.ifNotNull
+import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.observer.DI.AppScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,16 +60,20 @@ internal class BillingManagerImpl @Inject constructor(
     }
 
     override fun connectToGooglePlay() {
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    ApplicationScope.launch { requestProducts() }
+        try {
+            billingClient.startConnection(object : BillingClientStateListener {
+                override fun onBillingSetupFinished(billingResult: BillingResult) {
+                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                        ApplicationScope.launch { requestProducts() }
+                    }
                 }
-            }
-            override fun onBillingServiceDisconnected() {
-                connectToGooglePlay()
-            }
-        })
+                override fun onBillingServiceDisconnected() {
+                    connectToGooglePlay()
+                }
+            })
+        }catch (e:Exception) {
+            logcatMessageD("Error connection to Google Play ${e.stackTraceToString()}")
+        }
     }
 
     private fun requestProducts() {
