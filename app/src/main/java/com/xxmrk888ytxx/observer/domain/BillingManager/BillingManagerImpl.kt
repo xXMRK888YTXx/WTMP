@@ -11,6 +11,7 @@ import com.xxmrk888ytxx.coredeps.ifNotNull
 import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.observer.DI.AppScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ internal class BillingManagerImpl @Inject constructor(
     private val purchaseListenerManager: PurchaseListenerManager
 ) : BillingManager {
 
-    private val productIdMap:MutableMap<String,ProductDetails?> = mutableMapOf(
+    private val productIdMap: MutableMap<String, ProductDetails?> = mutableMapOf(
         supportOn5ProductId to null,
         supportOn10ProductId to null,
         supportOn15ProductId to null
@@ -49,8 +50,9 @@ internal class BillingManagerImpl @Inject constructor(
                 .build()
 
             billingClient.acknowledgePurchase(acknowledgePurchaseParams) { billingClient ->
-                if(billingClient.responseCode == BillingClient.BillingResponseCode.OK) {
+                if (billingClient.responseCode == BillingClient.BillingResponseCode.OK) {
                     ApplicationScope.launch(Dispatchers.IO) {
+                        if(!adStateManager.isNeedShowAd.first()) return@launch
                         adStateManager.changeAdState(false)
                         purchaseListenerManager.notifyListeners()
                     }
@@ -67,11 +69,12 @@ internal class BillingManagerImpl @Inject constructor(
                         ApplicationScope.launch { requestProducts() }
                     }
                 }
+
                 override fun onBillingServiceDisconnected() {
                     connectToGooglePlay()
                 }
             })
-        }catch (e:Exception) {
+        } catch (e: Exception) {
             logcatMessageD("Error connection to Google Play ${e.stackTraceToString()}")
         }
     }
@@ -90,32 +93,32 @@ internal class BillingManagerImpl @Inject constructor(
 
         billingClient.queryProductDetailsAsync(params) { billingResult, prodDetailsList ->
             prodDetailsList.forEach {
-               if(productIdMap.containsKey(it.productId)) {
-                   productIdMap[it.productId] = it
-               }
+                if (productIdMap.containsKey(it.productId)) {
+                    productIdMap[it.productId] = it
+                }
             }
         }
     }
 
     override fun buyDeveloperSupportOn5Dollars(activity: Activity) {
         productIdMap[supportOn5ProductId].ifNotNull {
-            sendBuyRequest(this,activity)
+            sendBuyRequest(this, activity)
         }
     }
 
     override fun buyDeveloperSupportOn10Dollars(activity: Activity) {
         productIdMap[supportOn10ProductId].ifNotNull {
-            sendBuyRequest(this,activity)
+            sendBuyRequest(this, activity)
         }
     }
 
     override fun buyDeveloperSupportOn15Dollars(activity: Activity) {
         productIdMap[supportOn15ProductId].ifNotNull {
-            sendBuyRequest(this,activity)
+            sendBuyRequest(this, activity)
         }
     }
 
-    private fun sendBuyRequest(product:ProductDetails,activity: Activity) {
+    private fun sendBuyRequest(product: ProductDetails, activity: Activity) {
         val productDetailsParamsList = listOf(
             BillingFlowParams.ProductDetailsParams.newBuilder()
                 .setProductDetails(product)
@@ -127,6 +130,20 @@ internal class BillingManagerImpl @Inject constructor(
             .build()
 
         billingClient.launchBillingFlow(activity, billingFlowParams)
+    }
+
+    override fun restorePurchases() {
+        billingClient.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP)
+                .build()
+        ) { billingResult: BillingResult, purchases: List<Purchase> ->
+            if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) return@queryPurchasesAsync
+            purchases.forEach {
+                if (it.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                    verifyPurchase(listOf(it))
+                }
+            }
+        }
     }
 
     companion object {

@@ -25,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -61,6 +63,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import remember
 import theme.*
 import javax.inject.Inject
@@ -308,6 +311,11 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
 
     override fun onResume() {
         super.onResume()
+        lifecycleScope.launchWhenResumed() {
+            withContext(Dispatchers.Default) {
+                billingManager.get().restorePurchases()
+            }
+        }
         activityViewModel.onResume()
     }
 

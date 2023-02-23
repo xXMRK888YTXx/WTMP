@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.supportdeveloperscreen
 
 import MutliUse.LazySpacer
+import MutliUse.StyleButton
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -116,6 +117,18 @@ fun SupportDeveloperScreen(
                     )
                 }
                 LazySpacer(10)
+            }
+
+            LazySpacer(15)
+
+            Column(
+                Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                StyleButton(text = stringResource(R.string.Restore_purchases)) {
+                    supportDeveloperViewModel.restorePurchase()
+                }
             }
 
             LazySpacer(15)
