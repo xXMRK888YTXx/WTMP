@@ -3,11 +3,14 @@ package com.xxmrk888ytxx.supportdeveloperscreen
 import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.coredeps.ifNotNull
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SupportDeveloperViewModel @Inject constructor(
@@ -64,6 +67,12 @@ class SupportDeveloperViewModel @Inject constructor(
     fun buyDeveloperSupportOn15Dollars() {
         activity.ifNotNull {
             billingManager.buyDeveloperSupportOn15Dollars(this)
+        }
+    }
+
+    internal fun restorePurchase() {
+        viewModelScope.launch(Dispatchers.Default) {
+            billingManager.restorePurchases()
         }
     }
 

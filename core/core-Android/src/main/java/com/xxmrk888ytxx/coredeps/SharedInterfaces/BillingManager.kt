@@ -10,4 +10,5 @@ interface BillingManager {
     fun buyDeveloperSupportOn10Dollars(activity:Activity)
 
     fun buyDeveloperSupportOn15Dollars(activity:Activity)
+    fun restorePurchases()
 }
