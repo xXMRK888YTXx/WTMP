@@ -26,7 +26,7 @@ class WorkerManagerImpl @Inject constructor(
             .build()
 
         WorkManager.getInstance(context)
-            .enqueueUniqueWork("SendTelegramMessageWorker", ExistingWorkPolicy.KEEP,worker)
+            .enqueueUniqueWork("SendTelegramMessageWorker", ExistingWorkPolicy.APPEND_OR_REPLACE,worker)
     }
 
     override fun sendPhotoTelegram(
@@ -47,7 +47,7 @@ class WorkerManagerImpl @Inject constructor(
             .build()
 
         WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
-            ExistingWorkPolicy.KEEP,worker)
+            ExistingWorkPolicy.APPEND_OR_REPLACE,worker)
     }
 
     override fun createImageWorker(imageDir:String) {
@@ -58,7 +58,7 @@ class WorkerManagerImpl @Inject constructor(
             .build()
 
         WorkManager.getInstance(context).enqueueUniqueWork("MakeImageWorker",
-            ExistingWorkPolicy.KEEP,worker)
+            ExistingWorkPolicy.APPEND_OR_REPLACE,worker)
     }
 
     override suspend fun createMultiRequest(request:suspend WorkerManager.() -> Unit) {
@@ -72,7 +72,7 @@ class WorkerManagerImpl @Inject constructor(
         if(sendMessageTelegramWorker != null) {
             WorkManager.getInstance(context)
             WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
-                ExistingWorkPolicy.KEEP,sendMessageTelegramWorker)
+                ExistingWorkPolicy.APPEND_OR_REPLACE,sendMessageTelegramWorker)
         }
 
         if(sendPhotoTelegramWorker != null&&createImageWorker != null) {
@@ -83,12 +83,12 @@ class WorkerManagerImpl @Inject constructor(
         } else {
             if(sendMessageTelegramWorker != null) {
                 WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
-                    ExistingWorkPolicy.KEEP,sendMessageTelegramWorker)
+                    ExistingWorkPolicy.APPEND_OR_REPLACE,sendMessageTelegramWorker)
             }
 
             if(createImageWorker != null) {
                 WorkManager.getInstance(context).enqueueUniqueWork("MakeImageWorker",
-                    ExistingWorkPolicy.KEEP,createImageWorker)
+                    ExistingWorkPolicy.APPEND_OR_REPLACE,createImageWorker)
             }
         }
 
