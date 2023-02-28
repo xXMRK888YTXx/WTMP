@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.size.Scale
 import coil.size.Size
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.coredeps.toDateString
@@ -91,12 +92,12 @@ fun CreatedImageViewer(eventDetailsViewModel: EventDetailsViewModel) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .dispatcher(Dispatchers.Default)
-                    .size(1600,1080)
+                    .size(Size(1600,1200))
                     .data((eventDetailsViewModel.screenState.value as? ScreenState.ShowEvent)?.image)
                     .build()
                 ,
                 contentDescription = "",
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
             )
         }
     } else {
