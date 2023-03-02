@@ -8,6 +8,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.Data
 import androidx.work.WorkerParameters
 import com.xxmrk888ytxx.coredeps.DepsProvider.getDepsByApplication
+import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.workers.DI.DaggerWorkerComponent
 import kotlinx.coroutines.delay
 import java.io.File
@@ -78,7 +79,8 @@ class MakeImageWorker(
             cameraManager.createPhoto(
                 imagePath,
                 onErrorCreate = {
-                    throw it
+                    logcatMessageD("Error create image e:${it.stackTraceToString()}")
+                    result = Result.retry()
                 },
                 onSuccess = {
                     val output = Data
@@ -96,6 +98,7 @@ class MakeImageWorker(
             throw e
         }
         catch (e:Exception) {
+            logcatMessageD("Error create image in worker e:${e.stackTraceToString()}")
             return Result.retry()
         }
     }

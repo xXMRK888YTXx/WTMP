@@ -14,8 +14,8 @@ android {
         applicationId = Config.packageName
         minSdk = Config.minSdk
         targetSdk = Config.compileSdk
-        versionCode = 14
-        versionName = "1.1.2r"
+        versionCode = 15
+        versionName = "1.1.3r"
 
         testInstrumentationRunner =  "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

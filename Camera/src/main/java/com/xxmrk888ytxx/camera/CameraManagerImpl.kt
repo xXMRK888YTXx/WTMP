@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.camera
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Size
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -54,6 +55,7 @@ class CameraManagerImpl @Inject constructor(private val context: Context) : Life
             val imageCapture = ImageCapture
                 .Builder()
                 .setJpegQuality(80)
+                .setTargetResolution(Size(1600,1200))
                 .build()
             val outputOptions = ImageCapture.OutputFileOptions.Builder(outputFile).build()
             val cameraProvider = ProcessCameraProvider.getInstance(context).get()
