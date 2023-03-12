@@ -1,116 +1,132 @@
 
-En
+# [En] Project structure description
 
-This is the "WTMP" application project
+## [core] 
+This module is used to store other modules with dependencies and common code that are often
+are used. This module should not contain any code. Only necessary dependencies.
 
-Description of modules
+## [core:core-Android]
+This module stores core dependencies and common code for Android, testing, viewModels
 
-[core] - This module is used to store other modules with dependencies and common code that are often
-     are used. This module should not contain any code. Only necessary dependencies.
+## [core:core-Compose]
+This module includes [core:core-Android], used to store core dependencies + core Compose
 
-[core:core-Android] - This module stores core dependencies and common code for Android, testing, viewModels
+## [AdminReceiver]  
+This module contains a receiver that handles events that are not correct password and screen unlock
 
-[core:core-Compose] - This module includes @[core:core-Android], used to store
-     core dependencies + core Compose
+## [UserActivityStats]
+The module contains the implementation of the interface for receiving application usage statistics.
 
-[AdminReceiver] - This module contains a receiver that handles events that are not correct
-   password and screen unlock
+## [Camera]
+The module contains the implementation of the interface for receiving photos from the device's camera
 
-[UserActivityStats] - the module contains the implementation of the interface for receiving
-   application usage statistics.
+## [Api-Telegram]
+This module contains api for sending messages through a bot to Telegram
 
-[Camera] - the module contains the implementation of the interface for receiving photos from the device's camera
+## [Workers]
+Workers are stored in this module to perform work in the background
 
-[Api-Telegram] - this module contains api for sending messages through a bot to Telegram
+## [MainScreen]
+This module contains the main screen of the application
 
-[Workers] - workers are stored in this module to perform work in the background
+## [EventListScreen] 
+This module contains a screen in which all events collected are displayed application
 
-[MainScreen] - this module contains the main screen of the application
+## [PackageInfoProvider]
+This module contains the codebase for getting information about others applications
 
-[EventListScreen] - this module contains a screen in which all events collected are displayed
-     application
+## [SettingsScreen]
+This module contains the screen where the application settings are located
 
-[PackageInfoProvider] - this module contains the codebase for getting information about others
-     applications
+## [TelegramSetupScreen]
+Telegram bot data entry screen
 
-[SettingsScreen] - this module contains the screen where the application settings are located
+## [CryptoManager]
+The module contains a class for data encryption
 
-[CryptoManager] - Encryption class
+## [Database] 
+Module with application database
 
-[TelegramSetupScreen] - Telegram bot data entry screen
+## [BootReceiver]
+The module contains a receiver to receive information about the device startup
 
-[CryptoManager] - The module contains a class for data encryption
+## [EnterPasswordScreen]
+The module contains a basic screen for entering a password to enter the application
 
-[Database] - Module with application database
+## [EventDetailsScreen]
+The module contains a screen that shows the details of events collected by the application
 
-[BootReceiver] - The module contains a receiver to receive information about the device startup
+## [EventDeviceTracker]
+The module contains a service that collects device events (screen unlock, application opening)
 
-[EnterPasswordScreen] - The module contains a basic screen for entering a password to enter the application
+## [SelectTrackedAppScreen]
+The module contains a screen for selecting applications to be tracked application
 
-[EventDetailsScreen] - The module contains a screen that shows the details of events collected by the application
-
-[EventDeviceTracker] - The module contains a service that collects device events (screen unlock, application opening)
-
-[SelectTrackedAppScreen] - The module contains a screen for selecting applications to be tracked
-application
-
-[SetupAppPasswordScreen] - The module contains a specially configured [EnterPasswordScreen]
- to set / remove a password to enter the application
+## [SetupAppPasswordScreen]
+The module contains a specially configured [EnterPasswordScreen] to set / remove a password to enter the application
 
 
-Ru
-Это проект приложения "WTMP"
+# [Ru] Описание структуры проекта
 
-Описание модулей
+## [core]
+Этот модуль используется для хранения других модулей с зависимостями и общим кодом которые часто используются. В этом модуле,не должен находится какой либо код.Только необходимые зависимости.
 
-[core] - Этот модуль используется для хранения других модулей с зависимостями и общим кодом которые часто
-    используются. В этом модуле,не должен находится какой либо код.Только необходимые зависимости.
+## [core:core-Android]
+В этом модуле хранятся core завивисимости и общий код для Android, тестирования, viewModels
 
-[core:core-Android] - В этом модуле хранятся core завивисимости и общий код для Android, тестирования, viewModels
+## [core:core-Compose]
+Этот модуль включает в себя [core:core-Android], используется для хранения core зависимостей + core Compose
 
-[core:core-Compose] - Этот модуль включает в себя @[core:core-Android], используется для хранения
-    core зависимостей + core Compose
+## [AdminReceiver]
+Этот модуль в котором находится ресивер который обрабатывает события не правильного пароля и разблокировки экрана
 
-[AdminReceiver] - Этот модуль в котором находится ресивер который обрабатывает события не правильного
-    пароля и разблокировки экрана
+## [UserActivityStats]
+В модуле находится реализация интерфейса для получение статистики использования приложений.
 
-[UserActivityStats] - в модуле находится реализация интерфейса для получение
-    статистики использования приложений.
+## [Camera]
+В модуле находится реализация интерфейса для получение фотографий с камеры устройства
 
-[Camera] - в модуле находится реализация интерфейса для получение фотографий с камеры устройства
+## [Api-Telegram]
+В этом модуле находится api для отправки сообщений через бота в Telegram
 
-[Api-Telegram] - в этом модуле находится api для отправки сообщений через бота в Telegram
+## [Workers]
+В этом модуле хранятся worker`ы для выполнение работы в фоне
 
-[Workers] - в этом модуле хранятся worker`ы для выполнение работы в фоне
+## [MainScreen]
+В этом модуле находится главный экран приложения
 
-[MainScreen] - в этом модуле находится главный экран приложения
+## [EventListScreen]
+В этом модуле находится экран в котором, отображается всё события собранные приложением
 
-[EventListScreen] - в этом модуле находится экран в котором, отображается всё события собранные
-    приложением
+## [PackageInfoProvider]
+В этом модуле находится кодовая база для получения информации о других приложениях
 
-[PackageInfoProvider] - в этом модуле находится кодовая база для получения информации о других
-    приложениях
+## [SettingsScreen]
+В этом модуле находится экран в котором, находятся настройки приложения
 
-[SettingsScreen] - в этом модуле находится экран в котором, находятся настройки приложения
+## [CryptoManager]
+В модуле находится класс для шифрования данных
 
-[CryptoManager] - В модуле находится класс для шифрования данных
+## [TelegramSetupScreen]
+Экран для ввода данных бота Telegram
 
-[TelegramSetupScreen] - Экран для ввода данных бота Telegram
+## [Database]
+Модуль с базой данных приложения
 
-[Database] - Модуль с базой данных приложения
+## [BootReceiver]
+В модуле находится ресивер для получения информации о запуске устройства
 
-[BootReceiver] - В модуле находится ресивер для получения информации о запуске устройства
+## [EnterPasswordScreen]
+В модуле находится базовый экран для ввода пароля для входа в приложение
 
-[EnterPasswordScreen] - В модуле находится базовый экран для ввода пароля для входа в приложение
+## [EventDetailsScreen]
+В модуле находится экран который  показывает подробности, событий собираемые приложением
 
-[EventDetailsScreen] - В модуле находится экран который  показывает подробности,
- событий собираемые приложением
+## [EventDeviceTracker]
+В модуле находится сервис который собирает события устройства(разблокировка экрана,открытие приложений)
 
-[EventDeviceTracker] - В модуле находится сервис который собирает
-события устройства(разблокировка экрана,открытие приложений)
+## [SelectTrackedAppScreen]
+В модуле находится экран для выбора приложений, которые будут отслеживаться приложением
 
-[SelectTrackedAppScreen] - В модуле находится экран для выбора приложений, которые будут отслеживаться
-приложением
-
-[SetupAppPasswordScreen] - В модуле находится специально настроенный [EnterPasswordScreen]
-для установки/удаление пароля для входа в приложение
+## [SetupAppPasswordScreen]
+В модуле находится специально настроенный [EnterPasswordScreen] для установки/удаление пароля для входа в приложение
