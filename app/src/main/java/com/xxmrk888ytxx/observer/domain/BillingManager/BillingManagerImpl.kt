@@ -29,7 +29,7 @@ internal class BillingManagerImpl @Inject constructor(
     )
 
     private val purchasesUpdatedListener by lazy {
-        PurchasesUpdatedListener { billingResult, purchases ->
+        PurchasesUpdatedListener { _, purchases ->
             purchases.ifNotNull { verifyPurchase(this) }
         }
     }
@@ -91,7 +91,7 @@ internal class BillingManagerImpl @Inject constructor(
             .setProductList(requestedProducts)
             .build()
 
-        billingClient.queryProductDetailsAsync(params) { billingResult, prodDetailsList ->
+        billingClient.queryProductDetailsAsync(params) { _, prodDetailsList ->
             prodDetailsList.forEach {
                 if (productIdMap.containsKey(it.productId)) {
                     productIdMap[it.productId] = it

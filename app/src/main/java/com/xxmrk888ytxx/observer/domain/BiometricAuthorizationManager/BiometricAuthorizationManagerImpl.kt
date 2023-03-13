@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.xxmrk888ytxx.observer.domain.BiometricAuthorizationManager
 
 import android.content.Context

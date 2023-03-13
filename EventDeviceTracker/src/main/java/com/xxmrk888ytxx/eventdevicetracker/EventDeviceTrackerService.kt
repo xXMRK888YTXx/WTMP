@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.xxmrk888ytxx.eventdevicetracker
 
 import android.accessibilityservice.AccessibilityService

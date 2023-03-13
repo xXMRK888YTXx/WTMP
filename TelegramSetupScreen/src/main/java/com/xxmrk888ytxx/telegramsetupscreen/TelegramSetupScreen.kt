@@ -102,9 +102,9 @@ fun TelegramSetupScreen(telegramViewModel: TelegramViewModel, navigator: Navigat
                         )
                     }
 
-                ) { screenState ->
+                ) { _screenState ->
                     Column(Modifier.fillMaxWidth()) {
-                        when (screenState) {
+                        when (_screenState) {
 
                             is ScreenState.ChangeTelegramConfigState -> {
                                 InputTelegramConfigForm(
@@ -379,8 +379,8 @@ internal fun TelegramDataSaveLabel(telegramViewModel: TelegramViewModel) {
                     targetOffsetX = { it }
                 )
             }
-        ) { isTelegramRequestProcessNow ->
-            if(isTelegramRequestProcessNow) {
+        ) { _isTelegramRequestProcessNow ->
+            if(_isTelegramRequestProcessNow) {
                 Box(
                     Modifier
                         .fillMaxWidth(),

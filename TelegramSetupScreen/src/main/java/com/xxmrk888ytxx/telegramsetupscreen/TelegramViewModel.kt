@@ -17,6 +17,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.launchAndCancelChildren
 import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
+import com.xxmrk888ytxx.coredeps.sendOpenWebSiteIntent
 import com.xxmrk888ytxx.telegramsetupscreen.models.ScreenState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
@@ -218,7 +219,7 @@ class TelegramViewModel @Inject constructor(
 
     internal fun toTelegramSetupGuide(context: Context) {
         val url = context.getString(R.string.Setup_telegram_url)
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        context.sendOpenWebSiteIntent(url)
     }
 
     /**

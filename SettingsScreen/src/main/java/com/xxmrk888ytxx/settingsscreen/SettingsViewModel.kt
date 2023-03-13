@@ -8,8 +8,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.xxmrk888ytxx.coredeps.Const
 import com.xxmrk888ytxx.coredeps.Const.DEVELOPER_EMAIL
+import com.xxmrk888ytxx.coredeps.Const.DONTKILLMYAPP_URL
+import com.xxmrk888ytxx.coredeps.Const.PRIVACY_POLICY_URL
+import com.xxmrk888ytxx.coredeps.Const.SOURCE_CODE_REPOSITORY_URL
+import com.xxmrk888ytxx.coredeps.Const.TERMS_URL
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordChanger
@@ -26,6 +29,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTracked
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.models.*
+import com.xxmrk888ytxx.coredeps.sendCreateEmailIntent
+import com.xxmrk888ytxx.coredeps.sendOpenWebSiteIntent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -59,9 +64,10 @@ class SettingsViewModel @Inject constructor(
     @SuppressLint("ResourceType")
     @MustBeLocalization
     internal fun sendIntentToWriteDeveloper(context: Context) {
-        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$DEVELOPER_EMAIL"))
-        context.startActivity(Intent.createChooser(emailIntent,
-            resourcesProvider.getString(R.string.Write_to_the_developer)))
+        context.sendCreateEmailIntent(
+            DEVELOPER_EMAIL,
+            resourcesProvider.getString(R.string.Write_to_the_developer)
+        )
     }
 
     val appVersion: String by lazy {
@@ -285,11 +291,11 @@ class SettingsViewModel @Inject constructor(
     internal val numberInvalidAttemptsDropDownState = mutableStateOf(false)
 
     internal fun openPolicyPrivacy(context: Context) {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Const.PRIVACY_POLICY)))
+        context.sendOpenWebSiteIntent(PRIVACY_POLICY_URL)
     }
 
     internal fun openTerms(context: Context) {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Const.TERMS)))
+        context.sendOpenWebSiteIntent(TERMS_URL)
     }
 
     internal fun showSelectLocaleDialog() {
@@ -318,13 +324,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     internal fun openDontKillMyAppWebSite(context: Context) {
-        val url = "https://dontkillmyapp.com/"
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        context.sendOpenWebSiteIntent(DONTKILLMYAPP_URL)
     }
 
     internal fun openSourceCodePage(context: Context) {
-        val url = "https://github.com/xXMRK888YTXx/WTMP"
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        context.sendOpenWebSiteIntent(SOURCE_CODE_REPOSITORY_URL)
     }
 
 }

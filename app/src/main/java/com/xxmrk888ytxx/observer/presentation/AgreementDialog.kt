@@ -2,8 +2,6 @@ package com.xxmrk888ytxx.observer.presentation
 
 import MutliUse.LazySpacer
 import MutliUse.YesNoDialog
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,8 +18,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.xxmrk888ytxx.coredeps.Const.PRIVACY_POLICY
-import com.xxmrk888ytxx.coredeps.Const.TERMS
+import com.xxmrk888ytxx.coredeps.Const.PRIVACY_POLICY_URL
+import com.xxmrk888ytxx.coredeps.Const.TERMS_URL
+import com.xxmrk888ytxx.coredeps.sendOpenWebSiteIntent
 import com.xxmrk888ytxx.observer.R
 import theme.Purple500
 import theme.primaryFontColor
@@ -76,9 +75,7 @@ internal fun AgreementDialog(
                 Text(
                     text = stringResource(R.string.Terms_of_Use),
                     modifier = Modifier.clickable {
-                        val browserIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(TERMS))
-                        context.startActivity(browserIntent)
+                        context.sendOpenWebSiteIntent(TERMS_URL)
                     },
                     fontSize = 17.sp,
                     color = Purple500,
@@ -118,9 +115,7 @@ internal fun AgreementDialog(
                 Text(
                     text = stringResource(R.string.Privacy_policy),
                     modifier = Modifier.clickable {
-                        val browserIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY))
-                        context.startActivity(browserIntent)
+                        context.sendOpenWebSiteIntent(PRIVACY_POLICY_URL)
                     },
                     fontSize = 17.sp,
                     color = Purple500,
