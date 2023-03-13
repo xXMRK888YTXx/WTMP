@@ -1,6 +1,8 @@
 package com.xxmrk888ytxx.coredeps
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonDataException
@@ -192,5 +194,23 @@ fun logcatMessageD(text:String) {
 inline fun <reified T : Any> T?.ifNotNull(onNotNull:T.() -> Unit) {
     if(this != null) {
         onNotNull(this)
+    }
+}
+
+fun Context.sendOpenWebSiteIntent(url:String) {
+    try {
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(browserIntent)
+    }catch (e:Exception) {
+        Log.e("MyLog","Exception when try send ACTION_VIEW intent ${e.stackTraceToString()}")
+    }
+}
+
+fun Context.sendCreateEmailIntent(email:String,chooserDescription:String) {
+    try {
+        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
+        startActivity(Intent.createChooser(emailIntent,chooserDescription))
+    }catch (e:Exception) {
+        Log.e("MyLog","Exception when try send ACTION_SENDTO intent ${e.stackTraceToString()}")
     }
 }
