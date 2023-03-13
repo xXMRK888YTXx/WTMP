@@ -14,9 +14,6 @@ This module includes [core:core-Android], used to store core dependencies + core
 ## [AdminReceiver]  
 This module contains a receiver that handles events that are not correct password and screen unlock
 
-## [UserActivityStats]
-The module contains the implementation of the interface for receiving application usage statistics.
-
 ## [Camera]
 The module contains the implementation of the interface for receiving photos from the device's camera
 
@@ -79,9 +76,6 @@ The module contains a specially configured [EnterPasswordScreen] to set / remove
 
 ## [AdminReceiver]
 Этот модуль в котором находится ресивер который обрабатывает события не правильного пароля и разблокировки экрана
-
-## [UserActivityStats]
-В модуле находится реализация интерфейса для получение статистики использования приложений.
 
 ## [Camera]
 В модуле находится реализация интерфейса для получение фотографий с камеры устройства
