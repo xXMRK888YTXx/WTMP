@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.database.Entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -35,6 +36,6 @@ import androidx.room.PrimaryKey
 )
 internal data class DeviceEventEntity(
     @PrimaryKey(autoGenerate = true) val eventId:Int = 0,
-    val time:Long,
+    @ColumnInfo("time") val time:Long,
     val eventType:Short
 )

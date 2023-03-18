@@ -70,6 +70,14 @@ class DeviceEventRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getPagingData(page: Int, limit: Int): List<DeviceEvent> {
+        mutex.withLock {
+            val event = deviceEventDao.getPagingEvent(page * limit, limit)
+
+            return event.mapNotNull { it.mapToDeviceEvent() }
+        }
+    }
+
     override fun getEvent(eventId: Int): Flow<DeviceEvent> {
         return deviceEventDao.getEvent(eventId).map {
             mutex.withLock {

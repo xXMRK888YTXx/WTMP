@@ -33,6 +33,8 @@ interface DeviceEventRepository {
      */
     fun getEventInTimeSpan(start:Long,end:Long) : Flow<List<DeviceEvent>>
 
+    suspend fun getPagingData(page:Int,limit:Int) : List<DeviceEvent>
+
     /**
      * [Ru]
      * Возвращает событие, по его id

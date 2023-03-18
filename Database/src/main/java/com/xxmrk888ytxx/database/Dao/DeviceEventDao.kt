@@ -16,6 +16,10 @@ internal interface DeviceEventDao {
     @Transaction
     fun getEventInTimeSpan(start:Long,end:Long) : Flow<List<DeviceEventModel>>
 
+    @Query("SELECT * FROM DeviceEvent ORDER BY time DESC LIMIT :limit OFFSET :offset")
+    @Transaction
+    suspend fun getPagingEvent(offset:Int,limit:Int) : List<DeviceEventModel>
+
     @Query("SELECT * FROM DeviceEvent WHERE eventId = :eventId")
     @Transaction
     fun getEvent(eventId: Int) : Flow<DeviceEventModel>
