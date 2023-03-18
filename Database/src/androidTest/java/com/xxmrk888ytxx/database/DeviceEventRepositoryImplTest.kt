@@ -303,6 +303,27 @@ internal class DeviceEventRepositoryImplTest {
         coVerify(exactly = 2) { maxStorageReportUseCase.execute(repo) }
         coVerify(exactly = 2) { maxTimeStorageReportUseCase.execute(repo) }
     }
+
+    @Test
+    fun testGetAllEventMethodExpectReturnsEventSortedByDescending() = runTest {
+        val list = getTestEventList()
+
+        list.forEach { repo.addEvent(it) }
+
+        Assert.assertEquals(list.sortedByDescending { it.time },repo.getAllEvents().first())
+    }
+
+    @Test
+    fun testGetEventInTimeSpanMethodExpectReturnsEventSortedByDescending() = runTest {
+        val list = getTestEventList()
+
+        list.forEach { repo.addEvent(it) }
+
+        Assert.assertEquals(list.sortedByDescending { it.time } ,repo.getEventInTimeSpan(
+            start = list.minOf { it.time },
+            end = list.maxOf { it.time }
+        ).first())
+    }
 }
 
 
