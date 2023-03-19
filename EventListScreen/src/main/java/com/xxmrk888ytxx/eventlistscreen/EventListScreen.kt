@@ -6,11 +6,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
@@ -32,6 +30,7 @@ import remember
 import theme.BackGroundColor
 import theme.openSansFont
 import theme.primaryFontColor
+import theme.progressIndicatorColor
 
 /**
  * [Ru]
@@ -47,9 +46,11 @@ import theme.primaryFontColor
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
-    val eventList = eventViewModel.eventList.collectAsState(mapOf())
+    val screenState = eventViewModel.screenState.collectAsState()
+    val eventList = eventViewModel.sortedByDateEventList.collectAsState(mapOf())
     val isRemoveDialogShow = eventViewModel.isRemoveDialogShow.remember()
     val isNeedShowAd = eventViewModel.isNeedShowAd.collectAsState(false)
+
     Scaffold(
         Modifier.fillMaxSize(),
         backgroundColor = Color.Transparent,
@@ -91,7 +92,7 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
                             LazySpacer(height = 5)
                         }
                     }
-                    items(dayEvents.value,key = {it.eventId}) { event ->
+                    items(dayEvents.value,key = { it.eventId }) { event ->
                         Box(Modifier.animateItemPlacement()) {
                             val onDeleteEvent = {
                                 eventViewModel.showRemoveEventDialog(event.eventId)
@@ -106,6 +107,25 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
                 }
             }
             else item { ListStub() }
+
+            if(!screenState.value.isAllPageLoaded) {
+                item {
+
+                    eventViewModel.requestNewPageData()
+
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = progressIndicatorColor
+                        )
+                    }
+                }
+            }
+
+
         }
 
     }

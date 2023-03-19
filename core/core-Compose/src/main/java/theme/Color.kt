@@ -26,3 +26,4 @@ val floatButtonColor = checkedSettingsSwitch
 val dropDownColor = Color(0xFF2C3947)
 val selectedRadioButtonColor = Color(0xFF5849C2)
 val unselectedRadioButtonColor = Color(0xFF303F4F)
+val progressIndicatorColor = Color(0xFF5849C2)

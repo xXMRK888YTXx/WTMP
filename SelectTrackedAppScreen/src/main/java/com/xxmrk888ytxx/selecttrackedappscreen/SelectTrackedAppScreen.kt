@@ -31,6 +31,7 @@ import remember
 import theme.checkedSettingsSwitch
 import theme.openSansFont
 import theme.primaryFontColor
+import theme.progressIndicatorColor
 
 @Composable
 fun SelectTrackedAppScreen(
@@ -77,7 +78,7 @@ fun SelectTrackedAppScreen(
         }
         if(screenState.value is ScreenState.Loading) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = progressIndicatorColor)
             }
         }
     }
