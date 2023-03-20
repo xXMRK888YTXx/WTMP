@@ -57,7 +57,7 @@ class DeviceEventRepositoryImpl @Inject constructor(
     override fun getAllEvents(): Flow<List<DeviceEvent>> {
         return deviceEventDao.getAllEvents().map { eventList ->
             mutex.withLock {
-                eventList.mapNotNull { it.mapToDeviceEvent() }.sortedByDescending { it.time }
+                eventList.mapNotNull { it.mapToDeviceEvent() }
             }
         }
     }
@@ -65,8 +65,16 @@ class DeviceEventRepositoryImpl @Inject constructor(
     override fun getEventInTimeSpan(start: Long, end: Long): Flow<List<DeviceEvent>> {
         return deviceEventDao.getEventInTimeSpan(start, end).map { eventList ->
             mutex.withLock {
-                eventList.mapNotNull { it.mapToDeviceEvent() }.sortedByDescending { it.time }
+                eventList.mapNotNull { it.mapToDeviceEvent() }
             }
+        }
+    }
+
+    override suspend fun getPagingData(page: Int, limit: Int): List<DeviceEvent> {
+        mutex.withLock {
+            val event = deviceEventDao.getPagingEvent(page * limit, limit)
+
+            return event.mapNotNull { it.mapToDeviceEvent() }
         }
     }
 

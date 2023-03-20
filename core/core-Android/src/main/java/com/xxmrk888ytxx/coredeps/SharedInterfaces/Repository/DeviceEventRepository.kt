@@ -35,6 +35,31 @@ interface DeviceEventRepository {
 
     /**
      * [Ru]
+     *
+     * Данный метод используется для пагинации получаемых данных
+     *
+     * @param page - запрашиваемая страница
+     *
+     * @param limit - размер страницы
+     *
+     * Нумерация страниц начинается с 0
+     */
+
+    /**
+     * [En]
+     *
+     * This method is used for pagination of the received data
+     *
+     * @param page - requested page
+     *
+     * @param limit - page size
+     *
+     * Page numbering starts from 0
+     */
+    suspend fun getPagingData(page:Int,limit:Int) : List<DeviceEvent>
+
+    /**
+     * [Ru]
      * Возвращает событие, по его id
      */
     /**

@@ -303,6 +303,57 @@ internal class DeviceEventRepositoryImplTest {
         coVerify(exactly = 2) { maxStorageReportUseCase.execute(repo) }
         coVerify(exactly = 2) { maxTimeStorageReportUseCase.execute(repo) }
     }
+
+    @Test
+    fun testGetAllEventMethodExpectReturnsEventSortedByDescending() = runTest {
+        val list = getTestEventList()
+
+        list.forEach { repo.addEvent(it) }
+
+        Assert.assertEquals(list.sortedByDescending { it.time },repo.getAllEvents().first())
+    }
+
+    @Test
+    fun testGetEventInTimeSpanMethodExpectReturnsEventSortedByDescending() = runTest {
+        val list = getTestEventList()
+
+        list.forEach { repo.addEvent(it) }
+
+        Assert.assertEquals(list.sortedByDescending { it.time } ,repo.getEventInTimeSpan(
+            start = list.minOf { it.time },
+            end = list.maxOf { it.time }
+        ).first())
+    }
+
+    @Test
+    fun requestPagingEventExpectReturnEventByPage() = runBlocking {
+        val limit = 10
+        val page1 = (1..10).map { DeviceEvent.AttemptUnlockDevice.Failed(it,it.toLong()) }.sortedByDescending { it.time }
+        val page2 = (11..20).map { DeviceEvent.DeviceLaunch(it,it.toLong()) }.sortedByDescending { it.time }
+        val page3 = (21..30).map { DeviceEvent.AppOpen(it,null,"",null,it.toLong()) }.sortedByDescending { it.time }
+        (page3 + page2 + page1).forEach { repo.addEvent(it) }
+
+        val page1DB = repo.getPagingData(0,limit)
+        val page2DB = repo.getPagingData(1,limit)
+        val page3DB = repo.getPagingData(2,limit)
+
+        Assert.assertEquals(page3.map { it.time },page1DB.map { it.time })
+        Assert.assertEquals(page2.map { it.time },page2DB.map { it.time })
+        Assert.assertEquals(page1.map { it.time },page3DB.map { it.time })
+    }
+
+    @Test
+    fun requestPagingEventMoreCountInPageAndNotExistPageExpectInFirstPageReturnAllEventInSecondPageEmptyList() = runBlocking {
+        val limit = 10
+        val page = (1..5).map { DeviceEvent.AttemptUnlockDevice.Failed(it,it.toLong()) }.sortedByDescending { it.time }
+        (page).forEach { repo.addEvent(it) }
+
+        val page1DB = repo.getPagingData(0,limit)
+        val page2DB = repo.getPagingData(1,limit)
+
+        Assert.assertEquals(page.map { it.time },page1DB.map { it.time })
+        Assert.assertEquals(emptyList<DeviceEvent>(),page2DB)
+    }
 }
 
 
