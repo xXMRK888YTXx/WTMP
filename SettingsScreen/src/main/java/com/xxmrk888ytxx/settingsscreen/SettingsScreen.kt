@@ -51,6 +51,8 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
     val isSuspendParamsDialogVisible = settingsViewModel.isSuspendParamsDialogVisible.remember()
     val selectedWeekDayInSuspendParamsDialog = settingsViewModel
         .selectedWeekDayInSuspendParamsDialog.collectAsState()
+    val workTimeSpanInSetSuspendDialog = settingsViewModel.workTimeSpanInSetSuspendDialog
+        .remember()
 
     val categoryPadding = 15
     LazyColumn(Modifier.fillMaxSize()) {
@@ -202,8 +204,12 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
                     newSet
                 }
-            }
-
+            },
+            currentSelectedTimeSpan = workTimeSpanInSetSuspendDialog.value,
+            updateStartTimeSpan = settingsViewModel::setStartTimeSpanInSuspendDialog,
+            updateEndTimeSpan = settingsViewModel::setEndTimeSpanInSuspendDialog,
+            resetPickedTime = settingsViewModel::resetTimeSpanInSuspendDialog,
+            saveChanges = settingsViewModel::saveChangesInTimeSpanInSuspendDialog
         )
     }
 }

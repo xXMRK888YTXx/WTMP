@@ -61,4 +61,10 @@
     <string name="No_limits">Без ограничений</string>
     <string name="Set_limit">Установить лимит</string>
     <string name="Save">Сохранить</string>
+    <string name="Choose_days_of_work">Выберете рабочие дни приложения</string>
+    <string name="Start">Начало</string>
+    <string name="End">Конец</string>
+    <string name="Reset">Сброс</string>
+    <string name="Choose_start_time">Выберете время начала</string>
+    <string name="Choose_end_time">Выберете время конца</string>
 </resources>

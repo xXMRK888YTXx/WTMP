@@ -30,6 +30,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -46,5 +47,8 @@ android {
 
 dependencies {
     implementation(project(Project.core.core_Compose.route))
+    coreLibraryDesugaring(Desugar.time)
+    implementation(Deps.MaterialDialog.materialDialogs)
     kapt(Deps.Dagger.DaggerKaptCompiler)
+
 }

@@ -66,7 +66,6 @@ class EventViewModel @Inject constructor(
             deviceEventRepository.getPagingData(page,pageSize)
         },
         onNextKey = { currentKey, newData ->
-            println(newData)
             if(newData.isEmpty()) {
                 return@DefaultPaginator null
             }

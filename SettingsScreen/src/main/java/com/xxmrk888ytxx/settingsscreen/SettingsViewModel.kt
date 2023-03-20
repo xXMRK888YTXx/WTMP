@@ -2,8 +2,6 @@ package com.xxmrk888ytxx.settingsscreen
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -115,12 +113,42 @@ class SettingsViewModel @Inject constructor(
         .asStateFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), setOf())
 
+    private val _workTimeSpanInSetSuspendDialog = mutableStateOf(TimeSpan.NO_SETUP)
+
+    internal val workTimeSpanInSetSuspendDialog = _workTimeSpanInSetSuspendDialog.toState()
+
     fun showSuspendParamsDialog() {
         _isSuspendParamsDialogVisible.value = true
+        //TODO Load workTimeSpanInSetSuspendDialog state
     }
 
     fun hideSuspendParamsDialog() {
         _isSuspendParamsDialogVisible.value = false
+        _workTimeSpanInSetSuspendDialog.value = TimeSpan.NO_SETUP
+    }
+
+    internal fun setStartTimeSpanInSuspendDialog(time:Int) {
+        if(!_isSuspendParamsDialogVisible.value) return
+
+        _workTimeSpanInSetSuspendDialog.value = _workTimeSpanInSetSuspendDialog.value.copy(
+            start = time.toLong()
+        )
+    }
+
+    internal fun setEndTimeSpanInSuspendDialog(time:Int) {
+        if(!_isSuspendParamsDialogVisible.value) return
+
+        _workTimeSpanInSetSuspendDialog.value = _workTimeSpanInSetSuspendDialog.value.copy(
+            end = time.toLong()
+        )
+    }
+
+    internal fun resetTimeSpanInSuspendDialog() {
+        _workTimeSpanInSetSuspendDialog.value = TimeSpan.NO_SETUP
+    }
+
+    internal fun saveChangesInTimeSpanInSuspendDialog() {
+        //TODO
     }
 
     internal fun updateSelectedWeekDayInSuspendParamsDialog(onChange: (Set<WeekDay>) -> Set<WeekDay>) {

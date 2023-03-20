@@ -64,4 +64,10 @@
     <string name="No_limits">No limits</string>
     <string name="Set_limit">Set limit</string>
     <string name="Save">Save</string>
+    <string name="Choose_days_of_work">Choose days of work</string>
+    <string name="Start">Start</string>
+    <string name="End">End</string>
+    <string name="Reset">Reset</string>
+    <string name="Choose_start_time">Choose start time</string>
+    <string name="Choose_end_time">Choose end time</string>
 </resources>

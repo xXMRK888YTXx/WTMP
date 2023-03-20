@@ -124,6 +124,7 @@ object Deps {
     object Billing {
         const val billing = "com.android.billingclient:billing-ktx:5.1.0"
     }
-
-
+    object MaterialDialog {
+        const val materialDialogs = "io.github.vanpra.compose-material-dialogs:datetime:0.9.0"
+    }
 }
