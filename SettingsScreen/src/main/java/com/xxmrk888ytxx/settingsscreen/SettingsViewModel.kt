@@ -32,8 +32,7 @@ import com.xxmrk888ytxx.coredeps.models.*
 import com.xxmrk888ytxx.coredeps.sendCreateEmailIntent
 import com.xxmrk888ytxx.coredeps.sendOpenWebSiteIntent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import toState
 import javax.inject.Inject
@@ -86,10 +85,10 @@ class SettingsViewModel @Inject constructor(
     internal val appOpenConfig: Flow<AppOpenConfig>
         get() = appOpenConfigProvider.config
 
-    internal val bootDeviceConfig : Flow<BootDeviceTrackedConfig>
+    internal val bootDeviceConfig: Flow<BootDeviceTrackedConfig>
         get() = bootDeviceTrackedConfigProvider.config
 
-    internal val currentSelectedLocale:MutableState<SupportedLanguage> =
+    internal val currentSelectedLocale: MutableState<SupportedLanguage> =
         mutableStateOf(SupportedLanguage.System)
 
     private val _selectLocaleDialogShowState = mutableStateOf(false)
@@ -106,19 +105,44 @@ class SettingsViewModel @Inject constructor(
 
     internal val maxTimeStoreReportsDropDownDialogState = mutableStateOf(false)
 
+    private val _isSuspendParamsDialogVisible = mutableStateOf(false)
+
+    internal val isSuspendParamsDialogVisible = _isSuspendParamsDialogVisible.toState()
+
+    private val _selectedWeekDayInSuspendParamsDialog = MutableStateFlow(setOf<WeekDay>())
+
+    internal val selectedWeekDayInSuspendParamsDialog = _selectedWeekDayInSuspendParamsDialog
+        .asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), setOf())
+
+    fun showSuspendParamsDialog() {
+        _isSuspendParamsDialogVisible.value = true
+    }
+
+    fun hideSuspendParamsDialog() {
+        _isSuspendParamsDialogVisible.value = false
+    }
+
+    internal fun updateSelectedWeekDayInSuspendParamsDialog(onChange: (Set<WeekDay>) -> Set<WeekDay>) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val current = selectedWeekDayInSuspendParamsDialog.value
+            _selectedWeekDayInSuspendParamsDialog.emit(onChange(current))
+        }
+    }
+
     internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateIsTracked(state)
         }
     }
 
-    internal fun updateTimeOperationLimitFailedUnlockTrackedConfig(newTime:Int) {
+    internal fun updateTimeOperationLimitFailedUnlockTrackedConfig(newTime: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
         }
     }
 
-    internal fun updateCountFailedUnlockToTrigger(newCount:Int) {
+    internal fun updateCountFailedUnlockToTrigger(newCount: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateCountFailedUnlockToTrigger(newCount)
         }
@@ -148,7 +172,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    internal fun updateTimeOperationLimitSucceededUnlockTrackedConfig(newTime:Int) {
+    internal fun updateTimeOperationLimitSucceededUnlockTrackedConfig(newTime: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
         }
@@ -178,7 +202,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    internal fun updateTimeOperationLimitAppOpenConfig(newTime:Int) {
+    internal fun updateTimeOperationLimitAppOpenConfig(newTime: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             appOpenConfigChanger.updateTimeOperationLimit(newTime)
         }
@@ -226,13 +250,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    internal fun updateMaxReportCountStorageConfig(newValue:Int) {
+    internal fun updateMaxReportCountStorageConfig(newValue: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             storageConfigChanger.updateMaxReportCount(newValue)
         }
     }
 
-    internal fun updateMaxReportStorageTimeStorageConfig(newValue:Long) {
+    internal fun updateMaxReportStorageTimeStorageConfig(newValue: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             storageConfigChanger.updateMaxReportStorageTime(newValue)
         }
@@ -242,7 +266,8 @@ class SettingsViewModel @Inject constructor(
 
     internal fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetupFlow()
 
-    internal fun getFingerPrintAuthorizationState() = appPasswordProvider.isFingerPrintAuthorizationEnabled()
+    internal fun getFingerPrintAuthorizationState() =
+        appPasswordProvider.isFingerPrintAuthorizationEnabled()
 
     internal fun updateFingerPrintAuthorizationState(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -255,36 +280,42 @@ class SettingsViewModel @Inject constructor(
     }
 
     internal var cashedFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
-        FailedUnlockTrackedConfig(isTracked = false,
+        FailedUnlockTrackedConfig(
+            isTracked = false,
             timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = false,
             notifyInTelegram = false,
-            joinPhotoToTelegramNotify = false)
+            joinPhotoToTelegramNotify = false
+        )
 
     internal var cashedSucceededUnlockTrackedConfig: SucceededUnlockTrackedConfig =
-        SucceededUnlockTrackedConfig(isTracked = false,
+        SucceededUnlockTrackedConfig(
+            isTracked = false,
             timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
-            joinPhotoToTelegramNotify = false)
+            joinPhotoToTelegramNotify = false
+        )
 
-    internal var cashedAppOpenConfig: AppOpenConfig = AppOpenConfig(isTracked = false,
+    internal var cashedAppOpenConfig: AppOpenConfig = AppOpenConfig(
+        isTracked = false,
         timeOperationLimit = 0,
         makePhoto = false,
         notifyInTelegram = false,
-        joinPhotoToTelegramNotify = false)
+        joinPhotoToTelegramNotify = false
+    )
 
     internal var cashedBootDeviceConfig: BootDeviceTrackedConfig = BootDeviceTrackedConfig(
         isTracked = false, makePhoto = false,
         notifyInTelegram = false, joinPhotoToTelegramNotify = false
     )
 
-    internal var cashedIsAppPasswordSetup : Boolean = false
+    internal var cashedIsAppPasswordSetup: Boolean = false
 
     internal var cashedStorageConfig = StorageConfig()
-    
-    internal val isFingerPrintScannerAvailable : Boolean by lazy {
+
+    internal val isFingerPrintScannerAvailable: Boolean by lazy {
         biometricAuthorizationManager.isFingerPrintScannerAvailable()
     }
 
@@ -316,7 +347,7 @@ class SettingsViewModel @Inject constructor(
 
     @SuppressLint("ResourceType")
     internal fun requestIgnoreBatteryOptimisation() {
-        if(!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
+        if (!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
             permissionsManager.requestIgnoreBatteryOptimization()
         } else {
             toastManager.showToast(R.string.Ignore_battery_optimization_already_enabled)

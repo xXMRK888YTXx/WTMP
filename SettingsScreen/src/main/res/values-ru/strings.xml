@@ -54,4 +54,11 @@
     <string name="Three_weeks">3 недели</string>
     <string name="one_month">1 месяц</string>
     <string name="Source_code">Исходный код</string>
+    <string name="Suspending_by_time">Приостановка работы приложения по времени</string>
+    <string name="Suspending_the_application">Приостановка работы приложения</string>
+    <string name="Suspend_setting">Настройка приостановки</string>
+    <string name="Working_hours">Время работы</string>
+    <string name="No_limits">Без ограничений</string>
+    <string name="Set_limit">Установить лимит</string>
+    <string name="Save">Сохранить</string>
 </resources>

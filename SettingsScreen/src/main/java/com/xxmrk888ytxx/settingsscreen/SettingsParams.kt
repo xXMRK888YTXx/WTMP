@@ -499,6 +499,25 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
 
 @SuppressLint("ResourceType")
 @Composable
+internal fun getWorkSuspendParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+    return listOf(
+        SettingsParamType.Switch(
+            text = stringResource(R.string.Suspending_by_time),
+            icon = R.drawable.ic_time_limit,
+            isSwitched = false,
+            onStateChanged = {  }
+        ),
+
+        SettingsParamType.Button(
+            text = stringResource(R.string.Suspend_setting),
+            icon = R.drawable.ic_settings_suspend,
+            onClick = { settingsViewModel.showSuspendParamsDialog() }
+        )
+    )
+}
+
+@SuppressLint("ResourceType")
+@Composable
 internal fun getBatteryOptimizationParams(
     settingsViewModel: SettingsViewModel,
 ): List<SettingsParamType> {

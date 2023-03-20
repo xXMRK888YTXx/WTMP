@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +48,11 @@ import theme.*
 fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
     val selectLocaleDialogShowState = settingsViewModel.selectLocaleDialogShowState.remember()
+    val isSuspendParamsDialogVisible = settingsViewModel.isSuspendParamsDialogVisible.remember()
+    val selectedWeekDayInSuspendParamsDialog = settingsViewModel
+        .selectedWeekDayInSuspendParamsDialog.collectAsState()
 
+    val categoryPadding = 15
     LazyColumn(Modifier.fillMaxSize()) {
 
         item {
@@ -66,7 +71,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                     )
                 )
             )
-            LazySpacer(15)
+            LazySpacer(categoryPadding)
         }
 
         item {
@@ -75,7 +80,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 getFailedUnlockDeviceParams(settingsViewModel)
             )
 
-            LazySpacer(height = 15)
+            LazySpacer(height = categoryPadding)
         }
 
         item {
@@ -85,7 +90,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 getSucceededUnlockDeviceParams(settingsViewModel)
             )
 
-            LazySpacer(height = 15)
+            LazySpacer(height = categoryPadding)
         }
 
         item {
@@ -95,7 +100,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 getAppOpenObserverParams(settingsViewModel, navigator)
             )
 
-            LazySpacer(height = 15)
+            LazySpacer(height = categoryPadding)
         }
 
         item {
@@ -104,7 +109,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 settingsParams = getBootDeviceParams(settingsViewModel)
             )
 
-            LazySpacer(height = 15)
+            LazySpacer(height = categoryPadding)
         }
 
         item {
@@ -114,7 +119,16 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 )
             )
 
-            LazySpacer(15)
+            LazySpacer(categoryPadding)
+        }
+
+        item {
+            SettingsCategory(
+                categoryName = stringResource(R.string.Suspending_the_application),
+                settingsParams = getWorkSuspendParams(settingsViewModel)
+            )
+
+            LazySpacer(categoryPadding)
         }
 
         item {
@@ -123,7 +137,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 settingsParams = getBatteryOptimizationParams(settingsViewModel)
             )
 
-            LazySpacer(height = 15)
+            LazySpacer(height = categoryPadding)
         }
 
         item {
@@ -132,7 +146,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 getSecureParams(settingsViewModel, navigator)
             )
 
-            LazySpacer(15)
+            LazySpacer(categoryPadding)
         }
 
         item {
@@ -141,7 +155,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 getTelegramOptionsParams(navigator)
             )
 
-            LazySpacer(height = 15)
+            LazySpacer(height = categoryPadding)
         }
 
         item {
@@ -150,7 +164,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 settingsParams = getLocalisationParams(settingsViewModel)
             )
 
-            LazySpacer(15)
+            LazySpacer(categoryPadding)
         }
 
         item {
@@ -159,12 +173,38 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
                 getAppInfoParams(settingsViewModel)
             )
 
-            LazySpacer(height = 15)
+            LazySpacer(height = categoryPadding)
         }
     }
 
     if (selectLocaleDialogShowState.value) {
         SelectLocaleDialog(settingsViewModel)
+    }
+
+    if(isSuspendParamsDialogVisible.value) {
+        SetSuspendParamsDialog(
+            onCancel = settingsViewModel::hideSuspendParamsDialog,
+            pickedWeekDays = selectedWeekDayInSuspendParamsDialog.value,
+            onPickWeekDay = {
+                settingsViewModel.updateSelectedWeekDayInSuspendParamsDialog { selected ->
+                    val newSet = selected.toMutableSet()
+
+                    newSet.add(it)
+
+                    newSet
+                }
+            },
+            onCancelPickDay = {
+                settingsViewModel.updateSelectedWeekDayInSuspendParamsDialog { selected ->
+                    val newSet = selected.toMutableSet()
+
+                    newSet.remove(it)
+
+                    newSet
+                }
+            }
+
+        )
     }
 }
 

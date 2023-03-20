@@ -12,4 +12,11 @@
     <string name="October">October</string>
     <string name="November">November</string>
     <string name="December">December</string>
+    <string name="Monday_literal">Mo.</string>
+    <string name="Tuesday_literal">Tu.</string>
+    <string name="Wednesday_literal">We.</string>
+    <string name="Thursday_literal">Th.</string>
+    <string name="Friday_literal">Fr.</string>
+    <string name="Saturday_literal">Sa.</string>
+    <string name="Sunday_literal">Su.</string>
 </resources>

@@ -57,4 +57,11 @@
     <string name="Three_weeks">3 weeks</string>
     <string name="one_month">1 month</string>
     <string name="Source_code">Source code</string>
+    <string name="Suspending_by_time">Suspend by time</string>
+    <string name="Suspending_the_application">Suspending work the application</string>
+    <string name="Suspend_setting">Suspend setting</string>
+    <string name="Working_hours">Working hours</string>
+    <string name="No_limits">No limits</string>
+    <string name="Set_limit">Set limit</string>
+    <string name="Save">Save</string>
 </resources>
