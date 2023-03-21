@@ -12,6 +12,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventReposito
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.FailedUnlockLimitManagerQualifier
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.IsNowWorkTimeCheckUseCase
 import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.observer.R
@@ -33,6 +34,7 @@ internal class AdminDeviceController @Inject constructor(
     private val resourcesProvider: ResourcesProvider,
     @FailedUnlockLimitManagerQualifier
     private val timeOperationLimitManager: TimeOperationLimitManager<Nothing>,
+    private val isNowWorkTimeCheckUseCase: IsNowWorkTimeCheckUseCase
 ) : AdminEventsCallback {
 
     override fun onAdminEnabled() {
@@ -57,7 +59,8 @@ internal class AdminDeviceController @Inject constructor(
             if (!config.first().isTracked ||
                 !appStateProvider.isAppEnable.first() ||
                 config.first().countFailedUnlockToTrigger > currentFailedPasswordAttempts ||
-                timeOperationLimitManager.isLimitEnable(config.first().timeOperationLimit)
+                timeOperationLimitManager.isLimitEnable(config.first().timeOperationLimit) ||
+                !isNowWorkTimeCheckUseCase.execute()
             ) return@launch
 
             if(config.first().timeOperationLimit != 0)

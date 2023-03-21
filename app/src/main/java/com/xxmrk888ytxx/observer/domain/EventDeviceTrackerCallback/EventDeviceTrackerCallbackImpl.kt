@@ -13,6 +13,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.AppOpenLimitManagerQualifier
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.SucceededUnlockLimitManagerQualifier
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.IsNowWorkTimeCheckUseCase
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerParams
@@ -38,6 +39,7 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
     private val timeOperationLimitManagerForScreenOn: TimeOperationLimitManager<Nothing>,
     @AppOpenLimitManagerQualifier
     private val timeOperationLimitManagerAppOpen: TimeOperationLimitManager<String>,
+    private val isNowWorkTimeCheckUseCase: IsNowWorkTimeCheckUseCase
 ) : EventDeviceTrackerCallback {
 
     override val params: EventDeviceTrackerParams
@@ -54,7 +56,7 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 || !isTrackedPackageName(packageName) || timeOperationLimitManagerAppOpen.isLimitEnable(
                     config.first().timeOperationLimit,
                     packageName
-                )
+                ) || !isNowWorkTimeCheckUseCase.execute()
             ) return@launch
 
             if (config.first().timeOperationLimit != 0)
@@ -96,8 +98,10 @@ internal class EventDeviceTrackerCallbackImpl @Inject constructor(
                 succeededUnlockTrackedConfigProvider.config
             }
 
-            if (!config.first().isTracked || !appStateProvider.isAppEnable.first()
-                || timeOperationLimitManagerForScreenOn.isLimitEnable(config.first().timeOperationLimit)
+            if (!config.first().isTracked || !appStateProvider.isAppEnable.first() ||
+                timeOperationLimitManagerForScreenOn.isLimitEnable(
+                    config.first().timeOperationLimit
+                ) || !isNowWorkTimeCheckUseCase.execute()
             ) return@launch
 
             if (config.first().timeOperationLimit != 0)
