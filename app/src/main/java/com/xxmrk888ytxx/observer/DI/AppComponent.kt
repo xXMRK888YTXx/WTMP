@@ -59,7 +59,8 @@ import javax.inject.Provider
         StorageConfigManagerModule::class,
         MaxTimeStorageReportUseCaseModule::class,
         MaxStorageReportUseCaseModule::class,
-        WorkTimeConfigManagerModule::class
+        WorkTimeConfigManagerModule::class,
+        IsNowWorkTimeCheckUseCaseModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

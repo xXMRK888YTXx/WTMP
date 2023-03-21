@@ -8,8 +8,11 @@ data class TimeSpan(
         get() {
             if(this == NO_SETUP) return true
 
-            return (start > 0 && end > 0) && start < end
+            return (start >= 0 && end > 0) && start < end
         }
+
+    fun inTimeSpan(time:Long) = time in start..end
+
     companion object {
         val NO_SETUP = TimeSpan(-1,-1)
     }
