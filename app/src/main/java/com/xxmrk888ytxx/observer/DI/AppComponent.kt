@@ -58,7 +58,9 @@ import javax.inject.Provider
         RemoveEventImageUseCaseModule::class,
         StorageConfigManagerModule::class,
         MaxTimeStorageReportUseCaseModule::class,
-        MaxStorageReportUseCaseModule::class
+        MaxStorageReportUseCaseModule::class,
+        WorkTimeConfigManagerModule::class,
+        IsNowWorkTimeCheckUseCaseModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

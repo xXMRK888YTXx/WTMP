@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.models.StorageConfig
+import com.xxmrk888ytxx.coredeps.models.WorkTimeConfig
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
 import remember
 
@@ -493,6 +494,34 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
                 .find { it.first == storageConfig.value.maxReportStorageTime }?.second
                 ?: maxTimeStoreReportsNameTimePair[0].second,
             hideDropDownAfterSelect = true
+        )
+    )
+}
+
+@SuppressLint("ResourceType")
+@Composable
+internal fun getWorkSuspendParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+    val workTimeConfig = settingsViewModel.workTimeConfig.collectAsState(
+        settingsViewModel.cashedWorkTimeConfig
+    )
+
+    SideEffect {
+        settingsViewModel.cashedWorkTimeConfig = workTimeConfig.value
+    }
+
+    return listOf(
+        SettingsParamType.Switch(
+            text = stringResource(R.string.Suspending_by_time),
+            icon = R.drawable.ic_time_limit,
+            isSwitched = workTimeConfig.value.isLimitTimeEnabled,
+            onStateChanged = settingsViewModel::updateIsLimitTimeEnabled
+        ),
+
+        SettingsParamType.Button(
+            text = stringResource(R.string.Suspend_setting),
+            icon = R.drawable.ic_settings_suspend,
+            onClick = settingsViewModel::showSuspendParamsDialog,
+            isVisible = workTimeConfig.value.isLimitTimeEnabled
         )
     )
 }

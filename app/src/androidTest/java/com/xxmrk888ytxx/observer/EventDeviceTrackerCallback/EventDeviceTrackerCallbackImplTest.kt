@@ -6,6 +6,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTracked
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TrackedAppRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.IsNowWorkTimeCheckUseCase
 import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
 import com.xxmrk888ytxx.coredeps.models.SucceededUnlockTrackedConfig
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
@@ -30,12 +31,14 @@ class EventDeviceTrackerCallbackImplTest {
     private val trackedAppRepository:TrackedAppRepository = mockk(relaxed = true)
     private val appOpenConfig:AppOpenConfigProvider = mockk(relaxed = true)
     private val timeOperationLimitManager: TimeOperationLimitManager<Nothing> = mockk(relaxed = true)
+    private val isNowWorkTimeCheckUseCase: IsNowWorkTimeCheckUseCase = mockk(relaxed = true)
 
     private val eventDeviceTrackerCallback
     :EventDeviceTrackerCallback = EventDeviceTrackerCallbackImpl(
         deviceEventRepository, succeededUnlockTrackedConfigProvider, handleEventUseCase,appOpenConfig,
         trackedAppRepository,mockk(relaxed = true),appStateProvider,mockk(relaxed = true),
-        mockk(relaxed = true),mockk(relaxed = true),timeOperationLimitManager
+        mockk(relaxed = true),mockk(relaxed = true),timeOperationLimitManager,
+        mockk(relaxed = true),isNowWorkTimeCheckUseCase
     )
 
     @Before
@@ -43,6 +46,7 @@ class EventDeviceTrackerCallbackImplTest {
         val list = MutableStateFlow(listOf("test"))
         coEvery { trackedAppRepository.getAllTrackedPackageNames() } returns list
         coEvery { timeOperationLimitManager.isLimitEnable(any()) } returns false
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns true
     }
 
     @Test
@@ -219,6 +223,70 @@ class EventDeviceTrackerCallbackImplTest {
         coVerify(exactly = 2) { handleEventUseCase.execute(
             any(),true,true,false,any()
         ) }
+    }
+
+    @Test
+    fun callOnOpenAppChangedWithNowWorkTimeCheckUseCaseTrueAndFalseExpectCallbackWorkOnlyOneAttempt() = runBlocking {
+        val flow: MutableSharedFlow<AppOpenConfig> = MutableStateFlow(
+            AppOpenConfig(
+                isTracked = true,
+                timeOperationLimit = 0,
+                makePhoto = true,
+                notifyInTelegram = true,
+                joinPhotoToTelegramNotify = false
+            )
+        )
+        val appState = MutableStateFlow<Boolean>(true)
+
+        coEvery { appOpenConfig.config } returns flow
+        coEvery { appStateProvider.isAppEnable } returns appState
+
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns true
+
+        eventDeviceTrackerCallback.onOpenAppChanged("test")
+        delay(50)
+
+        coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 1) { handleEventUseCase.execute(any(),any(),any(),any(),any()) }
+
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns false
+        eventDeviceTrackerCallback.onOpenAppChanged("test")
+        delay(50)
+
+        coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 1) { handleEventUseCase.execute(any(),any(),any(),any(),any()) }
+    }
+
+    @Test
+    fun callOnScreenOnWithNowWorkTimeCheckUseCaseTrueAndFalseExpectCallbackWorkOnlyOneAttempt() = runBlocking {
+        val flow: MutableSharedFlow<SucceededUnlockTrackedConfig> = MutableStateFlow(
+            SucceededUnlockTrackedConfig(
+                isTracked = true,
+                timeOperationLimit = 0,
+                makePhoto = true,
+                notifyInTelegram = true,
+                joinPhotoToTelegramNotify = false
+            )
+        )
+        val appState = MutableStateFlow<Boolean>(true)
+
+        coEvery { succeededUnlockTrackedConfigProvider.config } returns flow
+        coEvery { appStateProvider.isAppEnable } returns appState
+
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns true
+
+        eventDeviceTrackerCallback.onScreenOn()
+        delay(50)
+
+        coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 1) { handleEventUseCase.execute(any(),any(),any(),any(),any()) }
+
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns false
+        eventDeviceTrackerCallback.onScreenOn()
+        delay(50)
+
+        coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 1) { handleEventUseCase.execute(any(),any(),any(),any(),any()) }
     }
 
 }

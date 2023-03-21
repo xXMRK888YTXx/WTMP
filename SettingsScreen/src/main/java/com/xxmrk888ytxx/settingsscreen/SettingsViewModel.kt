@@ -2,8 +2,6 @@ package com.xxmrk888ytxx.settingsscreen
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -28,13 +26,15 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.StorageConfig.StorageC
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.WorkDayConfig.WorkTimeConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.WorkDayConfig.WorkTimeConfigProvider
 import com.xxmrk888ytxx.coredeps.models.*
 import com.xxmrk888ytxx.coredeps.sendCreateEmailIntent
 import com.xxmrk888ytxx.coredeps.sendOpenWebSiteIntent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import toState
 import javax.inject.Inject
 
@@ -59,6 +59,8 @@ class SettingsViewModel @Inject constructor(
     private val toastManager: ToastManager,
     private val storageConfigProvider: StorageConfigProvider,
     private val storageConfigChanger: StorageConfigChanger,
+    private val workTimeConfigChanger: WorkTimeConfigChanger,
+    private val workTimeConfigProvider: WorkTimeConfigProvider
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -86,10 +88,10 @@ class SettingsViewModel @Inject constructor(
     internal val appOpenConfig: Flow<AppOpenConfig>
         get() = appOpenConfigProvider.config
 
-    internal val bootDeviceConfig : Flow<BootDeviceTrackedConfig>
+    internal val bootDeviceConfig: Flow<BootDeviceTrackedConfig>
         get() = bootDeviceTrackedConfigProvider.config
 
-    internal val currentSelectedLocale:MutableState<SupportedLanguage> =
+    internal val currentSelectedLocale: MutableState<SupportedLanguage> =
         mutableStateOf(SupportedLanguage.System)
 
     private val _selectLocaleDialogShowState = mutableStateOf(false)
@@ -106,19 +108,113 @@ class SettingsViewModel @Inject constructor(
 
     internal val maxTimeStoreReportsDropDownDialogState = mutableStateOf(false)
 
+    private val _isSuspendParamsDialogVisible = mutableStateOf(false)
+
+    internal val isSuspendParamsDialogVisible = _isSuspendParamsDialogVisible.toState()
+
+    private val _selectedWeekDayInSuspendParamsDialog = MutableStateFlow(setOf<WeekDay>())
+
+    internal val selectedWeekDayInSuspendParamsDialog = _selectedWeekDayInSuspendParamsDialog
+        .asStateFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), setOf())
+
+    private val _workTimeSpanInSetSuspendDialog = mutableStateOf(TimeSpan.NO_SETUP)
+
+    internal val workTimeSpanInSetSuspendDialog = _workTimeSpanInSetSuspendDialog.toState()
+
+    internal val workTimeConfig:Flow<WorkTimeConfig> = workTimeConfigProvider.workConfigFlow
+
+    fun showSuspendParamsDialog() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val config = workTimeConfigProvider.workConfigFlow.first()
+            _selectedWeekDayInSuspendParamsDialog.emit(config.workWeekDays)
+
+            withContext(Dispatchers.Main) {
+                _workTimeSpanInSetSuspendDialog.value = config.workTimeSpan
+                _isSuspendParamsDialogVisible.value = true
+            }
+        }
+
+    }
+
+    fun hideSuspendParamsDialog() {
+        _isSuspendParamsDialogVisible.value = false
+        _workTimeSpanInSetSuspendDialog.value = TimeSpan.NO_SETUP
+    }
+
+    internal fun setStartTimeSpanInSuspendDialog(time:Int) {
+        if(!_isSuspendParamsDialogVisible.value) return
+
+        _workTimeSpanInSetSuspendDialog.value = _workTimeSpanInSetSuspendDialog.value.copy(
+            start = time.toLong()
+        )
+    }
+
+    internal fun setEndTimeSpanInSuspendDialog(time:Int) {
+        if(!_isSuspendParamsDialogVisible.value) return
+
+        _workTimeSpanInSetSuspendDialog.value = _workTimeSpanInSetSuspendDialog.value.copy(
+            end = time.toLong()
+        )
+    }
+
+    internal fun resetTimeSpanInSuspendDialog() {
+        _workTimeSpanInSetSuspendDialog.value = TimeSpan.NO_SETUP
+    }
+
+    @SuppressLint("ResourceType")
+    private fun isInputDataInSuspendDialogValid(): Boolean {
+        if(_selectedWeekDayInSuspendParamsDialog.value.isEmpty()) {
+            toastManager.showToast(R.string.Choose_at_least_one_working_day)
+            return false
+        }
+
+        if(!_workTimeSpanInSetSuspendDialog.value.isValid) {
+            toastManager.showToast(R.string.Incorrect_time_entered)
+            return false
+        }
+
+        return true
+    }
+
+    internal fun saveChangesInTimeSpanInSuspendDialog() {
+        if(!isInputDataInSuspendDialogValid()) return
+
+        val newWorkTimeSpan = _workTimeSpanInSetSuspendDialog.value
+        val newWorkWeekDays = _selectedWeekDayInSuspendParamsDialog.value
+        hideSuspendParamsDialog()
+        viewModelScope.launch(Dispatchers.IO) {
+            workTimeConfigChanger.updateWorkTimeSpan(newWorkTimeSpan)
+            workTimeConfigChanger.updateWorkWeekDays(newWorkWeekDays)
+        }
+    }
+
+    internal fun updateIsLimitTimeEnabled(newState:Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            workTimeConfigChanger.updateIsLimitTimeEnabled(newState)
+        }
+    }
+
+    internal fun updateSelectedWeekDayInSuspendParamsDialog(onChange: (Set<WeekDay>) -> Set<WeekDay>) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val current = selectedWeekDayInSuspendParamsDialog.value
+            _selectedWeekDayInSuspendParamsDialog.emit(onChange(current))
+        }
+    }
+
     internal fun updateIsTrackedFailedUnlockTrackedConfig(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateIsTracked(state)
         }
     }
 
-    internal fun updateTimeOperationLimitFailedUnlockTrackedConfig(newTime:Int) {
+    internal fun updateTimeOperationLimitFailedUnlockTrackedConfig(newTime: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
         }
     }
 
-    internal fun updateCountFailedUnlockToTrigger(newCount:Int) {
+    internal fun updateCountFailedUnlockToTrigger(newCount: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             failedUnlockTrackedConfigChanger.updateCountFailedUnlockToTrigger(newCount)
         }
@@ -148,7 +244,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    internal fun updateTimeOperationLimitSucceededUnlockTrackedConfig(newTime:Int) {
+    internal fun updateTimeOperationLimitSucceededUnlockTrackedConfig(newTime: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             succeededUnlockTrackedConfigChanger.updateTimeOperationLimit(newTime)
         }
@@ -178,7 +274,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    internal fun updateTimeOperationLimitAppOpenConfig(newTime:Int) {
+    internal fun updateTimeOperationLimitAppOpenConfig(newTime: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             appOpenConfigChanger.updateTimeOperationLimit(newTime)
         }
@@ -226,13 +322,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    internal fun updateMaxReportCountStorageConfig(newValue:Int) {
+    internal fun updateMaxReportCountStorageConfig(newValue: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             storageConfigChanger.updateMaxReportCount(newValue)
         }
     }
 
-    internal fun updateMaxReportStorageTimeStorageConfig(newValue:Long) {
+    internal fun updateMaxReportStorageTimeStorageConfig(newValue: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             storageConfigChanger.updateMaxReportStorageTime(newValue)
         }
@@ -242,7 +338,8 @@ class SettingsViewModel @Inject constructor(
 
     internal fun isAppPasswordSetup(): Flow<Boolean> = appPasswordProvider.isPasswordSetupFlow()
 
-    internal fun getFingerPrintAuthorizationState() = appPasswordProvider.isFingerPrintAuthorizationEnabled()
+    internal fun getFingerPrintAuthorizationState() =
+        appPasswordProvider.isFingerPrintAuthorizationEnabled()
 
     internal fun updateFingerPrintAuthorizationState(state: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -255,36 +352,44 @@ class SettingsViewModel @Inject constructor(
     }
 
     internal var cashedFailedUnlockTrackedConfig: FailedUnlockTrackedConfig =
-        FailedUnlockTrackedConfig(isTracked = false,
+        FailedUnlockTrackedConfig(
+            isTracked = false,
             timeOperationLimit = 0,
             countFailedUnlockToTrigger = 1,
             makePhoto = false,
             notifyInTelegram = false,
-            joinPhotoToTelegramNotify = false)
+            joinPhotoToTelegramNotify = false
+        )
 
     internal var cashedSucceededUnlockTrackedConfig: SucceededUnlockTrackedConfig =
-        SucceededUnlockTrackedConfig(isTracked = false,
+        SucceededUnlockTrackedConfig(
+            isTracked = false,
             timeOperationLimit = 0,
             makePhoto = false,
             notifyInTelegram = false,
-            joinPhotoToTelegramNotify = false)
+            joinPhotoToTelegramNotify = false
+        )
 
-    internal var cashedAppOpenConfig: AppOpenConfig = AppOpenConfig(isTracked = false,
+    internal var cashedAppOpenConfig: AppOpenConfig = AppOpenConfig(
+        isTracked = false,
         timeOperationLimit = 0,
         makePhoto = false,
         notifyInTelegram = false,
-        joinPhotoToTelegramNotify = false)
+        joinPhotoToTelegramNotify = false
+    )
 
     internal var cashedBootDeviceConfig: BootDeviceTrackedConfig = BootDeviceTrackedConfig(
         isTracked = false, makePhoto = false,
         notifyInTelegram = false, joinPhotoToTelegramNotify = false
     )
 
-    internal var cashedIsAppPasswordSetup : Boolean = false
+    internal var cashedWorkTimeConfig = WorkTimeConfig()
+
+    internal var cashedIsAppPasswordSetup: Boolean = false
 
     internal var cashedStorageConfig = StorageConfig()
-    
-    internal val isFingerPrintScannerAvailable : Boolean by lazy {
+
+    internal val isFingerPrintScannerAvailable: Boolean by lazy {
         biometricAuthorizationManager.isFingerPrintScannerAvailable()
     }
 
@@ -316,7 +421,7 @@ class SettingsViewModel @Inject constructor(
 
     @SuppressLint("ResourceType")
     internal fun requestIgnoreBatteryOptimisation() {
-        if(!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
+        if (!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
             permissionsManager.requestIgnoreBatteryOptimization()
         } else {
             toastManager.showToast(R.string.Ignore_battery_optimization_already_enabled)

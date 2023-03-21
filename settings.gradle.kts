@@ -12,7 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Observer"
+rootProject.name = "WTMP"
 include (":app")
 include(":core")
 include(":core:core-Android")

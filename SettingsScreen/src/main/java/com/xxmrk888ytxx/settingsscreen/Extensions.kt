@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.settingsscreen
 
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
+import java.time.LocalTime
 
 /**
  * [Ru]
@@ -20,3 +21,15 @@ internal inline val List<SettingsParamType>.visibleParamsSize : Int
 
 internal inline val List<SettingsParamType>.visibleParamsLastIndex : Int
     get() = this.filter { it.isVisible }.lastIndex
+
+fun LocalTime.hourToString() : String {
+    val hour = hour
+
+    return if(hour in 0..9) "0$hour" else hour.toString()
+}
+
+fun LocalTime.minuteToString() : String {
+    val minute = minute
+
+    return if(minute in 0..9) "0$minute" else minute.toString()
+}

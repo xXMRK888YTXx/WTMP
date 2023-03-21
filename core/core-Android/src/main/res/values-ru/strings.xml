@@ -12,4 +12,11 @@
     <string name="October">Октябрь</string>
     <string name="November">Ноябрь</string>
     <string name="December">Декабрь</string>
+    <string name="Monday_literal">Пн.</string>
+    <string name="Tuesday_literal">Вт.</string>
+    <string name="Wednesday_literal">Ср.</string>
+    <string name="Thursday_literal">Чт.</string>
+    <string name="Friday_literal">Пт.</string>
+    <string name="Saturday_literal">Сб.</string>
+    <string name="Sunday_literal">Вс.</string>
 </resources>

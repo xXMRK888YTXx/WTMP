@@ -6,6 +6,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvi
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.FailedUnlockTrackedConfig.FailedUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.TimeOperationLimitManager.TimeOperationLimitManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.UseCases.IsNowWorkTimeCheckUseCase
 import com.xxmrk888ytxx.coredeps.models.FailedUnlockTrackedConfig
 import com.xxmrk888ytxx.observer.domain.AdminDeviceController.AdminDeviceController
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
@@ -27,6 +28,7 @@ class AdminDeviceControllerTest {
     private val handleEventUseCase: HandleEventUseCase = mockk(relaxed = true)
     private val appStateProvider: AppStateProvider = mockk(relaxed = true)
     private val timeOperationLimitManager:TimeOperationLimitManager<Nothing> = mockk(relaxed = true)
+    private val isNowWorkTimeCheckUseCase: IsNowWorkTimeCheckUseCase = mockk(relaxed = true)
     private val adminEventsCallback: AdminEventsCallback =
         AdminDeviceController(deviceEventRepository,
             failedUnlockTrackedConfigProvider,
@@ -35,12 +37,14 @@ class AdminDeviceControllerTest {
             mockk(relaxed = true),
             mockk(relaxed = true),
             mockk(relaxed = true),
-            timeOperationLimitManager
+            timeOperationLimitManager,
+            isNowWorkTimeCheckUseCase
         )
 
     @Before
     fun before() {
         coEvery { timeOperationLimitManager.isLimitEnable(any()) } returns false
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns true
     }
 
     @Test
@@ -177,5 +181,38 @@ class AdminDeviceControllerTest {
         coVerify(exactly = 2) { handleEventUseCase.execute(
             any(),true,true,false,any()
         ) }
+    }
+
+    @Test
+    fun callWithNowWorkTimeCheckUseCaseTrueAndFalseExpectCallbackWorkOnlyOneAttempt() = runBlocking {
+        val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
+        val appState = MutableStateFlow<Boolean>(true)
+
+        flow.emit(FailedUnlockTrackedConfig(
+            isTracked = true,
+            timeOperationLimit = 0,
+            countFailedUnlockToTrigger = 0,
+            makePhoto = true,
+            notifyInTelegram = true,
+            joinPhotoToTelegramNotify = false
+        ))
+
+        coEvery { failedUnlockTrackedConfigProvider.config } returns flow
+        coEvery { appStateProvider.isAppEnable } returns appState
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns true
+
+        adminEventsCallback.onPasswordFailed(0)
+        delay(50)
+
+        coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 1) { handleEventUseCase.execute(any(),any(),any(),any(),any()) }
+
+        coEvery { isNowWorkTimeCheckUseCase.execute() } returns false
+        adminEventsCallback.onPasswordFailed(1)
+        delay(50)
+
+        coVerify(exactly = 1) { deviceEventRepository.addEvent(any()) }
+        coVerify(exactly = 1) { handleEventUseCase.execute(any(),any(),any(),any(),any()) }
+
     }
 }
