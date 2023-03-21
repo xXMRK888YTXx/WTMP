@@ -14,6 +14,27 @@ sealed class WeekDay(val number:Int) {
     object Sunday : WeekDay(6)
 
     companion object {
+
+        fun fromInt(number: Int) : WeekDay {
+            return when(number) {
+                0 -> Monday
+
+                1 -> Tuesday
+
+                2 -> Wednesday
+
+                3 -> Thursday
+
+                4 -> Friday
+
+                5 -> Saturday
+
+                6 -> Sunday
+
+                else -> throw IllegalArgumentException("Week day with id $number not exist")
+            }
+        }
+
         val weekDaySet = setOf<WeekDay>(
             WeekDay.Monday,
             WeekDay.Tuesday,
