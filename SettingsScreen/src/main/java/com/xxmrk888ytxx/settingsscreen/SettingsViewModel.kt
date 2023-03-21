@@ -26,12 +26,15 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.StorageConfig.StorageC
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.SucceededUnlockTrackedConfig.SucceededUnlockTrackedConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.WorkDayConfig.WorkTimeConfigChanger
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.WorkDayConfig.WorkTimeConfigProvider
 import com.xxmrk888ytxx.coredeps.models.*
 import com.xxmrk888ytxx.coredeps.sendCreateEmailIntent
 import com.xxmrk888ytxx.coredeps.sendOpenWebSiteIntent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import toState
 import javax.inject.Inject
 
@@ -56,6 +59,8 @@ class SettingsViewModel @Inject constructor(
     private val toastManager: ToastManager,
     private val storageConfigProvider: StorageConfigProvider,
     private val storageConfigChanger: StorageConfigChanger,
+    private val workTimeConfigChanger: WorkTimeConfigChanger,
+    private val workTimeConfigProvider: WorkTimeConfigProvider
 ) : ViewModel() {
 
     @SuppressLint("ResourceType")
@@ -117,9 +122,19 @@ class SettingsViewModel @Inject constructor(
 
     internal val workTimeSpanInSetSuspendDialog = _workTimeSpanInSetSuspendDialog.toState()
 
+    internal val workTimeConfig:Flow<WorkTimeConfig> = workTimeConfigProvider.workConfigFlow
+
     fun showSuspendParamsDialog() {
-        _isSuspendParamsDialogVisible.value = true
-        //TODO Load workTimeSpanInSetSuspendDialog state
+        viewModelScope.launch(Dispatchers.IO) {
+            val config = workTimeConfigProvider.workConfigFlow.first()
+            _selectedWeekDayInSuspendParamsDialog.emit(config.workWeekDays)
+
+            withContext(Dispatchers.Main) {
+                _workTimeSpanInSetSuspendDialog.value = config.workTimeSpan
+                _isSuspendParamsDialogVisible.value = true
+            }
+        }
+
     }
 
     fun hideSuspendParamsDialog() {
@@ -147,8 +162,37 @@ class SettingsViewModel @Inject constructor(
         _workTimeSpanInSetSuspendDialog.value = TimeSpan.NO_SETUP
     }
 
+    @SuppressLint("ResourceType")
+    private fun isInputDataInSuspendDialogValid(): Boolean {
+        if(_selectedWeekDayInSuspendParamsDialog.value.isEmpty()) {
+            toastManager.showToast(R.string.Choose_at_least_one_working_day)
+            return false
+        }
+
+        if(!_workTimeSpanInSetSuspendDialog.value.isValid) {
+            toastManager.showToast(R.string.Incorrect_time_entered)
+            return false
+        }
+
+        return true
+    }
+
     internal fun saveChangesInTimeSpanInSuspendDialog() {
-        //TODO
+        if(!isInputDataInSuspendDialogValid()) return
+
+        val newWorkTimeSpan = _workTimeSpanInSetSuspendDialog.value
+        val newWorkWeekDays = _selectedWeekDayInSuspendParamsDialog.value
+        hideSuspendParamsDialog()
+        viewModelScope.launch(Dispatchers.IO) {
+            workTimeConfigChanger.updateWorkTimeSpan(newWorkTimeSpan)
+            workTimeConfigChanger.updateWorkWeekDays(newWorkWeekDays)
+        }
+    }
+
+    internal fun updateIsLimitTimeEnabled(newState:Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            workTimeConfigChanger.updateIsLimitTimeEnabled(newState)
+        }
     }
 
     internal fun updateSelectedWeekDayInSuspendParamsDialog(onChange: (Set<WeekDay>) -> Set<WeekDay>) {
@@ -338,6 +382,8 @@ class SettingsViewModel @Inject constructor(
         isTracked = false, makePhoto = false,
         notifyInTelegram = false, joinPhotoToTelegramNotify = false
     )
+
+    internal var cashedWorkTimeConfig = WorkTimeConfig()
 
     internal var cashedIsAppPasswordSetup: Boolean = false
 

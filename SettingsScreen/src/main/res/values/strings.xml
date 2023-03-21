@@ -70,4 +70,6 @@
     <string name="Reset">Reset</string>
     <string name="Choose_start_time">Choose start time</string>
     <string name="Choose_end_time">Choose end time</string>
+    <string name="Choose_at_least_one_working_day">Choose at least one working day</string>
+    <string name="Incorrect_time_entered">Incorrect time entered</string>
 </resources>
