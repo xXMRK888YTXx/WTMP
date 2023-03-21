@@ -35,7 +35,8 @@ class EventDeviceTrackerCallbackImplTest {
     :EventDeviceTrackerCallback = EventDeviceTrackerCallbackImpl(
         deviceEventRepository, succeededUnlockTrackedConfigProvider, handleEventUseCase,appOpenConfig,
         trackedAppRepository,mockk(relaxed = true),appStateProvider,mockk(relaxed = true),
-        mockk(relaxed = true),mockk(relaxed = true),timeOperationLimitManager
+        mockk(relaxed = true),mockk(relaxed = true),timeOperationLimitManager,
+        mockk(relaxed = true)
     )
 
     @Before
