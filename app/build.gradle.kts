@@ -4,6 +4,7 @@ plugins {
     id (Deps.Dagger.DaggerKaptPlugin)
     id ("com.google.gms.google-services")
     id ("com.google.firebase.crashlytics")
+    id ("com.guardsquare.appsweep") version("latest.release")
 }
 
 android {
