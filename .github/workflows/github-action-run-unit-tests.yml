@@ -1,0 +1,16 @@
+name: Run unit tests
+on: [pull_request_target]
+jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          ref: Develop
+
+      - name: Change wrapper permissions
+        run: chmod +x gradlew
+
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest
