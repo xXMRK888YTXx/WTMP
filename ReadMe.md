@@ -1,5 +1,15 @@
 
-# [En] Project structure description
+# [En] Application Description
+
+WTMP is an application designed to prevent unauthorized access to your device.
+Application functionality:
+- Tracking device unlocks
+- Tracking of incorrect password entries
+- Tracking openings of selected applications.
+- Tracking device power on
+  Once you get information about the selected event, you can take a picture of the intruder and send it to yourself in Telegram.
+
+# Project structure description
 
 ## [core] 
 This module is used to store other modules with dependencies and common code that are often
@@ -63,7 +73,17 @@ The module contains a screen for selecting applications to be tracked applicatio
 The module contains a specially configured [EnterPasswordScreen] to set / remove a password to enter the application
 
 
-# [Ru] Описание структуры проекта
+# [Ru] Описание приложения
+
+WTMP — это приложение, предназначенное для предотвращения несанкционированного доступа к вашему устройству.
+Функциональность приложения:
+- Отслеживание разблокировок устройства
+- Отслеживания неверных вводов пароля
+- Отслеживание открытий выбранных вами приложений.
+- Отслеживание включения устройства
+Получив информацию о выбранном событии, вы можете сделать фотографию злоумышленника и отправить себе в Телеграм.
+
+# Описание структуры проекта
 
 ## [core]
 Этот модуль используется для хранения других модулей с зависимостями и общим кодом которые часто используются. В этом модуле,не должен находится какой либо код.Только необходимые зависимости.
