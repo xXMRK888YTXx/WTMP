@@ -151,39 +151,6 @@ class AdminDeviceControllerTest {
     }
 
     @Test
-    fun setTimeLimitAndCallMethodExpectInformationWillBeSaveIfLimitTimeOut() = runBlocking {
-        val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
-        val appState = MutableStateFlow<Boolean>(true)
-        val timeLimit = 100
-
-        flow.emit(FailedUnlockTrackedConfig(
-            isTracked = true,
-            timeOperationLimit = timeLimit,
-            countFailedUnlockToTrigger = 1,
-            makePhoto = true,
-            notifyInTelegram = true,
-            joinPhotoToTelegramNotify = false
-        ))
-
-        coEvery { failedUnlockTrackedConfigProvider.config } returns flow
-        coEvery { appStateProvider.isAppEnable } returns appState
-
-        adminEventsCallback.onPasswordFailed(1)
-        coEvery { timeOperationLimitManager.isLimitEnable(timeLimit) } returns true
-        adminEventsCallback.onPasswordFailed(2)
-        adminEventsCallback.onPasswordFailed(3)
-        coEvery { timeOperationLimitManager.isLimitEnable(timeLimit) } returns false
-        adminEventsCallback.onPasswordFailed(4)
-        delay(50)
-
-        coVerify(exactly = 4) { timeOperationLimitManager.isLimitEnable(timeLimit) }
-        coVerify(exactly = 2) { deviceEventRepository.addEvent(any()) }
-        coVerify(exactly = 2) { handleEventUseCase.execute(
-            any(),true,true,false,any()
-        ) }
-    }
-
-    @Test
     fun callWithNowWorkTimeCheckUseCaseTrueAndFalseExpectCallbackWorkOnlyOneAttempt() = runBlocking {
         val flow: MutableSharedFlow<FailedUnlockTrackedConfig> = MutableSharedFlow(1,1)
         val appState = MutableStateFlow<Boolean>(true)

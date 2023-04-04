@@ -27,7 +27,7 @@ class PackageInfoProviderImplTest {
     }
 
     private val mainAppPackageName = "com.xxmrk888ytxx.observer"
-    private val mainAppName = "Observer"
+    private val mainAppName = "WTMP"
 
     @Test
     fun getMainApplicationNameExpectGetName() {

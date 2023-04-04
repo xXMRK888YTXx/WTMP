@@ -36,6 +36,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
@@ -43,12 +49,18 @@ dependencies {
     kapt (Deps.Dagger.DaggerKaptCompiler)
     implementation(Deps.WorkManager.workManager)
     androidTestImplementation (Deps.WorkManager.workManagerTest)
+
     //test
     testImplementation(Deps.TestAndroid.MockkAndroid)
     testImplementation(Deps.TestAndroid.MockkAgent)
     testImplementation(Deps.Test.Testing)
 
+    //Instrumental Test
+    androidTestImplementation (Deps.InstrumentalTest.espresso)
+    androidTestImplementation (Deps.InstrumentalTest.testRunner)
+    androidTestImplementation (Deps.InstrumentalTest.testCore)
+    androidTestImplementation (Deps.InstrumentalTest.jUnit)
+    androidTestImplementation (Deps.InstrumentalTest.testRules)
     androidTestImplementation(Deps.TestAndroid.MockkAndroid)
     androidTestImplementation(Deps.TestAndroid.MockkAgent)
-    androidTestImplementation(Deps.Test.Testing)
 }
