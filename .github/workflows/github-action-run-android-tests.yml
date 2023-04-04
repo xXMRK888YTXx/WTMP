@@ -1,0 +1,35 @@
+name: Run android tests
+on: [pull_request_target]
+jobs:
+  run-android-tests:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          ref: Develop
+
+      - name: Change wrapper permissions
+        run: chmod +x gradlew
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+            java-version: '12.x'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+            sdk-version: 33
+
+      - name: Run tests for AdminReceiver on old SDK Version
+        uses: reactivecircus/android-emulator-runner@v2.28.0
+        with:
+          api-level: 23
+          script: ./gradlew :AdminReceiver:connectedAndroidTest
+
+      - name: run tests
+        uses: reactivecircus/android-emulator-runner@v2.28.0
+        with:
+          api-level: 33
+          script: ./gradlew connectedAndroidTest
