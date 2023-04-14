@@ -12,7 +12,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: '17.x'
+          java-version: '17'
 
       - name: Change wrapper permissions
         run: chmod +x gradlew
