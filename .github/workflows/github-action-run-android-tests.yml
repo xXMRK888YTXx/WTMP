@@ -15,7 +15,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-            java-version: '12.x'
+            java-version: '17.x'
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v2

@@ -9,6 +9,11 @@ jobs:
         with:
           ref: Develop
 
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17.x'
+
       - name: Change wrapper permissions
         run: chmod +x gradlew
 
