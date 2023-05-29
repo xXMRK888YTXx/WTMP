@@ -33,6 +33,9 @@ import com.xxmrk888ytxx.coredeps.models.SupportedLanguage
 import com.xxmrk888ytxx.settingsscreen.models.LocaleParams
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamShape
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentSet
 import remember
 import theme.*
 
@@ -65,7 +68,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
         item {
             SettingsCategory(
                 categoryName = stringResource(R.string.Paid_content),
-                settingsParams = listOf(
+                settingsParams = persistentListOf(
                     SettingsParamType.Button(
                         text = stringResource(R.string.Support_author),
                         icon = R.drawable.baseline_attach_money_24,
@@ -193,7 +196,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
                     newSet.add(it)
 
-                    newSet
+                    newSet.toPersistentSet()
                 }
             },
             onCancelPickDay = {
@@ -202,7 +205,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
                     newSet.remove(it)
 
-                    newSet
+                    newSet.toPersistentSet()
                 }
             },
             currentSelectedTimeSpan = workTimeSpanInSetSuspendDialog.value,
@@ -258,7 +261,7 @@ internal fun TopBar(navigator: Navigator) {
  * the list of settings can be obtained in the file [SettingsParams.kt]
  */
 @Composable
-internal fun SettingsCategory(categoryName: String, settingsParams: List<SettingsParamType>) {
+internal fun SettingsCategory(categoryName: String, settingsParams: ImmutableList<SettingsParamType>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

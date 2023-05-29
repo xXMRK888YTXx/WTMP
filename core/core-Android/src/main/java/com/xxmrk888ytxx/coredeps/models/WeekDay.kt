@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.coredeps.models
 import android.content.Context
 import com.xxmrk888ytxx.coredeps.R
 import com.xxmrk888ytxx.coredeps.models.WeekDay.Companion.toStringLiteral
+import kotlinx.collections.immutable.persistentSetOf
 
 sealed class WeekDay(val number:Int) {
     object Monday : WeekDay(0)
@@ -35,7 +36,7 @@ sealed class WeekDay(val number:Int) {
             }
         }
 
-        val weekDaySet = setOf<WeekDay>(
+        val weekDaySet = persistentSetOf<WeekDay>(
             WeekDay.Monday,
             WeekDay.Tuesday,
             WeekDay.Wednesday,

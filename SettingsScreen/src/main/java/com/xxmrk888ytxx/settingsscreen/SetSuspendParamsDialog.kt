@@ -25,6 +25,7 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import com.xxmrk888ytxx.coredeps.models.TimeSpan
 import com.xxmrk888ytxx.coredeps.models.WeekDay
+import kotlinx.collections.immutable.ImmutableSet
 import theme.*
 import java.time.LocalTime
 import java.util.Calendar
@@ -32,7 +33,7 @@ import java.util.Calendar
 @Composable
 fun SetSuspendParamsDialog(
     onCancel: () -> Unit,
-    pickedWeekDays: Set<WeekDay>,
+    pickedWeekDays: ImmutableSet<WeekDay>,
     onPickWeekDay: (WeekDay) -> Unit,
     onCancelPickDay: (WeekDay) -> Unit,
     currentSelectedTimeSpan: TimeSpan,

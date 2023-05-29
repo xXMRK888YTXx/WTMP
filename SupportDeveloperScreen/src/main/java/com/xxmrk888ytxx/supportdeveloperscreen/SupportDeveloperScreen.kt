@@ -22,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import theme.BackGroundColor
 import theme.checkedSettingsSwitch
 import theme.openSansFont
@@ -54,7 +56,7 @@ fun SupportDeveloperScreen(
                 )
                 .verticalScroll(rememberScrollState()),
         ) {
-            val supportPrices: List<Pair<Int, () -> Unit>> = listOf(
+            val supportPrices: ImmutableList<Pair<Int, () -> Unit>> = persistentListOf(
                 Pair(5, supportDeveloperViewModel::buyDeveloperSupportOn5Dollars),
                 Pair(10, supportDeveloperViewModel::buyDeveloperSupportOn10Dollars),
                 Pair(15, supportDeveloperViewModel::buyDeveloperSupportOn15Dollars)

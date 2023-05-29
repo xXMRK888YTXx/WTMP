@@ -10,6 +10,7 @@ import com.xxmrk888ytxx.coredeps.models.TimeSpan
 import com.xxmrk888ytxx.coredeps.models.WeekDay
 import com.xxmrk888ytxx.coredeps.models.WorkTimeConfig
 import com.xxmrk888ytxx.observer.domain.SettingsAppManager.SettingsAppManager
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -79,7 +80,7 @@ internal class WorkTimeConfigManager @Inject constructor(
                 WorkTimeConfig(
                     isLimitTimeEnabled = isLimitTimeEnabled,
                     workTimeSpan = workTime,
-                    workWeekDays = workDays
+                    workWeekDays = workDays.toPersistentSet()
                 )
             }
         }

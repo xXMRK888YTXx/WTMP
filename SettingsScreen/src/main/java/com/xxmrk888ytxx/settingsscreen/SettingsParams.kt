@@ -11,6 +11,9 @@ import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.models.StorageConfig
 import com.xxmrk888ytxx.coredeps.models.WorkTimeConfig
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import remember
 
 /**
@@ -28,7 +31,7 @@ import remember
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
-internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): ImmutableList<SettingsParamType> {
     val config = settingsViewModel.failedUnlockTrackedConfig.collectAsState(
         settingsViewModel.cashedFailedUnlockTrackedConfig
     )
@@ -52,7 +55,7 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
                 numberInvalidAttemptsDropDownState.value = false
             }
         )
-    }.remember()
+    }.toImmutableList().remember()
 
     val operationLimitDropDown = operationLimitDropDownItems(
         onChangeTime = settingsViewModel::updateTimeOperationLimitFailedUnlockTrackedConfig
@@ -61,7 +64,7 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
     val operationLimitDropDownState = settingsViewModel
         .operationLimitFailedUnlockDropDownState.remember()
 
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Switch(
             stringResource(R.string.Track_failed_attempts),
             R.drawable.ic_phone_lock,
@@ -125,7 +128,7 @@ internal fun getFailedUnlockDeviceParams(settingsViewModel: SettingsViewModel): 
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
-internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel): ImmutableList<SettingsParamType> {
     val config = settingsViewModel.succeededUnlockTrackedConfig.collectAsState(
         settingsViewModel.cashedSucceededUnlockTrackedConfig
     )
@@ -140,7 +143,7 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel
 
     val operationLimitDropDownState = settingsViewModel
         .operationLimitSucceededUnlockDropDownState.remember()
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Switch(
             stringResource(R.string.Track_device_unlock),
             R.drawable.ic_lock_open,
@@ -195,7 +198,7 @@ internal fun getSucceededUnlockDeviceParams(settingsViewModel: SettingsViewModel
 internal fun getAppOpenObserverParams(
     settingsViewModel: SettingsViewModel,
     navigator: Navigator,
-): List<SettingsParamType> {
+): ImmutableList<SettingsParamType> {
     val config = settingsViewModel.appOpenConfig.collectAsState(
         settingsViewModel.cashedAppOpenConfig
     )
@@ -210,7 +213,7 @@ internal fun getAppOpenObserverParams(
 
     val operationLimitDropDownState = settingsViewModel
         .operationLimitAppOpenDropDownState.remember()
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Switch(
             stringResource(R.string.Enable_App_Tracking),
             R.drawable.ic_apps,
@@ -271,8 +274,8 @@ internal fun getAppOpenObserverParams(
 @MustBeLocalization
 internal fun getTelegramOptionsParams(
     navigator: Navigator,
-): List<SettingsParamType> {
-    return listOf(
+): ImmutableList<SettingsParamType> {
+    return persistentListOf(
         SettingsParamType.Button(
             stringResource(R.string.Telegram_settings),
             R.drawable.ic_telegram,
@@ -284,9 +287,9 @@ internal fun getTelegramOptionsParams(
 @SuppressLint("ResourceType")
 @Composable
 @MustBeLocalization
-internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): ImmutableList<SettingsParamType> {
     val context = LocalContext.current
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Label(
             stringResource(R.string.Application_version),
             R.drawable.ic_info,
@@ -322,7 +325,7 @@ internal fun getAppInfoParams(settingsViewModel: SettingsViewModel): List<Settin
 
 @SuppressLint("ResourceType")
 @Composable
-internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel): ImmutableList<SettingsParamType> {
     val config = settingsViewModel.bootDeviceConfig.collectAsState(
         settingsViewModel.cashedBootDeviceConfig
     )
@@ -333,7 +336,7 @@ internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel): List<Set
         settingsViewModel.cashedBootDeviceConfig = config.value
     }
 
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Switch(
             stringResource(R.string.Device_startup_track),
             R.drawable.ic_off,
@@ -373,7 +376,7 @@ internal fun getBootDeviceParams(settingsViewModel: SettingsViewModel): List<Set
 internal fun getSecureParams(
     settingsViewModel: SettingsViewModel,
     navigator: Navigator,
-): List<SettingsParamType> {
+): ImmutableList<SettingsParamType> {
     val isAppPasswordSetup = settingsViewModel.isAppPasswordSetup()
         .collectAsState(settingsViewModel.cashedIsAppPasswordSetup)
 
@@ -382,7 +385,7 @@ internal fun getSecureParams(
     SideEffect {
         settingsViewModel.cashedIsAppPasswordSetup = isAppPasswordSetup.value
     }
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Switch(
             stringResource(R.string.Set_password_when_logging_into_app),
             R.drawable.ic_password,
@@ -413,8 +416,8 @@ internal fun getSecureParams(
 
 @SuppressLint("ResourceType")
 @Composable
-internal fun getLocalisationParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
-    return listOf(
+internal fun getLocalisationParams(settingsViewModel: SettingsViewModel): ImmutableList<SettingsParamType> {
+    return persistentListOf(
         SettingsParamType.Button(
             text = stringResource(R.string.Select_language),
             icon = R.drawable.ic_language,
@@ -424,7 +427,7 @@ internal fun getLocalisationParams(settingsViewModel: SettingsViewModel): List<S
 }
 
 @Composable
-internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<SettingsParamType> {
+internal fun getStorageParams(settingsViewModel: SettingsViewModel): ImmutableList<SettingsParamType> {
 
     val storageConfig = settingsViewModel.storageConfig.collectAsState(StorageConfig())
 
@@ -433,7 +436,7 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
     val maxTimeStoreReportsDropDownDialogState =
         settingsViewModel.maxTimeStoreReportsDropDownDialogState.remember()
 
-    val maxReportsNameCountPair = listOf(
+    val maxReportsNameCountPair = persistentListOf(
         0 to stringResource(R.string.Infinity_symbol),
         100 to 100.toString(),
         200 to 200.toString(),
@@ -441,9 +444,9 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
         500 to 500.toString(),
         750 to 750.toString(),
         1000 to 1000.toString()
-    )
+    ).remember()
 
-    val maxTimeStoreReportsNameTimePair = listOf(
+    val maxTimeStoreReportsNameTimePair = persistentListOf(
         0L to stringResource(R.string.Infinity_symbol),
         86_400_000L to stringResource(R.string.One_day),
         259_200_000L to stringResource(R.string.three_days),
@@ -451,25 +454,25 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
         1_209_600_000L to stringResource(R.string.Two_weeks),
         1_814_400_000L to stringResource(R.string.Three_weeks),
         2_678_400_000L to stringResource(R.string.one_month)
-    )
+    ).remember()
 
     val maxReportDropDownItem = maxReportsNameCountPair.map {
         SettingsParamType.DropDown.DropDownItem(it.second) {
             settingsViewModel.updateMaxReportCountStorageConfig(it.first)
         }
-    }
+    }.toImmutableList().remember()
 
     val maxTimeStoreReportsDropDownItem = maxTimeStoreReportsNameTimePair.map {
         SettingsParamType.DropDown.DropDownItem(it.second) {
             settingsViewModel.updateMaxReportStorageTimeStorageConfig(it.first)
         }
-    }
+    }.toImmutableList().remember()
 
     SideEffect {
         settingsViewModel.cashedStorageConfig = storageConfig.value
     }
 
-    return listOf(
+    return persistentListOf(
         SettingsParamType.DropDown(
             text = stringResource(R.string.Maximum_reports),
             icon = R.drawable.ic_time_limit,
@@ -500,7 +503,7 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): List<Settin
 
 @SuppressLint("ResourceType")
 @Composable
-internal fun getWorkSuspendParams(settingsViewModel: SettingsViewModel) : List<SettingsParamType> {
+internal fun getWorkSuspendParams(settingsViewModel: SettingsViewModel) : ImmutableList<SettingsParamType> {
     val workTimeConfig = settingsViewModel.workTimeConfig.collectAsState(
         settingsViewModel.cashedWorkTimeConfig
     )
@@ -509,7 +512,7 @@ internal fun getWorkSuspendParams(settingsViewModel: SettingsViewModel) : List<S
         settingsViewModel.cashedWorkTimeConfig = workTimeConfig.value
     }
 
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Switch(
             text = stringResource(R.string.Suspending_by_time),
             icon = R.drawable.ic_time_limit,
@@ -530,10 +533,10 @@ internal fun getWorkSuspendParams(settingsViewModel: SettingsViewModel) : List<S
 @Composable
 internal fun getBatteryOptimizationParams(
     settingsViewModel: SettingsViewModel,
-): List<SettingsParamType> {
+): ImmutableList<SettingsParamType> {
     val context = LocalContext.current
 
-    return listOf(
+    return persistentListOf(
         SettingsParamType.Button(
             text = stringResource(R.string.Disable_battery_optimization),
             icon = R.drawable.ic_battery,
@@ -563,12 +566,12 @@ fun operationLimitTimeNamePair(): List<Pair<Int, String>> {
 @Composable
 internal fun operationLimitDropDownItems(
     onChangeTime: (Int) -> Unit,
-): List<SettingsParamType.DropDown.DropDownItem> {
+): ImmutableList<SettingsParamType.DropDown.DropDownItem> {
 
     return operationLimitTimeNamePair().map {
         SettingsParamType.DropDown.DropDownItem(
             text = it.second,
             onClick = { onChangeTime(it.first) }
         )
-    }
+    }.toImmutableList()
 }

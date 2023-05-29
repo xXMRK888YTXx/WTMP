@@ -127,4 +127,7 @@ object Deps {
     object MaterialDialog {
         const val materialDialogs = "io.github.vanpra.compose-material-dialogs:datetime:0.9.0"
     }
+    object ImmutableCollection {
+        const val collectionsImmutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
+    }
 }
