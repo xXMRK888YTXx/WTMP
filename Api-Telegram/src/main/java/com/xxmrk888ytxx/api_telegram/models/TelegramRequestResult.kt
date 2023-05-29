@@ -5,4 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 @Keep data class TelegramRequestResult constructor(
    @SerializedName("ok") val isSuccessful:Boolean
-)
+) {
+   @Keep
+   override fun toString(): String {
+      return super.toString()
+   }
+}

@@ -27,7 +27,8 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = Config.isR8ProGuardEnableForRelease
-            this.proguardFiles("proguard-android-optimize.txt","proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),"proguard-rules.pro")
+            testProguardFile("test-proguard-rules.pro")
         }
         debug {
             isMinifyEnabled = Config.isR8ProGuardEnableForDebug

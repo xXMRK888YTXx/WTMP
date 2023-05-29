@@ -16,4 +16,9 @@ import com.squareup.moshi.JsonClass
 @Keep data class TelegramConfig(
     @Json(name = "userId") val userId:Long,
     @Json(name = "botKey") val botKey:String
-)
+) {
+    @Keep
+    override fun toString(): String {
+        return super.toString()
+    }
+}
