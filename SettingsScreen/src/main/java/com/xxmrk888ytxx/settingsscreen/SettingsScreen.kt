@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,12 +61,12 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
     val categoryPadding = 15
     LazyColumn(Modifier.fillMaxSize()) {
 
-        item {
+        item(key = 0) {
             TopBar(navigator)
             LazySpacer(20)
         }
 
-        item {
+        item(key = 1) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Paid_content),
                 settingsParams = persistentListOf(
@@ -79,7 +80,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 2) {
             SettingsCategory(
                 stringResource(R.string.Unsuccessful_unlock_attempt),
                 getFailedUnlockDeviceParams(settingsViewModel)
@@ -88,7 +89,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 3) {
 
             SettingsCategory(
                 stringResource(R.string.Device_unlock),
@@ -98,7 +99,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 4) {
 
             SettingsCategory(
                 stringResource(R.string.Application_tracking),
@@ -108,7 +109,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 5) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Device_launch_tracking),
                 settingsParams = getBootDeviceParams(settingsViewModel)
@@ -117,7 +118,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 6) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Storage), settingsParams = getStorageParams(
                     settingsViewModel = settingsViewModel
@@ -127,7 +128,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 7) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Suspending_the_application),
                 settingsParams = getWorkSuspendParams(settingsViewModel)
@@ -136,7 +137,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 8) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Battery_optimization),
                 settingsParams = getBatteryOptimizationParams(settingsViewModel)
@@ -145,7 +146,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 9) {
             SettingsCategory(
                 stringResource(R.string.Security),
                 getSecureParams(settingsViewModel, navigator)
@@ -154,7 +155,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 10) {
             SettingsCategory(
                 stringResource(R.string.Telegram_settings),
                 getTelegramOptionsParams(navigator)
@@ -163,7 +164,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 11) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Localization),
                 settingsParams = getLocalisationParams(settingsViewModel)
@@ -172,7 +173,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 12) {
             SettingsCategory(
                 stringResource(R.string.Other),
                 getAppInfoParams(settingsViewModel)
