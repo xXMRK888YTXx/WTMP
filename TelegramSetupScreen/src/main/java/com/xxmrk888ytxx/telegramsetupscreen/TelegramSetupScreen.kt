@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.telegramsetupscreen.models.ScreenState
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentHashMapOf
 import remember
 import theme.*
 
@@ -400,7 +402,7 @@ internal fun TelegramDataSaveLabel(telegramViewModel: TelegramViewModel) {
 }
 
 @Composable
-internal fun rememberSnackbarTextToIcon() : Map<String,@Composable () -> Unit> {
+internal fun rememberSnackbarTextToIcon() : ImmutableMap<String,@Composable () -> Unit> {
     val saveTelegramConfigMessage = stringResource(R.string.Save_telegram_config_message)
     val noConnectionMessage = stringResource(R.string.No_connection_message)
     val telegramCancelMessage = stringResource(R.string.Telegram_cancel_message)
@@ -426,7 +428,7 @@ internal fun rememberSnackbarTextToIcon() : Map<String,@Composable () -> Unit> {
     }
 
     return remember {
-        mapOf(
+        persistentHashMapOf(
             saveTelegramConfigMessage to { iconFactory(R.drawable.ic_ok,okColor,0.dp) },
             noConnectionMessage to { iconFactory(R.drawable.ic_no_connection,errorColor,3.dp) },
             telegramCancelMessage to { iconFactory(R.drawable.ic_cancel, errorColor,3.dp) },

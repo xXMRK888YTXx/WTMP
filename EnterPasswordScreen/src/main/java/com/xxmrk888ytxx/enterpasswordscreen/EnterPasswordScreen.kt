@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W800
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.xxmrk888ytxx.enterpasswordscreen.models.GridButtonType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import theme.BackGroundColor
 import theme.okColor
 import theme.openSansFont
@@ -108,7 +110,7 @@ internal fun PasswordViewer(
 @SuppressLint("ResourceType")
 @Composable
 internal fun PasswordGrid(
-    gridButtonList:List<GridButtonType>,
+    gridButtonList:ImmutableList<GridButtonType>,
     callBack: EnterPasswordScreenCallBack
 ) {
     val gridSize = if(LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE) 50.dp
@@ -178,7 +180,7 @@ internal fun validateNumberForButtonNumber(number:Int) {
 }
 
 @SuppressLint("ResourceType")
-internal fun getGridButtonList(isFingerPrintAvailable:Boolean,callBack: EnterPasswordScreenCallBack) : List<GridButtonType> {
+internal fun getGridButtonList(isFingerPrintAvailable:Boolean,callBack: EnterPasswordScreenCallBack) : ImmutableList<GridButtonType> {
     val fingerPrintButton = if(isFingerPrintAvailable)
         GridButtonType.ActionButton(
             R.drawable.ic_fingerprint,
@@ -186,7 +188,7 @@ internal fun getGridButtonList(isFingerPrintAvailable:Boolean,callBack: EnterPas
         )
         else GridButtonType.Stub
 
-    return listOf(
+    return persistentListOf(
         GridButtonType.NumberButton(1),
         GridButtonType.NumberButton(2),
         GridButtonType.NumberButton(3),

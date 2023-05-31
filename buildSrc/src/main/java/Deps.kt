@@ -60,7 +60,7 @@ object Deps {
     }
     object Retrofit2 {
         private const val version = "2.9.0"
-        private const val okHttpVersion = "4.10.0"
+        private const val okHttpVersion = "4.11.0"
         const val retrofit = "com.squareup.retrofit2:retrofit:$version"
         const val jsonConverter = "com.squareup.retrofit2:converter-gson:$version"
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
@@ -126,5 +126,8 @@ object Deps {
     }
     object MaterialDialog {
         const val materialDialogs = "io.github.vanpra.compose-material-dialogs:datetime:0.9.0"
+    }
+    object ImmutableCollection {
+        const val collectionsImmutable = "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
     }
 }

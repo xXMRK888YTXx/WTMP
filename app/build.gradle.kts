@@ -15,8 +15,8 @@ android {
         applicationId = Config.packageName
         minSdk = Config.minSdk
         targetSdk = Config.compileSdk
-        versionCode = 18
-        versionName = "1.2.0r"
+        versionCode = 19
+        versionName = "1.2.1r"
 
         testInstrumentationRunner =  "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -27,7 +27,8 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = Config.isR8ProGuardEnableForRelease
-            this.proguardFiles("proguard-android-optimize.txt","proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),"proguard-rules.pro")
+            testProguardFile("test-proguard-rules.pro")
         }
         debug {
             isMinifyEnabled = Config.isR8ProGuardEnableForDebug

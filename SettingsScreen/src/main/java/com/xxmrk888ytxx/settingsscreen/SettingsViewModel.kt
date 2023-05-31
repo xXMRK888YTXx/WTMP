@@ -31,6 +31,8 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.WorkDayConfig.WorkTime
 import com.xxmrk888ytxx.coredeps.models.*
 import com.xxmrk888ytxx.coredeps.sendCreateEmailIntent
 import com.xxmrk888ytxx.coredeps.sendOpenWebSiteIntent
+import kotlinx.collections.immutable.PersistentSet
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -112,11 +114,11 @@ class SettingsViewModel @Inject constructor(
 
     internal val isSuspendParamsDialogVisible = _isSuspendParamsDialogVisible.toState()
 
-    private val _selectedWeekDayInSuspendParamsDialog = MutableStateFlow(setOf<WeekDay>())
+    private val _selectedWeekDayInSuspendParamsDialog = MutableStateFlow(persistentSetOf<WeekDay>())
 
     internal val selectedWeekDayInSuspendParamsDialog = _selectedWeekDayInSuspendParamsDialog
         .asStateFlow()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), setOf())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), persistentSetOf())
 
     private val _workTimeSpanInSetSuspendDialog = mutableStateOf(TimeSpan.NO_SETUP)
 
@@ -195,7 +197,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    internal fun updateSelectedWeekDayInSuspendParamsDialog(onChange: (Set<WeekDay>) -> Set<WeekDay>) {
+    internal fun updateSelectedWeekDayInSuspendParamsDialog(onChange: (PersistentSet<WeekDay>) -> PersistentSet<WeekDay>) {
         viewModelScope.launch(Dispatchers.Default) {
             val current = selectedWeekDayInSuspendParamsDialog.value
             _selectedWeekDayInSuspendParamsDialog.emit(onChange(current))

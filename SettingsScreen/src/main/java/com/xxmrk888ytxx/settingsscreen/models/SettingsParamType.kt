@@ -1,6 +1,7 @@
 package com.xxmrk888ytxx.settingsscreen.models
 
 import androidx.annotation.IdRes
+import kotlinx.collections.immutable.ImmutableList
 
 /**
  * [Ru]
@@ -119,7 +120,7 @@ internal sealed class SettingsParamType(
     data class DropDown(
         override val text: String,
         override val icon: Int,
-        val dropDownItems:List<DropDownItem>,
+        val dropDownItems:ImmutableList<DropDownItem>,
         val onShowDropDown: () -> Unit,
         val onHideDropDown: () -> Unit,
         val isDropDownVisible:Boolean,

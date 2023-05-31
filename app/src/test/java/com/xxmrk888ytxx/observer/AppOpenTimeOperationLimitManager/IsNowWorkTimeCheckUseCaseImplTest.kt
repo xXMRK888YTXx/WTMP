@@ -10,6 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.spyk
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -49,7 +50,7 @@ class IsNowWorkTimeCheckUseCaseImplTest {
     @Test
     fun checkUseCaseWithDifarensWeekDayExpectAllAlsoMondayAndSandayReturnsFalse() = runBlocking {
         every { workTimeConfigProvider.workConfigFlow } returns flowOf(WorkTimeConfig(
-            workWeekDays = setOf(WeekDay.Monday,WeekDay.Sunday),
+            workWeekDays = persistentSetOf(WeekDay.Monday,WeekDay.Sunday),
             isLimitTimeEnabled = true
         ))
 

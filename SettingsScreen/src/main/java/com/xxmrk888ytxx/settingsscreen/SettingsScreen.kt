@@ -15,6 +15,7 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,9 @@ import com.xxmrk888ytxx.coredeps.models.SupportedLanguage
 import com.xxmrk888ytxx.settingsscreen.models.LocaleParams
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamShape
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentSet
 import remember
 import theme.*
 
@@ -57,15 +61,15 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
     val categoryPadding = 15
     LazyColumn(Modifier.fillMaxSize()) {
 
-        item {
+        item(key = 0) {
             TopBar(navigator)
             LazySpacer(20)
         }
 
-        item {
+        item(key = 1) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Paid_content),
-                settingsParams = listOf(
+                settingsParams = persistentListOf(
                     SettingsParamType.Button(
                         text = stringResource(R.string.Support_author),
                         icon = R.drawable.baseline_attach_money_24,
@@ -76,7 +80,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 2) {
             SettingsCategory(
                 stringResource(R.string.Unsuccessful_unlock_attempt),
                 getFailedUnlockDeviceParams(settingsViewModel)
@@ -85,7 +89,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 3) {
 
             SettingsCategory(
                 stringResource(R.string.Device_unlock),
@@ -95,7 +99,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 4) {
 
             SettingsCategory(
                 stringResource(R.string.Application_tracking),
@@ -105,7 +109,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 5) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Device_launch_tracking),
                 settingsParams = getBootDeviceParams(settingsViewModel)
@@ -114,7 +118,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 6) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Storage), settingsParams = getStorageParams(
                     settingsViewModel = settingsViewModel
@@ -124,7 +128,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 7) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Suspending_the_application),
                 settingsParams = getWorkSuspendParams(settingsViewModel)
@@ -133,7 +137,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 8) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Battery_optimization),
                 settingsParams = getBatteryOptimizationParams(settingsViewModel)
@@ -142,7 +146,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 9) {
             SettingsCategory(
                 stringResource(R.string.Security),
                 getSecureParams(settingsViewModel, navigator)
@@ -151,7 +155,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 10) {
             SettingsCategory(
                 stringResource(R.string.Telegram_settings),
                 getTelegramOptionsParams(navigator)
@@ -160,7 +164,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item {
+        item(key = 11) {
             SettingsCategory(
                 categoryName = stringResource(R.string.Localization),
                 settingsParams = getLocalisationParams(settingsViewModel)
@@ -169,7 +173,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(categoryPadding)
         }
 
-        item {
+        item(key = 12) {
             SettingsCategory(
                 stringResource(R.string.Other),
                 getAppInfoParams(settingsViewModel)
@@ -193,7 +197,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
                     newSet.add(it)
 
-                    newSet
+                    newSet.toPersistentSet()
                 }
             },
             onCancelPickDay = {
@@ -202,7 +206,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
 
                     newSet.remove(it)
 
-                    newSet
+                    newSet.toPersistentSet()
                 }
             },
             currentSelectedTimeSpan = workTimeSpanInSetSuspendDialog.value,
@@ -258,7 +262,7 @@ internal fun TopBar(navigator: Navigator) {
  * the list of settings can be obtained in the file [SettingsParams.kt]
  */
 @Composable
-internal fun SettingsCategory(categoryName: String, settingsParams: List<SettingsParamType>) {
+internal fun SettingsCategory(categoryName: String, settingsParams: ImmutableList<SettingsParamType>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

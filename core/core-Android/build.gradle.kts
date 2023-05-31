@@ -64,6 +64,7 @@ dependencies {
     api (Deps.Permissions.permission)
     api (Deps.Biometric.biometric)
     api (Deps.Fragment.fragment)
+    api (Deps.ImmutableCollection.collectionsImmutable)
 
     implementation(Deps.Moshi.moshi)
     kapt(Deps.Moshi.moshiKaptPlugin)

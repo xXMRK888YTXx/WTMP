@@ -7,6 +7,7 @@ import com.xxmrk888ytxx.coredeps.models.WeekDay
 import com.xxmrk888ytxx.coredeps.models.WorkTimeConfig
 import com.xxmrk888ytxx.observer.BaseSettingsAppManagerTest
 import com.xxmrk888ytxx.observer.domain.WorkTimeConfig.WorkTimeConfigManager
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -59,7 +60,7 @@ internal class WorkTimeConfigManagerTest : BaseSettingsAppManagerTest() {
         changer.updateWorkTimeSpan(expectedConfig.workTimeSpan)
         Assert.assertEquals(expectedConfig,provider.getConfig())
 
-        expectedConfig = expectedConfig.copy(workWeekDays = setOf(WeekDay.Sunday,WeekDay.Monday))
+        expectedConfig = expectedConfig.copy(workWeekDays = persistentSetOf(WeekDay.Sunday,WeekDay.Monday))
         changer.updateWorkWeekDays(expectedConfig.workWeekDays)
         Assert.assertEquals(expectedConfig,provider.getConfig())
 
