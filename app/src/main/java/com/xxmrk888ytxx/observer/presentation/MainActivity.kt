@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
         appComponent.inject(this)
         adAppManager.initAdmob()
         activityViewModel.initAppComponent(appComponent)
+        activityViewModel.loadConsentForm(this)
         activityViewModel.activity = this
         billingManager.get().connectToGooglePlay()
         setContent {
