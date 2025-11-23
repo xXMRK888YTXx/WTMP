@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -14,6 +15,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        room {
+            schemaDirectory("$projectDir/schemas")
+        }
     }
 
     buildTypes {
@@ -36,11 +41,6 @@ android {
     kotlinOptions {
         jvmTarget = Config.jvmTarget
     }
-//    ksp {
-//        arguments {
-//            arg("room.schemaLocation","$projectDir/schemas")
-//        }
-//    }
     packaging {
         resources.excludes.add("META-INF/*")
     }
