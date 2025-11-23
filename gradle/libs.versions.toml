@@ -155,7 +155,6 @@ firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx"
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-moshi-kapt = { id = "com.squareup.moshi.kapt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 guardsquare = { id = "com.guardsquare.appsweep", version.ref = "guardsquare" }
