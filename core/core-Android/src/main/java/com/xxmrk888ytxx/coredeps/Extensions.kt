@@ -7,6 +7,7 @@ import android.util.Log
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.cancelChildren
@@ -26,18 +27,18 @@ import kotlin.coroutines.EmptyCoroutineContext
  * This extension function is designed to convert a number with type [Long]
  * into a time string like [XX:XX:XX]
  */
-fun Long.toTimeString() : String {
+fun Long.toTimeString(): String {
     val calendar = Calendar.getInstance()
     calendar.time = Date(this)
 
     val hours = calendar.get(Calendar.HOUR_OF_DAY)
-    val hoursString = if(hours < 10) "0$hours" else hours.toString()
+    val hoursString = if (hours < 10) "0$hours" else hours.toString()
 
     val minute = calendar.get(Calendar.MINUTE)
-    val minuteString = if(minute < 10) "0$minute" else minute.toString()
+    val minuteString = if (minute < 10) "0$minute" else minute.toString()
 
     val second = calendar.get(Calendar.SECOND)
-    val secondString = if(second < 10) "0$second" else second.toString()
+    val secondString = if (second < 10) "0$second" else second.toString()
 
     return "$hoursString:$minuteString:$secondString"
 }
@@ -52,15 +53,15 @@ fun Long.toTimeString() : String {
  * This extension function is designed to convert a number with type [Long]
  * to a date string like [Day Month Year]
  */
-fun Long.toDateString(context: Context) : String {
+fun Long.toDateString(context: Context): String {
     val calendar = Calendar.getInstance()
     calendar.time = Date(this)
 
     val day = calendar.get(Calendar.DAY_OF_MONTH)
-    val dayString = if(day < 10) "0$day" else day.toString()
+    val dayString = if (day < 10) "0$day" else day.toString()
 
     val month = calendar.get(Calendar.MONTH)
-    val monthString = monthToString(month,context)
+    val monthString = monthToString(month, context)
 
     val year = calendar.get(Calendar.YEAR)
     val yearString = year.toString()
@@ -77,9 +78,9 @@ fun Long.toDateString(context: Context) : String {
  * [En]
  * This function converts the digit of the month into a string with the name of the month
  */
-internal fun monthToString(month:Int,context: Context) : String {
+internal fun monthToString(month: Int, context: Context): String {
     context.resources.apply {
-        return when(month) {
+        return when (month) {
             0 -> getString(R.string.January)
             1 -> getString(R.string.February)
             2 -> getString(R.string.March)
@@ -131,7 +132,7 @@ fun CoroutineScope.launchAndCancelChildren(
  * To do this, the class must be annotated with [JsonClass]
  * and set parameter [JsonClass.generateAdapter] = true
  */
-inline fun <reified JSONCLASS> toJson(model:JSONCLASS) : String {
+inline fun <reified JSONCLASS> toJson(model: JSONCLASS): String {
     val moshi = Moshi.Builder().build()
     return moshi.adapter(JSONCLASS::class.java).toJson(model)
 }
@@ -152,7 +153,10 @@ inline fun <reified JSONCLASS> toJson(model:JSONCLASS) : String {
  * To do this, the class must be annotated with [JsonClass]
  * and set parameter [JsonClass.generateAdapter] = true
  */
-inline fun <reified JSONCLASS> fromJson(jsonString: String,jsonClass:Class<JSONCLASS>) : JSONCLASS {
+inline fun <reified JSONCLASS> fromJson(
+    jsonString: String,
+    jsonClass: Class<JSONCLASS>
+): JSONCLASS {
     val moshi = Moshi.Builder().build()
     return moshi.adapter(jsonClass).fromJson(jsonString) ?: throw JsonDataException()
 }
@@ -173,9 +177,12 @@ inline fun <reified JSONCLASS> fromJson(jsonString: String,jsonClass:Class<JSONC
  * and set parameter [JsonClass.generateAdapter] = true
  */
 @JvmName("fromJson1")
-inline fun <reified JSONCLASS> fromJson(jsonString: String?, jsonClass:Class<JSONCLASS>) : JSONCLASS? {
+inline fun <reified JSONCLASS> fromJson(
+    jsonString: String?,
+    jsonClass: Class<JSONCLASS>
+): JSONCLASS? {
     val moshi = Moshi.Builder().build()
-    if(jsonString == null) return null
+    if (jsonString == null) return null
     return moshi.adapter(jsonClass).fromJson(jsonString)
 }
 
@@ -187,30 +194,33 @@ inline fun <reified JSONCLASS> fromJson(jsonString: String?, jsonClass:Class<JSO
  * [En]
  * The function sends a message to logcat in the debug channel
  */
-fun logcatMessageD(text:String) {
-    Log.d("MyLog",text)
+fun logcatMessageD(text: String) {
+    Log.d("MyLog", text)
 }
 
-inline fun <reified T : Any> T?.ifNotNull(onNotNull:T.() -> Unit) {
-    if(this != null) {
+inline fun <reified T : Any> T?.ifNotNull(onNotNull: T.() -> Unit) {
+    if (this != null) {
         onNotNull(this)
     }
 }
 
-fun Context.sendOpenWebSiteIntent(url:String) {
+fun Context.sendOpenWebSiteIntent(url: String) {
     try {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(browserIntent)
-    }catch (e:Exception) {
-        Log.e("MyLog","Exception when try send ACTION_VIEW intent ${e.stackTraceToString()}")
+    } catch (e: Exception) {
+        Log.e("MyLog", "Exception when try send ACTION_VIEW intent ${e.stackTraceToString()}")
     }
 }
 
-fun Context.sendCreateEmailIntent(email:String,chooserDescription:String) {
+fun Context.sendCreateEmailIntent(email: String, chooserDescription: String) {
     try {
         val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email"))
-        startActivity(Intent.createChooser(emailIntent,chooserDescription))
-    }catch (e:Exception) {
-        Log.e("MyLog","Exception when try send ACTION_SENDTO intent ${e.stackTraceToString()}")
+        startActivity(Intent.createChooser(emailIntent, chooserDescription))
+    } catch (e: Exception) {
+        Log.e("MyLog", "Exception when try send ACTION_SENDTO intent ${e.stackTraceToString()}")
     }
 }
+
+val PermissionsManager.isAllPermissionsGranted: Boolean
+    get() = isCameraPermissionGranted() && isAccessibilityPermissionGranted() && isAdminPermissionGranted() && isNotificationPermissionGranted()

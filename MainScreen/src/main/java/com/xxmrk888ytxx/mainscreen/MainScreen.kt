@@ -60,6 +60,9 @@ fun MainScreen(
     val isAdminPermissionsDialogShow = mainViewModel.isAdminPermissionsDialogShow.remember()
     val isRequestIgnoreBatteryOptimisationDialogShow = mainViewModel
         .isRequestIgnoreBatteryOptimisationDialogShow.remember()
+    LaunchedEffect(key1 = Unit) {
+        mainViewModel.updateAppState()
+    }
 
 
     Scaffold(
