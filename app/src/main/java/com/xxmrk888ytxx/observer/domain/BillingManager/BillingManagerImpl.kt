@@ -37,7 +37,7 @@ internal class BillingManagerImpl @Inject constructor(
     private val billingClient by lazy {
         BillingClient.newBuilder(context)
             .setListener(purchasesUpdatedListener)
-            .enablePendingPurchases()
+            .enablePendingPurchases(PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
             .build()
     }
 
@@ -92,7 +92,7 @@ internal class BillingManagerImpl @Inject constructor(
             .build()
 
         billingClient.queryProductDetailsAsync(params) { _, prodDetailsList ->
-            prodDetailsList.forEach {
+            prodDetailsList.productDetailsList.forEach {
                 if (productIdMap.containsKey(it.productId)) {
                     productIdMap[it.productId] = it
                 }
