@@ -156,8 +156,8 @@ immutable-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-im
 
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx", version = "19.4.4" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.5.0" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
