@@ -106,7 +106,7 @@ fun MainScreen(
             }
             if (eventList.value.isNotEmpty()) {
                 items(eventList.value, key = { it.eventId }) { event ->
-                    Box(Modifier.animateItemPlacement()) {
+                    Box(Modifier.animateItem()) {
                         val onDeleteEvent = {
                             mainViewModel.showRemoveEventDialog(event.eventId)
                         }
