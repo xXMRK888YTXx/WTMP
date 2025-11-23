@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.guardsquare)
+    alias(libs.plugins.kotlin.compose)
+
 }
 
 android {
@@ -46,9 +48,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
     packaging {
         resources {
