@@ -1,9 +1,9 @@
 package com.xxmrk888ytxx.mainscreen.models
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 data class RequestedPermission(
     val description:String,
-    val permissionState: Flow<Boolean>,
+    val permissionState: StateFlow<Boolean>,
     val onRequest:() -> Unit,
 )
