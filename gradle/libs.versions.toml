@@ -41,6 +41,12 @@ androidGradlePlugin = "8.13.1"
 kotlin = "2.2.21"
 ksp = "2.2.21-2.0.4"
 composePlugin="2.2.21"
+packageName="com.xxmrk888ytxx.observer"
+compileSdk = "33"
+minSdk = "23"
+isR8ProGuardEnableForRelease = "true"
+isR8ProGuardEnableForDebug = "false"
+jvmTarget = "17"
 
 [libraries]
 # Desugar
