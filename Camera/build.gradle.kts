@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -43,5 +43,5 @@ dependencies {
     implementation(libs.camerax.extensions)
     implementation(libs.camerax.camera2)
     implementation(libs.camerax.lifecycle)
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 }

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -36,11 +36,11 @@ android {
     kotlinOptions {
         jvmTarget = Config.jvmTarget
     }
-    kapt {
-        arguments {
-            arg("room.schemaLocation","$projectDir/schemas")
-        }
-    }
+//    ksp {
+//        arguments {
+//            arg("room.schemaLocation","$projectDir/schemas")
+//        }
+//    }
     packaging {
         resources.excludes.add("META-INF/*")
     }
@@ -51,8 +51,8 @@ dependencies {
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
 
-    kapt(libs.room.compiler)
-    kapt(libs.dagger.compiler)
+    ksp(libs.room.compiler)
+    ksp(libs.dagger.compiler)
     //Instrumental Test
     androidTestImplementation(libs.instrumental.espresso)
     androidTestImplementation(libs.instrumental.test.runner)

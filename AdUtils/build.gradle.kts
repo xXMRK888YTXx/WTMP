@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -47,5 +47,5 @@ android {
 dependencies {
     implementation(project(Project.core.core_Compose.route))
     implementation(libs.admob)
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 }

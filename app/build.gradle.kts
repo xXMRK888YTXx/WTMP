@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.guardsquare)
@@ -79,7 +79,7 @@ dependencies {
     implementation(project(Project.AdUtils))
     implementation(project(Project.SupportDeveloperScreen))
 
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 
     implementation(libs.datastore)
     implementation(libs.appcompat)

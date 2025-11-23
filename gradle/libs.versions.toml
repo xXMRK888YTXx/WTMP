@@ -40,6 +40,7 @@ firebaseCrashlyticsPlugin = "3.0.6"
 guardsquare = "latest.release"
 androidGradlePlugin = "8.13.1"
 kotlin = "2.2.21"
+ksp = "2.2.21-2.0.4"
 
 [libraries]
 # Desugar
@@ -153,7 +154,7 @@ firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 
 [plugins]
-dagger-kapt = { id = "kotlin-kapt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 moshi-kapt = { id = "com.squareup.moshi.kapt" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }

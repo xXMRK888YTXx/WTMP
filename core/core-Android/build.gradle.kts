@@ -2,7 +2,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.ksp)
     //alias(libs.plugins.moshi.kapt)
 }
 
@@ -68,7 +68,7 @@ dependencies {
     api(libs.immutable.collections)
 
     implementation(libs.moshi)
-    kapt(libs.moshi.codegen)
+    ksp(libs.moshi.codegen)
 
     //Instrumental Test
     androidTestImplementation(libs.instrumental.espresso)

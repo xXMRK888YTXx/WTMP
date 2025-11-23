@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation(project(Project.core.core_Android.route))
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
     //Instrumental Test
     androidTestImplementation(libs.instrumental.espresso)
     androidTestImplementation(libs.instrumental.test.runner)

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)
     testImplementation(libs.mockwebserver)
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 
     //test
     testImplementation(libs.mockk.android)
