@@ -32,6 +32,9 @@ class CameraManagerImpl @Inject constructor(private val context: Context) : Life
         Handler(Looper.getMainLooper())
     }
 
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
+
     private fun onCreate() {
         handler.post { lifecycleRegistry.currentState = Lifecycle.State.RESUMED }
     }
@@ -93,6 +96,4 @@ class CameraManagerImpl @Inject constructor(private val context: Context) : Life
         }
 
     }
-
-    override fun getLifecycle(): Lifecycle = lifecycleRegistry
 }
