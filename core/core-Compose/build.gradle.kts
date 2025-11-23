@@ -38,19 +38,19 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Deps.Compose.KotlinCompiler
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
 }
 
 dependencies {
-    androidTestApi (Deps.Compose.TestJUnit)
-    debugApi (Deps.Compose.TestTooling)
-    debugApi (Deps.Compose.TestManifest)
-    api (Deps.Compose.UI)
-    api (Deps.Compose.Tooling)
-    api (Deps.Compose.Material)
-    api (Deps.Compose.Navigation)
-    api (Deps.Compose.GoogleFonts)
+    androidTestApi(libs.compose.test.junit)
+    debugApi(libs.compose.test.tooling)
+    debugApi(libs.compose.test.manifest)
+    api(libs.compose.ui)
+    api(libs.compose.tooling)
+    api(libs.compose.material)
+    api(libs.compose.navigation)
+    api(libs.compose.google.fonts)
     api (project(Project.core.core_Android.route))
-    implementation(Deps.Coil.coil)
+    implementation(libs.coil)
 }

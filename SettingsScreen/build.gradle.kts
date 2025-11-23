@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id(Deps.Dagger.DaggerKaptPlugin)
+    alias(libs.plugins.dagger.kapt)
 }
 
 android {
@@ -40,14 +40,14 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Deps.Compose.KotlinCompiler
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
 }
 
 dependencies {
     implementation(project(Project.core.core_Compose.route))
-    coreLibraryDesugaring(Desugar.time)
-    implementation(Deps.MaterialDialog.materialDialogs)
-    kapt(Deps.Dagger.DaggerKaptCompiler)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    implementation(libs.material.dialogs)
+    kapt(libs.dagger.compiler)
 
 }

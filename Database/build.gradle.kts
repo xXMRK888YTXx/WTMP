@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id(Deps.Dagger.DaggerKaptPlugin)
+    alias(libs.plugins.dagger.kapt)
 }
 
 android {
@@ -48,20 +48,20 @@ android {
 
 dependencies {
     implementation(project(Project.core.core_Android.route))
-    implementation(Deps.Room.RoomKTX)
-    implementation(Deps.Room.RoomRuntime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
 
-    kapt (Deps.Room.KaptCompiler)
-    kapt (Deps.Dagger.DaggerKaptCompiler)
+    kapt(libs.room.compiler)
+    kapt(libs.dagger.compiler)
     //Instrumental Test
-    androidTestImplementation (Deps.InstrumentalTest.espresso)
-    androidTestImplementation (Deps.InstrumentalTest.testRunner)
-    androidTestImplementation (Deps.InstrumentalTest.testCore)
-    androidTestImplementation (Deps.InstrumentalTest.jUnit)
-    androidTestImplementation (Deps.InstrumentalTest.testRules)
-    androidTestImplementation (Deps.TestAndroid.MockkAndroid)
-    androidTestImplementation (Deps.TestAndroid.MockkAgent)
-    androidTestImplementation (Deps.Coroutines.Test.CoroutinesTest)
-    androidTestImplementation (Deps.Room.Test.RoomTest)
+    androidTestImplementation(libs.instrumental.espresso)
+    androidTestImplementation(libs.instrumental.test.runner)
+    androidTestImplementation(libs.instrumental.test.core)
+    androidTestImplementation(libs.instrumental.junit.ktx)
+    androidTestImplementation(libs.instrumental.test.rules)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.agent)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.room.testing)
 
 }

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id(Deps.Dagger.DaggerKaptPlugin)
+    alias(libs.plugins.dagger.kapt)
 }
 
 android {
@@ -39,9 +39,9 @@ android {
 
 dependencies {
     implementation(project(Project.core.core_Android.route))
-    implementation(Deps.CameraX.CameraCore)
-    implementation(Deps.CameraX.CameraExtensions)
-    implementation(Deps.CameraX.Camera2)
-    implementation(Deps.CameraX.CameraLifecycle)
-    kapt(Deps.Dagger.DaggerKaptCompiler)
+    implementation(libs.camerax.core)
+    implementation(libs.camerax.extensions)
+    implementation(libs.camerax.camera2)
+    implementation(libs.camerax.lifecycle)
+    kapt(libs.dagger.compiler)
 }

@@ -1,10 +1,10 @@
 plugins {
-    id ("com.android.application")
-    id ("org.jetbrains.kotlin.android")
-    id (Deps.Dagger.DaggerKaptPlugin)
-    id ("com.google.gms.google-services")
-    id ("com.google.firebase.crashlytics")
-    id ("com.guardsquare.appsweep") version("latest.release")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.dagger.kapt)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.guardsquare)
 }
 
 android {
@@ -18,7 +18,7 @@ android {
         versionCode = 20
         versionName = "1.2.2r"
 
-        testInstrumentationRunner =  "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -27,7 +27,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = Config.isR8ProGuardEnableForRelease
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),"proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             testProguardFile("test-proguard-rules.pro")
         }
         debug {
@@ -38,7 +38,7 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility =  Config.sourceCompatibility
+        sourceCompatibility = Config.sourceCompatibility
         targetCompatibility = Config.targetCompatibility
     }
     kotlinOptions {
@@ -48,7 +48,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Deps.Compose.KotlinCompiler
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
     packaging {
         resources {
@@ -79,31 +79,30 @@ dependencies {
     implementation(project(Project.AdUtils))
     implementation(project(Project.SupportDeveloperScreen))
 
-    kapt (Deps.Dagger.DaggerKaptCompiler)
+    kapt(libs.dagger.compiler)
 
-    implementation(Deps.DataStore.dataStore)
-    implementation(Deps.AppCompat.appCompat)
-    implementation(Deps.AppCompat.appCompatRes)
-    implementation(Deps.Billing.billing)
-    implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
-    implementation ("com.google.firebase:firebase-crashlytics-ktx")
-    implementation ("com.google.firebase:firebase-analytics-ktx")
+    implementation(libs.datastore)
+    implementation(libs.appcompat)
+    implementation(libs.appcompat.resources)
+    implementation(libs.billing)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics.ktx)
 
-    coreLibraryDesugaring(Desugar.time)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
 
     //Instrumental Test
-    androidTestImplementation (Deps.InstrumentalTest.espresso)
-    androidTestImplementation (Deps.InstrumentalTest.testRunner)
-    androidTestImplementation (Deps.InstrumentalTest.testCore)
-    androidTestImplementation (Deps.InstrumentalTest.jUnit)
-    androidTestImplementation (Deps.InstrumentalTest.testRules)
-    androidTestImplementation(Deps.TestAndroid.MockkAndroid)
-    androidTestImplementation(Deps.TestAndroid.MockkAgent)
+    androidTestImplementation(libs.instrumental.espresso)
+    androidTestImplementation(libs.instrumental.test.runner)
+    androidTestImplementation(libs.instrumental.test.core)
+    androidTestImplementation(libs.instrumental.junit.ktx)
+    androidTestImplementation(libs.instrumental.test.rules)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.agent)
 
     //Test
-    testImplementation(Deps.TestAndroid.MockkAndroid)
-    testImplementation(Deps.TestAndroid.MockkAgent)
-    testImplementation(Deps.Test.Testing)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+    testImplementation(libs.testng)
 }
-

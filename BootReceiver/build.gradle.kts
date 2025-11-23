@@ -46,9 +46,7 @@ dependencies {
     implementation(project(Project.core.core_Android.route))
 
     //Test
-    testImplementation(Deps.TestAndroid.MockkAndroid)
-    testImplementation(Deps.TestAndroid.MockkAgent)
-    testImplementation(Deps.Test.Testing)
-    testImplementation(Deps.TestAndroid.MockkAndroid)
-    testImplementation(Deps.TestAndroid.MockkAgent)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+    testImplementation(libs.testng)
 }

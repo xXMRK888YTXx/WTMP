@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id(Deps.Dagger.DaggerKaptPlugin)
+    alias(libs.plugins.dagger.kapt)
 }
 
 android {
@@ -39,12 +39,12 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Deps.Compose.KotlinCompiler
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompiler.get()
     }
 }
 
 dependencies {
     implementation(project(Project.core.core_Compose.route))
     implementation(project(Project.AdUtils))
-    kapt(Deps.Dagger.DaggerKaptCompiler)
+    kapt(libs.dagger.compiler)
 }
