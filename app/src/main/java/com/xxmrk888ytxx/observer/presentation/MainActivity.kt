@@ -5,6 +5,7 @@ import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
@@ -97,6 +98,7 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         appComponent.inject(this)
         adAppManager.initAdmob()
         activityViewModel.initAppComponent(appComponent)
@@ -123,7 +125,8 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
             {
                 NavHost(
                     navController = navController,
-                    startDestination = getStartDestination().route
+                    startDestination = getStartDestination().route,
+                    modifier = Modifier.systemBarsPadding()
                 ) {
 
                     composable(Screen.AppLoginScreen.route) {
