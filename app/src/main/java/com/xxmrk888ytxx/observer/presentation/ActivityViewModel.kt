@@ -106,18 +106,13 @@ internal class ActivityViewModel : ViewModel(),Navigator, PurchaseListener {
     }
 
     override fun toEventDetailsScreen(eventId: Int) {
-        navController?.navigate(
-            Screen.EventDetailsScreen.route
-        ) {
+        navController?.navigate("${Screen.EventDetailsScreen.route}/$eventId") {
             launchSingleTop = true
         }
 
         activity.ifNotNull {
             appComponent?.adAppManager?.showMainScreenToEventDetailsScreenInterstitialAd(this)
         }
-
-        navController?.getBackStackEntry(Screen.EventDetailsScreen.route)
-            ?.arguments?.putInt(Navigator.EventDetailsScreenKey,eventId)
     }
 
     override fun toSelectTrackedAppScreen() {

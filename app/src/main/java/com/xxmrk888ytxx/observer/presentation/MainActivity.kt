@@ -9,9 +9,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,12 +36,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.xxmrk888ytxx.adutils.AdAppManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
@@ -66,7 +76,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import remember
-import theme.*
+import theme.BackGroundColor
+import theme.cardColor
+import theme.checkedSettingsSwitch
+import theme.openSansFont
+import theme.primaryFontColor
 import javax.inject.Inject
 import javax.inject.Provider
 
@@ -80,20 +94,33 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
      * [En]
      * All screen ViewModels must be created in the [composeViewModel] function
      */
-    @Inject lateinit var mainViewModel: Provider<MainViewModel>
-    @Inject lateinit var settingsViewModel: Provider<SettingsViewModel>
-    @Inject lateinit var eventViewModel: Provider<EventViewModel>
-    @Inject lateinit var telegramViewModel: Provider<TelegramViewModel>
-    @Inject lateinit var eventDetailsViewModel: EventDetailsViewModel.Factory
-    @Inject lateinit var selectTrackedAppViewModel: Provider<SelectTrackedAppViewModel>
-    @Inject lateinit var setupAppPasswordViewModel: Provider<SetupAppPasswordViewModel>
-    @Inject internal lateinit var appOpenViewModel: Provider<AppOpenViewModel>
-    @Inject lateinit var supportDeveloperViewModel: Provider<SupportDeveloperViewModel>
+    @Inject
+    lateinit var mainViewModel: Provider<MainViewModel>
+    @Inject
+    lateinit var settingsViewModel: Provider<SettingsViewModel>
+    @Inject
+    lateinit var eventViewModel: Provider<EventViewModel>
+    @Inject
+    lateinit var telegramViewModel: Provider<TelegramViewModel>
+    @Inject
+    lateinit var eventDetailsViewModel: EventDetailsViewModel.Factory
+    @Inject
+    lateinit var selectTrackedAppViewModel: Provider<SelectTrackedAppViewModel>
+    @Inject
+    lateinit var setupAppPasswordViewModel: Provider<SetupAppPasswordViewModel>
+    @Inject
+    internal lateinit var appOpenViewModel: Provider<AppOpenViewModel>
+    @Inject
+    lateinit var supportDeveloperViewModel: Provider<SupportDeveloperViewModel>
 
-    @Inject lateinit var appPasswordProvider: AppPasswordProvider
-    @Inject lateinit var adAppManager: AdAppManager
-    @Inject lateinit var billingManager: Provider<BillingManager>
-    @Inject lateinit var dialogShowStateManager: DialogShowStateManager
+    @Inject
+    lateinit var appPasswordProvider: AppPasswordProvider
+    @Inject
+    lateinit var adAppManager: AdAppManager
+    @Inject
+    lateinit var billingManager: Provider<BillingManager>
+    @Inject
+    lateinit var dialogShowStateManager: DialogShowStateManager
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,13 +133,15 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
         activityViewModel.activity = this
         billingManager.get().connectToGooglePlay()
         setContent {
-            val isShowCongratulationsDialog = activityViewModel.isShowCongratulationsDialog.remember()
+            val isShowCongratulationsDialog =
+                activityViewModel.isShowCongratulationsDialog.remember()
 
             val navController = rememberNavController()
 
-            val agreementDialogState = dialogShowStateManager.isAgreementDialogNeedShow.collectAsState(
-                initial = false
-            )
+            val agreementDialogState =
+                dialogShowStateManager.isAgreementDialogNeedShow.collectAsState(
+                    initial = false
+                )
 
             LaunchedEffect(key1 = Unit, block = {
                 activityViewModel.navController = navController
@@ -121,7 +150,8 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
             Column(
                 Modifier
                     .fillMaxSize()
-                    .background(BackGroundColor))
+                    .background(BackGroundColor)
+            )
             {
                 NavHost(
                     navController = navController,
@@ -170,14 +200,21 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
                         )
                     }
 
-                    composable(Screen.EventDetailsScreen.route) {
-                        val eventId = it.arguments?.getInt(Navigator.EventDetailsScreenKey)
-                            ?: return@composable
+                    composable(
+                        route = "${Screen.EventDetailsScreen.route}/{${Navigator.EventDetailsScreenKey}}",
+                        arguments = listOf(
+                            navArgument(Navigator.EventDetailsScreenKey) { NavType.StringType }
+                        )
+                    ) {
+                        val eventId =
+                            it.arguments?.getString(Navigator.EventDetailsScreenKey)?.toIntOrNull()
+                                ?: return@composable
 
-                        EventDetailsScreen(composeViewModel {
-                            eventDetailsViewModel.create(eventId)
-                        },
-                        navigator = activityViewModel
+                        EventDetailsScreen(
+                            composeViewModel {
+                                eventDetailsViewModel.create(eventId)
+                            },
+                            navigator = activityViewModel
                         )
                     }
 
@@ -186,12 +223,14 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
                             selectTrackedAppViewModel = composeViewModel {
                                 selectTrackedAppViewModel.get()
                             },
-                            navigator = activityViewModel)
+                            navigator = activityViewModel
+                        )
                     }
 
                     composable(Screen.SetupAppPasswordScreen.route) {
-                        val screenMode = it.arguments?.getInt(Navigator.SetupAppPasswordScreenModeKey)
-                            ?: return@composable
+                        val screenMode =
+                            it.arguments?.getInt(Navigator.SetupAppPasswordScreenModeKey)
+                                ?: return@composable
                         SetupAppPasswordScreen(
                             screenMode = screenMode,
                             setupAppPasswordViewModel = composeViewModel {
@@ -210,11 +249,11 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
                         )
                     }
                 }
-                if(isShowCongratulationsDialog.value) {
+                if (isShowCongratulationsDialog.value) {
                     CongratulationsDialog(activityViewModel)
                 }
 
-                if(agreementDialogState.value) {
+                if (agreementDialogState.value) {
                     AgreementDialog(
                         onConfirm = {
                             lifecycleScope.launch(Dispatchers.IO) {
@@ -304,8 +343,10 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
 
 
     private fun getStartDestination(): Screen = runBlocking {
-        return@runBlocking if(appPasswordProvider.isPasswordSetupFlow().first()) Screen.AppLoginScreen
-            else Screen.MainScreen
+        return@runBlocking if (appPasswordProvider.isPasswordSetupFlow()
+                .first()
+        ) Screen.AppLoginScreen
+        else Screen.MainScreen
     }
 
     override fun onStart() {
@@ -340,7 +381,7 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
     }
 
     override fun registerCallback(activityLifecycleCallback: ActivityLifecycleCallback) {
-        activityViewModel.registerCallback(activityLifecycleCallback,this)
+        activityViewModel.registerCallback(activityLifecycleCallback, this)
     }
 
     override fun unregisterCallback(activityLifecycleCallback: ActivityLifecycleCallback) {
