@@ -443,7 +443,11 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): ImmutableLi
         250 to 250.toString(),
         500 to 500.toString(),
         750 to 750.toString(),
-        1000 to 1000.toString()
+        1000 to 1000.toString(),
+        2000 to 2000.toString(),
+        3000 to 3000.toString(),
+        4000 to 4000.toString(),
+        5000 to 5000.toString(),
     ).remember()
 
     val maxTimeStoreReportsNameTimePair = persistentListOf(
@@ -453,7 +457,9 @@ internal fun getStorageParams(settingsViewModel: SettingsViewModel): ImmutableLi
         604_800_000L to stringResource(R.string.One_week),
         1_209_600_000L to stringResource(R.string.Two_weeks),
         1_814_400_000L to stringResource(R.string.Three_weeks),
-        2_678_400_000L to stringResource(R.string.one_month)
+        2_678_400_000L to stringResource(R.string.one_month),
+        5_356_800_000L to stringResource(R.string._2_months),
+        8_035_200_000L to stringResource(R.string._3_months),
     ).remember()
 
     val maxReportDropDownItem = maxReportsNameCountPair.map {
