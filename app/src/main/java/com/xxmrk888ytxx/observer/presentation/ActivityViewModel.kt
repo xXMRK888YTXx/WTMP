@@ -124,15 +124,9 @@ internal class ActivityViewModel : ViewModel(),Navigator, PurchaseListener {
     override fun toSetupAppPasswordScreen(
         setupAppPasswordScreenMode: Navigator.Companion.SetupAppPasswordScreenMode
     ) {
-        navController?.navigate(Screen.SetupAppPasswordScreen.route) {
+        navController?.navigate("${Screen.SetupAppPasswordScreen.route}/${setupAppPasswordScreenMode.modeNum}") {
             launchSingleTop = true
         }
-
-        navController?.getBackStackEntry(Screen.SetupAppPasswordScreen.route)
-            ?.arguments?.putInt(
-                Navigator.SetupAppPasswordScreenModeKey,
-                setupAppPasswordScreenMode.modeNum
-            )
     }
 
     override fun toSupportDeveloperScreen() {

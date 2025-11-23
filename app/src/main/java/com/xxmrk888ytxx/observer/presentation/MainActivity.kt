@@ -227,9 +227,14 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
                         )
                     }
 
-                    composable(Screen.SetupAppPasswordScreen.route) {
+                    composable(
+                        route = "${Screen.SetupAppPasswordScreen.route}/{${Navigator.SetupAppPasswordScreenModeKey}}",
+                        arguments = listOf(
+                            navArgument(Navigator.SetupAppPasswordScreenModeKey) { NavType.StringType }
+                        )
+                    ) {
                         val screenMode =
-                            it.arguments?.getInt(Navigator.SetupAppPasswordScreenModeKey)
+                            it.arguments?.getString(Navigator.SetupAppPasswordScreenModeKey)?.toIntOrNull()
                                 ?: return@composable
                         SetupAppPasswordScreen(
                             screenMode = screenMode,
