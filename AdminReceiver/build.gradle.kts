@@ -5,6 +5,7 @@ plugins {
 
 android {
     namespace = "com.xxmrk888ytxx.adminreceiver"
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
