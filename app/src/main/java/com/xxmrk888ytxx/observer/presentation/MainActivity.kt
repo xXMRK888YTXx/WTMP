@@ -45,7 +45,6 @@ import androidx.navigation.navArgument
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.DialogShowStateManager
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
@@ -110,8 +109,6 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
     @Inject
     lateinit var appPasswordProvider: AppPasswordProvider
     @Inject
-    lateinit var billingManager: Provider<BillingManager>
-    @Inject
     lateinit var dialogShowStateManager: DialogShowStateManager
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -121,7 +118,6 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
         appComponent.inject(this)
         activityViewModel.initAppComponent(appComponent)
         activityViewModel.activity = this
-        billingManager.get().connectToGooglePlay()
         setContent {
             val isShowCongratulationsDialog =
                 activityViewModel.isShowCongratulationsDialog.remember()
@@ -342,11 +338,6 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launchWhenResumed() {
-            withContext(Dispatchers.Default) {
-                billingManager.get().restorePurchases()
-            }
-        }
         activityViewModel.onResume()
     }
 

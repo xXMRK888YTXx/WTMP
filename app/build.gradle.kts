@@ -82,7 +82,6 @@ dependencies {
     implementation(libs.datastore)
     implementation(libs.appcompat)
     implementation(libs.appcompat.resources)
-    implementation(libs.billing)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics.ktx)
     implementation(libs.firebase.analytics.ktx)

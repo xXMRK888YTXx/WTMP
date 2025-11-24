@@ -16,7 +16,6 @@ import com.xxmrk888ytxx.observer.DI.module.AppOpenChangedCallbackModule
 import com.xxmrk888ytxx.observer.DI.module.AppOpenConfigManagerModule
 import com.xxmrk888ytxx.observer.DI.module.AppPasswordManagerModule
 import com.xxmrk888ytxx.observer.DI.module.AppStateManagerModule
-import com.xxmrk888ytxx.observer.DI.module.BillingManagerModule
 import com.xxmrk888ytxx.observer.DI.module.BiometricAuthorizationManagerModule
 import com.xxmrk888ytxx.observer.DI.module.BootCallbackModule
 import com.xxmrk888ytxx.observer.DI.module.BootDeviceTrackedConfigManagerModule
@@ -84,7 +83,6 @@ import javax.inject.Provider
         BootCallbackModule::class,
         BootDeviceTrackedConfigManagerModule::class,
         RemoveAppManagerModule::class,
-        BillingManagerModule::class,
         PurchaseListenerManagerModule::class,
         LocalizationManagerModule::class,
         DialogShowStateManagerModule::class,
