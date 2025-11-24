@@ -54,7 +54,7 @@ class MakeImageWorker(
     }
 
     private val cameraManager by lazy {
-        workerComponent.cameraManager
+        workerComponent.cameraManager.get()
     }
 
     private val imagePath: File by lazy {
@@ -85,7 +85,7 @@ class MakeImageWorker(
                 onSuccess = {
                     val output = Data
                         .Builder()
-                        .putString(SendPhotoTelegramWorker.photoPathDataKey, imagePath.absolutePath)
+                        .putString(SendPhotoTelegramWorker.PHOTO_PATH_DATA_KEY, imagePath.absolutePath)
                         .build()
                     result = Result.success(output)
                 }

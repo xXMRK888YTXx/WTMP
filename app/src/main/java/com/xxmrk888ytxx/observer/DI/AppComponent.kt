@@ -12,7 +12,7 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PurchaseCallback.PurchaseListenerManager
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.module.*
-import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.NotificationAppManager
 import com.xxmrk888ytxx.observer.presentation.MainActivity
 import com.xxmrk888ytxx.workers.DI.WorkerComponentDeps
 import dagger.BindsInstance
@@ -82,11 +82,11 @@ interface AppComponent : WorkerComponentDeps {
 
     val appStateProvider: AppStateProvider
 
-    val appStateChanger: AppStateChanger
+    override val appStateChanger: AppStateChanger
 
-    val permissionsManager:PermissionsManager
+    override val permissionsManager:PermissionsManager
 
-    val notificationAppManager: NotificationAppManager
+    override val notificationAppManager: NotificationAppManager
 
     override val cameraManager:CameraManager
 

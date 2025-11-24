@@ -20,4 +20,8 @@
     <string name="I_accept">I accept</string>
     <string name="Terms_of_Use">Terms of Use</string>
     <string name="Privacy_policy">Privacy Policy</string>
+    <string name="the_application_cannot_work">The application cannot work</string>
+    <string name="the_application_is_being_serviced">The application is being serviced</string>
+    <string name="please_wait">Please wait</string>
+    <string name="an_important_permission_has_been_revoked_go_to_the_application_settings_and_grant_it_again">An important permission has been revoked, go to the application settings and grant it again.</string>
 </resources>

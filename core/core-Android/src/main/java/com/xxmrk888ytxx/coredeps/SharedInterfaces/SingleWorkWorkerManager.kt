@@ -6,7 +6,7 @@ package com.xxmrk888ytxx.coredeps.SharedInterfaces
  * [En]
  *  This interface is designed to run Workers
  */
-interface WorkerManager {
+interface SingleWorkWorkerManager {
     /**
      * [Ru]
      * Запускает воркер для отправки сообщения в Telegram
@@ -47,5 +47,5 @@ interface WorkerManager {
      * Allows you to run multiple workers by
      * calling the appropriate workers in the passed lambda
      */
-    suspend fun createMultiRequest(request:suspend WorkerManager.() -> Unit)
+    suspend fun createMultiRequest(request:suspend SingleWorkWorkerManager.() -> Unit)
 }

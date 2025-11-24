@@ -5,20 +5,20 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.SingleWorkWorkerManager
 import com.xxmrk888ytxx.workers.Workers.MakeImageWorker
 import com.xxmrk888ytxx.workers.Workers.SendPhotoTelegramWorker
 import com.xxmrk888ytxx.workers.Workers.SendTelegramMessageWorker
 import javax.inject.Inject
 
-class WorkerManagerImpl @Inject constructor(
+class SingleWorkWorkerManagerImpl @Inject constructor(
     private val context:Context
-) : WorkerManager {
+) : SingleWorkWorkerManager {
     override fun sendMessageTelegram(botKey: String, userId: Long, message: String) {
         val data = Data.Builder()
-            .putString(SendTelegramMessageWorker.textDataKey,message)
-            .putString(SendTelegramMessageWorker.telegramBotKeyDataKey,botKey)
-            .putLong(SendTelegramMessageWorker.userIdDataKey,userId)
+            .putString(SendTelegramMessageWorker.TEXT_DATA_KEY,message)
+            .putString(SendTelegramMessageWorker.TELEGRAM_BOT_KEY_DATA_KEY,botKey)
+            .putLong(SendTelegramMessageWorker.USER_ID_DATA_KEY,userId)
             .build()
 
         val worker = OneTimeWorkRequestBuilder<SendTelegramMessageWorker>()
@@ -26,7 +26,7 @@ class WorkerManagerImpl @Inject constructor(
             .build()
 
         WorkManager.getInstance(context)
-            .enqueueUniqueWork("SendTelegramMessageWorker", ExistingWorkPolicy.APPEND_OR_REPLACE,worker)
+            .enqueueUniqueWork(SEND_TELEGRAM_MESSAGE_WORKER_TAG, ExistingWorkPolicy.APPEND_OR_REPLACE,worker)
     }
 
     override fun sendPhotoTelegram(
@@ -36,17 +36,17 @@ class WorkerManagerImpl @Inject constructor(
         caption: String,
     ) {
         val data = Data.Builder()
-            .putString(SendPhotoTelegramWorker.telegramBotKeyDataKey,botKey)
-            .putLong(SendPhotoTelegramWorker.userIdDataKey,userId)
-            .putString(SendPhotoTelegramWorker.photoPathDataKey,photoPath)
-            .putString(SendPhotoTelegramWorker.captionDataKey,caption)
+            .putString(SendPhotoTelegramWorker.TELEGRAM_BOT_KEY_DATA_KEY,botKey)
+            .putLong(SendPhotoTelegramWorker.USER_ID_DATA_KEY,userId)
+            .putString(SendPhotoTelegramWorker.PHOTO_PATH_DATA_KEY,photoPath)
+            .putString(SendPhotoTelegramWorker.CAPTION_DATA_KEY,caption)
             .build()
 
         val worker = OneTimeWorkRequestBuilder<SendPhotoTelegramWorker>()
             .setInputData(data)
             .build()
 
-        WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
+        WorkManager.getInstance(context).enqueueUniqueWork(SEND_PHOTO_TELEGRAM_WORKER_TAG,
             ExistingWorkPolicy.APPEND_OR_REPLACE,worker)
     }
 
@@ -57,11 +57,11 @@ class WorkerManagerImpl @Inject constructor(
             .setInputData(data)
             .build()
 
-        WorkManager.getInstance(context).enqueueUniqueWork("MakeImageWorker",
+        WorkManager.getInstance(context).enqueueUniqueWork(MAKE_IMAGE_WORKER_TAG,
             ExistingWorkPolicy.APPEND_OR_REPLACE,worker)
     }
 
-    override suspend fun createMultiRequest(request:suspend WorkerManager.() -> Unit) {
+    override suspend fun createMultiRequest(request:suspend SingleWorkWorkerManager.() -> Unit) {
         val builder = MultiRequestBuilder()
         request(builder)
         if(!builder.isValidRequest) return
@@ -71,7 +71,7 @@ class WorkerManagerImpl @Inject constructor(
 
         if(sendMessageTelegramWorker != null) {
             WorkManager.getInstance(context)
-            WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
+            WorkManager.getInstance(context).enqueueUniqueWork(SEND_TELEGRAM_MESSAGE_WORKER_TAG,
                 ExistingWorkPolicy.APPEND_OR_REPLACE,sendMessageTelegramWorker)
         }
 
@@ -82,16 +82,22 @@ class WorkerManagerImpl @Inject constructor(
                 .enqueue()
         } else {
             if(sendMessageTelegramWorker != null) {
-                WorkManager.getInstance(context).enqueueUniqueWork("SendPhotoTelegramWorker",
+                WorkManager.getInstance(context).enqueueUniqueWork(SEND_TELEGRAM_MESSAGE_WORKER_TAG,
                     ExistingWorkPolicy.APPEND_OR_REPLACE,sendMessageTelegramWorker)
             }
 
             if(createImageWorker != null) {
-                WorkManager.getInstance(context).enqueueUniqueWork("MakeImageWorker",
+                WorkManager.getInstance(context).enqueueUniqueWork(MAKE_IMAGE_WORKER_TAG,
                     ExistingWorkPolicy.APPEND_OR_REPLACE,createImageWorker)
             }
         }
 
 
+    }
+
+    companion object {
+        private const val SEND_TELEGRAM_MESSAGE_WORKER_TAG = "SendTelegramMessageWorker"
+        private const val SEND_PHOTO_TELEGRAM_WORKER_TAG = "SendPhotoTelegramWorker"
+        private const val MAKE_IMAGE_WORKER_TAG = "MakeImageWorker"
     }
 }

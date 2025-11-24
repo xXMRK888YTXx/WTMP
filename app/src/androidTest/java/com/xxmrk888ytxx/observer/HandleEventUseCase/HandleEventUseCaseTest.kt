@@ -4,7 +4,7 @@ package com.xxmrk888ytxx.observer.HandleEventUseCase
 
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.ImageRepository
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.SingleWorkWorkerManager
 import com.xxmrk888ytxx.coredeps.models.TelegramConfig
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCaseImpl
@@ -19,22 +19,22 @@ import org.junit.Test
 
 class HandleEventUseCaseTest {
 
-    private val workerManager:WorkerManager = mockk(relaxed = true)
+    private val singleWorkWorkerManager:SingleWorkWorkerManager = mockk(relaxed = true)
 
     private val telegramConfigProvider:TelegramConfigProvider = mockk(relaxed = true)
 
     private val imageRepository:ImageRepository = mockk(relaxed = true)
 
     private val handleEventUseCase: HandleEventUseCase = HandleEventUseCaseImpl(
-        workerManager, telegramConfigProvider, imageRepository
+        singleWorkWorkerManager, telegramConfigProvider, imageRepository
     )
 
-    private val workManagerForMultiRequest = mockk<WorkerManager>(relaxed = true)
+    private val workManagerForMultiRequest = mockk<SingleWorkWorkerManager>(relaxed = true)
 
     @Before
     fun init() {
-        coEvery { workerManager.createMultiRequest(any()) } coAnswers {
-            (this.args[0] as suspend WorkerManager.() -> Unit).invoke(workManagerForMultiRequest)
+        coEvery { singleWorkWorkerManager.createMultiRequest(any()) } coAnswers {
+            (this.args[0] as suspend SingleWorkWorkerManager.() -> Unit).invoke(workManagerForMultiRequest)
         }
         val telegramConfig = MutableStateFlow(TelegramConfig(1252,"ew"))
         coEvery { telegramConfigProvider.telegramConfig } returns telegramConfig

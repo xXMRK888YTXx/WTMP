@@ -18,7 +18,7 @@ import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerParams
 import com.xxmrk888ytxx.observer.R
-import com.xxmrk888ytxx.observer.domain.NotificationAppManager.NotificationAppManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.NotificationAppManager
 import com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase.HandleEventUseCase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
