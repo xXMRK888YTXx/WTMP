@@ -1,15 +1,37 @@
 package com.xxmrk888ytxx.mainscreen
 
-import MutliUse.*
+import MutliUse.AppOpenItem
+import MutliUse.AttemptUnlockDeviceItem
+import MutliUse.DeviceLaunchItem
+import MutliUse.GradientButton
+import MutliUse.LazySpacer
+import MutliUse.RemoveEventDialog
+import MutliUse.StyleButton
+import MutliUse.YesNoDialog
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,12 +43,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xxmrk888ytxx.adutils.AdMobBanner
-import com.xxmrk888ytxx.adutils.models.AdMobKey
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import remember
-import theme.*
+import theme.Purple500
+import theme.disableAppButtonColor
+import theme.disableAppButtonFontColor
+import theme.enableAppButtonColor
+import theme.enableAppButtonFontColor
+import theme.openSansFont
+import theme.primaryFontColor
 
 /**
  * [Ru]
@@ -54,7 +80,6 @@ fun MainScreen(
     val eventList = mainViewModel.dayEventList.collectAsState(listOf())
     val isRemoveDialogShow = mainViewModel.isRemoveDialogShow.remember()
     val isPermissionDialogShow = mainViewModel.isShowRequestPermissionDialog.remember()
-    val isNeedShowAd = mainViewModel.isShowAd.collectAsState(true)
     val isAccessibilityPermissionsDialogShow = mainViewModel.isAccessibilityPermissionsDialogShow
         .remember()
     val isAdminPermissionsDialogShow = mainViewModel.isAdminPermissionsDialogShow.remember()
@@ -69,11 +94,7 @@ fun MainScreen(
         Modifier
             .fillMaxSize()
             .padding(5.dp),
-        backgroundColor = Color.Transparent,
-        bottomBar = {
-            if (isNeedShowAd.value)
-                AdMobBanner(adMobKey = AdMobKey.MainScreenBanner, background = BackGroundColor)
-        }
+        backgroundColor = Color.Transparent
     ) {
         LazyColumn(
             modifier = Modifier

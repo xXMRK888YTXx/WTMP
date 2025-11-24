@@ -12,13 +12,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
-import com.xxmrk888ytxx.adutils.AdStateManager
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.*
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.DialogShowStateManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ResourcesProvider
 import com.xxmrk888ytxx.coredeps.isAllPermissionsGranted
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.mainscreen.models.RequestedPermission
@@ -26,14 +28,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import toState
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -43,7 +44,6 @@ class MainViewModel @Inject constructor(
     private val permissionsManager: PermissionsManager,
     private val appStateChanger: AppStateChanger,
     private val resourcesProvider: ResourcesProvider,
-    private val adStateManager: AdStateManager,
     private val dialogShowStateManager: DialogShowStateManager
 ) : ViewModel(), ActivityLifecycleCallback {
 
@@ -297,8 +297,6 @@ class MainViewModel @Inject constructor(
         this.activityLifecycleRegister = activityLifecycleRegister
         activityLifecycleRegister.registerCallback(this)
     }
-
-    internal val isShowAd = adStateManager.isNeedShowAd
 
     override fun onCleared() {
         activityLifecycleRegister?.unregisterCallback(this)

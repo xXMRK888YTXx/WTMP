@@ -66,20 +66,6 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(20)
         }
 
-        item(key = 1) {
-            SettingsCategory(
-                categoryName = stringResource(R.string.Paid_content),
-                settingsParams = persistentListOf(
-                    SettingsParamType.Button(
-                        text = stringResource(R.string.Support_author),
-                        icon = R.drawable.baseline_attach_money_24,
-                        onClick = navigator::toSupportDeveloperScreen
-                    )
-                )
-            )
-            LazySpacer(categoryPadding)
-        }
-
         item(key = 2) {
             SettingsCategory(
                 stringResource(R.string.Unsuccessful_unlock_attempt),

@@ -76,8 +76,6 @@ dependencies {
     implementation(project(Project.SetupAppPasswordScreen))
     implementation(project(Project.EnterPasswordScreen))
     implementation(project(Project.BootReceiver))
-    implementation(project(Project.AdUtils))
-    implementation(project(Project.SupportDeveloperScreen))
 
     ksp(libs.dagger.compiler)
 

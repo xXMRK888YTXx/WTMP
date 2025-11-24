@@ -2,23 +2,30 @@ package com.xxmrk888ytxx.observer.domain.BillingManager
 
 import android.app.Activity
 import android.content.Context
-import com.android.billingclient.api.*
-import com.xxmrk888ytxx.adutils.AdStateManager
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
 import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PurchaseCallback.PurchaseListenerManager
 import com.xxmrk888ytxx.coredeps.ifNotNull
 import com.xxmrk888ytxx.coredeps.logcatMessageD
 import com.xxmrk888ytxx.observer.DI.AppScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AppScope
 internal class BillingManagerImpl @Inject constructor(
     private val context: Context,
-    private val adStateManager: AdStateManager,
+
     private val purchaseListenerManager: PurchaseListenerManager
 ) : BillingManager {
 
@@ -51,11 +58,7 @@ internal class BillingManagerImpl @Inject constructor(
 
             billingClient.acknowledgePurchase(acknowledgePurchaseParams) { billingClient ->
                 if (billingClient.responseCode == BillingClient.BillingResponseCode.OK) {
-                    ApplicationScope.launch(Dispatchers.IO) {
-                        if(!adStateManager.isNeedShowAd.first()) return@launch
-                        adStateManager.changeAdState(false)
-                        purchaseListenerManager.notifyListeners()
-                    }
+
                 }
             }
         }

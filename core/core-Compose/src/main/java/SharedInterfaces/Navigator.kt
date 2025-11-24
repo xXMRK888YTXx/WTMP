@@ -22,8 +22,6 @@ interface Navigator {
 
     fun toSetupAppPasswordScreen(setupAppPasswordScreenMode:SetupAppPasswordScreenMode)
 
-    fun toSupportDeveloperScreen()
-
     companion object {
         const val EventDetailsScreenKey = "EventDetailsScreenKey"
 
