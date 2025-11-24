@@ -107,8 +107,6 @@ class TelegramViewModel @Inject constructor(
             } else {
                 _screenState.value = ScreenState.ChangeTelegramConfigState
             }
-            botKeyText.value = ""
-            userIdText.value = ""
             _isTelegramRequestProcessNow.value = false
         }
     }
