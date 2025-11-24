@@ -60,6 +60,9 @@ fun MainScreen(
     val isAdminPermissionsDialogShow = mainViewModel.isAdminPermissionsDialogShow.remember()
     val isRequestIgnoreBatteryOptimisationDialogShow = mainViewModel
         .isRequestIgnoreBatteryOptimisationDialogShow.remember()
+    LaunchedEffect(key1 = Unit) {
+        mainViewModel.updateAppState()
+    }
 
 
     Scaffold(
@@ -106,7 +109,7 @@ fun MainScreen(
             }
             if (eventList.value.isNotEmpty()) {
                 items(eventList.value, key = { it.eventId }) { event ->
-                    Box(Modifier.animateItemPlacement()) {
+                    Box(Modifier.animateItem()) {
                         val onDeleteEvent = {
                             mainViewModel.showRemoveEventDialog(event.eventId)
                         }

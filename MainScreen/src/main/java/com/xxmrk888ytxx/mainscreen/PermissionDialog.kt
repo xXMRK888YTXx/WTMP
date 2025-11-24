@@ -36,7 +36,7 @@ internal fun PermissionDialog(requestedPermission: List<RequestedPermission>,onD
                     .padding(10.dp)
             ) {
                 items(requestedPermission) {
-                    val permissionState = it.permissionState.collectAsState(false)
+                    val permissionState = it.permissionState.collectAsState()
                     val fontColor = if (permissionState.value) disableAppButtonFontColor
                     else enableAppButtonFontColor
                     Column(Modifier

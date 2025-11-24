@@ -1,24 +1,27 @@
 plugins {
-    id ("com.android.application")
-    id ("org.jetbrains.kotlin.android")
-    id (Deps.Dagger.DaggerKaptPlugin)
-    id ("com.google.gms.google-services")
-    id ("com.google.firebase.crashlytics")
-    id ("com.guardsquare.appsweep") version("latest.release")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.guardsquare)
+    alias(libs.plugins.kotlin.compose)
+
 }
 
 android {
-    namespace = Config.packageName
-    compileSdk = Config.compileSdk
+    namespace = libs.versions.packageName.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
+
 
     defaultConfig {
-        applicationId = Config.packageName
-        minSdk = Config.minSdk
-        targetSdk = Config.compileSdk
+        applicationId = libs.versions.packageName.get()
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.compileSdk.get().toInt()
         versionCode = 20
         versionName = "1.2.2r"
 
-        testInstrumentationRunner =  "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -26,29 +29,26 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = Config.isR8ProGuardEnableForRelease
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),"proguard-rules.pro")
+            isMinifyEnabled = libs.versions.isR8ProGuardEnableForRelease.get().toBoolean()
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             testProguardFile("test-proguard-rules.pro")
         }
         debug {
-            isMinifyEnabled = Config.isR8ProGuardEnableForDebug
+            isMinifyEnabled = libs.versions.isR8ProGuardEnableForDebug.get().toBoolean()
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility =  Config.sourceCompatibility
-        targetCompatibility = Config.targetCompatibility
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
     kotlinOptions {
-        jvmTarget = Config.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Deps.Compose.KotlinCompiler
     }
     packaging {
         resources {
@@ -79,31 +79,30 @@ dependencies {
     implementation(project(Project.AdUtils))
     implementation(project(Project.SupportDeveloperScreen))
 
-    kapt (Deps.Dagger.DaggerKaptCompiler)
+    ksp(libs.dagger.compiler)
 
-    implementation(Deps.DataStore.dataStore)
-    implementation(Deps.AppCompat.appCompat)
-    implementation(Deps.AppCompat.appCompatRes)
-    implementation(Deps.Billing.billing)
-    implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
-    implementation ("com.google.firebase:firebase-crashlytics-ktx")
-    implementation ("com.google.firebase:firebase-analytics-ktx")
+    implementation(libs.datastore)
+    implementation(libs.appcompat)
+    implementation(libs.appcompat.resources)
+    implementation(libs.billing)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics.ktx)
 
-    coreLibraryDesugaring(Desugar.time)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
 
     //Instrumental Test
-    androidTestImplementation (Deps.InstrumentalTest.espresso)
-    androidTestImplementation (Deps.InstrumentalTest.testRunner)
-    androidTestImplementation (Deps.InstrumentalTest.testCore)
-    androidTestImplementation (Deps.InstrumentalTest.jUnit)
-    androidTestImplementation (Deps.InstrumentalTest.testRules)
-    androidTestImplementation(Deps.TestAndroid.MockkAndroid)
-    androidTestImplementation(Deps.TestAndroid.MockkAgent)
+    androidTestImplementation(libs.instrumental.espresso)
+    androidTestImplementation(libs.instrumental.test.runner)
+    androidTestImplementation(libs.instrumental.test.core)
+    androidTestImplementation(libs.instrumental.junit.ktx)
+    androidTestImplementation(libs.instrumental.test.rules)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.agent)
 
     //Test
-    testImplementation(Deps.TestAndroid.MockkAndroid)
-    testImplementation(Deps.TestAndroid.MockkAgent)
-    testImplementation(Deps.Test.Testing)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+    testImplementation(libs.testng)
 }
-

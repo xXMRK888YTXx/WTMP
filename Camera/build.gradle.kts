@@ -1,15 +1,15 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id(Deps.Dagger.DaggerKaptPlugin)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.xxmrk888ytxx.camera"
-    compileSdk = Config.compileSdk
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Config.minSdk
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -17,31 +17,31 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = Config.isR8ProGuardEnableForRelease
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
 
         debug {
-            isMinifyEnabled = Config.isR8ProGuardEnableForDebug
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = Config.sourceCompatibility
-        targetCompatibility = Config.targetCompatibility
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
     kotlinOptions {
-        jvmTarget = Config.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 }
 
 dependencies {
     implementation(project(Project.core.core_Android.route))
-    implementation(Deps.CameraX.CameraCore)
-    implementation(Deps.CameraX.CameraExtensions)
-    implementation(Deps.CameraX.Camera2)
-    implementation(Deps.CameraX.CameraLifecycle)
-    kapt(Deps.Dagger.DaggerKaptCompiler)
+    implementation(libs.camerax.core)
+    implementation(libs.camerax.extensions)
+    implementation(libs.camerax.camera2)
+    implementation(libs.camerax.lifecycle)
+    ksp(libs.dagger.compiler)
 }

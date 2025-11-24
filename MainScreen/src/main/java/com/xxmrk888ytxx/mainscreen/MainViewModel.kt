@@ -19,13 +19,18 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.Acti
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
+import com.xxmrk888ytxx.coredeps.isAllPermissionsGranted
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import com.xxmrk888ytxx.mainscreen.models.RequestedPermission
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import toState
 import java.util.*
@@ -45,7 +50,7 @@ class MainViewModel @Inject constructor(
     private var activityLifecycleRegister: ActivityLifecycleRegister? = null
 
     @SuppressLint("StaticFieldLeak")
-    private var activity:Activity? = null
+    private var activity: Activity? = null
 
     private val cameraPermissionState = MutableStateFlow(false)
 
@@ -55,9 +60,11 @@ class MainViewModel @Inject constructor(
 
     private val notificationPermissionState = MutableStateFlow(false)
 
-    internal val appState = appStateProvider.isAppEnable
+    internal val appState =
+        appStateProvider.isAppEnable
 
-    private val _isRemoveDialogShow:MutableState<Pair<Boolean,Int>> = mutableStateOf(Pair(false,0))
+    private val _isRemoveDialogShow: MutableState<Pair<Boolean, Int>> =
+        mutableStateOf(Pair(false, 0))
 
     internal val isRemoveDialogShow = _isRemoveDialogShow.toState()
 
@@ -85,7 +92,7 @@ class MainViewModel @Inject constructor(
      */
     override fun onResume() {
         if(_isShowRequestPermissionDialog.value)
-            checkPermission()
+            updatePermissionState()
     }
 
     override fun onRegister(activity: Activity) {
@@ -103,12 +110,12 @@ class MainViewModel @Inject constructor(
         this.activity = null
     }
 
-    internal fun showRemoveEventDialog(eventId:Int) {
-        _isRemoveDialogShow.value = Pair(true,eventId)
+    internal fun showRemoveEventDialog(eventId: Int) {
+        _isRemoveDialogShow.value = Pair(true, eventId)
     }
 
     internal fun hideRemoveEventDialog() {
-        _isRemoveDialogShow.value = Pair(false,0)
+        _isRemoveDialogShow.value = Pair(false, 0)
     }
 
     internal fun removeEvent(eventId: Int) {
@@ -118,28 +125,28 @@ class MainViewModel @Inject constructor(
     }
 
 
-    private val startDayTime : Long
+    private val startDayTime: Long
         get() {
             val calendar = Calendar.getInstance()
             calendar.time = Date(System.currentTimeMillis())
-            calendar.set(Calendar.HOUR_OF_DAY,0)
-            calendar.set(Calendar.MINUTE,0)
-            calendar.set(Calendar.SECOND,0)
-            calendar.set(Calendar.MILLISECOND,0)
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
             return calendar.timeInMillis
         }
 
-    private val endDayTime:Long
+    private val endDayTime: Long
         get() = startDayTime + 86_400_000L
 
-    private val savedAppImages = mutableMapOf<String,Bitmap?>()
+    private val savedAppImages = mutableMapOf<String, Bitmap?>()
 
-    private val savedAppNames = mutableMapOf<String,String?>()
+    private val savedAppNames = mutableMapOf<String, String?>()
 
-    internal val dayEventList:Flow<List<DeviceEvent>> =
-        deviceEventRepository.getEventInTimeSpan(startDayTime,endDayTime).map { list ->
+    internal val dayEventList: Flow<List<DeviceEvent>> =
+        deviceEventRepository.getEventInTimeSpan(startDayTime, endDayTime).map { list ->
             val newList = list.map { event ->
-                if(event is DeviceEvent.AppOpen)
+                if (event is DeviceEvent.AppOpen)
                     provideAppInfoIntoEvent(event)
                 else event
             }
@@ -152,9 +159,9 @@ class MainViewModel @Inject constructor(
         savedAppImages.clear()
     }
 
-    private suspend fun provideAppInfoIntoEvent(event: DeviceEvent.AppOpen) : DeviceEvent {
+    private suspend fun provideAppInfoIntoEvent(event: DeviceEvent.AppOpen): DeviceEvent {
         val appName = viewModelScope.async(Dispatchers.Default) {
-            if(event.packageName !in savedAppNames) {
+            if (event.packageName !in savedAppNames) {
                 savedAppNames[event.packageName] = packageInfoProvider.getAppName(event.packageName)
             }
 
@@ -162,7 +169,7 @@ class MainViewModel @Inject constructor(
         }
 
         val icon = viewModelScope.async(Dispatchers.Default) {
-            if(event.packageName !in savedAppImages) {
+            if (event.packageName !in savedAppImages) {
                 savedAppImages[event.packageName] =
                     packageInfoProvider.getAppIcon(event.packageName)?.toBitmap()
             }
@@ -174,7 +181,7 @@ class MainViewModel @Inject constructor(
     }
 
     @OptIn(ExperimentalPermissionsApi::class)
-    internal val requestedPermission : List<RequestedPermission>
+    internal val requestedPermission: List<RequestedPermission>
         @SuppressLint("ResourceType") @Composable get() {
             val cameraState = rememberPermissionState(
                 android.Manifest.permission.CAMERA
@@ -186,10 +193,11 @@ class MainViewModel @Inject constructor(
             } else {
                 null
             }
-            val requestedPermissionList = mutableListOf (
+            val requestedPermissionList = mutableListOf(
                 RequestedPermission(
                     resourcesProvider.getString(R.string.Permission_access_camera),
-                    cameraPermissionState) {
+                    cameraPermissionState
+                ) {
                     permissionsManager.requestRuntimePermission(cameraState)
                 },
                 RequestedPermission(
@@ -202,19 +210,20 @@ class MainViewModel @Inject constructor(
                     adminPermissionState,
                 ) { isAdminPermissionsDialogShow.value = true },
             )
-            if(notificationState != null) {
-                requestedPermissionList.add(RequestedPermission(
-                    resourcesProvider.getString(R.string.Permission_send_notifications),
-                    notificationPermissionState,
-                ) {
-                    permissionsManager.requestRuntimePermission(notificationState)
-                })
+            if (notificationState != null) {
+                requestedPermissionList.add(
+                    RequestedPermission(
+                        resourcesProvider.getString(R.string.Permission_send_notifications),
+                        notificationPermissionState,
+                    ) {
+                        permissionsManager.requestRuntimePermission(notificationState)
+                    })
             }
             return requestedPermissionList
         }
 
     private fun showRequestPermissionDialog() {
-        if(checkPermission()) {
+        if (updatePermissionState()) {
             viewModelScope.launch(Dispatchers.IO) {
                 appStateChanger.updateAppState(true)
             }
@@ -224,21 +233,21 @@ class MainViewModel @Inject constructor(
     }
 
     internal fun showRequestIgnoreBatteryOptimisationDialog() {
-        if(!isNeedShowRequestIgnoreBatteryOptimisationDialog) {
+        if (!isNeedShowRequestIgnoreBatteryOptimisationDialog) {
             showRequestPermissionDialog()
         } else {
             isRequestIgnoreBatteryOptimisationDialogShow.value = true
         }
     }
 
-    internal fun requestIgnoreBatteryOptimisationDialogHandlePressOk(isNeverShowAgainState:Boolean) {
+    internal fun requestIgnoreBatteryOptimisationDialogHandlePressOk(isNeverShowAgainState: Boolean) {
         isRequestIgnoreBatteryOptimisationDialogShow.value = false
 
-        if(!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
+        if (!permissionsManager.isIgnoreBatteryOptimizationEnable()) {
             permissionsManager.requestIgnoreBatteryOptimization()
         }
 
-        if(isNeverShowAgainState) {
+        if (isNeverShowAgainState) {
             viewModelScope.launch(Dispatchers.IO) {
                 dialogShowStateManager.setupIgnoreIgnoreBatteryOptimisationDialogShowState(false)
             }
@@ -247,10 +256,10 @@ class MainViewModel @Inject constructor(
         showRequestPermissionDialog()
     }
 
-    internal fun requestIgnoreBatteryOptimisationDialogHandlePressCancel(isNeverShowAgainState:Boolean) {
+    internal fun requestIgnoreBatteryOptimisationDialogHandlePressCancel(isNeverShowAgainState: Boolean) {
         isRequestIgnoreBatteryOptimisationDialogShow.value = false
 
-        if(isNeverShowAgainState) {
+        if (isNeverShowAgainState) {
             viewModelScope.launch(Dispatchers.IO) {
                 dialogShowStateManager.setupIgnoreIgnoreBatteryOptimisationDialogShowState(false)
             }
@@ -263,21 +272,19 @@ class MainViewModel @Inject constructor(
         _isShowRequestPermissionDialog.value = false
     }
 
-    private fun checkPermission() : Boolean {
-        val camera = permissionsManager.isCameraPermissionGranted()
-        val accessibility = permissionsManager.isAccessibilityPermissionGranted()
-        val admin = permissionsManager.isAdminPermissionGranted()
-        val notification = permissionsManager.isNotificationPermissionGranted()
-
-        viewModelScope.launch(Dispatchers.Default) {
-            cameraPermissionState.emit(camera)
-            accessibilityPermissionsState.emit(accessibility)
-            adminPermissionState.emit(admin)
-            notificationPermissionState.emit(notification)
+    private fun updatePermissionState(): Boolean {
+        cameraPermissionState.update { permissionsManager.isCameraPermissionGranted() }
+        accessibilityPermissionsState.update { permissionsManager.isAccessibilityPermissionGranted() }
+        adminPermissionState.update { permissionsManager.isAdminPermissionGranted() }
+        notificationPermissionState.update { permissionsManager.isNotificationPermissionGranted() }
+        return permissionsManager.isAllPermissionsGranted.also { isAllPermissionsGranted ->
+            viewModelScope.launch(Dispatchers.Default) {
+                when {
+                    isAllPermissionsGranted -> hideRequestPermissionDialog()
+                    !isAllPermissionsGranted && appState.first() -> disableApp()
+                }
+            }
         }
-
-
-        return camera&&accessibility&&admin&&notification
     }
 
     internal fun disableApp() {
@@ -317,6 +324,10 @@ class MainViewModel @Inject constructor(
                 isNeedShowRequestIgnoreBatteryOptimisationDialog = it
             }
         }
+    }
+
+    fun updateAppState() {
+        updatePermissionState()
     }
 
     init {

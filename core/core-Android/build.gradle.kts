@@ -1,16 +1,15 @@
-
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id(Deps.KaptPlugin.kapt)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
     namespace = "com.xxmrk888ytxx.coredeps"
-    compileSdk = Config.compileSdk
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Config.minSdk
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -18,23 +17,23 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = Config.isR8ProGuardEnableForRelease
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
 
         debug {
-            isMinifyEnabled = Config.isR8ProGuardEnableForDebug
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = Config.sourceCompatibility
-        targetCompatibility = Config.targetCompatibility
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
     kotlinOptions {
-        jvmTarget = Config.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     packaging {
         resources {
@@ -45,36 +44,36 @@ android {
 }
 
 dependencies {
-    api (Deps.AndroidX.AndroidCore)
-    api (Deps.AndroidX.LifeCycle)
-    api (Deps.AndroidX.ComposeActivity)
-    testApi (Deps.Test.JUnit)
-    androidTestApi (Deps.TestAndroid.AndroidJUnit)
-    androidTestApi (Deps.TestAndroid.Espresso)
-    testApi(Deps.Test.Mockk)
-    testApi(Deps.TestAndroid.MockkAndroid)
-    testApi(Deps.TestAndroid.MockkAgent)
-    testApi(Deps.Test.Testing)
-    androidTestApi(Deps.TestAndroid.MockkAndroid)
-    androidTestApi(Deps.TestAndroid.MockkAgent)
-    api (Deps.ViewModel.ViewModel)
-    api (Deps.ViewModel.ViewModelKotlin)
-    api (Deps.Dagger.DaggerCore)
-    api(Deps.Coroutines.CoroutinesAndroid)
-    api (Deps.Permissions.permission)
-    api (Deps.Biometric.biometric)
-    api (Deps.Fragment.fragment)
-    api (Deps.ImmutableCollection.collectionsImmutable)
+    api(libs.androidx.core)
+    api(libs.androidx.lifecycle)
+    api(libs.androidx.activity.compose)
+    testApi(libs.junit)
+    androidTestApi(libs.android.junit)
+    androidTestApi(libs.espresso.core)
+    testApi(libs.mockk)
+    testApi(libs.mockk.android)
+    testApi(libs.mockk.agent)
+    testApi(libs.testng)
+    androidTestApi(libs.mockk.android)
+    androidTestApi(libs.mockk.agent)
+    api(libs.viewmodel)
+    api(libs.viewmodel.ktx)
+    api(libs.dagger)
+    api(libs.coroutines.android)
+    api(libs.permissions)
+    api(libs.biometric)
+    api(libs.fragment)
+    api(libs.immutable.collections)
 
-    implementation(Deps.Moshi.moshi)
-    kapt(Deps.Moshi.moshiKaptPlugin)
+    implementation(libs.moshi)
+    ksp(libs.moshi.codegen)
 
     //Instrumental Test
-    androidTestImplementation (Deps.InstrumentalTest.espresso)
-    androidTestImplementation (Deps.InstrumentalTest.testRunner)
-    androidTestImplementation (Deps.InstrumentalTest.testCore)
-    androidTestImplementation (Deps.InstrumentalTest.jUnit)
-    androidTestImplementation (Deps.InstrumentalTest.testRules)
-    androidTestImplementation(Deps.TestAndroid.MockkAndroid)
-    androidTestImplementation(Deps.TestAndroid.MockkAgent)
+    androidTestImplementation(libs.instrumental.espresso)
+    androidTestImplementation(libs.instrumental.test.runner)
+    androidTestImplementation(libs.instrumental.test.core)
+    androidTestImplementation(libs.instrumental.junit.ktx)
+    androidTestImplementation(libs.instrumental.test.rules)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.agent)
 }

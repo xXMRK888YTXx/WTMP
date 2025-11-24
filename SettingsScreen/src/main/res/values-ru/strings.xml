@@ -69,4 +69,6 @@
     <string name="Choose_end_time">Выберете время конца</string>
     <string name="Choose_at_least_one_working_day">Выберете хотя бы один рабочий день</string>
     <string name="Incorrect_time_entered">Введено некорректное время</string>
+    <string name="_2_months">2 месяца</string>
+    <string name="_3_months">3 месяца</string>
 </resources>

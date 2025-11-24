@@ -86,14 +86,14 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
                                 color = primaryFontColor.copy(0.8f),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .animateItemPlacement(),
+                                    .animateItem(),
                                 textAlign = TextAlign.Center
                             )
                             LazySpacer(height = 5)
                         }
                     }
                     items(dayEvents.value,key = { it.eventId }) { event ->
-                        Box(Modifier.animateItemPlacement()) {
+                        Box(Modifier.animateItem()) {
                             val onDeleteEvent = {
                                 eventViewModel.showRemoveEventDialog(event.eventId)
                             }

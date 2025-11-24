@@ -1,45 +1,44 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id(Deps.Dagger.DaggerKaptPlugin)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 android {
     namespace = "com.xxmrk888ytxx.database"
-    compileSdk = Config.compileSdk
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.compileSdk
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        room {
+            schemaDirectory("$projectDir/schemas")
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = Config.isR8ProGuardEnableForRelease
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
 
         debug {
-            isMinifyEnabled = Config.isR8ProGuardEnableForDebug
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = Config.sourceCompatibility
-        targetCompatibility = Config.targetCompatibility
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
     kotlinOptions {
-        jvmTarget = Config.jvmTarget
-    }
-    kapt {
-        arguments {
-            arg("room.schemaLocation","$projectDir/schemas")
-        }
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     packaging {
         resources.excludes.add("META-INF/*")
@@ -48,20 +47,20 @@ android {
 
 dependencies {
     implementation(project(Project.core.core_Android.route))
-    implementation(Deps.Room.RoomKTX)
-    implementation(Deps.Room.RoomRuntime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
 
-    kapt (Deps.Room.KaptCompiler)
-    kapt (Deps.Dagger.DaggerKaptCompiler)
+    ksp(libs.room.compiler)
+    ksp(libs.dagger.compiler)
     //Instrumental Test
-    androidTestImplementation (Deps.InstrumentalTest.espresso)
-    androidTestImplementation (Deps.InstrumentalTest.testRunner)
-    androidTestImplementation (Deps.InstrumentalTest.testCore)
-    androidTestImplementation (Deps.InstrumentalTest.jUnit)
-    androidTestImplementation (Deps.InstrumentalTest.testRules)
-    androidTestImplementation (Deps.TestAndroid.MockkAndroid)
-    androidTestImplementation (Deps.TestAndroid.MockkAgent)
-    androidTestImplementation (Deps.Coroutines.Test.CoroutinesTest)
-    androidTestImplementation (Deps.Room.Test.RoomTest)
+    androidTestImplementation(libs.instrumental.espresso)
+    androidTestImplementation(libs.instrumental.test.runner)
+    androidTestImplementation(libs.instrumental.test.core)
+    androidTestImplementation(libs.instrumental.junit.ktx)
+    androidTestImplementation(libs.instrumental.test.rules)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.mockk.agent)
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.room.testing)
 
 }

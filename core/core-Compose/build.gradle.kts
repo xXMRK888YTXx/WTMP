@@ -1,14 +1,15 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.xxmrk888ytxx.core_compose"
-    compileSdk = Config.compileSdk
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = Config.minSdk
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -16,41 +17,38 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = Config.isR8ProGuardEnableForRelease
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
 
         debug {
-            isMinifyEnabled = Config.isR8ProGuardEnableForDebug
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = Config.sourceCompatibility
-        targetCompatibility = Config.targetCompatibility
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
     kotlinOptions {
-        jvmTarget = Config.jvmTarget
+        jvmTarget = libs.versions.jvmTarget.get()
     }
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Deps.Compose.KotlinCompiler
-    }
 }
 
 dependencies {
-    androidTestApi (Deps.Compose.TestJUnit)
-    debugApi (Deps.Compose.TestTooling)
-    debugApi (Deps.Compose.TestManifest)
-    api (Deps.Compose.UI)
-    api (Deps.Compose.Tooling)
-    api (Deps.Compose.Material)
-    api (Deps.Compose.Navigation)
-    api (Deps.Compose.GoogleFonts)
+    androidTestApi(libs.compose.test.junit)
+    debugApi(libs.compose.test.tooling)
+    debugApi(libs.compose.test.manifest)
+    api(libs.compose.ui)
+    api(libs.compose.tooling)
+    api(libs.compose.material)
+    api(libs.compose.navigation)
+    api(libs.compose.google.fonts)
     api (project(Project.core.core_Android.route))
-    implementation(Deps.Coil.coil)
+    implementation(libs.coil)
 }
