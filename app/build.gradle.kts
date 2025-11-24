@@ -30,8 +30,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = libs.versions.isR8ProGuardEnableForRelease.get().toBoolean()
+            isShrinkResources = libs.versions.isR8ProGuardEnableForRelease.get().toBoolean()
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             testProguardFile("test-proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = libs.versions.isR8ProGuardEnableForDebug.get().toBoolean()
