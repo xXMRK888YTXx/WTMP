@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    implementation(project(Project.core.core_Android.route))
+    implementation(project(":core:core-Android"))
     api(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)

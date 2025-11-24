@@ -43,7 +43,7 @@ android {
 }
 
 dependencies {
-    implementation(project(Project.core.core_Compose.route))
+    implementation(project(":core:core-Compose"))
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(libs.material.dialogs)
     ksp(libs.dagger.compiler)

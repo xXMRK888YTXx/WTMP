@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    implementation(project(Project.core.core_Android.route))
+    implementation(project(":core:core-Android"))
     ksp(libs.dagger.compiler)
     //Instrumental Test
     androidTestImplementation(libs.instrumental.espresso)

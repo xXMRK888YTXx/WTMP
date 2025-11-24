@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation(project(Project.core.core_Android.route))
+    implementation(project(":core:core-Android"))
     implementation(libs.camerax.core)
     implementation(libs.camerax.extensions)
     implementation(libs.camerax.camera2)

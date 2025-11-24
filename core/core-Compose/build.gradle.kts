@@ -49,6 +49,6 @@ dependencies {
     api(libs.compose.material)
     api(libs.compose.navigation)
     api(libs.compose.google.fonts)
-    api (project(Project.core.core_Android.route))
+    api (project(":core:core-Android"))
     implementation(libs.coil)
 }

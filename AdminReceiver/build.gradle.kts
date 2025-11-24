@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation(project(Project.core.core_Android.route))
+    implementation(project(":core:core-Android"))
     //Test
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)

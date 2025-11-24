@@ -42,6 +42,6 @@ android {
 }
 
 dependencies {
-    implementation(project(Project.core.core_Compose.route))
+    implementation(project(":core:core-Compose"))
     ksp(libs.dagger.compiler)
 }

@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation(project(Project.core.core_Android.route))
+    implementation(project(":core:core-Android"))
     ksp(libs.dagger.compiler)
     implementation(libs.workmanager)
     androidTestImplementation(libs.workmanager.testing)
