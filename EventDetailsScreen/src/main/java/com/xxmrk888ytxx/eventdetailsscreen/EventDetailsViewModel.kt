@@ -39,7 +39,10 @@ class EventDetailsViewModel @AssistedInject constructor(
 
     internal val screenState = _screenState.toState()
 
-    private val _leaveFromScreenEvent = MutableSharedFlow<Any>()
+    private val _leaveFromScreenEvent = MutableSharedFlow<Any>(
+        replay = 1,
+        extraBufferCapacity = 1
+    )
     val leaveFromScreenEvent = _leaveFromScreenEvent.asSharedFlow()
 
 
