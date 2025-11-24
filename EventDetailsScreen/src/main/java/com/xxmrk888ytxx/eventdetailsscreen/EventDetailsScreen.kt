@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +36,13 @@ import theme.primaryFontColor
 @Composable
 fun EventDetailsScreen(eventDetailsViewModel: EventDetailsViewModel, navigator: Navigator) {
     val screenState = eventDetailsViewModel.screenState.remember()
+
+
+    LaunchedEffect(eventDetailsViewModel.leaveFromScreenEvent) {
+        eventDetailsViewModel.leaveFromScreenEvent.collect {
+            navigator.navigateUp()
+        }
+    }
     Scaffold(
         topBar = {
             TopBar(navigator)
