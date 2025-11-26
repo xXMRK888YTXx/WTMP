@@ -1,33 +1,27 @@
 package com.xxmrk888ytxx.selecttrackedappscreen
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.PackageNameAddedByUserRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.TrackedAppRepository
 import com.xxmrk888ytxx.coredeps.defaultViewModelStateIn
 import com.xxmrk888ytxx.selecttrackedappscreen.model.DialogState
 import com.xxmrk888ytxx.selecttrackedappscreen.model.ScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import toState
 import javax.inject.Inject
 
 class SelectTrackedAppViewModel @Inject constructor(
     private val packageInfoProvider: PackageInfoProvider,
-    private val trackedAppRepository: TrackedAppRepository
+    private val trackedAppRepository: TrackedAppRepository,
+    private val addedByUserRepository: PackageNameAddedByUserRepository
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.Loading)
@@ -76,7 +70,13 @@ class SelectTrackedAppViewModel @Inject constructor(
     }
 
     fun addNewPackage() {
+        val packageName = (_dialogState.value as? DialogState.AddPackageDialog)?.packageName
+            ?: return
+        if (packageName.isEmpty() || packageName.isBlank()) return
         hideAddPackageDialog()
+        viewModelScope.launch {
+            addedByUserRepository.addPackageName(packageName)
+        }
     }
 
 

@@ -34,6 +34,7 @@ import com.xxmrk888ytxx.observer.DI.module.MaxStorageReportUseCaseModule
 import com.xxmrk888ytxx.observer.DI.module.MaxTimeStorageReportUseCaseModule
 import com.xxmrk888ytxx.observer.DI.module.NotificationAppManagerModule
 import com.xxmrk888ytxx.observer.DI.module.PackageInfoProviderModule
+import com.xxmrk888ytxx.observer.DI.module.PackageNameAddedByUserRepositoryModule
 import com.xxmrk888ytxx.observer.DI.module.PermissionsManagerModule
 import com.xxmrk888ytxx.observer.DI.module.PurchaseListenerManagerModule
 import com.xxmrk888ytxx.observer.DI.module.RemoveAppManagerModule
@@ -93,7 +94,8 @@ import javax.inject.Provider
         MaxTimeStorageReportUseCaseModule::class,
         MaxStorageReportUseCaseModule::class,
         WorkTimeConfigManagerModule::class,
-        IsNowWorkTimeCheckUseCaseModule::class
+        IsNowWorkTimeCheckUseCaseModule::class,
+        PackageNameAddedByUserRepositoryModule::class
     ]
 )
 interface AppComponent : WorkerComponentDeps {

@@ -12,32 +12,28 @@ import dagger.Provides
 internal class DataBaseModule {
     @Provides
     @DataBaseScope
-    fun provideAppDataBase(context: Context) : AppDataBase {
-        return Room.databaseBuilder(context,AppDataBase::class.java,"Database.db").build()
-    }
+    fun provideAppDataBase(context: Context): AppDataBase =
+        Room.databaseBuilder(context, AppDataBase::class.java, "Database.db").build()
 
     @Provides
-    fun provideDeviceEventDao(dataBase: AppDataBase) : DeviceEventDao {
-        return dataBase.getDeviceEventDao()
-    }
+    fun provideDeviceEventDao(dataBase: AppDataBase): DeviceEventDao = dataBase.getDeviceEventDao()
 
     @Provides
-    fun provideAppOpenEventDao(dataBase: AppDataBase) : AppOpenEventDao {
-        return dataBase.getAppOpenEventDao()
-    }
+    fun provideAppOpenEventDao(dataBase: AppDataBase): AppOpenEventDao =
+        dataBase.getAppOpenEventDao()
 
     @Provides
-    fun provideUnlockDeviceEvent(dataBase: AppDataBase) : UnlockDeviceEvent {
-        return dataBase.getUnlockDeviceEventDao()
-    }
+    fun provideUnlockDeviceEvent(dataBase: AppDataBase): UnlockDeviceEvent =
+        dataBase.getUnlockDeviceEventDao()
 
     @Provides
-    fun provideTrackedAppDao(dataBase: AppDataBase) : TrackedAppDao {
-        return dataBase.getTrackedAppDao()
-    }
+    fun provideTrackedAppDao(dataBase: AppDataBase): TrackedAppDao = dataBase.getTrackedAppDao()
 
     @Provides
-    fun provideAppOpenTimeLimitDao(dataBase: AppDataBase) : AppOpenTimeLimitDao {
-        return dataBase.getAppOpenTimeLimitDao()
-    }
+    fun provideAppOpenTimeLimitDao(dataBase: AppDataBase): AppOpenTimeLimitDao =
+        dataBase.getAppOpenTimeLimitDao()
+
+    @Provides
+    fun providePackageNameAddedByUserDao(dataBase: AppDataBase): PackageNameAddedByUserDao =
+        dataBase.getPackageNameAddedByUserDao()
 }

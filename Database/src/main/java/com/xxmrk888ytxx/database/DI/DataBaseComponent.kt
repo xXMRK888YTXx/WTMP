@@ -16,16 +16,18 @@ internal interface DataBaseComponent {
 
     @dagger.Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context) : DataBaseComponent
+        fun create(@BindsInstance context: Context): DataBaseComponent
     }
 
-    val deviceEventDao:DeviceEventDao
+    val deviceEventDao: DeviceEventDao
 
-    val appOpenEventDao:AppOpenEventDao
+    val appOpenEventDao: AppOpenEventDao
 
-    val unlockDeviceEvent:UnlockDeviceEvent
+    val unlockDeviceEvent: UnlockDeviceEvent
 
-    val trackedAppDao:TrackedAppDao
+    val trackedAppDao: TrackedAppDao
 
     val appOpenTimeLimitDao: AppOpenTimeLimitDao
+
+    val packageNameAddedByUserDao: PackageNameAddedByUserDao
 }
