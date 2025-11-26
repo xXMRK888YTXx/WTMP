@@ -22,146 +22,96 @@ import theme.*
 
 @Composable
 fun YesNoDialog(
-    dialogDescription:String,
-    confirmButtonText:String = stringResource(R.string.Ok),
-    cancelButtonText:String = stringResource(R.string.Cancel),
-    leaveFromDialogIfClickOutSide:Boolean = true,
-    enableConfirmButton:Boolean = true,
-    onConfirm:() -> Unit,
-    onCancel:() -> Unit,
+    dialogDescription: String,
+    confirmButtonText: String = stringResource(R.string.Ok),
+    cancelButtonText: String = stringResource(R.string.Cancel),
+    leaveFromDialogIfClickOutSide: Boolean = true,
+    enableConfirmButton: Boolean = true,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
 ) {
-    Dialog(
-        onDismissRequest = onCancel,
-        properties = DialogProperties(
-            dismissOnBackPress = leaveFromDialogIfClickOutSide,
-            dismissOnClickOutside = leaveFromDialogIfClickOutSide
-        )
+    YesNoDialog(
+        confirmButtonText = confirmButtonText,
+        cancelButtonText = cancelButtonText,
+        leaveFromDialogIfClickOutSide = leaveFromDialogIfClickOutSide,
+        enableConfirmButton = enableConfirmButton,
+        onConfirm = onConfirm,
+        onCancel = onCancel
     ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp),
-            backgroundColor = cardColor
-        ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Text(
-                    text = dialogDescription,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier
-                        .padding(bottom = 25.dp, top = 25.dp)
-                        .fillMaxWidth(),
-                    fontSize = 17.sp,
-                    color = primaryFontColor,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = openSansFont
-                )
+        Text(
+            text = dialogDescription,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(bottom = 25.dp, top = 25.dp)
+                .fillMaxWidth(),
+            fontSize = 17.sp,
+            color = primaryFontColor,
+            fontWeight = FontWeight.Bold,
+            fontFamily = openSansFont
+        )
+    }
+}
 
-                Row() {
-                    OutlinedButton(
-                        onClick = onCancel,
-                        modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                            .padding(start = 5.dp, end = 5.dp),
-                        shape = RoundedCornerShape(80),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = settingsSeparatorLineColor,
-                        )
-                    ) {
-                        Text(text = cancelButtonText,
-                            color = primaryFontColor
-                        )
-                    }
-                    OutlinedButton(
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = checkedSettingsSwitch,
-                            disabledBackgroundColor = checkedSettingsSwitch.copy(0.5f)
-                        ),
-                        onClick = onConfirm,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 5.dp, end = 5.dp),
-                        shape = RoundedCornerShape(80),
-                        enabled = enableConfirmButton
-                    ) {
-                        Text(text = confirmButtonText,
-                            color = primaryFontColor
-                        )
-                    }
-                }
-            }
-        }
 
+@Composable
+fun YesNoDialog(
+    confirmButtonText: String = stringResource(R.string.Ok),
+    cancelButtonText: String = stringResource(R.string.Cancel),
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
+    leaveFromDialogIfClickOutSide: Boolean = true,
+    enableConfirmButton: Boolean = true,
+    dialogContent: @Composable ColumnScope.() -> Unit
+) {
+    BaseDialog(
+        onDismiss = onCancel,
+        leaveFromDialogIfClickOutSide = leaveFromDialogIfClickOutSide
+    ) {
+        dialogContent(this)
+        YesNoButtons(confirmButtonText, cancelButtonText, onConfirm, enableConfirmButton, onCancel)
     }
 }
 
 @Composable
-fun YesNoDialog(
-    confirmButtonText:String = stringResource(R.string.Ok),
-    cancelButtonText:String = stringResource(R.string.Cancel),
-    onConfirm:() -> Unit,
-    onCancel:() -> Unit,
-    leaveFromDialogIfClickOutSide:Boolean = true,
-    enableConfirmButton:Boolean = true,
-    dialogContent:@Composable ColumnScope.() -> Unit
+private fun ColumnScope.YesNoButtons(
+    confirmButtonText: String = stringResource(R.string.Ok),
+    cancelButtonText: String = stringResource(R.string.Cancel),
+    onConfirm: () -> Unit,
+    enableConfirmButton: Boolean = true,
+    onCancel: () -> Unit
 ) {
-    Dialog(
-        onDismissRequest = onCancel,
-        properties = DialogProperties(
-            dismissOnBackPress = leaveFromDialogIfClickOutSide,
-            dismissOnClickOutside = leaveFromDialogIfClickOutSide
-        )
-    ) {
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp),
-            backgroundColor = cardColor
+    Row {
+        OutlinedButton(
+            onClick = onCancel,
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .padding(start = 5.dp, end = 5.dp),
+            shape = RoundedCornerShape(80),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = settingsSeparatorLineColor,
+            )
         ) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                dialogContent(this)
-
-                Row() {
-                    OutlinedButton(
-                        onClick = onCancel,
-                        modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                            .padding(start = 5.dp, end = 5.dp),
-                        shape = RoundedCornerShape(80),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = settingsSeparatorLineColor,
-                        )
-                    ) {
-                        Text(text = cancelButtonText,
-                            color = primaryFontColor
-                        )
-                    }
-                    OutlinedButton(
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = checkedSettingsSwitch,
-                            disabledBackgroundColor = checkedSettingsSwitch.copy(0.5f)
-                        ),
-                        onClick = onConfirm,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 5.dp, end = 5.dp),
-                        shape = RoundedCornerShape(80),
-                        enabled = enableConfirmButton
-                    ) {
-                        Text(text = confirmButtonText,
-                            color = primaryFontColor
-                        )
-                    }
-                }
-            }
+            Text(
+                text = cancelButtonText,
+                color = primaryFontColor
+            )
         }
-
+        OutlinedButton(
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = checkedSettingsSwitch,
+                disabledBackgroundColor = checkedSettingsSwitch.copy(0.5f)
+            ),
+            onClick = onConfirm,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 5.dp, end = 5.dp),
+            shape = RoundedCornerShape(80),
+            enabled = enableConfirmButton
+        ) {
+            Text(
+                text = confirmButtonText,
+                color = primaryFontColor
+            )
+        }
     }
 }
