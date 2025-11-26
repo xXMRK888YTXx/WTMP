@@ -5,6 +5,7 @@ import com.xxmrk888ytxx.adminreceiver.AdminEventsCallback
 import com.xxmrk888ytxx.bootreceiver.BootCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.CameraManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppState.AppStateProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.NotificationAppManager
@@ -123,4 +124,6 @@ interface AppComponent : WorkerComponentDeps {
 
     override val cameraManager:CameraManager
     val purchaseListenerManager: PurchaseListenerManager
+
+    val appOpenConfigChanger:AppOpenConfigChanger
 }
