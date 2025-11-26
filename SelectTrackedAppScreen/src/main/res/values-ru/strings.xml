@@ -2,4 +2,6 @@
 <resources>
     <string name="Applications">Приложения</string>
     <string name="Search">Поиск</string>
+    <string name="add_by_package_name">Добавить по имени пакета</string>
+    <string name="package_name">Имя пакета</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
@@ -11,6 +12,10 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
@@ -224,3 +229,6 @@ fun Context.sendCreateEmailIntent(email: String, chooserDescription: String) {
 
 val PermissionsManager.isAllPermissionsGranted: Boolean
     get() = isCameraPermissionGranted() && isAccessibilityPermissionGranted() && isAdminPermissionGranted() && isNotificationPermissionGranted()
+
+fun <T> Flow<T>.defaultViewModelStateIn(scope: CoroutineScope, initialValue: T) : StateFlow<T> =
+    stateIn(scope, SharingStarted.WhileSubscribed(5000),initialValue)
