@@ -13,6 +13,7 @@ android {
     namespace = libs.versions.packageName.get()
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+    setFlavorDimensions(listOf("WTMP"))
 
     defaultConfig {
         applicationId = libs.versions.packageName.get()
@@ -40,33 +41,21 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
+    }
+    productFlavors {
         // It contains a feature for tracking the opening of selected applications,
         // which was cut out due to the fact that Google play did not allow me
         // to release this application with android permission.permission.QUERY_ALL_PACKAGES.
         // Google play КОНТОРА ПИДАРАСОВ!!!
-        create("NotGooglePlayBuild_release") {
-            isMinifyEnabled = libs.versions.isR8ProGuardEnableForRelease.get().toBoolean()
-            isShrinkResources = libs.versions.isR8ProGuardEnableForRelease.get().toBoolean()
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            matchingFallbacks.add("release")
-            isDebuggable = false
-            isDefault = false
-            applicationIdSuffix = ".github"
+
+        create("googlePlay") {
+            dimension = "WTMP"
         }
 
-        create("NotGooglePlayBuild_debug") {
-            isMinifyEnabled = false
-            isShrinkResources = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            isDebuggable = true
-            isDefault = false
-            applicationIdSuffix = ".github"
+
+        create("notGooglePlay") {
+            dimension = "WTMP"
+            versionNameSuffix = "-gh"
         }
     }
     compileOptions {

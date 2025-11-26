@@ -14,6 +14,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
+    setFlavorDimensions(listOf("WTMP"))
+
 
     buildTypes {
         release {
@@ -26,6 +28,21 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
+        }
+    }
+    productFlavors {
+        // It contains a feature for tracking the opening of selected applications,
+        // which was cut out due to the fact that Google play did not allow me
+        // to release this application with android permission.permission.QUERY_ALL_PACKAGES.
+        // Google play КОНТОРА ПИДАРАСОВ!!!
+
+        create("googlePlay") {
+            dimension = "WTMP"
+        }
+
+
+        create("notGooglePlay") {
+            dimension = "WTMP"
         }
     }
     compileOptions {
