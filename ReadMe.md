@@ -5,7 +5,7 @@ WTMP is an application designed to prevent unauthorized access to your device.
 Application functionality:
 - Tracking device unlocks
 - Tracking of incorrect password entries
-- Tracking openings of selected applications.
+- Tracking openings of selected applications. (Available when downloading versions from github releases. This feature is not available in the Google play version)
 - Tracking device power on
   Once you get information about the selected event, you can take a picture of the intruder and send it to yourself in Telegram.
 
@@ -79,7 +79,7 @@ WTMP — это приложение, предназначенное для пр
 Функциональность приложения:
 - Отслеживание разблокировок устройства
 - Отслеживания неверных вводов пароля
-- Отслеживание открытий выбранных вами приложений.
+- Отслеживание открытий выбранных вами приложений. (Доступна при скачивании версии из релизов github. В Google play версии эта функция не доступна)
 - Отслеживание включения устройства
 Получив информацию о выбранном событии, вы можете сделать фотографию злоумышленника и отправить себе в Телеграм.
 
