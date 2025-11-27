@@ -6,4 +6,8 @@ object Const {
     const val TERMS_URL = "https://xxmrk888ytxx.github.io/wtmp_terms.htm"
     const val DONTKILLMYAPP_URL = "https://dontkillmyapp.com/"
     const val SOURCE_CODE_REPOSITORY_URL = "https://github.com/xXMRK888YTXx/WTMP"
+
+    object BuildFlavor {
+        const val GOOGLE_PLAY = "googlePlay"
+    }
 }

@@ -7,6 +7,7 @@ import android.util.Log
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
+import com.xxmrk888ytxx.coredeps.BuildConfig.FLAVOR
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -224,3 +225,6 @@ fun Context.sendCreateEmailIntent(email: String, chooserDescription: String) {
 
 val PermissionsManager.isAllPermissionsGranted: Boolean
     get() = isCameraPermissionGranted() && isAccessibilityPermissionGranted() && isAdminPermissionGranted() && isNotificationPermissionGranted()
+
+val isGooglePlayBuild: Boolean
+    get() = FLAVOR == Const.BuildFlavor.GOOGLE_PLAY

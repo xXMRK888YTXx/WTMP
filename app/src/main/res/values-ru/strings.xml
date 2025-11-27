@@ -20,4 +20,8 @@
     <string name="I_accept">Я принимаю</string>
     <string name="Terms_of_Use">Условия использования</string>
     <string name="Privacy_policy">Политику конфиденциальности</string>
+    <string name="the_application_cannot_work">Работа приложения невозможна</string>
+    <string name="please_wait">Пожалуйста подождите</string>
+    <string name="an_important_permission_has_been_revoked_go_to_the_application_settings_and_grant_it_again">Отозвано важное разрешение, перейдите в настройки приложения и предоставьте его заново.</string>
+    <string name="the_application_is_being_serviced">Приложение выполняет обслуживание</string>
 </resources>

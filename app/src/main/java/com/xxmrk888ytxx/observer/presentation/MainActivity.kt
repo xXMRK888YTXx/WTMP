@@ -42,11 +42,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.xxmrk888ytxx.adutils.AdAppManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleCallback
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ActivityLifecycleCallback.ActivityLifecycleRegister
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.AppPassword.AppPasswordProvider
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.BillingManager
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.DialogShowStateManager
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsScreen
 import com.xxmrk888ytxx.eventdetailsscreen.EventDetailsViewModel
@@ -65,8 +63,6 @@ import com.xxmrk888ytxx.settingsscreen.SettingsScreen
 import com.xxmrk888ytxx.settingsscreen.SettingsViewModel
 import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordScreen
 import com.xxmrk888ytxx.setupapppasswordscreen.SetupAppPasswordViewModel
-import com.xxmrk888ytxx.supportdeveloperscreen.SupportDeveloperScreen
-import com.xxmrk888ytxx.supportdeveloperscreen.SupportDeveloperViewModel
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramSetupScreen
 import com.xxmrk888ytxx.telegramsetupscreen.TelegramViewModel
 import composeViewModel
@@ -111,14 +107,7 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
     @Inject
     internal lateinit var appOpenViewModel: Provider<AppOpenViewModel>
     @Inject
-    lateinit var supportDeveloperViewModel: Provider<SupportDeveloperViewModel>
-
-    @Inject
     lateinit var appPasswordProvider: AppPasswordProvider
-    @Inject
-    lateinit var adAppManager: AdAppManager
-    @Inject
-    lateinit var billingManager: Provider<BillingManager>
     @Inject
     lateinit var dialogShowStateManager: DialogShowStateManager
 
@@ -127,11 +116,8 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         appComponent.inject(this)
-        adAppManager.initAdmob()
         activityViewModel.initAppComponent(appComponent)
-        activityViewModel.loadConsentForm(this)
         activityViewModel.activity = this
-        billingManager.get().connectToGooglePlay()
         setContent {
             val isShowCongratulationsDialog =
                 activityViewModel.isShowCongratulationsDialog.remember()
@@ -244,15 +230,6 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
                             navigator = activityViewModel
                         )
                     }
-
-                    composable(Screen.SupportDeveloperScreen.route) {
-                        SupportDeveloperScreen(
-                            supportDeveloperViewModel = composeViewModel() {
-                                supportDeveloperViewModel.get()
-                            },
-                            activityLifecycleRegister = this@MainActivity
-                        )
-                    }
                 }
                 if (isShowCongratulationsDialog.value) {
                     CongratulationsDialog(activityViewModel)
@@ -361,11 +338,6 @@ class MainActivity : AppCompatActivity(), ActivityLifecycleRegister {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launchWhenResumed() {
-            withContext(Dispatchers.Default) {
-                billingManager.get().restorePurchases()
-            }
-        }
         activityViewModel.onResume()
     }
 

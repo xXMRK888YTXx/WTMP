@@ -2,12 +2,12 @@ package com.xxmrk888ytxx.observer.domain.UseCase.HandleEventUseCase
 
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.TelegramConfig.TelegramConfigProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.ImageRepository
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.SingleWorkWorkerManager
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 internal class HandleEventUseCaseImpl @Inject constructor(
-    private val workerManager: WorkerManager,
+    private val singleWorkWorkerManager: SingleWorkWorkerManager,
     private val telegramConfigProvider: TelegramConfigProvider,
     private val imageRepository: ImageRepository
 ) : HandleEventUseCase {
@@ -19,7 +19,7 @@ internal class HandleEventUseCaseImpl @Inject constructor(
         joinPhotoToTelegramNotify:Boolean,
         telegramMessageText:String
     ) {
-        workerManager.createMultiRequest {
+        singleWorkWorkerManager.createMultiRequest {
             if(isSendTelegramMessage&&!joinPhotoToTelegramNotify) {
                 val telegramConfig = telegramConfigProvider.telegramConfig.first()
                 if(telegramConfig != null) {

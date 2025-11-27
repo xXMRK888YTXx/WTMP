@@ -3,12 +3,12 @@ package com.xxmrk888ytxx.workers
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
-import com.xxmrk888ytxx.coredeps.SharedInterfaces.WorkerManager
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.SingleWorkWorkerManager
 import com.xxmrk888ytxx.workers.Workers.MakeImageWorker
 import com.xxmrk888ytxx.workers.Workers.SendPhotoTelegramWorker
 import com.xxmrk888ytxx.workers.Workers.SendTelegramMessageWorker
 
-internal class MultiRequestBuilder : WorkerManager {
+internal class MultiRequestBuilder : SingleWorkWorkerManager {
 
     internal var sendMessageTelegramWorker: OneTimeWorkRequest? = null
     private set
@@ -21,9 +21,9 @@ internal class MultiRequestBuilder : WorkerManager {
 
     override fun sendMessageTelegram(botKey: String, userId: Long, message: String) {
         val data = Data.Builder()
-            .putString(SendTelegramMessageWorker.textDataKey,message)
-            .putString(SendTelegramMessageWorker.telegramBotKeyDataKey,botKey)
-            .putLong(SendTelegramMessageWorker.userIdDataKey,userId)
+            .putString(SendTelegramMessageWorker.TEXT_DATA_KEY,message)
+            .putString(SendTelegramMessageWorker.TELEGRAM_BOT_KEY_DATA_KEY,botKey)
+            .putLong(SendTelegramMessageWorker.USER_ID_DATA_KEY,userId)
             .build()
 
         val worker = OneTimeWorkRequestBuilder<SendTelegramMessageWorker>()
@@ -40,10 +40,10 @@ internal class MultiRequestBuilder : WorkerManager {
         caption: String,
     ) {
         val data = Data.Builder()
-            .putString(SendPhotoTelegramWorker.telegramBotKeyDataKey,botKey)
-            .putLong(SendPhotoTelegramWorker.userIdDataKey,userId)
-            .putString(SendPhotoTelegramWorker.photoPathDataKey,photoPath)
-            .putString(SendPhotoTelegramWorker.captionDataKey,caption)
+            .putString(SendPhotoTelegramWorker.TELEGRAM_BOT_KEY_DATA_KEY,botKey)
+            .putLong(SendPhotoTelegramWorker.USER_ID_DATA_KEY,userId)
+            .putString(SendPhotoTelegramWorker.PHOTO_PATH_DATA_KEY,photoPath)
+            .putString(SendPhotoTelegramWorker.CAPTION_DATA_KEY,caption)
             .build()
 
         val worker = OneTimeWorkRequestBuilder<SendPhotoTelegramWorker>()
@@ -62,7 +62,7 @@ internal class MultiRequestBuilder : WorkerManager {
         createImageWorker = worker
     }
 
-    override suspend fun createMultiRequest(request: suspend WorkerManager.() -> Unit) {}
+    override suspend fun createMultiRequest(request: suspend SingleWorkWorkerManager.() -> Unit) {}
 
     internal val isValidRequest:Boolean
         get() = sendMessageTelegramWorker != null||

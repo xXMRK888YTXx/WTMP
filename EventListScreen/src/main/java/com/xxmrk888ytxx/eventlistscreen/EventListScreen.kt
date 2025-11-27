@@ -1,14 +1,27 @@
 package com.xxmrk888ytxx.eventlistscreen
 
-import MutliUse.*
+import MutliUse.AppOpenItem
+import MutliUse.AttemptUnlockDeviceItem
+import MutliUse.DeviceLaunchItem
+import MutliUse.LazySpacer
+import MutliUse.RemoveEventDialog
 import SharedInterfaces.Navigator
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
@@ -22,12 +35,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.xxmrk888ytxx.adutils.AdMobBanner
-import com.xxmrk888ytxx.adutils.models.AdMobKey
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import remember
-import theme.BackGroundColor
 import theme.openSansFont
 import theme.primaryFontColor
 import theme.progressIndicatorColor
@@ -49,15 +59,10 @@ fun EventListScreen(eventViewModel: EventViewModel,navigator: Navigator) {
     val screenState = eventViewModel.screenState.collectAsState()
     val eventList = eventViewModel.sortedByDateEventList.collectAsState(mapOf())
     val isRemoveDialogShow = eventViewModel.isRemoveDialogShow.remember()
-    val isNeedShowAd = eventViewModel.isNeedShowAd.collectAsState(false)
 
     Scaffold(
         Modifier.fillMaxSize(),
         backgroundColor = Color.Transparent,
-        bottomBar = {
-            if(isNeedShowAd.value)
-                AdMobBanner(adMobKey = AdMobKey.EventListScreenBanner, background = BackGroundColor)
-        }
     ) {
         LazyColumn(
             Modifier

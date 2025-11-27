@@ -1,5 +1,6 @@
 package com.xxmrk888ytxx.observer.domain.NotificationAppManager
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.NotificationAppManager
 import com.xxmrk888ytxx.observer.presentation.MainActivity
 import com.xxmrk888ytxx.observer.R
 import javax.inject.Inject
@@ -16,8 +18,6 @@ import javax.inject.Inject
 class NotificationAppManagerImpl @Inject constructor(
     private val context:Context,
 ) : NotificationAppManager {
-
-    private val channelId = "AppErrorChannel"
 
     private val notificationManager by lazy {
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -28,7 +28,7 @@ class NotificationAppManagerImpl @Inject constructor(
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelName = context.getString(R.string.Application_error_notifications)
             val description = context.getString(R.string.Channel_description)
-            val mChannel = NotificationChannel(channelId,channelName,
+            val mChannel = NotificationChannel(CHANNEL_ID,channelName,
                 NotificationManager.IMPORTANCE_HIGH)
             mChannel.description = description
             notificationManager.createNotificationChannel(mChannel)
@@ -51,13 +51,13 @@ class NotificationAppManagerImpl @Inject constructor(
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val notification = NotificationCompat.Builder(context,channelId)
+        val notification = NotificationCompat.Builder(context,CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_error)
             .setContentTitle(context.getString(R.string.Administrator_rights_revoked))
             .setContentText(context.getString(R.string.Without_this_permission_application_not_possible))
             .setContentIntent(pendingIntent)
             .build()
-        notificationManager.notify(0,notification)
+        notificationManager.notify(ADMIN_PERMISSION_WITHDRAWN_NOTIFICATION_ID,notification)
     }
 
     @MustBeLocalization
@@ -67,12 +67,42 @@ class NotificationAppManagerImpl @Inject constructor(
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        val notification = NotificationCompat.Builder(context,channelId)
+        val notification = NotificationCompat.Builder(context,CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_error)
             .setContentTitle(context.getString(R.string.Accessibility_rights_revoked))
             .setContentText(context.getString(R.string.Without_this_permission_application_not_possible))
             .setContentIntent(pendingIntent)
             .build()
-        notificationManager.notify(1,notification)
+        notificationManager.notify(ACCESSIBILITY_PERMISSION_WITHDRAWN_NOTIFICATION_ID,notification)
+    }
+
+    override fun sendSomePermissionWasWithdrawnNotification() {
+        if(!createChannelAndCheckPermission()) return
+        val intent = Intent(context, MainActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val notification = NotificationCompat.Builder(context,CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_error)
+            .setContentTitle(context.getString(R.string.the_application_cannot_work))
+            .setContentText(context.getString(R.string.an_important_permission_has_been_revoked_go_to_the_application_settings_and_grant_it_again))
+            .setContentIntent(pendingIntent)
+            .build()
+        notificationManager.notify(SOME_PERMISSION_WITHDRAWN_NOTIFICATION_ID,notification)
+    }
+
+    override val notificationForServiceWorker: Notification by lazy {
+        NotificationCompat.Builder(context,CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_error)
+            .setContentTitle(context.getString(R.string.the_application_is_being_serviced))
+            .setContentText(context.getString(R.string.please_wait))
+            .build()
+    }
+
+    private companion object {
+        const val CHANNEL_ID = "AppErrorChannel"
+        const val ADMIN_PERMISSION_WITHDRAWN_NOTIFICATION_ID = 0
+        const val ACCESSIBILITY_PERMISSION_WITHDRAWN_NOTIFICATION_ID = 1
+        const val SOME_PERMISSION_WITHDRAWN_NOTIFICATION_ID = 2
     }
 }

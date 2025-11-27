@@ -13,13 +13,14 @@ android {
     namespace = libs.versions.packageName.get()
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+    setFlavorDimensions(listOf("WTMP"))
 
     defaultConfig {
         applicationId = libs.versions.packageName.get()
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.compileSdk.get().toInt()
-        versionCode = 20
-        versionName = "1.2.2r"
+        versionCode = 23
+        versionName = "1.3.1r"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -30,13 +31,31 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = libs.versions.isR8ProGuardEnableForRelease.get().toBoolean()
+            isShrinkResources = libs.versions.isR8ProGuardEnableForRelease.get().toBoolean()
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             testProguardFile("test-proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = libs.versions.isR8ProGuardEnableForDebug.get().toBoolean()
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
+        }
+    }
+    productFlavors {
+        // It contains a feature for tracking the opening of selected applications,
+        // which was cut out due to the fact that Google play did not allow me
+        // to release this application with android permission.permission.QUERY_ALL_PACKAGES.
+        // Google play КОНТОРА ПИДАРАСОВ!!!
+
+        create("googlePlay") {
+            dimension = "WTMP"
+        }
+
+
+        create("notGooglePlay") {
+            dimension = "WTMP"
+            versionNameSuffix = "-gh"
         }
     }
     compileOptions {
@@ -58,33 +77,30 @@ android {
     }
 }
 dependencies {
-    implementation(project(Project.core.core_Compose.route))
-    implementation(project(Project.AdminReceiver))
-    implementation(project(Project.Camera))
-    implementation(project(Project.ApiTelegram))
-    implementation(project(Project.Workers))
-    implementation(project(Project.MainScreen))
-    implementation(project(Project.SettingsScreen))
-    implementation(project(Project.PackageInfoProvider))
-    implementation(project(Project.EventListScreen))
-    implementation(project(Project.TelegramSetupScreen))
-    implementation(project(Project.CryptoManager))
-    implementation(project(Project.Database))
-    implementation(project(Project.EventDeviceTracker))
-    implementation(project(Project.EventDetailsScreen))
-    implementation(project(Project.SelectTrackedAppScreen))
-    implementation(project(Project.SetupAppPasswordScreen))
-    implementation(project(Project.EnterPasswordScreen))
-    implementation(project(Project.BootReceiver))
-    implementation(project(Project.AdUtils))
-    implementation(project(Project.SupportDeveloperScreen))
+    implementation(project(":core:core-Compose"))
+    implementation(project(":AdminReceiver"))
+    implementation(project(":Camera"))
+    implementation(project(":Api-Telegram"))
+    implementation(project(":Workers"))
+    implementation(project(":MainScreen"))
+    implementation(project(":SettingsScreen"))
+    implementation(project(":PackageInfoProvider"))
+    implementation(project(":EventListScreen"))
+    implementation(project(":TelegramSetupScreen"))
+    implementation(project(":CryptoManager"))
+    implementation(project(":Database"))
+    implementation(project(":EventDeviceTracker"))
+    implementation(project(":EventDetailsScreen"))
+    implementation(project(":SelectTrackedAppScreen"))
+    implementation(project(":SetupAppPasswordScreen"))
+    implementation(project(":EnterPasswordScreen"))
+    implementation(project(":BootReceiver"))
 
     ksp(libs.dagger.compiler)
 
     implementation(libs.datastore)
     implementation(libs.appcompat)
     implementation(libs.appcompat.resources)
-    implementation(libs.billing)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics.ktx)
     implementation(libs.firebase.analytics.ktx)

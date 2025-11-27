@@ -3,6 +3,7 @@ package com.xxmrk888ytxx.settingsscreen
 import MutliUse.LazySpacer
 import SharedInterfaces.Navigator
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +30,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.xxmrk888ytxx.coredeps.Const
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
+import com.xxmrk888ytxx.coredeps.isGooglePlayBuild
 import com.xxmrk888ytxx.coredeps.models.SupportedLanguage
 import com.xxmrk888ytxx.settingsscreen.models.LocaleParams
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamShape
@@ -57,27 +60,12 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
         .selectedWeekDayInSuspendParamsDialog.collectAsState()
     val workTimeSpanInSetSuspendDialog = settingsViewModel.workTimeSpanInSetSuspendDialog
         .remember()
-
     val categoryPadding = 15
     LazyColumn(Modifier.fillMaxSize()) {
 
         item(key = 0) {
             TopBar(navigator)
             LazySpacer(20)
-        }
-
-        item(key = 1) {
-            SettingsCategory(
-                categoryName = stringResource(R.string.Paid_content),
-                settingsParams = persistentListOf(
-                    SettingsParamType.Button(
-                        text = stringResource(R.string.Support_author),
-                        icon = R.drawable.baseline_attach_money_24,
-                        onClick = navigator::toSupportDeveloperScreen
-                    )
-                )
-            )
-            LazySpacer(categoryPadding)
         }
 
         item(key = 2) {
@@ -99,14 +87,17 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
-        item(key = 4) {
 
-            SettingsCategory(
-                stringResource(R.string.Application_tracking),
-                getAppOpenObserverParams(settingsViewModel, navigator)
-            )
+        if (!isGooglePlayBuild) {
+            item(key = 4) {
 
-            LazySpacer(height = categoryPadding)
+                SettingsCategory(
+                    stringResource(R.string.Application_tracking),
+                    getAppOpenObserverParams(settingsViewModel, navigator)
+                )
+
+                LazySpacer(height = categoryPadding)
+            }
         }
 
         item(key = 5) {
@@ -187,7 +178,7 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
         SelectLocaleDialog(settingsViewModel)
     }
 
-    if(isSuspendParamsDialogVisible.value) {
+    if (isSuspendParamsDialogVisible.value) {
         SetSuspendParamsDialog(
             onCancel = settingsViewModel::hideSuspendParamsDialog,
             pickedWeekDays = selectedWeekDayInSuspendParamsDialog.value,
@@ -262,7 +253,10 @@ internal fun TopBar(navigator: Navigator) {
  * the list of settings can be obtained in the file [SettingsParams.kt]
  */
 @Composable
-internal fun SettingsCategory(categoryName: String, settingsParams: ImmutableList<SettingsParamType>) {
+internal fun SettingsCategory(
+    categoryName: String,
+    settingsParams: ImmutableList<SettingsParamType>
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -319,10 +313,12 @@ internal fun SettingsParam(
             topStart = shapeSize,
             topEnd = shapeSize
         )
+
         is SettingsParamShape.BottomShape -> RoundedCornerShape(
             bottomStart = shapeSize,
             bottomEnd = shapeSize
         )
+
         is SettingsParamShape.None -> RoundedCornerShape(0.dp)
     }
 
@@ -492,7 +488,8 @@ internal fun SettingsParam(
                                     }
                                 }
 
-                                Text(text = annotatedLabelString,
+                                Text(
+                                    text = annotatedLabelString,
                                     inlineContent = inlineContentMap,
                                     fontWeight = FontWeight.W600,
                                     fontSize = 18.sp,

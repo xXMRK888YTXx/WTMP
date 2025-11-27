@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.xxmrk888ytxx.adutils.AdStateManager
 import com.xxmrk888ytxx.coredeps.DefaultPaginator
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
@@ -28,8 +27,6 @@ class EventViewModel @Inject constructor(
     private val context: Context,
     private val packageInfoProvider: PackageInfoProvider,
     private val deviceEventRepository: DeviceEventRepository,
-    private val adStateManager: AdStateManager,
-    private val toastManager: ToastManager
 ) : ViewModel() {
 
     private val savedAppImages = mutableMapOf<String, Bitmap?>()
@@ -200,8 +197,6 @@ class EventViewModel @Inject constructor(
             paginator.load()
         }
     }
-
-    internal val isNeedShowAd = adStateManager.isNeedShowAd
 
     init {
         updatePagingDataScope.launch(Dispatchers.IO) { paginator.load() }

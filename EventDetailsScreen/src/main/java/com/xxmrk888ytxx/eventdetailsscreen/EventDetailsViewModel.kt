@@ -9,33 +9,45 @@ import com.xxmrk888ytxx.coredeps.SharedInterfaces.ImageProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PackageInfoProvider
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.DeviceEventRepository
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Repository.ImageRepository
+import com.xxmrk888ytxx.coredeps.SharedInterfaces.ToastManager
 import com.xxmrk888ytxx.coredeps.launchAndCancelChildren
 import com.xxmrk888ytxx.coredeps.models.DeviceEvent
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import toState
 
 class EventDetailsViewModel @AssistedInject constructor(
-    @Assisted val eventId:Int,
+    @Assisted val eventId: Int,
     private val deviceEventRepository: DeviceEventRepository,
     private val imageRepository: ImageRepository,
     private val imageProvider: ImageProvider,
-    private val packageInfoProvider: PackageInfoProvider
+    private val packageInfoProvider: PackageInfoProvider,
+    private val toastManager: ToastManager
 ) : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) { loadInfo() }
     }
 
-    private val _screenState:MutableState<ScreenState> = mutableStateOf(ScreenState.Loading)
+    private val _screenState: MutableState<ScreenState> = mutableStateOf(ScreenState.Loading)
 
     internal val screenState = _screenState.toState()
 
+    private val _leaveFromScreenEvent = MutableSharedFlow<Any>(
+        replay = 1,
+        extraBufferCapacity = 1
+    )
+    val leaveFromScreenEvent = _leaveFromScreenEvent.asSharedFlow()
+
+
     private suspend fun loadInfo() {
-        val onProvideAppInfo:suspend (DeviceEvent.AppOpen) -> DeviceEvent = {
+        val onProvideAppInfo: suspend (DeviceEvent.AppOpen) -> DeviceEvent = {
             val appName = viewModelScope.async(Dispatchers.IO) {
                 packageInfoProvider.getAppName(it.packageName)
             }
@@ -45,21 +57,26 @@ class EventDetailsViewModel @AssistedInject constructor(
 
             it.copy(appName = appName.await(), icon = icon.await())
         }
-        val eventDef =  viewModelScope.async(Dispatchers.IO) {
+        val eventDef = viewModelScope.async(Dispatchers.IO) {
             val event = deviceEventRepository.getEvent(eventId).first()
-            return@async if(event is DeviceEvent.AppOpen) onProvideAppInfo(event)
+            return@async if (event is DeviceEvent.AppOpen) onProvideAppInfo(event)
             else event
         }
         val imageDef = viewModelScope.async(Dispatchers.IO) {
             return@async imageRepository.getEventBitmap(eventId)
         }
 
-        val event = eventDef.await()
-        val image = imageDef.await()
+        try {
+            val event = eventDef.await()
+            val image = imageDef.await()
 
-        withContext(Dispatchers.Main) {
-            _screenState.value =
-                ScreenState.ShowEvent(event,image)
+            withContext(Dispatchers.Main) {
+                _screenState.value =
+                    ScreenState.ShowEvent(event, image)
+            }
+        } catch (_: Exception) {
+            toastManager.showToast(R.string.the_event_has_been_deleted)
+            _leaveFromScreenEvent.emit(Any())
         }
 
     }
@@ -79,10 +96,12 @@ class EventDetailsViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(eventId: Int) : EventDetailsViewModel
+        fun create(eventId: Int): EventDetailsViewModel
     }
 
-    private val imageProviderScope = CoroutineScope(SupervisorJob() +
-            Dispatchers.IO +
-            CoroutineName("imageProviderScope"))
+    private val imageProviderScope = CoroutineScope(
+        SupervisorJob() +
+                Dispatchers.IO +
+                CoroutineName("imageProviderScope")
+    )
 }

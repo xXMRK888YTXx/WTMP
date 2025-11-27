@@ -5,4 +5,5 @@
     <string name="Failed_to_unlock">Провалена попытка разблокировки</string>
     <string name="Event_details">Подробности события</string>
     <string name="Device_loaded">Устройство загружено</string>
+    <string name="the_event_has_been_deleted">Событие удалено!</string>
 </resources>

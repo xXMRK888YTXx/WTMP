@@ -20,7 +20,7 @@ internal inline val List<SettingsParamType>.visibleParamsSize : Int
     }
 
 internal inline val List<SettingsParamType>.visibleParamsLastIndex : Int
-    get() = this.filter { it.isVisible }.lastIndex
+    get() = this.indexOfLast { it.isVisible }
 
 fun LocalTime.hourToString() : String {
     val hour = hour
