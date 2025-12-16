@@ -58,7 +58,6 @@ class ServiceWorker(
     private suspend fun checkPermissionAndNotifyUserIfPermissionNotGranted() {
         if (permissionsManager.isAllPermissionsGranted) return
         if (!permissionsManager.isNotificationPermissionGranted()) notificationAppManager.sendSomePermissionWasWithdrawnNotification()
-        appStateChanger.updateAppState(false)
     }
 
     private suspend fun checkStorageForOutdatedRecords() {
