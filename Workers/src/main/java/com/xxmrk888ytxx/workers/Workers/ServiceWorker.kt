@@ -2,6 +2,7 @@ package com.xxmrk888ytxx.workers.Workers
 
 import android.content.Context
 import android.content.pm.ServiceInfo
+import android.os.Build
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -42,7 +43,7 @@ class ServiceWorker(
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return ForegroundInfo(
             FOREGROUND_NOTIFICATION_ID, notificationAppManager.notificationForServiceWorker,
-            ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SHORT_SERVICE else 0
         )
     }
 
@@ -58,7 +59,6 @@ class ServiceWorker(
     private suspend fun checkPermissionAndNotifyUserIfPermissionNotGranted() {
         if (permissionsManager.isAllPermissionsGranted) return
         if (!permissionsManager.isNotificationPermissionGranted()) notificationAppManager.sendSomePermissionWasWithdrawnNotification()
-        appStateChanger.updateAppState(false)
     }
 
     private suspend fun checkStorageForOutdatedRecords() {
