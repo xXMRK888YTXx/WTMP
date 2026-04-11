@@ -2,13 +2,10 @@ package com.xxmrk888ytxx.observer.domain.AppOpenConfig
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
-import com.xxmrk888ytxx.coredeps.Const
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigChanger
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.Configs.AppOpenConfig.AppOpenConfigProvider
-import com.xxmrk888ytxx.coredeps.isGooglePlayBuild
 import com.xxmrk888ytxx.coredeps.models.AppOpenConfig
 import com.xxmrk888ytxx.observer.domain.SettingsAppManager.SettingsAppManager
-import com.xxmrk888ytxx.settingsscreen.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -24,7 +21,6 @@ internal class AppOpenConfigManager @Inject constructor(
         booleanPreferencesKey("AppOpenConfigManager/joinPhotoToTelegramNotify")
 
     override suspend fun updateIsTracked(state: Boolean) {
-        if (isGooglePlayBuild && state) return
         if (!state) {
             updateMakePhoto(false)
             updateNotifyInTelegram(false)

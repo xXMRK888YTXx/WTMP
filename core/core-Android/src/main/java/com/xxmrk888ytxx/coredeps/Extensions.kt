@@ -225,6 +225,3 @@ fun Context.sendCreateEmailIntent(email: String, chooserDescription: String) {
 
 val PermissionsManager.isAllPermissionsGranted: Boolean
     get() = isCameraPermissionGranted() && isAccessibilityPermissionGranted() && isAdminPermissionGranted() && isNotificationPermissionGranted()
-
-val isGooglePlayBuild: Boolean
-    get() = FLAVOR == Const.BuildFlavor.GOOGLE_PLAY
