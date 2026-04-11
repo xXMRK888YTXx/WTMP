@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.xxmrk888ytxx.coredeps.Const
 import com.xxmrk888ytxx.coredeps.MustBeLocalization
-import com.xxmrk888ytxx.coredeps.isGooglePlayBuild
 import com.xxmrk888ytxx.coredeps.models.SupportedLanguage
 import com.xxmrk888ytxx.settingsscreen.models.LocaleParams
 import com.xxmrk888ytxx.settingsscreen.models.SettingsParamShape
@@ -87,17 +86,14 @@ fun SettingsScreen(settingsViewModel: SettingsViewModel, navigator: Navigator) {
             LazySpacer(height = categoryPadding)
         }
 
+        item(key = 4) {
 
-        if (!isGooglePlayBuild) {
-            item(key = 4) {
+            SettingsCategory(
+                stringResource(R.string.Application_tracking),
+                getAppOpenObserverParams(settingsViewModel, navigator)
+            )
 
-                SettingsCategory(
-                    stringResource(R.string.Application_tracking),
-                    getAppOpenObserverParams(settingsViewModel, navigator)
-                )
-
-                LazySpacer(height = categoryPadding)
-            }
+            LazySpacer(height = categoryPadding)
         }
 
         item(key = 5) {

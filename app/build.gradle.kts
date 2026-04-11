@@ -13,14 +13,12 @@ android {
     namespace = libs.versions.packageName.get()
     compileSdk = libs.versions.compileSdk.get().toInt()
 
-    setFlavorDimensions(listOf("WTMP"))
-
     defaultConfig {
         applicationId = libs.versions.packageName.get()
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.compileSdk.get().toInt()
-        versionCode = 24
-        versionName = "1.3.2r"
+        versionCode = 25
+        versionName = "1.4.0r"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -40,22 +38,6 @@ android {
             isMinifyEnabled = libs.versions.isR8ProGuardEnableForDebug.get().toBoolean()
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
-        }
-    }
-    productFlavors {
-        // It contains a feature for tracking the opening of selected applications,
-        // which was cut out due to the fact that Google play did not allow me
-        // to release this application with android permission.permission.QUERY_ALL_PACKAGES.
-        // Google play КОНТОРА ПИДАРАСОВ!!!
-
-        create("googlePlay") {
-            dimension = "WTMP"
-        }
-
-
-        create("notGooglePlay") {
-            dimension = "WTMP"
-            versionNameSuffix = "-gh"
         }
     }
     compileOptions {

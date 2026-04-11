@@ -7,7 +7,6 @@ import com.xxmrk888ytxx.coredeps.ApplicationScope
 import com.xxmrk888ytxx.coredeps.DepsProvider.DepsProvider
 import com.xxmrk888ytxx.coredeps.Exceptions.DepsProviderNotFoundDeps
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.ApplicationInfoProvider
-import com.xxmrk888ytxx.coredeps.isGooglePlayBuild
 import com.xxmrk888ytxx.eventdevicetracker.EventDeviceTrackerCallback
 import com.xxmrk888ytxx.observer.DI.AppComponent
 import com.xxmrk888ytxx.observer.DI.DaggerAppComponent
@@ -24,14 +23,7 @@ class App : Application(), DepsProvider, ApplicationInfoProvider {
 
     override fun onCreate() {
         super.onCreate()
-        disableAppTrackingOnGooglePlayBuild()
     }
-
-    private fun disableAppTrackingOnGooglePlayBuild() =
-        ApplicationScope.launch(Dispatchers.IO) {
-            if (!isGooglePlayBuild) return@launch
-            appComponent.appOpenConfigChanger.updateIsTracked(false)
-        }
 
     private val depsProviders: List<Any> by lazy {
         listOf(appComponent, adminEventsCallback, eventDeviceTrackerCallback, bootCallback)
