@@ -9,6 +9,16 @@ Application functionality:
 - Tracking device power on
   Once you get information about the selected event, you can take a picture of the intruder and send it to yourself in Telegram.
 
+## 🔐 Security & Verification
+
+To ensure the authenticity of the application, please verify the build signature. Official builds are signed with one of the following keys:
+
+-   **Google Play Build:** SHA-256 Fingerprint: B5:A6:BA:22:F4:28:BC:49:0E:7A:F2:9B:E3:6C:E8:4A:41:1E:B9:31:7F:19:92:16:BD:DE:5E:B3:C6:3F:FA:76
+-   **Personal Builds:** Signed with the personal key. You can find the valid signature in my [GitHub Profile ReadMe](https://github.com/xXMRK888YTXx).
+
+> [!WARNING]
+> Applications signed with any other keys are not built by me. Using such builds is highly discouraged unless you fully trust the provider.
+
 # Project structure description
 
 ## [core] 
@@ -82,6 +92,17 @@ WTMP — это приложение, предназначенное для пр
 - Отслеживание открытий выбранных вами приложений.
 - Отслеживание включения устройства
 Получив информацию о выбранном событии, вы можете сделать фотографию злоумышленника и отправить себе в Телеграм.
+
+## 🔐 Безопасность и проверка
+
+Для обеспечения подлинности приложения проверьте подпись сборки. Официальные версии подписываются одним из следующих ключей:
+
+-   **Версия из Google Play:** SHA-256 Fingerprint: 11:B8:C9:72:70:0E:87:EB:4E:B9:00:4E:15:68:D8:72:32:87:2C:9F:0F:73:A5:3D:30:E7:CD:CF:49:AF:88:85
+-   **Персональные сборки:** Подписаны личным ключом. Актуальную сигнатуру можно найти в моем [GitHub профиле](https://github.com/xXMRK888YTXx).
+
+> [!WARNING]
+> Приложения, подписанные любыми другими ключами, собраны не мной. Использование таких сборок крайне не рекомендуется, если вы не доверяете автору на 100%.
+
 
 # Описание структуры проекта
 
