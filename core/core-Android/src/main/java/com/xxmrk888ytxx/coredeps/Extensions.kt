@@ -7,7 +7,6 @@ import android.util.Log
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
-import com.xxmrk888ytxx.coredeps.BuildConfig.FLAVOR
 import com.xxmrk888ytxx.coredeps.SharedInterfaces.PermissionsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
